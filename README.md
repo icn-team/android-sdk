@@ -35,7 +35,7 @@ Compile everything (dependencies and hICN modules)
 make all
 ```
 
-The CCNx software will be installed in android-sdk/usr_aarch64
+The hICN Distillery software will be installed in android-sdk/usr_aarch64
 
 
 To compile Hybrid ICN Network Service for android app
