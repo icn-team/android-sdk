@@ -5,18 +5,18 @@ together all the necessary modules to build a full hICN software suite for arm64
 
 ## Dependencies ##
 
-Install tools to build libcurl
+Install dependencies
 
 If Ubuntu:
 
 ```
-sudo apt-get automake libconf libtool
+sudo apt-get git wget python curl automake libconf libtool openjdk-8-jdk
 ```
 
 If Mac Os X
 
 ```
-brew install automake libconf libtool
+brew install git wget automake libconf libtool
 ```
 
 

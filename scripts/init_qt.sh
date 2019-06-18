@@ -28,7 +28,7 @@ if [ "$ABI" = "arm64" ]; then
 			git clone https://github.com/benlau/qtci.git
 		fi
 		export PATH=$PATH:`pwd`/qtci/bin:`pwd`/qtci/recipes
-		export QT_CI_PACKAGES=qt.qt5.5123.android_arm64_v8a,qt.qt5.5123.qtcharts.android_arm64_v8a,qt.qt5.5123.qtcharts,qt.qt5.5123.qtcharts.clang_64
+		export QT_CI_PACKAGES=qt.qt5.5123.android_arm64_v8a,qt.qt5.5123.qtcharts.android_arm64_v8a,qt.qt5.5123.qtcharts
 		install-qt 5.12.3
 	fi
 	if [ ! -d ffmpeg ]; then
@@ -38,7 +38,7 @@ if [ "$ABI" = "arm64" ]; then
 	
 		tar xf ffmpeg-master-android-clang.tar.xz
 		mv ffmpeg-master-android-clang ffmpeg
-		cp -r ffmpeg/include/ ${BASE_PATH}/usr_aarch64/include/
+		cp -r ffmpeg/include/* ${BASE_PATH}/usr_aarch64/include/
 		cp ffmpeg/lib/arm64-v8a/lib* ${BASE_PATH}/usr_aarch64/lib/
 	fi 
 

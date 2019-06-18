@@ -44,7 +44,8 @@ if [ -z ${SDK_PATH} ]; then
 			mv android-sdk-linux sdk
 		fi
 		mkdir -p sdk/licenses
-		echo "\nd56f5187479451eabf01fb78af6dfcb131a6481e" > "sdk/licenses/android-sdk-license"
+		echo "\n24333f8a63b6825ea9c5514f83c2829b004d1fee" > "sdk/licenses/android-sdk-license"
+		echo "\n8933bad161af4178b1185d1a37fbf41ea5269c55" >> "sdk/licenses/android-sdk-license"
 		echo "\n84831b9409646a918e30573bab4c9c91346d8abd" > "sdk/licenses/android-sdk-preview-license"
 		echo "y" | ./sdk/tools/android update sdk --filter platform-tools,build-tools-28.0.3,android-28,extra-android-m2repository,extra-google-m2repository --no-ui --all --force
 		echo "y" | ./sdk/tools/android update sdk --filter "android-28" --no-ui --all --force 
