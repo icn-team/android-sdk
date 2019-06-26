@@ -115,7 +115,7 @@ Java_icn_forwarder_com_supportlibrary_Forwarder_start(JNIEnv *env, jobject insta
 
         hicnFwd = forwarder_Create(logger);
         Configuration *configuration = forwarder_GetConfiguration(hicnFwd);
-        if (capacity > 0) {
+        if (capacity >= 0) {
             configuration_SetObjectStoreSize(configuration, capacity);
         }
         forwarder_SetupLocalListeners(hicnFwd, PORT_NUMBER);
