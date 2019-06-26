@@ -34,9 +34,6 @@
 
 #include <parc/assert/parc_Assert.h>
 
-#include <hicn/core/dispatcher.h>
-#include <hicn/core/forwarder.h>
-
 static bool _isRunning = false;
 Forwarder *hicnFwd = NULL;
 
@@ -93,12 +90,12 @@ static void _setLogLevel(int logLevelArray[LoggerFacility_END],
         }
     }
 
-    parcMemory_Deallocate((void **)&tofree);
+    parcMemory_Deallocate((void **) &tofree);
 }
 
 JNIEXPORT void JNICALL
 Java_icn_forwarder_com_supportlibrary_Forwarder_start(JNIEnv *env, jobject instance,
-                                                       jstring path_) {
+                                                      jstring path_, jint capacity) {
     if (!_isRunning) {
         __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap", "starting HicnFwd...");
 
@@ -115,15 +112,18 @@ Java_icn_forwarder_com_supportlibrary_Forwarder_start(JNIEnv *env, jobject insta
                 logger_SetLogLevel(logger, i, logLevelArray[i]);
             }
         }*/
+
         hicnFwd = forwarder_Create(logger);
         Configuration *configuration = forwarder_GetConfiguration(hicnFwd);
-        configuration_SetObjectStoreSize(configuration, 0);
+        if (capacity > 0) {
+            configuration_SetObjectStoreSize(configuration, capacity);
+        }
         forwarder_SetupLocalListeners(hicnFwd, PORT_NUMBER);
         if (path_) {
             const char *configFileName = (*env)->GetStringUTFChars(env, path_, 0);
-            FILE *file=fopen(configFileName,"rb");
+            FILE *file = fopen(configFileName, "rb");
             char row[255];
-            while ( fgets( row, sizeof( row ), file ) != NULL ) {
+            while (fgets(row, sizeof(row), file) != NULL) {
                 __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap", "log file %s", row);
             }
 

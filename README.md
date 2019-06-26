@@ -1,7 +1,7 @@
 ## Android SDK ##
 
 This is the hICN Distillery software distribution for Android. It is in charge of pulling
-together all the necessary modules to build a full hICN software suite for arm64 Android arch.
+together all the necessary modules to build a full hICN software suite for arm64 and x86 Android arch.
 
 ## Dependencies ##
 
@@ -33,9 +33,12 @@ Compile everything (dependencies and hICN modules)
 
 ```
 make all
+export ANDROID_ARCH="x86"
+make all
+
 ```
 
-The hICN Distillery software will be installed in android-sdk/usr_aarch64
+The hICN Distillery software will be installed in android-sdk/usr_aarch64 and android-sdk/usr_i686
 
 
 To compile Hybrid ICN Network Service for android app
@@ -99,8 +102,10 @@ Here's a short summary:
 - `all-clean`				- Clean	all files and libs
 - `android_hicnforwarder`	- Build HicnForwader apk for android
 - `android_hicnforwarder_debug`	- Build HicnForwader apk for android in debug mode
-- `android_viper`			- Build Viper apk for android apk in debug mode
-- `android_viper_debug`		- Build Viper apk for android apk
+- `android_hicntools`		- Build HicnForwader apk for android
+- `android_hicntools_debug`	- Build HicnForwader apk for android in debug mode
+- `android_viper`			- Build Viper apk for android apk in debug mode (only arm64)
+- `android_viper_debug`		- Build Viper apk for android apk (only arm64)
 
 
 ## Configuration ##

@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-cd HiGetAndroid
+cd hICNTools
 if [ ! -f local.properties ]; then
 	echo sdk.dir=${SDK} > local.properties
 	echo ndk.dir=${NDK} >> local.properties
@@ -12,5 +12,5 @@ else
 	./gradlew assembleRelease
 fi
 
-echo "Apks are inside HiGetAndroid/app/build/outputs/apk"
+echo "Apks are inside hICNTools/app/build/outputs/apk"
 cd ..

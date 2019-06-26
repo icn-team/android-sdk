@@ -15,4 +15,20 @@
 
 <resources>
     <string name="app_name">Hybrid ICN Network Service</string>
+    <string name="source">Source</string>
+    <string name="source_ip">IP</string>
+    <string name="source_port">Port</string>
+
+    <string name="next_hop">Next Hop</string>
+    <string name="next_hop_ip">IP</string>
+    <string name="next_hop_port">Port</string>
+
+    <string name="route">Route</string>
+    <string name="prefix">Prefix</string>
+    <string name="netmask">Netmask</string>
+
+    <string name="configuration">Configuration</string>
+    <string name="capacity">Capacity [bytes]</string>
+
+
 </resources>
