@@ -55,6 +55,7 @@ public class ForwarderAndroidActivity extends AppCompatActivity {
     private EditText configurationEditText;
     private EditText prefixEditText;
     private EditText netmaskEditText;
+    private EditText capacityEditText;
     private Switch forwarderSwitch;
     private Button sourceIpRefreshButton;
     private List<String> sourceIpArrayList = new ArrayList<String>();
@@ -82,7 +83,6 @@ public class ForwarderAndroidActivity extends AppCompatActivity {
                     InetAddress inetAddress = enumIpAddr.nextElement();
                     if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
                         String[] addressSplitted = inetAddress.getHostAddress().toString().split("%");
-                        //addressesMap.put(addressSplitted[1], addressSplitted[0]);
                         addressesMap.put(intf.getName(), addressSplitted[0]);
                     }
                 }
@@ -109,7 +109,7 @@ public class ForwarderAndroidActivity extends AppCompatActivity {
     }
 
     private void init() {
-        sourceIpSpinner = (Spinner) findViewById(R.id.sourceIpSpinner);
+        sourceIpSpinner = (Spinner) findViewById(R.id.source_ip_spinner);
         sharedPreferences = getSharedPreferences(Constants.FORWARDER_PREFERENCES, MODE_PRIVATE);
         addressesMap = getLocalIpAddress();
         for (String networkInterface : addressesMap.keySet()) {
@@ -128,9 +128,9 @@ public class ForwarderAndroidActivity extends AppCompatActivity {
                 sourceIpSpinner.setSelection(0);
             }
         }
-        sourcePortEditText = (EditText) findViewById(R.id.sourcePortEditText);
+        sourcePortEditText = findViewById(R.id.source_port_editext);
         sourcePortEditText.setText(sharedPreferences.getString(ResourcesEnumerator.SOURCE_PORT.key(), Constants.DEFAULT_SOURCE_PORT));
-        sourceIpRefreshButton = (Button) findViewById(R.id.sourceIpRefreshButton);
+        sourceIpRefreshButton = findViewById(R.id.source_ip_refresh_button);
         sourceIpRefreshButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -156,19 +156,20 @@ public class ForwarderAndroidActivity extends AppCompatActivity {
                 }
             }
         });
-        nextHopIpEditText = (EditText) findViewById(R.id.nextHopIpEditText);
+        nextHopIpEditText = findViewById(R.id.next_hop_ip_editext);
         nextHopIpEditText.setText(sharedPreferences.getString(ResourcesEnumerator.NEXT_HOP_IP.key(), Constants.DEFAULT_NEXT_HOP_IP));
-        nextHopPortEditText = (EditText) findViewById(R.id.nextHopPortEditText);
+        nextHopPortEditText = findViewById(R.id.next_hop_port_editext);
         nextHopPortEditText.setText(sharedPreferences.getString(ResourcesEnumerator.NEXT_HOP_PORT.key(), Constants.DEFAULT_NEXT_HOP_PORT));
 
-        configurationEditText = (EditText) findViewById(R.id.configurationEditText);
+        configurationEditText = findViewById(R.id.configuration_edittext);
         configurationEditText.setText(sharedPreferences.getString(ResourcesEnumerator.CONFIGURATION.key(), Constants.DEFAULT_CONFIGURATION));
-        //configurationEditText.setText(Constants.DEFAULT_CONFIGURATION);
-        prefixEditText = (EditText) findViewById(R.id.prefixEditText);
+        prefixEditText = findViewById(R.id.prefix_editext);
         prefixEditText.setText(sharedPreferences.getString(ResourcesEnumerator.PREFIX.key(), Constants.DEFAULT_PREFIX));
-        netmaskEditText = (EditText) findViewById(R.id.netmaskEditText);
+        netmaskEditText = findViewById(R.id.netmask_edittext);
         netmaskEditText.setText(sharedPreferences.getString(ResourcesEnumerator.NETMASK.key(), Constants.DEFAULT_NETMASK));
-        forwarderSwitch = (Switch) findViewById(R.id.forwarderSwitch);
+        capacityEditText = findViewById(R.id.capacity_edittext);
+        capacityEditText.setText(sharedPreferences.getString(ResourcesEnumerator.CAPACITY.key(),Constants.DEFAULT_CAPACITY));
+        forwarderSwitch = findViewById(R.id.forwarder_switch);
 
         forwarderSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -186,6 +187,7 @@ public class ForwarderAndroidActivity extends AppCompatActivity {
                     sharedPreferencesEditor.putString(ResourcesEnumerator.CONFIGURATION.key(), configurationEditText.getText().toString());
                     sharedPreferencesEditor.putString(ResourcesEnumerator.PREFIX.key(), prefixEditText.getText().toString());
                     sharedPreferencesEditor.putString(ResourcesEnumerator.NETMASK.key(), netmaskEditText.getText().toString());
+                    sharedPreferencesEditor.putString(ResourcesEnumerator.CAPACITY.key(), capacityEditText.getText().toString());
                     sharedPreferencesEditor.commit();
                     sourceIpSpinner.setEnabled(false);
                     sourceIpRefreshButton.setEnabled(false);
@@ -194,6 +196,7 @@ public class ForwarderAndroidActivity extends AppCompatActivity {
                     nextHopPortEditText.setEnabled(false);
                     prefixEditText.setEnabled(false);
                     netmaskEditText.setEnabled(false);
+                    capacityEditText.setEnabled(false);
                     configurationEditText.setEnabled(false);
                     startForwarder();
 
@@ -206,6 +209,7 @@ public class ForwarderAndroidActivity extends AppCompatActivity {
                     nextHopPortEditText.setEnabled(true);
                     prefixEditText.setEnabled(true);
                     netmaskEditText.setEnabled(true);
+                    capacityEditText.setEnabled(true);
                     configurationEditText.setEnabled(true);
                     stopForwarder();
                 }
@@ -222,7 +226,6 @@ public class ForwarderAndroidActivity extends AppCompatActivity {
     }
 
     private void startForwarder() {
-        //Forwarder forwarder = Forwarder.getInstance();
         Intent intent = new Intent(this, icn.forwarder.com.service.ForwarderAndroidService.class);
         startService(intent);
     }

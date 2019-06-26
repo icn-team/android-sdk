@@ -113,6 +113,10 @@ android_hicnforwarder:
 	./scripts/compile_hicnforwarder.sh
 android_hicnforwarder_debug:
 	./scripts/compile_hicnforwarder.sh DEBUG
+android_hicntools:
+	./scripts/compile_hicntools.sh
+android_hicntools_debug:
+	./scripts/compile_hicntools.sh DEBUG
 android_viper:
 	./scripts/compile_androidviper.sh
 android_viper_debug:
@@ -223,8 +227,10 @@ help:
 	@echo "all-clean			- Clean	all files and libs"
 	@echo "android_hicnforwarder	- Build HicnForwader apk for android"
 	@echo "android_hicnforwarder_debug	- Build HicnForwader apk for android in debug mode"
-	@echo "android_viper		- Build Viper apk for android apk in debug mode" 
-	@echo "android_viper_debug	- Build Viper apk for android apk"
+	@echo "android_hicntools	- Build HicnTools apk for android"
+	@echo "android_hicntools_debug	- Build HicnTools apk for android in debug mode"
+	@echo "android_viper		- Build Viper apk for android apk in debug mode (only arm64)" 
+	@echo "android_viper_debug	- Build Viper apk for android apk (only arm64)"
 	
 ${DISTILLERY_STAMP}: ${REBUILD_DEPENDS}
 	touch $@

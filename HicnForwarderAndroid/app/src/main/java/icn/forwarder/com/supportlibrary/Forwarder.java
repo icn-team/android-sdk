@@ -35,7 +35,7 @@ public class Forwarder {
     }
 
     public native boolean isRunning();
-    public native void start(String path);
+    public native void start(String path, int capacity);
     public native void stop();
 
 }

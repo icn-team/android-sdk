@@ -24,11 +24,11 @@ public class Constants {
     public static final String FORWARDER_PREFERENCES = "forwarderPreferences";
     public static final String DEFAULT_SOURCE_INTERFACE = "eth0";
     public static final String DEFAULT_SOURCE_PORT = "1111";
+    public static final String DEFAULT_CAPACITY = "0";
     public static final String DEFAULT_CONFIGURATION =
             "add listener udp listener0 %%source_ip%% %%source_port%%\n" +
             "add connection udp conn0 %%next_hop_ip%% %%next_hop_port%% %%source_ip%% %%source_port%%\n" +
-            "add route conn0 %%prefix%%/%%netmask%% 1\n" +
-            "set wldr on conn0";
+            "add route conn0 %%prefix%%/%%netmask%% 1\n";
     public static final String SOURCE_IP = "%%source_ip%%";
     public static final String SOURCE_PORT = "%%source_port%%";
     public static final String NEXT_HOP_IP = "%%next_hop_ip%%";

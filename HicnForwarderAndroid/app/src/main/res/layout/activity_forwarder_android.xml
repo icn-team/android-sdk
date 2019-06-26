@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
     Copyright (c) 2019 Cisco and/or its affiliates.
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -20,269 +19,278 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="icn.forwarder.com.forwarderandroid.ForwarderAndroidActivity">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:text="@string/source"
+                android:textSize="30sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/sourceTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Source"
-                    android:textSize="30sp"
-                    android:textStyle="bold" />
+                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.25"
-                    android:orientation="horizontal">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:gravity="right|center_vertical">
 
                     <TextView
-                        android:id="@+id/sourceIpTextView"
-                        android:layout_width="0dip"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="20"
-                        android:text="IP"
-                        android:textAlignment="textEnd"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-                    <LinearLayout
-                        android:layout_width="0dip"
-                        android:layout_weight="80"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <Spinner
-                            android:id="@+id/sourceIpSpinner"
-                            android:layout_width="0dip"
-                            android:layout_weight="20"
-                            android:layout_height="match_parent"
-                            />
-
-                        <Button
-                            android:id="@+id/sourceIpRefreshButton"
-                            android:layout_width="50sp"
-                            android:layout_height="50sp"
-                            android:drawableLeft="@drawable/ic_cached_black_24px" />
-                    </LinearLayout>
-
-
-
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="right|center_vertical"
+                        android:inputType="text"
+                        android:text="@string/source_ip"
+                        android:textSize="15sp" />
                 </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.25"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/sourcePortTextView"
-                        android:layout_width="0dip"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="20"
-                        android:text="Port"
-                        android:textAlignment="textEnd"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/sourcePortEditText"
-                        android:layout_width="0dip"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="80"
-                        android:ems="10"
-                        android:inputType="number"
-                        android:text="88888"
-                        android:textSize="24sp" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/nextHopTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Next Hop"
-                    android:textSize="30sp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.25"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/destinationIpTextView"
-                        android:layout_width="0dip"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="20"
-                        android:text="IP"
-                        android:textAlignment="textEnd"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/nextHopIpEditText"
-                        android:layout_width="0dip"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="80"
-                        android:ems="10"
-                        android:inputType="textUri"
-                        android:text="8888:8888:8888:8888:8888:8888:8888:8888"
-                        android:textSize="24sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.25"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/nextHopPortTextView"
-                        android:layout_width="0dip"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="20"
-                        android:text="Port"
-                        android:textAlignment="textEnd"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/nextHopPortEditText"
-                        android:layout_width="0dip"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="80"
-                        android:ems="10"
-                        android:inputType="number"
-                        android:text="88888"
-                        android:textSize="24sp" />
-
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/routeTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Route"
-                    android:textSize="30sp"
-                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.25"
-                    android:orientation="horizontal">
+                    android:layout_weight="1"
+                    android:gravity="right|center_vertical">
 
-                    <TextView
-                        android:id="@+id/prefixTextView"
+                    <Spinner
+                        android:id="@+id/source_ip_spinner"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
-                        android:layout_weight="20"
-                        android:text="Prefix"
-                        android:textAlignment="textEnd"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
+                        android:layout_weight="20" />
 
-                    <EditText
-                        android:id="@+id/prefixEditText"
-                        android:layout_width="0dip"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="80"
-                        android:ems="10"
-                        android:inputType="textUri"
-                        android:text="8888:8888:8888:8888:8888:8888:8888:8888"
-                        android:textSize="24sp" />
+                    <Button
+                        android:id="@+id/source_ip_refresh_button"
+                        android:layout_width="50sp"
+                        android:layout_height="50sp"
+                        android:drawableLeft="@drawable/ic_cached_black_24px" />
                 </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.25"
-                    android:orientation="horizontal"
-                    android:paddingLeft="30dp">
 
-                    <TextView
-                        android:id="@+id/netmaskTextView"
-                        android:layout_width="130dp"
-                        android:layout_height="wrap_content"
-                        android:text="Netmask"
-                        android:textAlignment="textEnd"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
 
-                    <EditText
-                        android:id="@+id/netmaskEditText"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:inputType="number"
-                        android:text="888"
-                        android:textSize="24sp" />
-                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/configurationTextView"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Configuration"
-                    android:textSize="30sp"
-                    android:textStyle="bold" />
+                    android:layout_weight="4"
+                    android:gravity="right|center_vertical"
+                    android:inputType="text"
+                    android:text="@string/source_port"
+                    android:textSize="15sp" />
 
-                <ScrollView
-                    android:layout_width="fill_parent"
-                    android:layout_height="200dp"
-                    android:background="@drawable/border">
-
-                    <EditText
-                        android:id="@+id/configurationEditText"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:background="@android:color/transparent"
-                        android:ems="10"
-                        android:inputType="textMultiLine"
-                        android:text="add listener udp remote0 %%source_ip%% %%source_port%% add connection udp conn0 %%destination_ip%% %%destination_port%% %%source_ip%% %%source_port%%  # Route add route conn0 ccnx:/webserver 1# Local listeners add listener tcp local0 127.0.0.1 9695 add listener udp local1 127.0.0.1 9695  # Remote face add listener udp remote0 %%source_ip%% %%source_port%% add connection udp conn0 %%destination_ip%% %%destination_port%% %%source_ip%% %%source_port%%  # Route add route conn0 ccnx:/webserver 1# Local listeners add listener tcp local0 127.0.0.1 9695 add listener udp local1 127.0.0.1 9695  # Remote face add listener udp remote0 %%source_ip%% %%source_port%% add connection udp conn0 %%destination_ip%% %%destination_port%% %%source_ip%% %%source_port%%  # Route add route conn0 ccnx:/webserver 1# Local listeners add listener tcp local0 127.0.0.1 9695 add listener udp local1 127.0.0.1 9695  # Remote face add listener udp remote0 %%source_ip%% %%source_port%% add connection udp conn0 %%destination_ip%% %%destination_port%% %%source_ip%% %%source_port%%  # Route add route conn0 ccnx:/webserver 1# Local listeners add listener tcp local0 127.0.0.1 9695 add listener udp local1 127.0.0.1 9695  # Remote face add listener udp remote0 %%source_ip%% %%source_port%% add connection udp conn0 %%destination_ip%% %%destination_port%% %%source_ip%% %%source_port%%  # Route add route conn0 ccnx:/webserver 1"
-                        app:layout_constraintVertical_bias="0.33999997" />
-                </ScrollView>
+                <EditText
+                    android:id="@+id/source_port_editext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:singleLine="true" />
 
             </LinearLayout>
 
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:text="@string/next_hop"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:gravity="right|center_vertical"
+                    android:inputType="text"
+                    android:text="@string/next_hop_ip"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/next_hop_ip_editext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:singleLine="true" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:gravity="right|center_vertical"
+                    android:inputType="text"
+                    android:text="@string/next_hop_port"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/next_hop_port_editext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:singleLine="true" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:text="@string/route"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:gravity="right|center_vertical"
+                    android:inputType="text"
+                    android:text="@string/prefix"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/prefix_editext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:singleLine="true" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:gravity="right|center_vertical"
+                    android:inputType="text"
+                    android:text="@string/netmask"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/netmask_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:singleLine="true" />
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:text="@string/configuration"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="60sp"
+                    android:layout_weight="4"
+                    android:gravity="right|center_vertical"
+                    android:text="@string/capacity"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/capacity_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:singleLine="true" />
+            </LinearLayout>
+
+
+            <android.support.v4.widget.NestedScrollView
+
+                android:layout_width="fill_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/border">
+
+                <EditText
+                    android:id="@+id/configuration_edittext"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@android:color/transparent"
+                    android:ems="10"
+                    android:inputType="textMultiLine"
+                    android:text="add listener udp remote0 %%source_ip%% %%source_port%% add connection udp conn0 %%destination_ip%% %%destination_port%% %%source_ip%% %%source_port%%  # Route add route conn0 ccnx:/webserver 1# Local listeners add listener tcp local0 127.0.0.1 9695 add listener udp local1 127.0.0.1 9695  # Remote face add listener udp remote0 %%source_ip%% %%source_port%% add connection udp conn0 %%destination_ip%% %%destination_port%% %%source_ip%% %%source_port%%  # Route add route conn0 ccnx:/webserver 1# Local listeners add listener tcp local0 127.0.0.1 9695 add listener udp local1 127.0.0.1 9695  # Remote face add listener udp remote0 %%source_ip%% %%source_port%% add connection udp conn0 %%destination_ip%% %%destination_port%% %%source_ip%% %%source_port%%  # Route add route conn0 ccnx:/webserver 1# Local listeners add listener tcp local0 127.0.0.1 9695 add listener udp local1 127.0.0.1 9695  # Remote face add listener udp remote0 %%source_ip%% %%source_port%% add connection udp conn0 %%destination_ip%% %%destination_port%% %%source_ip%% %%source_port%%  # Route add route conn0 ccnx:/webserver 1# Local listeners add listener tcp local0 127.0.0.1 9695 add listener udp local1 127.0.0.1 9695  # Remote face add listener udp remote0 %%source_ip%% %%source_port%% add connection udp conn0 %%destination_ip%% %%destination_port%% %%source_ip%% %%source_port%%  # Route add route conn0 ccnx:/webserver 1"
+                    app:layout_constraintVertical_bias="0.33999997" />
+            </android.support.v4.widget.NestedScrollView>
+
+
             <Switch
-                android:id="@+id/forwarderSwitch"
+                android:id="@+id/forwarder_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Disabled"
                 android:textSize="30sp" />
-    </LinearLayout>
+        </LinearLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>
