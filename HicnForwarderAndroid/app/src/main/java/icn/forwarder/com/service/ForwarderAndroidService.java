@@ -28,7 +28,6 @@ import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -50,6 +49,7 @@ public class ForwarderAndroidService extends Service {
     }
 
     private String path;
+    private int capacity;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -71,6 +71,7 @@ public class ForwarderAndroidService extends Service {
             String nextHopPort = sharedPreferences.getString(ResourcesEnumerator.NEXT_HOP_PORT.key(), null);
             String prefix = sharedPreferences.getString(ResourcesEnumerator.PREFIX.key(), null);
             String netmask = sharedPreferences.getString(ResourcesEnumerator.NETMASK.key(), null);
+            int capacity = Integer.parseInt(sharedPreferences.getString(ResourcesEnumerator.CAPACITY.key(), Constants.DEFAULT_CAPACITY));
             configuration = configuration.replace(Constants.SOURCE_IP, sourceIp);
             configuration = configuration.replace(Constants.SOURCE_PORT, sourcePort);
             configuration = configuration.replace(Constants.NEXT_HOP_IP, nextHopIp);
@@ -87,7 +88,7 @@ public class ForwarderAndroidService extends Service {
 
                 writeToFile(configuration, configurationDir + File.separator + Constants.CONFIGURATION_FILE_NAME);
                 Log.d(TAG, configurationDir + File.separator + Constants.CONFIGURATION_FILE_NAME);
-                startForwarder(intent, configurationDir + File.separator + Constants.CONFIGURATION_FILE_NAME);
+                startForwarder(intent, configurationDir + File.separator + Constants.CONFIGURATION_FILE_NAME, capacity);
             } catch (PackageManager.NameNotFoundException e) {
                 Log.w(TAG, "Error Package name not found ", e);
             }
@@ -117,7 +118,7 @@ public class ForwarderAndroidService extends Service {
         @Override
         public void run() {
             Forwarder forwarder = Forwarder.getInstance();
-            forwarder.start(path);
+            forwarder.start(path, capacity);
         }
 
 
@@ -136,15 +137,23 @@ public class ForwarderAndroidService extends Service {
     }
 
 
-    private void startForwarder(Intent intent, String path) {
+    private void startForwarder(Intent intent, String path, int capacity) {
         String NOTIFICATION_CHANNEL_ID = "12345";
-        Notification.Builder notificationBuilder = new Notification.Builder(this, NOTIFICATION_CHANNEL_ID);
+        Notification notification = null;
+        if (Build.VERSION.SDK_INT >= 26) {
+            Notification.Builder notificationBuilder = new Notification.Builder(this, NOTIFICATION_CHANNEL_ID);
 
-        Intent notificationIntent = new Intent(this, ForwarderAndroidActivity.class);
-        PendingIntent activity = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            Intent notificationIntent = new Intent(this, ForwarderAndroidActivity.class);
+            PendingIntent activity = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        notificationBuilder.setContentTitle("ForwarderAndroid").setContentText("ForwarderAndroid").setOngoing(true).setContentIntent(activity);
-        Notification notification = notificationBuilder.build();
+            notificationBuilder.setContentTitle("ForwarderAndroid").setContentText("ForwarderAndroid").setOngoing(true).setContentIntent(activity);
+            notification = notificationBuilder.build();
+        } else {
+            notification = new Notification.Builder(this)
+                    .setContentTitle("ForwarderAndroid")
+                    .setContentText("ForwarderAndroid")
+                    .build();
+        }
 
         if (Build.VERSION.SDK_INT >= 26) {
             NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "ForwarderAndroid", NotificationManager.IMPORTANCE_DEFAULT);
@@ -160,12 +169,13 @@ public class ForwarderAndroidService extends Service {
         Forwarder forwarder = Forwarder.getInstance();
         if (!forwarder.isRunning()) {
             this.path = path;
+            this.capacity = capacity;
             sForwarderThread = new Thread(mForwarderRunner, "ForwarderRunner");
             sForwarderThread.start();
         }
 
 
-        Log.e(TAG, "ForwarderAndroid starterd");
+        Log.i(TAG, "ForwarderAndroid starterd");
 
     }
 }

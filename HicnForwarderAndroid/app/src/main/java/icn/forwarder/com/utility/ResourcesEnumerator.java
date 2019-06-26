@@ -16,14 +16,15 @@
 package icn.forwarder.com.utility;
 
 public enum ResourcesEnumerator {
-    SOURCE_IP("sourceIp"),
-    SOURCE_PORT("sourcePort"),
-    NEXT_HOP_IP("nextHopIp"),
-    NEXT_HOP_PORT("nextHopPort"),
-    CONFIGURATION("configuration"),
-    SOURCE_NETWORK_INTERFACE("sourceNetworkInterface"),
-    PREFIX("prefix"),
-    NETMASK("netmask");
+    SOURCE_IP("source_ip_key"),
+    SOURCE_PORT("source_port_key"),
+    NEXT_HOP_IP("next_hop_ip_key"),
+    NEXT_HOP_PORT("next_hop_port_key"),
+    CONFIGURATION("configuration_key"),
+    SOURCE_NETWORK_INTERFACE("source_network_interface_key"),
+    PREFIX("prefix_key"),
+    NETMASK("netmask_key"),
+    CAPACITY("capacity_key");
 
     private String key;
 
