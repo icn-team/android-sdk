@@ -54,6 +54,18 @@ To install the application run
 adb install -r ./app/build/outputs/apk/release/HicnForwarderAndroid.apk
 ```
 
+To compile Hybrid ICN SpeedTest & Test android app
+
+```
+make android_hicntools
+```
+
+To install the application run
+
+```
+adb install -r ./app/build/outputs/apk/release/hICN_Tools.apk
+```
+
 To compile Viper ABR video player for android app 
 
 ```
