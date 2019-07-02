@@ -1,5 +1,5 @@
-usr*
-build*
-src*
-sdk
-qt
+/usr*
+/build*
+/src*
+/sdk
+/qt
