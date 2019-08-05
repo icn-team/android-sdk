@@ -81,7 +81,7 @@ modules_dir=
 	include config/modules/002-cmake-modules.mk
 	include config/modules/002-make-modules.mk
 	include config/modules/100-distillery.mk
-	include config/modules/106-jsoncpp.mk
+	include config/modules/105-libconfig.mk
 	include config/modules/107-libevent.mk
 	include config/modules/108-libxml2.mk
 	include config/modules/109-curl.mk
@@ -144,10 +144,10 @@ xml2-clean:
 	@rm -rf ${DISTILLERY_INSTALL_DIR}/lib/libxml2*
 	@rm -rf ${DISTILLERY_INSTALL_DIR}/include/libxml
 
-jsoncpp-clean:
-	@rm -rf ${DISTILLERY_BUILD_DIR}/jsoncpp
-	@rm -rf ${DISTILLERY_INSTALL_DIR}/lib/libjsoncpp.*
-	@rm -rf ${DISTILLERY_INSTALL_DIR}/include/json
+libconfig-clean:
+	@rm -rf ${DISTILLERY_BUILD_DIR}/libconfig
+	@rm -rf ${DISTILLERY_INSTALL_DIR}/lib/libconfig*
+	@rm -rf ${DISTILLERY_INSTALL_DIR}/include/libconfig*
 	
 asio-clean:
 	@rm -rf ${DISTILLERY_INSTALL_DIR}/include/asio*
@@ -167,7 +167,7 @@ libdash-clean:
 	@rm -rf ${DISTILLERY_INSTALL_DIR}/lib/libdash.*
 	@rm -rf ${DISTILLERY_INSTALL_DIR}/include/libdash
 
-dependencies-clean: event-clean openssl-clean curl-clean xml2-clean jsoncpp-clean libparc-clean asio-clean ffmpeg-clean libdash-clean
+dependencies-clean: event-clean openssl-clean curl-clean xml2-clean libconfig-clean libparc-clean asio-clean ffmpeg-clean libdash-clean
 	
 sdk-clean:
 	@rm -rf sdk/android-sdk_*
@@ -214,7 +214,7 @@ help:
 	@echo "asio-clean			- Clean asio files"
 	@echo "event-clean			- Clean libevent files and libs"
 	@echo "ffmpeg-clean			- Clean ffmpeg files and libs"
-	@echo "jsoncpp-clean		- Clean libjsoncpp files and libs"
+	@echo "libconfig-clean		- Clean libconfig files and libs"
 	@echo "xml2-clean			- Clean libxml2 files and libs"
 	@echo "libdash-clean		- Clean libdash files and libs"
 	@echo "viper-clean			- Clean viper files"
