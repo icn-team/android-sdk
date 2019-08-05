@@ -102,7 +102,7 @@ Here's a short summary:
 - `asio-clean`				- Clean asio files
 - `event-clean`				- Clean libevent files and libs
 - `ffmpeg-clean`			- Clean ffmpeg files and libs
-- `jsoncpp-clean`			- Clean libjsoncpp files and libs
+- `libconfig-clean`			- Clean libconfig files and libs
 - `xml2-clean`				- Clean libxml2 files and libs
 - `libdash-clean`			- Clean libdash files and libs
 - `viper-clean`				- Clean viper files
