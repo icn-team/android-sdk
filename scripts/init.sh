@@ -134,10 +134,10 @@ if [ ! -d ${INSTALLATION_DIR}/include/asio ]; then
 	cp -r asio/asio/include/asio ${INSTALLATION_DIR}/include/
 fi
 
-if [ ! -d jsoncpp ]; then
-	echo "jsoncpp not found"
-	git clone https://github.com/open-source-parsers/jsoncpp.git
-	sed -i -- 's/\-Werror=conversion//g' jsoncpp/CMakeLists.txt
+if [ ! -d libconfig ]; then
+	echo "libconfig not found"
+	git clone https://github.com/hyperrealm/libconfig.git
+	sed -i -- '2s/$/include(CheckSymbolExists)/' libconfig/CMakeLists.txt 
 fi
 
 cd ../
