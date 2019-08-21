@@ -29,6 +29,7 @@
 
     <string name="configuration">Configuration</string>
     <string name="capacity">Capacity [bytes]</string>
+    <string name="APP_MENU_FACES">Faces</string>
 
 
 </resources>

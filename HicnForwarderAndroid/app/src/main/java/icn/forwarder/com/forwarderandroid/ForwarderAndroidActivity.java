@@ -15,6 +15,9 @@
 
 package icn.forwarder.com.forwarderandroid;
 
+import android.view.MenuInflater;
+import android.view.Menu;
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -72,6 +75,13 @@ public class ForwarderAndroidActivity extends AppCompatActivity {
         checkEnabledPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
         checkEnabledPermission(Manifest.permission.FOREGROUND_SERVICE);
         init();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
     }
 
     public HashMap<String, String> getLocalIpAddress() {
