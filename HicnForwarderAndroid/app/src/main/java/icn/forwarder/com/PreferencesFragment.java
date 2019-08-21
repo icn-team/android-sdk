@@ -3,12 +3,15 @@ package icn.forwarder.com;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.preference.PreferenceFragmentCompat;
+//import android.support.v4.app.Fragment;
+//import android.support.v7.preference.PreferenceFragmentCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+
+import androidx.preference.PreferenceFragmentCompat;
 
 import icn.forwarder.com.forwarderandroid.R;
 
@@ -52,6 +55,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
+        Log.d("aaa", fragment.getArguments().getString("username"));
         return fragment;
     }
 

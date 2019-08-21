@@ -1,20 +1,31 @@
 package icn.forwarder.com.forwarderandroid;
 
 
+import android.content.SharedPreferences;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
+import android.preference.PreferenceManager;
+//import android.support.annotation.NonNull;
+//import android.support.design.widget.NavigationView;
+//import android.support.v4.app.Fragment;
+//import android.support.v4.app.FragmentManager;
+//import android.support.v4.app.FragmentTransaction;
+//import android.support.v4.widget.DrawerLayout;
+//import android.support.v7.app.ActionBarDrawerToggle;
+//import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.navigation.NavigationView;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import icn.forwarder.com.Home;
 import icn.forwarder.com.PreferencesFragment;
@@ -61,6 +72,10 @@ public class MainActivity extends AppCompatActivity
         // Declare fragments here
         home = new Home();
         settings = new PreferencesFragment();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String aaa = sharedPreferences.getString("username", "ciao!!!");
+        Log.d("aaa", aaa);
+        //Log.d("aaa", settings.getArguments().getString("username"));
 
         /*msg = new Message();
         video = new Video();
