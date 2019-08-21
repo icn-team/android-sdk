@@ -45,10 +45,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 
-import icn.forwarder.com.supportlibrary.Forwarder;
-import icn.forwarder.com.utility.Constants;
-import icn.forwarder.com.utility.ResourcesEnumerator;
-
 public class ForwarderAndroidActivity extends AppCompatActivity {
 
     private Spinner sourceIpSpinner;
@@ -67,6 +63,7 @@ public class ForwarderAndroidActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,14 +71,10 @@ public class ForwarderAndroidActivity extends AppCompatActivity {
         checkEnabledPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         checkEnabledPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
         checkEnabledPermission(Manifest.permission.FOREGROUND_SERVICE);
-        init();
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
-        return true;
+
+
+        //init();
     }
 
     public HashMap<String, String> getLocalIpAddress() {
@@ -118,6 +111,7 @@ public class ForwarderAndroidActivity extends AppCompatActivity {
         }
     }
 
+    /*
     private void init() {
         sourceIpSpinner = (Spinner) findViewById(R.id.source_ip_spinner);
         sharedPreferences = getSharedPreferences(Constants.FORWARDER_PREFERENCES, MODE_PRIVATE);
@@ -234,7 +228,7 @@ public class ForwarderAndroidActivity extends AppCompatActivity {
             forwarderSwitch.setText(Constants.DISABLED);
         }
     }
-
+*/
     private void startForwarder() {
         Intent intent = new Intent(this, icn.forwarder.com.service.ForwarderAndroidService.class);
         startService(intent);
