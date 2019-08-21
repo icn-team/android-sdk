@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:checkable="false"
+        android:enabled="true"
+        android:title="@string/APP_MENU_FACES"
+        android:visible="true" />
+</menu>
