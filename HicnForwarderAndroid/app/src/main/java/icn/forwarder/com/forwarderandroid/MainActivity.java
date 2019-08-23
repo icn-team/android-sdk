@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity
         contact = new ContactUs();
 */
 
-        fragmentManager.beginTransaction().replace(R.id.viewLayout, home).commit();
+        fragmentManager.beginTransaction().replace(R.id.viewLayout, settings).commit();
 
     }
 
@@ -108,8 +108,8 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         Fragment fragment;
         switch (menuItem.getItemId()) {
-            case R.id.action_home:
-                fragment = home;
+            case R.id.settings:
+                fragment = settings;
                 setTitle(menuItem.getTitle());
                 break;
             case R.id.action_msg:
@@ -124,12 +124,12 @@ public class MainActivity extends AppCompatActivity
                 fragment = home;
                 setTitle(menuItem.getTitle());
                 break;
-            case R.id.settings:
-                fragment = settings;
+            case R.id.action_home:
+                fragment = home;
                 setTitle(menuItem.getTitle());
                 break;
             default:
-                fragment = home;
+                fragment = settings;
                 setTitle(menuItem.getTitle());
                 break;
 
