@@ -38,7 +38,36 @@
     <string name="settings">Settings</string>
 
 
+
+
+    <string name="cache_size">Cache Size</string>
+    <string name="cache_size_key">cache_size</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="forwarder_preference_category">Forwarder</string>
+    <string name="face_management_preference_category">Face Management</string>
+    <string name="face_type_key">face_type</string>
+    <string name="default_face_type">Overlay UDP</string>
+    <string name="face_type_list_preference">Face Type</string>
+    <string name="native_tcp">Native TCP</string>
+    <string name="native_udp">Native UDP</string>
+    <string name="overlay_tcp">Overlay TCP</string>
+    <string name="overlay_udp">Overlay UDP</string>
+    <string name="overlay_discovery_list_preference">Overlay Discovery</string>
+    <string name="manual">Manual</string>
+    <string name="bonjour">Bonjour</string>
+    <string name="overlay_discovery_key">overlay_discovery</string>
+    <string name="default_overlay_discovery">Bonjour</string>
+    <string name="overlay_manual_configuration_preference_category">Overlay Manual Configuration</string>
+    <string name="address_ipv4">Address IPv4</string>
+    <string name="port_ipv4">Port IPv4</string>
+    <string name="address_ipv4_key">address_ipv4</string>
+    <string name="port_ipv4_key">port_ipv4</string>
+    <string name="address_ipv6">Address IPv6</string>
+    <string name="address_ipv6_key">address_ipv6</string>
+    <string name="port_ipv6">Port IPv6</string>
+    <string name="port_ipv6_key">port_ipv6</string>
+
 
 </resources>
