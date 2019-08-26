@@ -1,16 +1,20 @@
 package com.cisco.hicn.forwarder;
 
+import androidx.fragment.app.FragmentManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 //import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.cisco.hicn.forwarder.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +33,14 @@ public class Home extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    BottomNavigationView bottomNavigationView;
+
+    FragmentManager fragmentManager;
+
+    ForwarderFragment forwarder;
+    InterfaceFragment interfaces;
+    ApplicationsFragment applications;
 
     private OnFragmentInteractionListener mListener;
 
@@ -57,6 +69,13 @@ public class Home extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        fragmentManager = getFragmentManager();
+
+        forwarder = new ForwarderFragment();
+        interfaces = new InterfaceFragment();
+        applications = new ApplicationsFragment();
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -68,6 +87,34 @@ public class Home extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        bottomNavigationView = (BottomNavigationView)getView().findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        Fragment fragment;
+                        switch (item.getItemId()) {
+                            case R.id.action_forwarder:
+                                fragment = forwarder;
+                                break;
+                            case R.id.action_interfaces:
+                                fragment = interfaces;
+                                break;
+                            case R.id.action_applications:
+                                fragment = applications;
+                                break;
+                            default:
+                                return false;
+                        }
+
+                        fragmentManager.beginTransaction().replace(R.id.subviewLayout, fragment).commit();
+                        return false;
+                    }
+                });
     }
 
     // TODO: Rename method, update argument and hook method into UI event
