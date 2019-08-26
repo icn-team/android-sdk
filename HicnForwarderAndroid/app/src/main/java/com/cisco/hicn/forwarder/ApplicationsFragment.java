@@ -1,30 +1,25 @@
 package com.cisco.hicn.forwarder;
 
-import androidx.fragment.app.FragmentManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-//import android.support.v4.app.Fragment;
+
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Home.OnFragmentInteractionListener} interface
+ * {@link ApplicationsFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Home#newInstance} factory method to
+ * Use the {@link ApplicationsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Home extends Fragment {
+public class ApplicationsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -34,17 +29,9 @@ public class Home extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    BottomNavigationView bottomNavigationView;
-
-    FragmentManager fragmentManager;
-
-    ForwarderFragment forwarder;
-    InterfaceFragment interfaces;
-    ApplicationsFragment applications;
-
     private OnFragmentInteractionListener mListener;
 
-    public Home() {
+    public ApplicationsFragment() {
         // Required empty public constructor
     }
 
@@ -54,11 +41,11 @@ public class Home extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Home.
+     * @return A new instance of fragment ApplicationsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static Home newInstance(String param1, String param2) {
-        Home fragment = new Home();
+    public static ApplicationsFragment newInstance(String param1, String param2) {
+        ApplicationsFragment fragment = new ApplicationsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -69,13 +56,6 @@ public class Home extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        fragmentManager = getFragmentManager();
-
-        forwarder = new ForwarderFragment();
-        interfaces = new InterfaceFragment();
-        applications = new ApplicationsFragment();
-
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -86,35 +66,7 @@ public class Home extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        bottomNavigationView = (BottomNavigationView)getView().findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        Fragment fragment;
-                        switch (item.getItemId()) {
-                            case R.id.action_forwarder:
-                                fragment = forwarder;
-                                break;
-                            case R.id.action_interfaces:
-                                fragment = interfaces;
-                                break;
-                            case R.id.action_applications:
-                                fragment = applications;
-                                break;
-                            default:
-                                return false;
-                        }
-
-                        fragmentManager.beginTransaction().replace(R.id.subviewLayout, fragment).commit();
-                        return false;
-                    }
-                });
+        return inflater.inflate(R.layout.fragment_applications, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

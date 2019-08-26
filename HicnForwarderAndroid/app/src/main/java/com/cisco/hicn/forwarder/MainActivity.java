@@ -31,6 +31,9 @@ import com.cisco.hicn.forwarder.R;
 public class MainActivity extends AppCompatActivity
         implements Home.OnFragmentInteractionListener,
                    PreferencesFragment.OnFragmentInteractionListener,
+                   ForwarderFragment.OnFragmentInteractionListener,
+                   InterfaceFragment.OnFragmentInteractionListener,
+                   ApplicationsFragment.OnFragmentInteractionListener,
                    NavigationView.OnNavigationItemSelectedListener {
 
     DrawerLayout mDrawer;
