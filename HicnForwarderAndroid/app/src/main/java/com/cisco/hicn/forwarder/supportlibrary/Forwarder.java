@@ -13,26 +13,29 @@
  * limitations under the License.
  */
 
-package icn.forwarder.com.utility;
+package com.cisco.hicn.forwarder.supportlibrary;
 
-public enum ResourcesEnumerator {
-    SOURCE_IP("source_ip_key"),
-    SOURCE_PORT("source_port_key"),
-    NEXT_HOP_IP("next_hop_ip_key"),
-    NEXT_HOP_PORT("next_hop_port_key"),
-    CONFIGURATION("configuration_key"),
-    SOURCE_NETWORK_INTERFACE("source_network_interface_key"),
-    PREFIX("prefix_key"),
-    NETMASK("netmask_key"),
-    CAPACITY("capacity_key");
+public class Forwarder {
 
-    private String key;
+    private static Forwarder sInstance = null;
 
-    ResourcesEnumerator(String key) {
-        this.key = key;
+    static {
+        System.loadLibrary("forwarderWrap");
     }
 
-    public String key() {
-        return key;
+    public static Forwarder getInstance() {
+        if (sInstance == null) {
+            sInstance = new Forwarder();
+        }
+        return sInstance;
     }
+
+    private Forwarder() {
+
+    }
+
+    public native boolean isRunning();
+    public native void start(String path, int capacity);
+    public native void stop();
+
 }

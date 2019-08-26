@@ -1,4 +1,4 @@
-package icn.forwarder.com;
+package com.cisco.hicn.forwarder;
 
 import android.content.Context;
 import android.net.Uri;
@@ -19,7 +19,7 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 
-import icn.forwarder.com.forwarderandroid.R;
+//import com.cisco.hicn.forwarder.R;
 
 public class PreferencesFragment extends PreferenceFragmentCompat {
 

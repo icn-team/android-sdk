@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package icn.forwarder.com.forwarderandroid;
+package com.cisco.hicn.forwarder;
 
 import android.view.MenuInflater;
 import android.view.Menu;
@@ -234,12 +234,12 @@ public class ForwarderAndroidActivity extends AppCompatActivity {
     }
 */
     private void startForwarder() {
-        Intent intent = new Intent(this, icn.forwarder.com.service.ForwarderAndroidService.class);
+        Intent intent = new Intent(this, com.cisco.hicn.forwarder.service.ForwarderAndroidService.class);
         startService(intent);
     }
 
     private void stopForwarder() {
-        Intent intent = new Intent(this, icn.forwarder.com.service.ForwarderAndroidService.class);
+        Intent intent = new Intent(this, com.cisco.hicn.forwarder.service.ForwarderAndroidService.class);
         stopService(intent);
     }
 
