@@ -15,7 +15,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="" />
+            android:text=""
+            android:scaleX="2.5"
+            android:scaleY="2.5"/>
 
     </RelativeLayout>
 
