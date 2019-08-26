@@ -1,5 +1,4 @@
-package icn.forwarder.com.forwarderandroid;
-
+package com.cisco.hicn.forwarder;
 
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -27,10 +26,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import icn.forwarder.com.Home;
-import icn.forwarder.com.PreferencesFragment;
-import icn.forwarder.com.forwarderandroid.R;
-
+import com.cisco.hicn.forwarder.R;
 
 public class MainActivity extends AppCompatActivity
         implements Home.OnFragmentInteractionListener,

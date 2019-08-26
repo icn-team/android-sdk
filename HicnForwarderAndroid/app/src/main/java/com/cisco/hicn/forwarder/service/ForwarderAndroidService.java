@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package icn.forwarder.com.service;
+package com.cisco.hicn.forwarder.service;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -35,10 +35,10 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
-import icn.forwarder.com.forwarderandroid.ForwarderAndroidActivity;
-import icn.forwarder.com.supportlibrary.Forwarder;
-import icn.forwarder.com.utility.Constants;
-import icn.forwarder.com.utility.ResourcesEnumerator;
+import com.cisco.hicn.forwarder.ForwarderAndroidActivity;
+import com.cisco.hicn.forwarder.supportlibrary.Forwarder;
+import com.cisco.hicn.forwarder.utility.Constants;
+import com.cisco.hicn.forwarder.utility.ResourcesEnumerator;
 
 public class ForwarderAndroidService extends Service {
     private final static String TAG = "ForwarderService";
