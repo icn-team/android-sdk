@@ -70,7 +70,7 @@ public class Home extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        fragmentManager = getFragmentManager();
+        fragmentManager = getChildFragmentManager();
 
         forwarder = new ForwarderFragment();
         interfaces = new InterfaceFragment();
