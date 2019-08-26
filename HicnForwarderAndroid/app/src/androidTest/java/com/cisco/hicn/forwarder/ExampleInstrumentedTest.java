@@ -1,4 +1,4 @@
-package icn.forwarder.com.forwarderandroid;
+package com.cisco.hicn.forwarder;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

@@ -1,4 +1,4 @@
-package icn.forwarder.com.forwarderandroid;
+package com.cisco.hicn.forwarder;
 
 import org.junit.Test;
 

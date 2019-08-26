@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="icn.forwarder.com.forwarderandroid">
+    package="com.cisco.hicn.forwarder">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name="icn.forwarder.com.service.ForwarderAndroidService" />
+        <service android:name="com.cisco.hicn.forwarder.service.ForwarderAndroidService" />
     </application>
 
 </manifest>

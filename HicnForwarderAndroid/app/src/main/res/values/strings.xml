@@ -38,8 +38,6 @@
     <string name="settings">Settings</string>
 
 
-
-
     <string name="cache_size">Cache Size</string>
     <string name="cache_size_key">cache_size</string>
 
@@ -68,6 +66,10 @@
     <string name="address_ipv6_key">address_ipv6</string>
     <string name="port_ipv6">Port IPv6</string>
     <string name="port_ipv6_key">port_ipv6</string>
+
+    <string name="forwarder">Forwarder</string>
+    <string name="interfaces">Interfaces</string>
+    <string name="applications">Applications</string>
 
 
 </resources>

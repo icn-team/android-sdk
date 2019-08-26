@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package icn.forwarder.com.utility;
+package com.cisco.hicn.forwarder.utility;
 
 public class Constants {
     public static final String DEFAULT_NEXT_HOP_IP = "10.228.40.61";
