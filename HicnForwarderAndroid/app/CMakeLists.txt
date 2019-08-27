@@ -21,7 +21,9 @@ find_package(LibEvent REQUIRED)
 find_package(Libparc REQUIRED)
 find_package(Libhicn REQUIRED)
 find_package(Hicnlight REQUIRED)
-find_package ( Threads REQUIRED )
+find_package(Config REQUIRED)
+find_package(Libhicnctrl REQUIRED)
+find_package(Threads REQUIRED)
 
 include_directories(${LIBHICNLIGHT_INCLUDE_DIRS})
 
