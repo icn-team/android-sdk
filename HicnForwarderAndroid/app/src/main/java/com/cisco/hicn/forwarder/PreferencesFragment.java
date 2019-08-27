@@ -24,7 +24,7 @@ import java.util.Enumeration;
 public class PreferencesFragment extends PreferenceFragmentCompat {
 
     private PreferenceCategory forwarderPreferenceCategory = null;
-    private EditTextPreference caceSizeEditTextPreference = null;
+    private EditTextPreference cacheSizeEditTextPreference = null;
     private PreferenceCategory faceManagementPreferenceCategory = null;
     private ListPreference faceTypeListPreference = null;
     private ListPreference overlayDiscoveryListPreference = null;
@@ -51,11 +51,11 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
         forwarderPreferenceCategory.setTitle(getString(R.string.forwarder_preference_category));
         preferenceScreen.addPreference(forwarderPreferenceCategory);
 
-        caceSizeEditTextPreference = new EditTextPreference(this.getContext());
-        caceSizeEditTextPreference.setOrder(1);
-        caceSizeEditTextPreference.setTitle(getString(R.string.cache_size));
-        caceSizeEditTextPreference.setKey(getString(R.string.cache_size_key));
-        caceSizeEditTextPreference.setOnBindEditTextListener(new EditTextPreference.OnBindEditTextListener() {
+        cacheSizeEditTextPreference = new EditTextPreference(this.getContext());
+        cacheSizeEditTextPreference.setOrder(1);
+        cacheSizeEditTextPreference.setTitle(getString(R.string.cache_size));
+        cacheSizeEditTextPreference.setKey(getString(R.string.cache_size_key));
+        cacheSizeEditTextPreference.setOnBindEditTextListener(new EditTextPreference.OnBindEditTextListener() {
             @Override
             public void onBindEditText(@NonNull EditText editText) {
 
@@ -63,8 +63,10 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
             }
         });
 
-        caceSizeEditTextPreference.setSummary(preferenceScreen.getSharedPreferences().getString(getString(R.string.cache_size_key), "100"));
-        caceSizeEditTextPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        cacheSizeEditTextPreference.setDefaultValue(preferenceScreen.getSharedPreferences().getString(getString(R.string.cache_size_key), "100"));
+
+        cacheSizeEditTextPreference.setSummary(preferenceScreen.getSharedPreferences().getString(getString(R.string.cache_size_key), "100"));
+        cacheSizeEditTextPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 Log.d("aaa", preference.getSummary().toString());
@@ -75,7 +77,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
-        forwarderPreferenceCategory.addPreference(caceSizeEditTextPreference);
+        forwarderPreferenceCategory.addPreference(cacheSizeEditTextPreference);
         setPreferenceScreen(preferenceScreen);
 
 
