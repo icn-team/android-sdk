@@ -239,7 +239,6 @@ public class BackendAndroidService extends Service {
 
         NativeAccess nativeAccess = NativeAccess.getInstance();
         if (!nativeAccess.isRunningForwarder()) {
-            this.capacity = capacity;
             sForwarderThread = new Thread(mForwarderRunner, "BackendAndroid");
             sForwarderThread.start();
         }

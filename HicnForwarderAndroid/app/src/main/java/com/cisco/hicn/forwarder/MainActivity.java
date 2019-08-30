@@ -45,12 +45,7 @@ public class MainActivity extends AppCompatActivity
 
     Home home;
     PreferencesFragment settings;
-    /*
-    Message msg;
-    Video video;
-    ContactUs contact;
-    Notification noti;
-    */
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -119,10 +114,10 @@ public class MainActivity extends AppCompatActivity
                 fragment = home;
                 setTitle(menuItem.getTitle());
                 break;
-            case R.id.action_info:
+            /*case R.id.action_info:
                 fragment = home;
                 setTitle(menuItem.getTitle());
-                break;
+                break;*/
             case R.id.action_home:
                 fragment = home;
                 setTitle(menuItem.getTitle());
