@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name="com.cisco.hicn.forwarder.service.ForwarderAndroidService" />
+        <service android:name="com.cisco.hicn.forwarder.service.BackendAndroidService" />
     </application>
 
 </manifest>
