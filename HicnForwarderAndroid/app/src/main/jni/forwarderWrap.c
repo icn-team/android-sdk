@@ -16,6 +16,7 @@
 #include <jni.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <event2/event.h>
 #include <android/log.h>
 #include <stdbool.h>
 #include <hicn/core/forwarder.h>
@@ -34,12 +35,20 @@
 
 #include <parc/assert/parc_Assert.h>
 
+#include <hicn/facemgr.h>
+#include <hicn/policy.h>
+
+//#include <util/log.h>
+
 static bool _isRunning = false;
+static bool _isRunningFacemgr = false;
 Forwarder *hicnFwd = NULL;
+facemgr_t *facemgr;
 
 
 JNIEXPORT jboolean JNICALL
-Java_icn_forwarder_com_supportlibrary_Forwarder_isRunning(JNIEnv *env, jobject instance) {
+Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_isRunningForwarder(JNIEnv *env,
+                                                                             jobject instance) {
     return _isRunning;
 }
 
@@ -94,8 +103,9 @@ static void _setLogLevel(int logLevelArray[LoggerFacility_END],
 }
 
 JNIEXPORT void JNICALL
-Java_icn_forwarder_com_supportlibrary_Forwarder_start(JNIEnv *env, jobject instance,
-                                                      jstring path_, jint capacity) {
+Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startForwarder(JNIEnv *env,
+                                                                         jobject instance,
+                                                                         jint capacity) {
     if (!_isRunning) {
         __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap", "starting HicnFwd...");
 
@@ -119,7 +129,7 @@ Java_icn_forwarder_com_supportlibrary_Forwarder_start(JNIEnv *env, jobject insta
             configuration_SetObjectStoreSize(configuration, capacity);
         }
         forwarder_SetupLocalListeners(hicnFwd, PORT_NUMBER);
-        if (path_) {
+        /*if (path_) {
             const char *configFileName = (*env)->GetStringUTFChars(env, path_, 0);
             FILE *file = fopen(configFileName, "rb");
             char row[255];
@@ -131,7 +141,7 @@ Java_icn_forwarder_com_supportlibrary_Forwarder_start(JNIEnv *env, jobject insta
 
             //forwarder_SetupAllListeners(hicnFwd, PORT_NUMBER, NULL);
             forwarder_SetupFromConfigFile(hicnFwd, configFileName);
-        }
+        }*/
         Dispatcher *dispatcher = forwarder_GetDispatcher(hicnFwd);
         _isRunning = true;
         dispatcher_Run(dispatcher);
@@ -140,7 +150,8 @@ Java_icn_forwarder_com_supportlibrary_Forwarder_start(JNIEnv *env, jobject insta
 }
 
 JNIEXPORT void JNICALL
-Java_icn_forwarder_com_supportlibrary_Forwarder_stop(JNIEnv *env, jobject instance) {
+Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_stopForwarder(JNIEnv *env,
+                                                                        jobject instance) {
     if (_isRunning) {
         __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap", "stopping HicnFwd...");
         dispatcher_Stop(forwarder_GetDispatcher(hicnFwd));
@@ -148,4 +159,81 @@ Java_icn_forwarder_com_supportlibrary_Forwarder_stop(JNIEnv *env, jobject instan
         forwarder_Destroy(&hicnFwd);
         _isRunning = false;
     }
+}
+
+JNIEXPORT jboolean JNICALL
+Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_isRunningFacemgr(JNIEnv *env,
+                                                                           jobject thiz) {
+    return _isRunningFacemgr;
+}
+
+JNIEXPORT void JNICALL
+Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_stopFacemgr(JNIEnv *env, jobject thiz) {
+    _isRunningFacemgr = false;
+}
+
+JNIEXPORT void JNICALL
+Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgr(JNIEnv *env, jobject thiz) {
+
+    _isRunningFacemgr = true;
+    while (_isRunningFacemgr) {
+        __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap", "loop!");
+        sleep(1);
+    }
+
+}
+
+JNIEXPORT void JNICALL
+Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgrWithConfig(JNIEnv *env,
+                                                                                 jobject thiz,
+                                                                                 jstring next_hop_ip_v4_wifi,
+                                                                                 jint next_hop_port_ip_v4_wifi,
+                                                                                 jstring next_hop_ip_v6_wifi,
+                                                                                 jint next_hop_port_ip_v6_wifi,
+                                                                                 jstring next_hop_ip_v4_radio,
+                                                                                 jint next_hop_port_ip_v4_radio,
+                                                                                 jstring next_hop_ip_v6_radio,
+                                                                                 jint next_hop_port_ip_v6_radio,
+                                                                                 jstring next_hop_ip_v4_wired,
+                                                                                 jint next_hop_port_ip_v4_wired,
+                                                                                 jstring next_hop_ip_v6_wired,
+                                                                                 jint next_hop_port_ip_v6_wired) {
+
+    const char *nextHopIpV4Wifi = (*env)->GetStringUTFChars(env, next_hop_ip_v4_wifi, 0);
+    const char *nextHopIpV6Wifi = (*env)->GetStringUTFChars(env, next_hop_ip_v6_wifi, 0);
+    const char *nextHopIpV4Radio = (*env)->GetStringUTFChars(env, next_hop_ip_v4_radio, 0);
+    const char *nextHopIpV6Radio = (*env)->GetStringUTFChars(env, next_hop_ip_v6_radio, 0);
+    const char *nextHopIpV4Wired = (*env)->GetStringUTFChars(env, next_hop_ip_v4_wired, 0);
+    const char *nextHopIpV6Wired = (*env)->GetStringUTFChars(env, next_hop_ip_v6_wired, 0);
+
+    __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap",
+                        "nextHopIpV4Wifi: %s, nextHopPortIpV4Wifi: %d",
+                        nextHopIpV4Wifi, next_hop_port_ip_v4_wifi);
+
+    __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap",
+                        "nextHopIpV6Wifi: %s, nextHopPortIpV6Wifi: %d",
+                        nextHopIpV6Wifi, next_hop_port_ip_v6_wifi);
+
+    __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap",
+                        "nextHopIpV4Radio: %s, nextHopPortIpV4Radio: %d",
+                        nextHopIpV4Radio, next_hop_port_ip_v4_radio);
+
+    __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap",
+                        "nextHopIpV6Radio: %s, nextHopPortIpV6Radio: %d",
+                        nextHopIpV6Radio, next_hop_port_ip_v6_radio);
+
+    __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap",
+                        "nextHopIpV4Wired: %s, nextHopPortIpV4Wired: %d",
+                        nextHopIpV4Wired, next_hop_port_ip_v4_wired);
+
+    __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap",
+                        "nextHopIpV6Wired: %s, nextHopPortIpV6Wired: %d",
+                        nextHopIpV6Wired, next_hop_port_ip_v6_wired);
+
+    _isRunningFacemgr = true;
+    while (_isRunningFacemgr) {
+        __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap", "loopConfig!");
+        sleep(1);
+    }
+    // TODO: implement startFacemgrWithConfig()
 }

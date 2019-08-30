@@ -7,14 +7,14 @@
     tools:context="com.cisco.hicn.forwarder.MainActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/forwarder_status_text_view"
         android:layout_width="428dp"
         android:layout_height="62dp"
         android:layout_marginTop="32dp"
         android:text="@string/hicn_is_disabled"
         android:textAlignment="center"
         android:textSize="36sp"
-        app:layout_constraintBottom_toTopOf="@+id/switch2"
+        app:layout_constraintBottom_toTopOf="@+id/forwarder_switch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.529"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +22,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <Switch
-        android:id="@+id/switch2"
+        android:id="@+id/forwarder_switch"
         android:layout_width="136dp"
         android:layout_height="141dp"
         android:layout_centerInParent="true"
@@ -32,7 +32,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/forwarder_status_text_view" />
 
 
 </android.support.constraint.ConstraintLayout>

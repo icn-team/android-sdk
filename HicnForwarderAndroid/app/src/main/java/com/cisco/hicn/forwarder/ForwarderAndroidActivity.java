@@ -15,9 +15,6 @@
 
 package com.cisco.hicn.forwarder;
 
-import android.view.MenuInflater;
-import android.view.Menu;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,10 +25,7 @@ import android.content.res.Configuration;
 //import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -39,6 +33,8 @@ import android.widget.Switch;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.cisco.hicn.forwarder.service.BackendAndroidService;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -234,12 +230,12 @@ public class ForwarderAndroidActivity extends AppCompatActivity {
     }
 */
     private void startForwarder() {
-        Intent intent = new Intent(this, com.cisco.hicn.forwarder.service.ForwarderAndroidService.class);
+        Intent intent = new Intent(this, BackendAndroidService.class);
         startService(intent);
     }
 
     private void stopForwarder() {
-        Intent intent = new Intent(this, com.cisco.hicn.forwarder.service.ForwarderAndroidService.class);
+        Intent intent = new Intent(this, BackendAndroidService.class);
         stopService(intent);
     }
 

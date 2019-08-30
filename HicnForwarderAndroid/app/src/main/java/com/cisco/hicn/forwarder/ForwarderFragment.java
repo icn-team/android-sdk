@@ -1,24 +1,23 @@
 package com.cisco.hicn.forwarder;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
+import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ForwarderFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ForwarderFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.cisco.hicn.forwarder.service.BackendAndroidService;
+import com.cisco.hicn.forwarder.supportlibrary.NativeAccess;
+import com.cisco.hicn.forwarder.utility.Constants;
+
 public class ForwarderFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,10 +28,14 @@ public class ForwarderFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+
+    private TextView forwarderStatusTextView = null;
+    private Switch forwarderSwitch = null;
+
+
     private OnFragmentInteractionListener mListener;
 
     public ForwarderFragment() {
-        // Required empty public constructor
     }
 
     /**
@@ -56,6 +59,8 @@ public class ForwarderFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -65,8 +70,44 @@ public class ForwarderFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_forwarder, container, false);
+        View root = inflater.inflate(R.layout.fragment_forwarder, container, false);
+        initView(root);
+        return root;
+    }
+
+    private void initView(View root) {
+        if (forwarderStatusTextView == null)
+            forwarderStatusTextView = root.findViewById(R.id.forwarder_status_text_view);
+        NativeAccess nativeAccess = NativeAccess.getInstance();
+
+        if (forwarderSwitch == null) {
+            forwarderSwitch = root.findViewById(R.id.forwarder_switch);
+        }
+
+        forwarderSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.v("Switch State=", "" + isChecked);
+                if (isChecked) {
+                    forwarderStatusTextView.setText(Constants.ENABLED);
+                    startBackend();
+
+                } else {
+                    forwarderStatusTextView.setText(Constants.DISABLED);
+                    stopBackend();
+                }
+            }
+
+        });
+
+        if (NativeAccess.getInstance().isRunningForwarder()) {
+            forwarderStatusTextView.setText(Constants.ENABLED);
+            forwarderSwitch.setChecked(true);
+        } else {
+            forwarderStatusTextView.setText(Constants.DISABLED);
+        }
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -106,5 +147,17 @@ public class ForwarderFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+
+
+    private void startBackend() {
+        Intent intent = new Intent(getActivity(), BackendAndroidService.class);
+        getActivity().startService(intent);
+    }
+
+    private void stopBackend() {
+        Intent intent = new Intent(getActivity(), BackendAndroidService.class);
+        getActivity().stopService(intent);
     }
 }
