@@ -234,6 +234,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
         overlayManualConfigurationPreferenceCategory.setTitle(getString(R.string.overlay_manual_configuration_preference_category));
         faceManagementPreferenceCategory.addPreference(overlayManualConfigurationPreferenceCategory);
 
+        /*
         try {
             for (Enumeration<NetworkInterface> list = NetworkInterface.getNetworkInterfaces(); list.hasMoreElements(); ) {
 
@@ -329,7 +330,107 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
             }
         } catch (SocketException e) {
             e.printStackTrace();
-        }
+        }*/
+
+        addPreferenceByNetworkInterface("WiFi", preferenceScreen);
+
+        addPreferenceByNetworkInterface("Radio", preferenceScreen);
+
+        addPreferenceByNetworkInterface("Wired", preferenceScreen);
+    }
+
+
+
+    void addPreferenceByNetworkInterface(String interfaceName, PreferenceScreen preferenceScreen) {
+        EditTextPreference addressIpv4EditTextPreference = new EditTextPreference(getContext());
+        addressIpv4EditTextPreference.setTitle(getString(R.string.nexthop_address_ipv4) + " " + interfaceName);
+        addressIpv4EditTextPreference.setKey(getString(R.string.nexthop_address_ipv4_key) + interfaceName);
+        addressIpv4EditTextPreference.setOnBindEditTextListener(new EditTextPreference.OnBindEditTextListener() {
+            @Override
+            public void onBindEditText(@NonNull EditText editText) {
+
+                //editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+            }
+        });
+        addressIpv4EditTextPreference.setDefaultValue(preferenceScreen.getSharedPreferences().getString(getString(R.string.nexthop_address_ipv4_key) + interfaceName, getString(R.string.default_ipv4)));
+        addressIpv4EditTextPreference.setSummary(preferenceScreen.getSharedPreferences().getString(getString(R.string.nexthop_address_ipv4_key) + interfaceName, getString(R.string.default_ipv4)));
+        addressIpv4EditTextPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+                //TODO check if ip is correct
+                preference.setSummary((String) newValue);
+                return true;
+            }
+        });
+        overlayManualConfigurationPreferenceCategory.addPreference(addressIpv4EditTextPreference);
+
+        EditTextPreference portIpv4EditTextPreference = new EditTextPreference(getContext());
+
+        portIpv4EditTextPreference.setTitle(getString(R.string.nexthop_port_ipv4) + " " + interfaceName);
+        portIpv4EditTextPreference.setKey(getString(R.string.nexthop_port_ipv4_key) + interfaceName);
+        portIpv4EditTextPreference.setOnBindEditTextListener(new EditTextPreference.OnBindEditTextListener() {
+            @Override
+            public void onBindEditText(@NonNull EditText editText) {
+
+                editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+            }
+        });
+        portIpv4EditTextPreference.setDefaultValue(preferenceScreen.getSharedPreferences().getString(getString(R.string.nexthop_port_ipv4_key) + interfaceName, getString(R.string.default_port)));
+        portIpv4EditTextPreference.setSummary(preferenceScreen.getSharedPreferences().getString(getString(R.string.nexthop_port_ipv4_key) + interfaceName, getString(R.string.default_port)));
+        portIpv4EditTextPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                preference.setSummary((String) newValue);
+                return true;
+            }
+        });
+        overlayManualConfigurationPreferenceCategory.addPreference(portIpv4EditTextPreference);
+
+        EditTextPreference addressIpv6EditTextPreference = new EditTextPreference(getContext());
+        //caceSizeEditTextPreference.setOrder();
+        addressIpv6EditTextPreference.setTitle(getString(R.string.nexthop_address_ipv6) + " " + interfaceName);
+        addressIpv6EditTextPreference.setKey(getString(R.string.nexthop_address_ipv6_key) + interfaceName);
+        addressIpv6EditTextPreference.setOnBindEditTextListener(new EditTextPreference.OnBindEditTextListener() {
+            @Override
+            public void onBindEditText(@NonNull EditText editText) {
+
+                //editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+            }
+        });
+        addressIpv6EditTextPreference.setDefaultValue(preferenceScreen.getSharedPreferences().getString(getString(R.string.nexthop_address_ipv6_key) + interfaceName, getString(R.string.default_ipv6)));
+        addressIpv6EditTextPreference.setSummary(preferenceScreen.getSharedPreferences().getString(getString(R.string.nexthop_address_ipv6_key) + interfaceName, getString(R.string.default_ipv6)));
+        addressIpv6EditTextPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                preference.setSummary((String) newValue);
+                return true;
+            }
+        });
+        overlayManualConfigurationPreferenceCategory.addPreference(addressIpv6EditTextPreference);
+
+        EditTextPreference portIpv6EditTextPreference = new EditTextPreference(getContext());
+
+        portIpv6EditTextPreference.setTitle(getString(R.string.nexthop_port_ipv6) + " " + interfaceName);
+        portIpv6EditTextPreference.setKey(getString(R.string.nexthop_port_ipv6_key) + interfaceName);
+        portIpv6EditTextPreference.setOnBindEditTextListener(new EditTextPreference.OnBindEditTextListener() {
+            @Override
+            public void onBindEditText(@NonNull EditText editText) {
+
+                editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+            }
+        });
+        portIpv6EditTextPreference.setDefaultValue(preferenceScreen.getSharedPreferences().getString(getString(R.string.nexthop_port_ipv6_key) + interfaceName, getString(R.string.default_port)));
+        portIpv6EditTextPreference.setSummary(preferenceScreen.getSharedPreferences().getString(getString(R.string.nexthop_port_ipv6_key) + interfaceName, getString(R.string.default_port)));
+        portIpv6EditTextPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                Log.d("aaa", preference.getSummary().toString());
+                preference.setSummary((String) newValue);
+                return true;
+            }
+        });
+        overlayManualConfigurationPreferenceCategory.addPreference(portIpv6EditTextPreference);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

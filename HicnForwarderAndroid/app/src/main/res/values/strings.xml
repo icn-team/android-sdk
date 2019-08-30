@@ -56,21 +56,28 @@
     <string name="manual">Manual</string>
     <string name="bonjour">Bonjour</string>
     <string name="overlay_discovery_key">overlay_discovery</string>
-    <string name="default_overlay_discovery">Bonjour</string>
+    <string name="default_overlay_discovery">Manual</string>
     <string name="overlay_manual_configuration_preference_category">Overlay Manual Configuration</string>
-    <string name="address_ipv4">Address IPv4</string>
-    <string name="port_ipv4">Port IPv4</string>
-    <string name="address_ipv4_key">address_ipv4</string>
-    <string name="port_ipv4_key">port_ipv4</string>
-    <string name="address_ipv6">Address IPv6</string>
-    <string name="address_ipv6_key">address_ipv6</string>
-    <string name="port_ipv6">Port IPv6</string>
-    <string name="port_ipv6_key">port_ipv6</string>
+    <string name="nexthop_address_ipv4">Next Hop Address IPv4</string>
+    <string name="nexthop_port_ipv4">Next Hop Port IPv4</string>
+    <string name="nexthop_address_ipv4_key">nexthop_address_ipv4</string>
+    <string name="nexthop_port_ipv4_key">nexthop_port_ipv4</string>
+    <string name="nexthop_address_ipv6">Next Hop Address IPv6</string>
+    <string name="nexthop_address_ipv6_key">nexthop_address_ipv6</string>
+    <string name="nexthop_port_ipv6">Next HopPort IPv6</string>
+    <string name="nexthop_port_ipv6_key">port_ipv6</string>
 
     <string name="forwarder">Forwarder</string>
     <string name="interfaces">Interfaces</string>
     <string name="applications">Applications</string>
     <string name="hicn_is_disabled">hICN is Disabled</string>
+    <string name="wifi">WiFi</string>
+    <string name="radio">Radio</string>
+    <string name="wired">Wired</string>
+    <string name="default_ipv4">10.20.30.40</string>
+    <string name="default_ipv6">ffff::1</string>
+    <string name="default_port">9596</string>
+
 
 
 </resources>

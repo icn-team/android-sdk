@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity
         contact = new ContactUs();
 */
 
-        fragmentManager.beginTransaction().replace(R.id.viewLayout, settings).commit();
+        fragmentManager.beginTransaction().replace(R.id.viewLayout, home).commit();
 
     }
 

@@ -25,6 +25,8 @@ find_package(Config REQUIRED)
 find_package(Libhicnctrl REQUIRED)
 find_package(Threads REQUIRED)
 
+
+
 include_directories(${LIBHICNLIGHT_INCLUDE_DIRS})
 
 add_library( # Sets the name of the library.
@@ -58,4 +60,4 @@ target_link_libraries( # Specifies the target library.
 
                        # Links the target library to the log library
                        # included in the NDK.
-                       ${log-lib} ${LIBHICNLIGHT_LIBRARIES} ${HICN_LIBRARIES} ${LIBPARC_LIBRARIES} ${LIBEVENT_LIBRARIES} ${OPENSSL_LIBRARIES})
+                       ${log-lib} ${LIBHICNLIGHT_LIBRARIES} ${LIBHICNCTRL_LIBRARIES} ${HICN_LIBRARIES} ${LIBPARC_LIBRARIES} ${LIBEVENT_LIBRARIES} ${CONFIG_LIBRARY}  ${OPENSSL_LIBRARIES})
