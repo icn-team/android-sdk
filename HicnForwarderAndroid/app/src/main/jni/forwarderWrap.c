@@ -37,6 +37,8 @@
 
 #include <hicn/facemgr.h>
 #include <hicn/policy.h>
+#include <hicn/util/ip_address.h>
+//#include <hicn/util/log.h>
 
 //#include <util/log.h>
 
@@ -169,17 +171,30 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_isRunningFacemgr(JNIEn
 
 JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_stopFacemgr(JNIEnv *env, jobject thiz) {
-    _isRunningFacemgr = false;
+    if (_isRunningFacemgr) {
+        facemgr_stop(facemgr);
+        facemgr_free(facemgr);
+        _isRunningFacemgr = false;
+    }
 }
 
 JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgr(JNIEnv *env, jobject thiz) {
 
-    _isRunningFacemgr = true;
-    while (_isRunningFacemgr) {
+
+    if (!_isRunningFacemgr) {
+        facemgr = facemgr_create();
+        _isRunningFacemgr = true;
+        facemgr_bootstrap(facemgr);
+    }
+    //facemgr =
+
+
+
+    /*while (_isRunningFacemgr) {
         __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap", "loop!");
         sleep(1);
-    }
+    }*/
 
 }
 

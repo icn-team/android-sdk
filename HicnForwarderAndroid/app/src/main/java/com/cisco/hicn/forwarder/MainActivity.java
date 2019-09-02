@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity
                 fragment = settings;
                 setTitle(menuItem.getTitle());
                 break;
-            case R.id.action_msg:
+            /*case R.id.action_msg:
                 fragment = home;
                 setTitle(menuItem.getTitle());
                 break;
@@ -114,16 +114,16 @@ public class MainActivity extends AppCompatActivity
                 fragment = home;
                 setTitle(menuItem.getTitle());
                 break;
-            /*case R.id.action_info:
+            case R.id.action_info:
                 fragment = home;
                 setTitle(menuItem.getTitle());
                 break;*/
-            case R.id.action_home:
-                fragment = home;
-                setTitle(menuItem.getTitle());
-                break;
+            //case R.id.action_home:
+            //    fragment = home;
+            //    setTitle(menuItem.getTitle());
+            //    break;
             default:
-                fragment = settings;
+                fragment = home;
                 setTitle(menuItem.getTitle());
                 break;
 

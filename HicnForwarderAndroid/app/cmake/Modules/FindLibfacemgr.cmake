@@ -13,7 +13,7 @@
 
 ########################################
 #
-# Find the hICN control library and include files
+# Find the hICN face manager library and include files
 #
 
 set(HICN_SEARCH_PATH_LIST
@@ -25,23 +25,21 @@ set(HICN_SEARCH_PATH_LIST
   /usr
 )
 
-find_path(LIBHICNCTRL_INCLUDE_DIR hicn/ctrl/api.h
-  HINTS ${HICN_SEARCH_PATH_LIST}
-  PATH_SUFFIXES include
-  DOC "Find the hICN control include"
-)
+#find_path(LIBFACEMGR_INCLUDE_DIR hicn/ctrl/api.h
+#  HINTS ${HICN_SEARCH_PATH_LIST}
+#  PATH_SUFFIXES include
+#  DOC "Find the hICN control include"
+#)
 
-find_library(LIBHICNCTRL_LIBRARY NAMES hicnctrl
+find_library(LIBFACEMGR_LIBRARY NAMES facemgr
   HINTS ${HICN_SEARCH_PATH_LIST}
   PATH_SUFFIXES lib
-  DOC "Find the hicn control library"
+  DOC "Find the face manager library"
 )
 
-set(LIBHICNCTRL_LIBRARIES ${LIBHICNCTRL_LIBRARY})
-
-message("xxxx ${HICNCTRL_LIBRARY}")
-set(LIBHICNCTRL_INCLUDE_DIRS ${LIBHICNCTRL_LIBRARY})
+set(LIBFACEMGR_LIBRARIES ${LIBFACEMGR_LIBRARY})
+#set(LIBHICNCTRL_INCLUDE_DIRS ${HICNCTRL_INCLUDE_DIR})
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(hicnctrl DEFAULT_MSG
-        LIBHICNCTRL_LIBRARY LIBHICNCTRL_INCLUDE_DIR)
+        LIBFACEMGR_LIBRARY) # LIBHICNCTRL_INCLUDE_DIR)
