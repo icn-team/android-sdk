@@ -23,6 +23,7 @@ find_package(Libhicn REQUIRED)
 find_package(Hicnlight REQUIRED)
 find_package(Config REQUIRED)
 find_package(Libhicnctrl REQUIRED)
+find_package(Libfacemgr REQUIRED)
 find_package(Threads REQUIRED)
 
 
@@ -55,9 +56,11 @@ find_library( # Sets the name of the path variable.
 # can link multiple libraries, such as libraries you define in this
 # build script, prebuilt third-party libraries, or system libraries.
 
+message("aaaab ${LIBFACEMGR_LIBRARIES}  ${LIBHICNCTRL_LIBRARIES}")
+
 target_link_libraries( # Specifies the target library.
                        forwarderWrap
 
                        # Links the target library to the log library
                        # included in the NDK.
-                       ${log-lib} ${LIBHICNLIGHT_LIBRARIES} ${LIBHICNCTRL_LIBRARIES} ${HICN_LIBRARIES} ${LIBPARC_LIBRARIES} ${LIBEVENT_LIBRARIES} ${CONFIG_LIBRARY}  ${OPENSSL_LIBRARIES})
+                       ${log-lib} ${LIBHICNLIGHT_LIBRARIES} ${LIBFACEMGR_LIBRARIES}  ${LIBHICNCTRL_LIBRARIES} ${HICN_LIBRARIES} ${LIBPARC_LIBRARIES} ${LIBEVENT_LIBRARIES} ${CONFIG_LIBRARY}  ${OPENSSL_LIBRARIES})

@@ -37,8 +37,10 @@ find_library(LIBHICNCTRL_LIBRARY NAMES hicnctrl
   DOC "Find the hicn control library"
 )
 
-set(LIBHICNCTRL_LIBRARIES ${HICNCTRL_LIBRARY})
-set(LIBHICNCTRL_INCLUDE_DIRS ${HICNCTRL_INCLUDE_DIR})
+set(LIBHICNCTRL_LIBRARIES ${LIBHICNCTRL_LIBRARY})
+
+message("xxxx ${HICNCTRL_LIBRARY}")
+set(LIBHICNCTRL_INCLUDE_DIRS ${LIBHICNCTRL_LIBRARY})
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(hicnctrl DEFAULT_MSG
