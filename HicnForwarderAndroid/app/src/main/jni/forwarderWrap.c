@@ -108,6 +108,23 @@ JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startForwarder(JNIEnv *env,
                                                                          jobject instance,
                                                                          jint capacity) {
+
+
+    //TODO remove
+    jclass clazz = (*env)->FindClass(env, "com/cisco/hicn/forwarder/supportlibrary/AndroidUtility");
+    //JavaVM *jvm = NULL;
+    //(*env)->GetJavaVM(env, &jvm);
+    jmethodID getNetworkType = (*env)->GetStaticMethodID(env, clazz, "getNetworkType", "(Ljava/lang/String;)I");
+    jint aaa = (*env)->CallStaticIntMethod(env, clazz, getNetworkType,
+                                           (*env)->NewStringUTF(env, "wlan0"));
+
+     aaa = (*env)->CallStaticIntMethod(env, clazz, getNetworkType,
+                                           (*env)->NewStringUTF(env, "radio0"));
+
+     ///end remove
+
+
+
     if (!_isRunning) {
         __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap", "starting HicnFwd...");
 

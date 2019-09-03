@@ -1,6 +1,11 @@
 package com.cisco.hicn.forwarder;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.LinkProperties;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 //import android.support.annotation.NonNull;
@@ -28,6 +33,8 @@ import androidx.fragment.app.FragmentManager;
 
 import com.cisco.hicn.forwarder.R;
 
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity
         implements Home.OnFragmentInteractionListener,
                    PreferencesFragment.OnFragmentInteractionListener,
@@ -36,20 +43,28 @@ public class MainActivity extends AppCompatActivity
                    ApplicationsFragment.OnFragmentInteractionListener,
                    NavigationView.OnNavigationItemSelectedListener {
 
-    DrawerLayout mDrawer;
-    ActionBarDrawerToggle mToggle;
-    NavigationView nav_View;
-    FragmentManager fragmentManager;
-    FrameLayout viewLayout;
+    private DrawerLayout mDrawer;
+    private ActionBarDrawerToggle mToggle;
+    private NavigationView nav_View;
+    private FragmentManager fragmentManager;
+    private FrameLayout viewLayout;
 
 
-    Home home;
-    PreferencesFragment settings;
+    private Home home;
+    private PreferencesFragment settings;
+
+    public static Context context;
+    public static HashMap<String, Integer> interfacesHashMap = new HashMap<>();
+
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        MainActivity.context = getApplicationContext();
+
+        fillInterfaceTypes();
 
 
         setContentView(R.layout.activity_main);
@@ -139,4 +154,28 @@ public class MainActivity extends AppCompatActivity
         //you can leave it empty
     }
 
+
+    public void fillInterfaceTypes() {
+        interfacesHashMap.clear();
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        for (Network network : connectivityManager.getAllNetworks()) {
+            LinkProperties prop = connectivityManager.getLinkProperties(network);
+            NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(network);
+            if (capabilities == null) {
+                return; //error
+            }
+            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                interfacesHashMap.put(prop.getInterfaceName(), 1);
+                continue;
+            }
+            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                interfacesHashMap.put(prop.getInterfaceName(), 2);
+                continue;
+            }
+            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                interfacesHashMap.put(prop.getInterfaceName(), 3);
+                continue;
+            }
+        }
+    }
 }
