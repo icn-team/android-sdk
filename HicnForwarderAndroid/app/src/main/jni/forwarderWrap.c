@@ -42,6 +42,9 @@
 
 //#include <util/log.h>
 
+/* Flag use to detect whether this utility is available */
+#define FACEMGR_ANDROID_UTILITY
+
 static bool _isRunning = false;
 static bool _isRunningFacemgr = false;
 Forwarder *hicnFwd = NULL;
