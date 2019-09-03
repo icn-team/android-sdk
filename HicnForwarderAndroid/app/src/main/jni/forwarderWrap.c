@@ -121,7 +121,28 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startForwarder(JNIEnv 
      aaa = (*env)->CallStaticIntMethod(env, clazz, getNetworkType,
                                            (*env)->NewStringUTF(env, "radio0"));
 
-     ///end remove
+
+     JavaVM *jvm = NULL;
+    //(*env)->GetJavaVM(env, &jvm);
+
+
+    //pass jvm to your library as a parameter
+
+    //jclass class = (jclass)((*env)->NewGlobalRef(env, clazz)));
+    //pass class to your library as parameter
+
+
+    //if you want to call the method in your library:
+    //JNIEnv *env;
+    //(*jvm)->AttachCurrentThread(jvm, &env, NULL);
+    //get the method reference
+    //jmethodID getNetworkType = (*env)->GetStaticMethodID(env, clazz, "getNetworkType", "(Ljava/lang/String;)I");
+    //call the static method
+    //jint aaa = (*env)->CallStaticIntMethod(env, clazz, getNetworkType,
+    //                                           (*env)->NewStringUTF(env, "wlan0"));
+
+
+    ///end remove
 
 
 
