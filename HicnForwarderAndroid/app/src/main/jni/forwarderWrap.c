@@ -346,7 +346,54 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgrWithConfig
                         "nextHopIpV6Wired: %s, nextHopPortIpV6Wired: %d",
                         nextHopIpV6Wired, next_hop_port_ip_v6_wired);
 
+
+    facemgr_t * facemgr = facemgr_create();
+    loop = event_base_new();
+    facemgr_set_event_loop_handler(facemgr, loop, loop_register_fd, loop_unregister_event);
+    facemgr_overlay_t * overlay = malloc(sizeof(facemgr_overlay_t));
+    *overlay =  FACEMGR_OVERLAY_EMPTY;
+
+    //WIFI
+    overlay->v4.local_port = 9695;
+    ip_address_pton(nextHopIpV4Wifi, &overlay->v4.remote_addr);
+    overlay->v4.remote_port = next_hop_port_ip_v4_wifi;
+    overlay->v6.local_port = 9695;
+    ip_address_pton(nextHopIpV6Wifi, &overlay->v6.remote_addr);
+    overlay->v6.remote_port = next_hop_port_ip_v6_wifi;
+    facemgr_add_rule(facemgr, "wlan0", overlay);
+
+    //LTE
+    overlay = malloc(sizeof(facemgr_overlay_t));
+    *overlay =  FACEMGR_OVERLAY_EMPTY;
+
+    overlay->v4.local_port = 9695;
+    ip_address_pton(nextHopIpV4Radio, &overlay->v4.remote_addr);
+    overlay->v4.remote_port = next_hop_port_ip_v4_radio;
+    overlay->v6.local_port = 9695;
+    ip_address_pton(nextHopIpV6Radio, &overlay->v6.remote_addr);
+    overlay->v6.remote_port = next_hop_port_ip_v6_radio;
+    facemgr_add_rule(facemgr, "radio0", overlay);
+
+
+    //WIRED
+    overlay = malloc(sizeof(facemgr_overlay_t));
+    *overlay =  FACEMGR_OVERLAY_EMPTY;
+
+    overlay->v4.local_port = 9695;
+    ip_address_pton(nextHopIpV4Wired, &overlay->v4.remote_addr);
+    overlay->v4.remote_port = next_hop_port_ip_v4_wired;
+    overlay->v6.local_port = 9695;
+    ip_address_pton(nextHopIpV6Wired, &overlay->v6.remote_addr);
+    overlay->v6.remote_port = next_hop_port_ip_v6_wired;
+    facemgr_add_rule(facemgr, "eth0", overlay);
+
+
+
+    facemgr_bootstrap(facemgr);
     _isRunningFacemgr = true;
+    event_base_dispatch(loop);
+    facemgr_stop(facemgr);
+    facemgr_free(facemgr);
     while (_isRunningFacemgr) {
         __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap", "loopConfig!");
         sleep(1);
