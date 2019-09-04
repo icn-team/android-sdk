@@ -38,14 +38,69 @@
 #include <hicn/facemgr.h>
 #include <hicn/policy.h>
 #include <hicn/util/ip_address.h>
+
+#include <event2/event.h>
 //#include <hicn/util/log.h>
 
 //#include <util/log.h>
 
 static bool _isRunning = false;
 static bool _isRunningFacemgr = false;
+//forwarder
 Forwarder *hicnFwd = NULL;
-facemgr_t *facemgr;
+//facemgr
+static struct event_base * loop;
+
+//facemgr_t *facemgr;
+
+typedef struct {
+    void (*cb)(void *, ...);
+    void * args;
+} cb_wrapper_args_t;
+
+void cb_wrapper(evutil_socket_t fd, short what, void * arg) {
+    cb_wrapper_args_t * cb_wrapper_args = arg;
+    cb_wrapper_args->cb(cb_wrapper_args->args);
+}
+
+int
+loop_unregister_event(struct event_base * loop, struct event * event)
+{
+    if (!event)
+        return 0;
+
+    event_del(event);
+    event_free(event);
+
+    return 0;
+}
+
+
+struct event *
+loop_register_fd(struct event_base * loop, int fd, void * cb, void * cb_args)
+{
+    // TODO: not freed
+    cb_wrapper_args_t * cb_wrapper_args = malloc(sizeof(cb_wrapper_args_t));
+    *cb_wrapper_args = (cb_wrapper_args_t) {
+            .cb = cb,
+            .args = cb_args,
+    };
+
+    evutil_make_socket_nonblocking(fd);
+    struct event * event = event_new(loop, fd, EV_READ | EV_PERSIST, cb_wrapper, cb_wrapper_args);
+    if (!event)
+        goto ERR_EVENT_NEW;
+
+    if (event_add(event, NULL) < 0)
+        goto ERR_EVENT_ADD;
+
+    return event;
+
+    ERR_EVENT_ADD:
+    event_free(event);
+    ERR_EVENT_NEW:
+    return NULL;
+}
 
 
 JNIEXPORT jboolean JNICALL
@@ -210,8 +265,10 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_isRunningFacemgr(JNIEn
 JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_stopFacemgr(JNIEnv *env, jobject thiz) {
     if (_isRunningFacemgr) {
-        facemgr_stop(facemgr);
-        facemgr_free(facemgr);
+        event_base_loopbreak(loop);
+        loop = NULL;
+        //facemgr_stop(facemgr);
+        //facemgr_free(facemgr);
         _isRunningFacemgr = false;
     }
 }
@@ -221,9 +278,15 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgr(JNIEnv *e
 
 
     if (!_isRunningFacemgr) {
-        facemgr = facemgr_create();
-        _isRunningFacemgr = true;
+        facemgr_t * facemgr = facemgr_create();
+        loop = event_base_new();
+        facemgr_set_event_loop_handler(facemgr, loop, loop_register_fd, loop_unregister_event);
         facemgr_bootstrap(facemgr);
+        _isRunningFacemgr = true;
+        event_base_dispatch(loop);
+        facemgr_stop(facemgr);
+        facemgr_free(facemgr);
+
     }
     //facemgr =
 
