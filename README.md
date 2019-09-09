@@ -51,7 +51,10 @@ make android_hicnforwarder
 To install the application run
 
 ```
-adb install -r ./app/build/outputs/apk/release/HicnForwarderAndroid.apk
+# Optionally, uninstall previous version (to avoid signature mismatch issues)
+adb uninstall com.cisco.hicn.forwarder
+
+adb install -r ./HicnForwarderAndroid/app/build/outputs/apk/release/HicnForwarderAndroid.apk
 ```
 
 To compile Hybrid ICN SpeedTest & Test android app
