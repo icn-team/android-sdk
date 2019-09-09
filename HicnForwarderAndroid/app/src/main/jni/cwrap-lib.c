@@ -49,23 +49,23 @@ static bool _isRunningFacemgr = false;
 //forwarder
 Forwarder *hicnFwd = NULL;
 //facemgr
-static struct event_base * loop;
+static struct event_base *loop;
 
 //facemgr_t *facemgr;
 
 typedef struct {
     void (*cb)(void *, ...);
-    void * args;
+
+    void *args;
 } cb_wrapper_args_t;
 
-void cb_wrapper(evutil_socket_t fd, short what, void * arg) {
-    cb_wrapper_args_t * cb_wrapper_args = arg;
+void cb_wrapper(evutil_socket_t fd, short what, void *arg) {
+    cb_wrapper_args_t *cb_wrapper_args = arg;
     cb_wrapper_args->cb(cb_wrapper_args->args);
 }
 
 int
-loop_unregister_event(struct event_base * loop, struct event * event)
-{
+loop_unregister_event(struct event_base *loop, struct event *event) {
     if (!event)
         return 0;
 
@@ -77,17 +77,16 @@ loop_unregister_event(struct event_base * loop, struct event * event)
 
 
 struct event *
-loop_register_fd(struct event_base * loop, int fd, void * cb, void * cb_args)
-{
+loop_register_fd(struct event_base *loop, int fd, void *cb, void *cb_args) {
     // TODO: not freed
-    cb_wrapper_args_t * cb_wrapper_args = malloc(sizeof(cb_wrapper_args_t));
+    cb_wrapper_args_t *cb_wrapper_args = malloc(sizeof(cb_wrapper_args_t));
     *cb_wrapper_args = (cb_wrapper_args_t) {
             .cb = cb,
             .args = cb_args,
     };
 
     evutil_make_socket_nonblocking(fd);
-    struct event * event = event_new(loop, fd, EV_READ | EV_PERSIST, cb_wrapper, cb_wrapper_args);
+    struct event *event = event_new(loop, fd, EV_READ | EV_PERSIST, cb_wrapper, cb_wrapper_args);
     if (!event)
         goto ERR_EVENT_NEW;
 
@@ -166,18 +165,18 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startForwarder(JNIEnv 
 
 
     //TODO remove
-    jclass clazz = (*env)->FindClass(env, "com/cisco/hicn/forwarder/supportlibrary/AndroidUtility");
+    ////   jclass clazz = (*env)->FindClass(env, "com/cisco/hicn/forwarder/supportlibrary/AndroidUtility");
     //JavaVM *jvm = NULL;
     //(*env)->GetJavaVM(env, &jvm);
-    jmethodID getNetworkType = (*env)->GetStaticMethodID(env, clazz, "getNetworkType", "(Ljava/lang/String;)I");
-    jint aaa = (*env)->CallStaticIntMethod(env, clazz, getNetworkType,
-                                           (*env)->NewStringUTF(env, "wlan0"));
+    ////   jmethodID getNetworkType = (*env)->GetStaticMethodID(env, clazz, "getNetworkType", "(Ljava/lang/String;)I");
+    ////   jint aaa = (*env)->CallStaticIntMethod(env, clazz, getNetworkType,
+    ////                                          (*env)->NewStringUTF(env, "wlan0"));
 
-     aaa = (*env)->CallStaticIntMethod(env, clazz, getNetworkType,
-                                           (*env)->NewStringUTF(env, "radio0"));
+    ////    aaa = (*env)->CallStaticIntMethod(env, clazz, getNetworkType,
+    ////                                          (*env)->NewStringUTF(env, "radio0"));
 
 
-     JavaVM *jvm = NULL;
+    ////    JavaVM *jvm = NULL;
     //(*env)->GetJavaVM(env, &jvm);
 
 
@@ -266,9 +265,8 @@ JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_stopFacemgr(JNIEnv *env, jobject thiz) {
     if (_isRunningFacemgr) {
         event_base_loopbreak(loop);
+        sleep(2);
         loop = NULL;
-        //facemgr_stop(facemgr);
-        //facemgr_free(facemgr);
         _isRunningFacemgr = false;
     }
 }
@@ -278,7 +276,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgr(JNIEnv *e
 
 
     if (!_isRunningFacemgr) {
-        facemgr_t * facemgr = facemgr_create();
+        facemgr_t *facemgr = facemgr_create();
         loop = event_base_new();
         facemgr_set_event_loop_handler(facemgr, loop, loop_register_fd, loop_unregister_event);
         facemgr_bootstrap(facemgr);
@@ -322,81 +320,79 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgrWithConfig
     const char *nextHopIpV4Wired = (*env)->GetStringUTFChars(env, next_hop_ip_v4_wired, 0);
     const char *nextHopIpV6Wired = (*env)->GetStringUTFChars(env, next_hop_ip_v6_wired, 0);
 
-    __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap",
-                        "nextHopIpV4Wifi: %s, nextHopPortIpV4Wifi: %d",
-                        nextHopIpV4Wifi, next_hop_port_ip_v4_wifi);
+    if (!_isRunningFacemgr) {
+        __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap",
+                            "nextHopIpV4Wifi: %s, nextHopPortIpV4Wifi: %d",
+                            nextHopIpV4Wifi, next_hop_port_ip_v4_wifi);
 
-    __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap",
-                        "nextHopIpV6Wifi: %s, nextHopPortIpV6Wifi: %d",
-                        nextHopIpV6Wifi, next_hop_port_ip_v6_wifi);
+        __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap",
+                            "nextHopIpV6Wifi: %s, nextHopPortIpV6Wifi: %d",
+                            nextHopIpV6Wifi, next_hop_port_ip_v6_wifi);
 
-    __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap",
-                        "nextHopIpV4Radio: %s, nextHopPortIpV4Radio: %d",
-                        nextHopIpV4Radio, next_hop_port_ip_v4_radio);
+        __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap",
+                            "nextHopIpV4Radio: %s, nextHopPortIpV4Radio: %d",
+                            nextHopIpV4Radio, next_hop_port_ip_v4_radio);
 
-    __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap",
-                        "nextHopIpV6Radio: %s, nextHopPortIpV6Radio: %d",
-                        nextHopIpV6Radio, next_hop_port_ip_v6_radio);
+        __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap",
+                            "nextHopIpV6Radio: %s, nextHopPortIpV6Radio: %d",
+                            nextHopIpV6Radio, next_hop_port_ip_v6_radio);
 
-    __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap",
-                        "nextHopIpV4Wired: %s, nextHopPortIpV4Wired: %d",
-                        nextHopIpV4Wired, next_hop_port_ip_v4_wired);
+        __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap",
+                            "nextHopIpV4Wired: %s, nextHopPortIpV4Wired: %d",
+                            nextHopIpV4Wired, next_hop_port_ip_v4_wired);
 
-    __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap",
-                        "nextHopIpV6Wired: %s, nextHopPortIpV6Wired: %d",
-                        nextHopIpV6Wired, next_hop_port_ip_v6_wired);
-
-
-    facemgr_t * facemgr = facemgr_create();
-    loop = event_base_new();
-    facemgr_set_event_loop_handler(facemgr, loop, loop_register_fd, loop_unregister_event);
-    facemgr_overlay_t * overlay = malloc(sizeof(facemgr_overlay_t));
-    *overlay =  FACEMGR_OVERLAY_EMPTY;
-
-    //WIFI
-    overlay->v4.local_port = 9695;
-    ip_address_pton(nextHopIpV4Wifi, &overlay->v4.remote_addr);
-    overlay->v4.remote_port = next_hop_port_ip_v4_wifi;
-    overlay->v6.local_port = 9695;
-    ip_address_pton(nextHopIpV6Wifi, &overlay->v6.remote_addr);
-    overlay->v6.remote_port = next_hop_port_ip_v6_wifi;
-    facemgr_add_rule(facemgr, "wlan0", overlay);
-
-    //LTE
-    overlay = malloc(sizeof(facemgr_overlay_t));
-    *overlay =  FACEMGR_OVERLAY_EMPTY;
-
-    overlay->v4.local_port = 9695;
-    ip_address_pton(nextHopIpV4Radio, &overlay->v4.remote_addr);
-    overlay->v4.remote_port = next_hop_port_ip_v4_radio;
-    overlay->v6.local_port = 9695;
-    ip_address_pton(nextHopIpV6Radio, &overlay->v6.remote_addr);
-    overlay->v6.remote_port = next_hop_port_ip_v6_radio;
-    facemgr_add_rule(facemgr, "radio0", overlay);
+        __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap",
+                            "nextHopIpV6Wired: %s, nextHopPortIpV6Wired: %d",
+                            nextHopIpV6Wired, next_hop_port_ip_v6_wired);
 
 
-    //WIRED
-    overlay = malloc(sizeof(facemgr_overlay_t));
-    *overlay =  FACEMGR_OVERLAY_EMPTY;
+        facemgr_t *facemgr = facemgr_create();
+        loop = event_base_new();
+        facemgr_set_event_loop_handler(facemgr, loop, loop_register_fd, loop_unregister_event);
+        facemgr_overlay_t *overlay = malloc(sizeof(facemgr_overlay_t));
+        *overlay = FACEMGR_OVERLAY_EMPTY;
 
-    overlay->v4.local_port = 9695;
-    ip_address_pton(nextHopIpV4Wired, &overlay->v4.remote_addr);
-    overlay->v4.remote_port = next_hop_port_ip_v4_wired;
-    overlay->v6.local_port = 9695;
-    ip_address_pton(nextHopIpV6Wired, &overlay->v6.remote_addr);
-    overlay->v6.remote_port = next_hop_port_ip_v6_wired;
-    facemgr_add_rule(facemgr, "eth0", overlay);
+        //WIFI
+        overlay->v4.local_port = 9695;
+        ip_address_pton(nextHopIpV4Wifi, &overlay->v4.remote_addr);
+        overlay->v4.remote_port = next_hop_port_ip_v4_wifi;
+        overlay->v6.local_port = 9695;
+        ip_address_pton(nextHopIpV6Wifi, &overlay->v6.remote_addr);
+        overlay->v6.remote_port = next_hop_port_ip_v6_wifi;
+        facemgr_add_overlay(facemgr, "wlan0", overlay);
+
+        //LTE
+        overlay = malloc(sizeof(facemgr_overlay_t));
+        *overlay = FACEMGR_OVERLAY_EMPTY;
+
+        overlay->v4.local_port = 9695;
+        ip_address_pton(nextHopIpV4Radio, &overlay->v4.remote_addr);
+        overlay->v4.remote_port = next_hop_port_ip_v4_radio;
+        overlay->v6.local_port = 9695;
+        ip_address_pton(nextHopIpV6Radio, &overlay->v6.remote_addr);
+        overlay->v6.remote_port = next_hop_port_ip_v6_radio;
+        facemgr_add_overlay(facemgr, "radio0", overlay);
 
 
+        //WIRED
+        overlay = malloc(sizeof(facemgr_overlay_t));
+        *overlay = FACEMGR_OVERLAY_EMPTY;
 
-    facemgr_bootstrap(facemgr);
-    _isRunningFacemgr = true;
-    event_base_dispatch(loop);
-    facemgr_stop(facemgr);
-    facemgr_free(facemgr);
-    while (_isRunningFacemgr) {
-        __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap", "loopConfig!");
+        overlay->v4.local_port = 9695;
+        ip_address_pton(nextHopIpV4Wired, &overlay->v4.remote_addr);
+        overlay->v4.remote_port = next_hop_port_ip_v4_wired;
+        overlay->v6.local_port = 9695;
+        ip_address_pton(nextHopIpV6Wired, &overlay->v6.remote_addr);
+        overlay->v6.remote_port = next_hop_port_ip_v6_wired;
+        facemgr_add_overlay(facemgr, "eth0", overlay);
+
+
+        facemgr_bootstrap(facemgr);
+        _isRunningFacemgr = true;
+        event_base_dispatch(loop);
+
+        facemgr_stop(facemgr);
         sleep(1);
+        facemgr_free(facemgr);
     }
-    // TODO: implement startFacemgrWithConfig()
 }

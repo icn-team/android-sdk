@@ -14,8 +14,10 @@ cmake_minimum_required(VERSION 3.4.1)
 
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
+
+message("->${CMAKE_SOURCE_DIR}")
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-set(CMAKE_FIND_ROOT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../usr_${CMAKE_SYSTEM_PROCESSOR};${CMAKE_FIND_ROOT_PATH}")
+set(CMAKE_FIND_ROOT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../../../../usr_${CMAKE_SYSTEM_PROCESSOR};${CMAKE_FIND_ROOT_PATH}")
 find_package(OpenSSL REQUIRED)
 find_package(LibEvent REQUIRED)
 find_package(Libparc REQUIRED)
@@ -27,17 +29,25 @@ find_package(Libfacemgr REQUIRED)
 find_package(Threads REQUIRED)
 
 
-
 include_directories(${LIBHICNLIGHT_INCLUDE_DIRS})
 
 add_library( # Sets the name of the library.
-             forwarderWrap
+        cwrap-lib
 
-             # Sets the library as a shared library.
-             SHARED
+        # Sets the library as a shared library.
+        SHARED
 
-             # Provides a relative path to your source file(s).
-             src/main/jni/forwarderWrap.c)
+        # Provides a relative path to your source file(s).
+        cwrap-lib.c)
+
+add_library( # Sets the name of the library.
+        cppwrap-lib
+
+        # Sets the library as a shared library.
+        SHARED
+
+        # Provides a relative path to your source file(s).
+        cppwrap-lib.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
@@ -46,21 +56,28 @@ add_library( # Sets the name of the library.
 # completing its build.
 
 find_library( # Sets the name of the path variable.
-              log-lib
+        log-lib
 
-              # Specifies the name of the NDK library that
-              # you want CMake to locate.
-              log )
+        # Specifies the name of the NDK library that
+        # you want CMake to locate.
+        log)
 
 # Specifies libraries CMake should link to your target library. You
 # can link multiple libraries, such as libraries you define in this
 # build script, prebuilt third-party libraries, or system libraries.
 
-message("aaaab ${LIBFACEMGR_LIBRARIES}  ${LIBHICNCTRL_LIBRARIES}")
+
 
 target_link_libraries( # Specifies the target library.
-                       forwarderWrap
+        cwrap-lib
 
-                       # Links the target library to the log library
-                       # included in the NDK.
-                       ${log-lib} ${LIBHICNLIGHT_LIBRARIES} ${LIBFACEMGR_LIBRARIES}  ${LIBHICNCTRL_LIBRARIES} ${HICN_LIBRARIES} ${LIBPARC_LIBRARIES} ${LIBEVENT_LIBRARIES} ${CONFIG_LIBRARY}  ${OPENSSL_LIBRARIES})
+        # Links the target library to the log library
+        # included in the NDK.
+        ${log-lib} ${LIBHICNLIGHT_LIBRARIES} ${LIBFACEMGR_LIBRARIES} ${LIBHICNCTRL_LIBRARIES} ${HICN_LIBRARIES} ${LIBPARC_LIBRARIES} ${LIBEVENT_LIBRARIES} ${CONFIG_LIBRARY} ${OPENSSL_LIBRARIES})
+
+target_link_libraries( # Specifies the target library.
+        cppwrap-lib
+
+        # Links the target library to the log library
+        # included in the NDK.
+        ${log-lib})
