@@ -243,6 +243,12 @@ public class BackendAndroidService extends Service {
             sForwarderThread.start();
         }
 
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         if (!nativeAccess.isRunningFacemgr()) {
             sFacemgrThread = new Thread(mFacemgrRunner, "BackendAndroid");
             sFacemgrThread.start();
