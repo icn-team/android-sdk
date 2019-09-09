@@ -20,7 +20,8 @@ public class NativeAccess {
     private static NativeAccess sInstance = null;
 
     static {
-        System.loadLibrary("forwarderWrap");
+        System.loadLibrary("cwrap-lib");
+        System.loadLibrary("cppwrap-lib");
     }
 
     public static NativeAccess getInstance() {
@@ -53,5 +54,7 @@ public class NativeAccess {
                                               String nextHopIpV6Wired, int nextHopPortIpV6Wired);
 
     public native void stopFacemgr();
+
+    public native String test();
 
 }

@@ -81,9 +81,9 @@ public class MainActivity extends AppCompatActivity
         // Declare fragments here
         home = new Home();
         settings = new PreferencesFragment();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String aaa = sharedPreferences.getString("username", "ciao!!!");
-        Log.d("aaa", aaa);
+        //SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+      //  String aaa = sharedPreferences.getString("username", "ciao!!!");
+        //Log.d("aaa", aaa);
         //Log.d("aaa", settings.getArguments().getString("username"));
 
         /*msg = new Message();
