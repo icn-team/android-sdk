@@ -15,10 +15,6 @@ import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceScreen;
 
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.Enumeration;
-
 //import com.cisco.hicn.forwarder.R;
 
 public class PreferencesFragment extends PreferenceFragmentCompat {
@@ -42,8 +38,9 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
-        final PreferenceScreen preferenceScreen = getPreferenceManager().createPreferenceScreen(this.getContext());
 
+        setPreferencesFromResource(R.xml.root, s);
+       /* final PreferenceScreen preferenceScreen = getPreferenceManager().createPreferenceScreen(this.getContext());
         forwarderPreferenceCategory = new PreferenceCategory(this.getContext());
         forwarderPreferenceCategory.setOrder(0);
         forwarderPreferenceCategory.setIconSpaceReserved(false);
@@ -87,7 +84,53 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
         faceManagementPreferenceCategory.setLayoutResource(R.layout.preference_category_layout);
         faceManagementPreferenceCategory.setTitle(getString(R.string.face_management_preference_category));
         preferenceScreen.addPreference(faceManagementPreferenceCategory);
-        String[] faceTypeStringArray = {getString(R.string.native_tcp), getString(R.string.native_udp), getString(R.string.overlay_tcp), getString(R.string.overlay_udp)};
+
+        PreferenceScreen aaa = getPreferenceManager().createPreferenceScreen(this.getContext());////new PreferenceScreen(getContext(), attr);//new PreferenceScreen(this.getContext(),
+
+        aaa.setKey("test");
+        aaa.setTitle("ciao");
+        EditTextPreference bbb;
+        bbb = new EditTextPreference(this.getContext());
+        bbb.setOrder(1);
+        bbb.setTitle(getString(R.string.cache_size));
+        bbb.setKey("aaaaa");
+        bbb.setOnBindEditTextListener(new EditTextPreference.OnBindEditTextListener() {
+            @Override
+            public void onBindEditText(@NonNull EditText editText) {
+
+            }
+        });
+        aaa.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                MyPreferenceFragment fragment = new MyPreferenceFragment();
+                Bundle args = new Bundle();
+                args.putString(PreferenceFragmentCompat.ARG_PREFERENCE_ROOT, preferenceScreen.getKey());
+                fragment.setArguments(args);
+                ft.add(R.id.fragment_container, fragment, preferenceScreen.getKey());
+                ft.addToBackStack(preferenceScreen.getKey());
+                ft.commit();
+                return true;
+            }
+        });
+        aaa.addPreference(bbb);
+        faceManagementPreferenceCategory.addPreference(aaa);
+
+
+*/
+      /*  <PreferenceScreen
+        android:key="key_screen_one"
+        android:title="Screen Preference">
+        <EditTextPreference
+        android:hint="Type something"
+        android:key="key_edit_text"
+        android:title="EditText Preference" />
+    </PreferenceScreen>*/
+
+  /*      String[] faceTypeStringArray = {getString(R.string.native_tcp), getString(R.string.native_udp), getString(R.string.overlay_tcp), getString(R.string.overlay_udp)};
+
+
         faceTypeListPreference = new ListPreference(this.getContext());
         faceTypeListPreference.setOrder(3);
         faceTypeListPreference.setSummary(preferenceScreen.getSharedPreferences().getString(getString(R.string.face_type_key), getString(R.string.default_face_type)));
@@ -142,6 +185,8 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
         });
         faceManagementPreferenceCategory.addPreference(overlayDiscoveryListPreference);
 
+
+
         /*ListPreference bb = new ListPreference(this.getContext());
         bb.setSummary("ciao2");
         bb.setDialogTitle("ciao2");
@@ -187,7 +232,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
             }
         });
         forwarderPreferenceCategory.addPreference(caceSizeEditTextPreference);*/
-        setPreferenceScreen(preferenceScreen);
+        //setPreferenceScreen(preferenceScreen);
 
 
 
@@ -340,7 +385,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
     }
 
 
-
     void addPreferenceByNetworkInterface(String interfaceName, PreferenceScreen preferenceScreen) {
         EditTextPreference addressIpv4EditTextPreference = new EditTextPreference(getContext());
         addressIpv4EditTextPreference.setTitle(getString(R.string.nexthop_address_ipv4) + " " + interfaceName);
@@ -471,4 +515,35 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
+    /**
+     * A preference fragment that demonstrates preferences which contain dynamic widgets.
+     */
+  /*  class WidgetPreferencesFragment : PreferenceFragmentCompat() {
+        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+            setPreferencesFromResource(R.xml.widgets, rootKey)
+        }
+    }*/
+
+    /**
+     * A preference fragment that demonstrates preferences that launch a dialog when tapped.
+     */
+    /*class DialogPreferencesFragment : PreferenceFragmentCompat() {
+        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+            setPreferencesFromResource(R.xml.dialogs, rootKey)
+        }
+    }*/
+
+    /**
+     * A preference fragment that demonstrates more wifi attributes and functionality.
+     */
+   /* class AdvancedPreferencesFragment : PreferenceFragmentCompat() {
+        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+            setPreferencesFromResource(R.xml.wifi, rootKey)
+        }
+    }*/
 }
+
+
+

@@ -363,7 +363,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgrWithConfig
         overlay->v6.local_port = 9695;
         ip_address_pton(nextHopIpV6Wifi, &overlay->v6.remote_addr);
         overlay->v6.remote_port = next_hop_port_ip_v6_wifi;
-        facemgr_add_overlay(facemgr, "wlan0", overlay);
+//        facemgr_add_overlay(facemgr, "wlan0", overlay);
 
         //LTE
         overlay = malloc(sizeof(facemgr_overlay_t));
@@ -375,7 +375,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgrWithConfig
         overlay->v6.local_port = 9695;
         ip_address_pton(nextHopIpV6Radio, &overlay->v6.remote_addr);
         overlay->v6.remote_port = next_hop_port_ip_v6_radio;
-        facemgr_add_overlay(facemgr, "radio0", overlay);
+   //     facemgr_add_overlay(facemgr, "radio0", overlay);
 
 
         //WIRED
@@ -388,7 +388,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgrWithConfig
         overlay->v6.local_port = 9695;
         ip_address_pton(nextHopIpV6Wired, &overlay->v6.remote_addr);
         overlay->v6.remote_port = next_hop_port_ip_v6_wired;
-        facemgr_add_overlay(facemgr, "eth0", overlay);
+  //      facemgr_add_overlay(facemgr, "eth0", overlay);
 
 
         facemgr_bootstrap(facemgr);

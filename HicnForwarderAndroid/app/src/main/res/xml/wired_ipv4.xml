@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:title="@string/wired_ipv4_preference_title">
+
+        <EditTextPreference
+            android:inputType="numberDecimal"
+            app:defaultValue="@string/default_wired_source_port_ipv4"
+            app:key="@string/wired_source_port_ipv4_size_key"
+            app:summary="@string/wired_source_port_ipv4_summary"
+            app:title="@string/wired_source_port_ipv4_title"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            android:inputType="textUri"
+            app:defaultValue="@string/default_wired_nexthop_ipv4"
+            app:key="@string/wired_nexthop_ipv4_key"
+            app:summary="@string/wired_nexthop_ipv4_summary"
+            app:title="@string/wired_nexthop_ipv4_title"
+            app:useSimpleSummaryProvider="true" />
+
+        <EditTextPreference
+            android:inputType="numberDecimal"
+            app:defaultValue="@string/default_wired_nexthop_port_ipv4"
+            app:key="@string/wired_nexthop_port_ipv4_key"
+            app:summary="@string/wired_nexthop_port_ipv4_summary"
+            app:title="@string/wired_nexthop_port_ipv4_title"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
