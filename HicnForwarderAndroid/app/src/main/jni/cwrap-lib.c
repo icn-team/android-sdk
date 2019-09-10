@@ -352,6 +352,10 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgrWithConfig
         facemgr_overlay_t *overlay = malloc(sizeof(facemgr_overlay_t));
         *overlay = FACEMGR_OVERLAY_EMPTY;
 
+
+#ifndef DEBUG
+#endif
+
         //WIFI
         overlay->v4.local_port = 9695;
         ip_address_pton(nextHopIpV4Wifi, &overlay->v4.remote_addr);
