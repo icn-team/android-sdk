@@ -46,7 +46,6 @@
 static facemgr_cfg_t *facemgr_cfg;
 static bool _isRunning = false;
 static bool _isRunningFacemgr = false;
-log_conf_t log_conf = DEFAULT_LOG_CONF;
 //forwarder
 Forwarder *hicnFwd = NULL;
 //facemgr
