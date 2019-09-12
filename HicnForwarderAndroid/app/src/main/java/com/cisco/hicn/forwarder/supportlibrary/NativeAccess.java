@@ -32,8 +32,10 @@ public class NativeAccess {
     }
 
     private NativeAccess() {
-
+        initConfig();
     }
+
+    public native void initConfig();
 
     public native boolean isRunningForwarder();
 
@@ -46,14 +48,24 @@ public class NativeAccess {
 
     public native void startFacemgr();
 
-    public native void startFacemgrWithConfig(String nextHopIpV4Wifi, int nextHopPortIpV4Wifi,
-                                              String nextHopIpV6Wifi, int nextHopPortIpV6Wifi,
-                                              String nextHopIpV4Radio, int nextHopPortIpV4Radio,
-                                              String nextHopIpV6Radio, int nextHopPortIpV6Radio,
-                                              String nextHopIpV4Wired, int nextHopPortIpV4Wired,
-                                              String nextHopIpV6Wired, int nextHopPortIpV6Wired);
+    //public native void startFacemgrWithConfig(String nextHopIpV4Wifi, int nextHopPortIpV4Wifi,
+    //                                          String nextHopIpV6Wifi, int nextHopPortIpV6Wifi,
+    //                                          String nextHopIpV4Radio, int nextHopPortIpV4Radio,
+    //                                          String nextHopIpV6Radio, int nextHopPortIpV6Radio,
+    //                                          String nextHopIpV4Wired, int nextHopPortIpV4Wired,
+    //                                          String nextHopIpV6Wired, int nextHopPortIpV6Wired);
 
     public native void stopFacemgr();
+
+    public native void disableDiscovery(boolean disableDiscovery);
+
+    public native void disableIPv4(boolean disableIPv4);
+
+    public native void disableIPv6(boolean disableIPv6);
+
+    public native void updateInterfaceIPv4(int interfaceType, int sourcePort, String nextHopIp, int nextHopPort);
+
+    public native void updateInterfaceIPv6(int interfaceType, int sourcePort, String nextHopIp, int nextHopPort);
 
     public native String test();
 
