@@ -38,12 +38,12 @@
 #include <hicn/facemgr.h>
 #include <hicn/policy.h>
 #include <hicn/util/ip_address.h>
+#include <hicn/facemgr/cfg.h>
 
 #include <event2/event.h>
-//#include <hicn/util/log.h>
 
-//#include <util/log.h>
 
+static facemgr_cfg_t *facemgr_cfg;
 static bool _isRunning = false;
 static bool _isRunningFacemgr = false;
 //forwarder
@@ -375,7 +375,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgrWithConfig
         overlay->v6.local_port = 9695;
         ip_address_pton(nextHopIpV6Radio, &overlay->v6.remote_addr);
         overlay->v6.remote_port = next_hop_port_ip_v6_radio;
-   //     facemgr_add_overlay(facemgr, "radio0", overlay);
+        //     facemgr_add_overlay(facemgr, "radio0", overlay);
 
 
         //WIRED
@@ -388,7 +388,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgrWithConfig
         overlay->v6.local_port = 9695;
         ip_address_pton(nextHopIpV6Wired, &overlay->v6.remote_addr);
         overlay->v6.remote_port = next_hop_port_ip_v6_wired;
-  //      facemgr_add_overlay(facemgr, "eth0", overlay);
+        //      facemgr_add_overlay(facemgr, "eth0", overlay);
 
 
         facemgr_bootstrap(facemgr);
@@ -399,4 +399,120 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgrWithConfig
         sleep(1);
         facemgr_free(facemgr);
     }
+}
+
+JNIEXPORT void JNICALL
+Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_initConfig(JNIEnv *env, jobject thiz) {
+    facemgr_cfg = facemgr_cfg_create();
+    // TODO: implement initConfig()
+}
+
+JNIEXPORT void JNICALL
+Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_updateInterfaceIPv4(JNIEnv *env,
+                                                                              jobject thiz,
+                                                                              jint interface_type,
+                                                                              jint source_port,
+                                                                              jstring next_hop_ip,
+                                                                              jint next_hop_port) {
+    
+    facemgr_cfg_rule_t *rule;
+    rule = facemgr_cfg_rule_create();
+    netdevice_type_t netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
+    switch (interface_type) {
+        case 0:
+            netdevice_interface_type = NETDEVICE_TYPE_WIFI;
+            break;
+        case 1:
+            netdevice_interface_type = NETDEVICE_TYPE_CELLULAR;
+            break;
+        case 2:
+            netdevice_interface_type = NETDEVICE_TYPE_WIRED;
+            break;
+        default:
+            netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
+    }
+    facemgr_cfg_rule_set_match(rule, NULL, netdevice_interface_type);
+    const char *next_hop_ip_string = (*env)->GetStringUTFChars(env, next_hop_ip, 0);
+
+
+    ip_address_t remote_addr;
+    ip_address_t *next_hop_ip_p;
+    ip_address_pton(next_hop_ip_string, &remote_addr);
+    next_hop_ip_p = &remote_addr;
+    facemgr_cfg_set_overlay(facemgr_cfg, AF_INET,
+                            NULL, source_port,
+                            next_hop_ip_p, next_hop_port);
+    facemgr_cfg_add_rule(facemgr_cfg, rule);
+}
+
+
+JNIEXPORT void JNICALL
+Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_updateInterfaceIPv6(JNIEnv *env,
+                                                                              jobject thiz,
+                                                                              jint interface_type,
+                                                                              jint source_port,
+                                                                              jstring next_hop_ip,
+                                                                              jint next_hop_port) {
+
+    facemgr_cfg_rule_t *rule;
+    rule = facemgr_cfg_rule_create();
+    netdevice_type_t netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
+    switch (interface_type) {
+        case 0:
+            netdevice_interface_type = NETDEVICE_TYPE_WIFI;
+            break;
+        case 1:
+            netdevice_interface_type = NETDEVICE_TYPE_CELLULAR;
+            break;
+        case 2:
+            netdevice_interface_type = NETDEVICE_TYPE_WIRED;
+            break;
+        default:
+            netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
+    }
+    facemgr_cfg_rule_set_match(rule, NULL, netdevice_interface_type);
+    const char *next_hop_ip_string = (*env)->GetStringUTFChars(env, next_hop_ip, 0);
+    ip_address_t remote_addr;
+    ip_address_t *next_hop_ip_p;
+    ip_address_pton(next_hop_ip_string, &remote_addr);
+    next_hop_ip_p = &remote_addr;
+
+    facemgr_cfg_set_overlay(facemgr_cfg, AF_INET6,
+                            NULL, source_port,
+                            next_hop_ip_p, next_hop_port);
+    facemgr_cfg_add_rule(facemgr_cfg, rule);
+}
+
+JNIEXPORT void JNICALL
+Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_disableDiscovery(JNIEnv *env,
+                                                                           jobject thiz,
+                                                                           jboolean disable_discovery) {
+    facemgr_cfg_rule_t *rule;
+    rule = facemgr_cfg_rule_create();
+    facemgr_cfg_rule_set_discovery(rule, disable_discovery);
+    facemgr_cfg_add_rule(facemgr_cfg, rule);
+}
+
+JNIEXPORT void JNICALL
+Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_disableIPv4(JNIEnv *env, jobject thiz,
+                                                                      jboolean disable_ipv4) {
+
+#if 0
+    facemgr_cfg_rule_t *rule;
+    rule = facemgr_cfg_rule_create();
+    facemgr_cfg_set_ipv4(rule, disable_ipv4);
+    facemgr_cfg_add_rule(facemgr_cfg, rule);
+#endif
+}
+
+JNIEXPORT void JNICALL
+Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_disableIPv6(JNIEnv *env, jobject thiz,
+                                                                      jboolean disable_ipv6) {
+
+#if 0
+    facemgr_cfg_rule_t *rule;
+    rule = facemgr_cfg_rule_create();
+    facemgr_cfg_set_ipv4(rule, disable_ipv6);
+    facemgr_cfg_add_rule(facemgr_cfg, rule);
+#endif
 }

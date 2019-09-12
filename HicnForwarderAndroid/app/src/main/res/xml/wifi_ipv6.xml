@@ -8,7 +8,7 @@
         <EditTextPreference
             android:inputType="numberDecimal"
             app:defaultValue="@string/default_wifi_source_port_ipv6"
-            app:key="@string/wifi_source_port_ipv6_size_key"
+            app:key="@string/wifi_source_port_ipv6_key"
             app:summary="@string/wifi_source_port_ipv6_summary"
             app:title="@string/wifi_source_port_ipv6_title"
             app:useSimpleSummaryProvider="true" />
