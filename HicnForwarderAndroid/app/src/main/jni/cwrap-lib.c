@@ -46,6 +46,7 @@
 static facemgr_cfg_t *facemgr_cfg;
 static bool _isRunning = false;
 static bool _isRunningFacemgr = false;
+log_conf_t log_conf = DEFAULT_LOG_CONF;
 //forwarder
 Forwarder *hicnFwd = NULL;
 //facemgr
@@ -276,7 +277,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgr(JNIEnv *e
 
 
     if (!_isRunningFacemgr) {
-        facemgr_t *facemgr = facemgr_create();
+        facemgr_t *facemgr = facemgr_create_with_config(facemgr_cfg);
         loop = event_base_new();
         facemgr_set_event_loop_handler(facemgr, loop, loop_register_fd, loop_unregister_event);
         facemgr_bootstrap(facemgr);
@@ -297,7 +298,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgr(JNIEnv *e
 
 }
 
-JNIEXPORT void JNICALL
+/*JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgrWithConfig(JNIEnv *env,
                                                                                  jobject thiz,
                                                                                  jstring next_hop_ip_v4_wifi,
@@ -399,11 +400,14 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgrWithConfig
         sleep(1);
         facemgr_free(facemgr);
     }
-}
+}*/
 
 JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_initConfig(JNIEnv *env, jobject thiz) {
     facemgr_cfg = facemgr_cfg_create();
+#ifdef DEBUG
+    log_conf.log_level = LOG_DEBUG;
+#endif
     // TODO: implement initConfig()
 }
 
