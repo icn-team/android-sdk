@@ -180,12 +180,12 @@ public class BackendAndroidService extends Service {
             NativeAccess nativeAccess = NativeAccess.getInstance();
             if (getString(R.string.manual).equals(overlayDiscovery)) {
                 Log.d(TAG, "nextHopIpV4Wifi: " + nextHopIpV4Wifi + ", nextHopIpV4PortWifi:" + nextHopIpV4PortWifi);
-                nativeAccess.startFacemgrWithConfig(nextHopIpV4Wifi, nextHopIpV4PortWifi,
-                        nextHopIpV6Wifi, nextHopIpV6PortWifi,
-                        nextHopIpV4Radio, nextHopIpV4PortRadio,
-                        nextHopIpV6Radio, nextHopIpV6PortRadio,
-                        nextHopIpV4Wired, nextHopIpV4PortWired,
-                        nextHopIpV6Wired, nextHopIpV4PortWired);
+                nativeAccess.startFacemgr();//WithConfig(nextHopIpV4Wifi, nextHopIpV4PortWifi,
+                //        nextHopIpV6Wifi, nextHopIpV6PortWifi,
+                //        nextHopIpV4Radio, nextHopIpV4PortRadio,
+                //        nextHopIpV6Radio, nextHopIpV6PortRadio,
+                //        nextHopIpV4Wired, nextHopIpV4PortWired,
+                //        nextHopIpV6Wired, nextHopIpV4PortWired);
 
             } else {
                 nativeAccess.startFacemgr();

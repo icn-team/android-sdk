@@ -194,7 +194,7 @@
 
     <string name="wifi_ipv4_preference_title">WiFi IPv4</string>
     <string name="default_wifi_source_port_ipv4">9596</string>
-    <string name="wifi_source_port_ipv4_size_key">wifi_source_port_ipv4_size_key</string>
+    <string name="wifi_source_port_ipv4_key">wifi_source_port_ipv4_key</string>
     <string name="wifi_source_port_ipv4_summary">Source Port</string>
     <string name="wifi_source_port_ipv4_title">Source Port</string>
     <string name="default_wifi_nexthop_ipv4">10.20.30.40</string>
@@ -210,7 +210,7 @@
 
     <string name="wifi_ipv6_preference_title">WiFi IPv6</string>
     <string name="default_wifi_source_port_ipv6">9596</string>
-    <string name="wifi_source_port_ipv6_size_key">wifi_source_port_ipv6_size_key</string>
+    <string name="wifi_source_port_ipv6_key">wifi_source_port_ipv6_key</string>
     <string name="wifi_source_port_ipv6_summary">Source Port</string>
     <string name="wifi_source_port_ipv6_title">Source Port</string>
     <string name="default_wifi_nexthop_ipv6">ff::1</string>
@@ -227,7 +227,7 @@
 
     <string name="cellular_ipv4_preference_title">Cellular IPv4</string>
     <string name="default_cellular_source_port_ipv4">9596</string>
-    <string name="cellular_source_port_ipv4_size_key">cellular_source_port_ipv4_size_key</string>
+    <string name="cellular_source_port_ipv4_key">cellular_source_port_ipv4_key</string>
     <string name="cellular_source_port_ipv4_summary">Source Port</string>
     <string name="cellular_source_port_ipv4_title">Source Port</string>
     <string name="default_cellular_nexthop_ipv4">10.20.30.40</string>
@@ -243,7 +243,7 @@
 
     <string name="cellular_ipv6_preference_title">Cellular IPv6</string>
     <string name="default_cellular_source_port_ipv6">9596</string>
-    <string name="cellular_source_port_ipv6_size_key">cellular_source_port_ipv6_size_key</string>
+    <string name="cellular_source_port_ipv6_key">cellular_source_port_ipv6_key</string>
     <string name="cellular_source_port_ipv6_summary">Source Port</string>
     <string name="cellular_source_port_ipv6_title">Source Port</string>
     <string name="default_cellular_nexthop_ipv6">ff::1</string>
@@ -257,7 +257,7 @@
 
     <string name="wired_ipv4_preference_title">Wired IPv4</string>
     <string name="default_wired_source_port_ipv4">9596</string>
-    <string name="wired_source_port_ipv4_size_key">wired_source_port_ipv4_size_key</string>
+    <string name="wired_source_port_ipv4_key">wired_source_port_ipv4_key</string>
     <string name="wired_source_port_ipv4_summary">Source Port</string>
     <string name="wired_source_port_ipv4_title">Source Port</string>
     <string name="default_wired_nexthop_ipv4">10.20.30.40</string>
@@ -273,7 +273,7 @@
 
     <string name="wired_ipv6_preference_title">Wired IPv6</string>
     <string name="default_wired_source_port_ipv6">9596</string>
-    <string name="wired_source_port_ipv6_size_key">wired_source_port_ipv6_size_key</string>
+    <string name="wired_source_port_ipv6_key">wired_source_port_ipv6_key</string>
     <string name="wired_source_port_ipv6_summary">Source Port</string>
     <string name="wired_source_port_ipv6_title">Source Port</string>
     <string name="default_wired_nexthop_ipv6">ff::1</string>

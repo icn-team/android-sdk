@@ -39,7 +39,6 @@ find_library(LIBHICNCTRL_LIBRARY NAMES hicnctrl
 
 set(LIBHICNCTRL_LIBRARIES ${LIBHICNCTRL_LIBRARY})
 
-message("xxxx ${HICNCTRL_LIBRARY}")
 set(LIBHICNCTRL_INCLUDE_DIRS ${LIBHICNCTRL_LIBRARY})
 
 include(FindPackageHandleStandardArgs)

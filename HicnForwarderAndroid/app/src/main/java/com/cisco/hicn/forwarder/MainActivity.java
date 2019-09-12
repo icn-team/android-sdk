@@ -7,17 +7,8 @@ import android.net.LinkProperties;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.Uri;
-import android.preference.PreferenceManager;
-//import android.support.annotation.NonNull;
-//import android.support.design.widget.NavigationView;
-//import android.support.v4.app.Fragment;
-//import android.support.v4.app.FragmentManager;
-//import android.support.v4.app.FragmentTransaction;
-//import android.support.v4.widget.DrawerLayout;
-//import android.support.v7.app.ActionBarDrawerToggle;
-//import android.support.v7.app.AppCompatActivity;
-import com.google.android.material.navigation.NavigationView;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,17 +22,29 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.cisco.hicn.forwarder.R;
+import com.cisco.hicn.forwarder.preferences.PreferencesFragment;
+import com.cisco.hicn.forwarder.supportlibrary.NativeAccess;
+import com.cisco.hicn.forwarder.utility.Constants;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.HashMap;
 
+//import android.support.annotation.NonNull;
+//import android.support.design.widget.NavigationView;
+//import android.support.v4.app.Fragment;
+//import android.support.v4.app.FragmentManager;
+//import android.support.v4.app.FragmentTransaction;
+//import android.support.v4.widget.DrawerLayout;
+//import android.support.v7.app.ActionBarDrawerToggle;
+//import android.support.v7.app.AppCompatActivity;
+
 public class MainActivity extends AppCompatActivity
         implements Home.OnFragmentInteractionListener,
-                   PreferencesFragment.OnFragmentInteractionListener,
-                   ForwarderFragment.OnFragmentInteractionListener,
-                   InterfaceFragment.OnFragmentInteractionListener,
-                   ApplicationsFragment.OnFragmentInteractionListener,
-                   NavigationView.OnNavigationItemSelectedListener {
+        PreferencesFragment.OnFragmentInteractionListener,
+        ForwarderFragment.OnFragmentInteractionListener,
+        InterfaceFragment.OnFragmentInteractionListener,
+        ApplicationsFragment.OnFragmentInteractionListener,
+        NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout mDrawer;
     private ActionBarDrawerToggle mToggle;
@@ -57,7 +60,6 @@ public class MainActivity extends AppCompatActivity
     public static HashMap<String, Integer> interfacesHashMap = new HashMap<>();
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,31 +70,63 @@ public class MainActivity extends AppCompatActivity
 
 
         setContentView(R.layout.activity_main);
-        mDrawer = (DrawerLayout)findViewById(R.id.drawer);
-        mToggle = new ActionBarDrawerToggle(this,mDrawer,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer);
+        mToggle = new ActionBarDrawerToggle(this, mDrawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.addDrawerListener(mToggle);
         mToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        nav_View = (NavigationView)findViewById(R.id.nav_View);
+        nav_View = (NavigationView) findViewById(R.id.nav_View);
         nav_View.setNavigationItemSelectedListener(this);
-        viewLayout = (FrameLayout)findViewById(R.id.viewLayout);
+        viewLayout = (FrameLayout) findViewById(R.id.viewLayout);
         fragmentManager = getSupportFragmentManager();
 
         // Declare fragments here
         home = new Home();
         settings = new PreferencesFragment();
-        //SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-      //  String aaa = sharedPreferences.getString("username", "ciao!!!");
-        //Log.d("aaa", aaa);
-        //Log.d("aaa", settings.getArguments().getString("username"));
 
-        /*msg = new Message();
-        video = new Video();
-        noti = new Notification();
-        contact = new ContactUs();
+        NativeAccess nativeAccess = NativeAccess.getInstance();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+ /*       boolean enableBonjour = sharedPreferences.getBoolean(getString(R.string.enable_bonjour_key), true);
+        nativeAccess.disableDiscovery(!enableBonjour);
+
+ //       boolean enableNexHopIPv4 = sharedPreferences.getBoolean(getString(R.string.enable_nexthop_ipv4_key), true);
+ //       nativeAccess.disableIPv4(!enableNexHopIPv4);
+
+ //       boolean enableNexHopIPv6 = sharedPreferences.getBoolean(getString(R.string.enable_nexthop_ipv6_key), true);
+ //       nativeAccess.disableIPv6(!enableNexHopIPv6);
+
+        int wifiSourcePortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wifi_source_port_ipv4_key), getString(R.string.default_wifi_source_port_ipv4)));
+        String wifiNextHopIPv4 = sharedPreferences.getString(getString(R.string.wifi_nexthop_ipv4_key), getString(R.string.default_wifi_nexthop_ipv4));
+        int wifiNextHopPortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wifi_nexthop_port_ipv4_key), getString(R.string.default_wifi_nexthop_port_ipv4)));
+        nativeAccess.updateInterfaceIPv4(Constants.NETDEVICE_TYPE_WIFI, wifiSourcePortIPv4, wifiNextHopIPv4, wifiNextHopPortIPv4);
+
+        int wifiSourcePortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wifi_source_port_ipv6_key), getString(R.string.default_wifi_source_port_ipv6)));
+        String wifiNextHopIPv6 = sharedPreferences.getString(getString(R.string.wifi_nexthop_ipv6_key), getString(R.string.default_wifi_nexthop_ipv6));
+        int wifiNextHopPortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wifi_nexthop_port_ipv6_key), getString(R.string.default_wifi_nexthop_port_ipv6)));
+        nativeAccess.updateInterfaceIPv6(Constants.NETDEVICE_TYPE_WIFI, wifiSourcePortIPv6, wifiNextHopIPv6, wifiNextHopPortIPv6);
 */
+//        int cellularSourcePortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.cellular_source_port_ipv4_key), getString(R.string.default_cellular_source_port_ipv4)));
+//        String cellularNextHopIPv4 = sharedPreferences.getString(getString(R.string.cellular_nexthop_ipv4_key), getString(R.string.default_cellular_nexthop_ipv4));
+//        int cellularNextHopPortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.cellular_nexthop_port_ipv4_key), getString(R.string.default_cellular_nexthop_port_ipv4)));
+//        nativeAccess.updateInterfaceIPv4(Constants.NETDEVICE_TYPE_CELLULAR, cellularSourcePortIPv4, cellularNextHopIPv4, cellularNextHopPortIPv4);
 
-        //fragmentManager.beginTransaction().replace(R.id.viewLayout, home).commit();
+//        int cellularSourcePortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.cellular_source_port_ipv6_key), getString(R.string.default_cellular_source_port_ipv6)));
+//        String cellularNextHopIPv6 = sharedPreferences.getString(getString(R.string.cellular_nexthop_ipv6_key), getString(R.string.default_cellular_nexthop_ipv6));
+//        int cellularNextHopPortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.cellular_nexthop_port_ipv6_key), getString(R.string.default_cellular_nexthop_port_ipv6)));
+//        nativeAccess.updateInterfaceIPv6(Constants.NETDEVICE_TYPE_CELLULAR, cellularSourcePortIPv6, cellularNextHopIPv6, cellularNextHopPortIPv6);
+
+//        int wiredSourcePortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wired_source_port_ipv4_key), getString(R.string.default_wired_source_port_ipv4)));
+//        String wiredNextHopIPv4 = sharedPreferences.getString(getString(R.string.wired_nexthop_ipv4_key), getString(R.string.default_wired_nexthop_ipv4));
+//        int wiredNextHopPortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wired_nexthop_port_ipv4_key), getString(R.string.default_wired_nexthop_port_ipv4)));
+//        nativeAccess.updateInterfaceIPv4(Constants.NETDEVICE_TYPE_WIRED, wiredSourcePortIPv4, wiredNextHopIPv4, wiredNextHopPortIPv4);
+
+//        int wiredSourcePortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wired_source_port_ipv6_key), getString(R.string.default_wired_source_port_ipv6)));
+//        String wiredNextHopIPv6 = sharedPreferences.getString(getString(R.string.wired_nexthop_ipv6_key), getString(R.string.default_wired_nexthop_ipv6));
+//        int wiredNextHopPortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wired_nexthop_port_ipv6_key), getString(R.string.default_wired_nexthop_port_ipv6)));
+//        nativeAccess.updateInterfaceIPv6(Constants.NETDEVICE_TYPE_WIRED, wiredSourcePortIPv6, wiredNextHopIPv6, wiredNextHopPortIPv6);
+
         fragmentManager.beginTransaction().replace(R.id.viewLayout, settings).commit();
 
     }
@@ -108,7 +142,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mToggle.onOptionsItemSelected(item)){
+        if (mToggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -151,7 +185,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri){
+    public void onFragmentInteraction(Uri uri) {
         //you can leave it empty
     }
 

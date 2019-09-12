@@ -8,7 +8,7 @@
         <EditTextPreference
             android:inputType="numberDecimal"
             app:defaultValue="@string/default_cellular_source_port_ipv6"
-            app:key="@string/cellular_source_port_ipv6_size_key"
+            app:key="@string/cellular_source_port_ipv6_key"
             app:summary="@string/cellular_source_port_ipv6_summary"
             app:title="@string/cellular_source_port_ipv6_title"
             app:useSimpleSummaryProvider="true" />
