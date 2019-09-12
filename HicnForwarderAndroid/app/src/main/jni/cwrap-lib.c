@@ -414,9 +414,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_updateInterfaceIPv4(JN
                                                                               jint source_port,
                                                                               jstring next_hop_ip,
                                                                               jint next_hop_port) {
-    
-    facemgr_cfg_rule_t *rule;
-    rule = facemgr_cfg_rule_create();
+
     netdevice_type_t netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
     switch (interface_type) {
         case 0:
@@ -431,18 +429,29 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_updateInterfaceIPv4(JN
         default:
             netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
     }
-    facemgr_cfg_rule_set_match(rule, NULL, netdevice_interface_type);
-    const char *next_hop_ip_string = (*env)->GetStringUTFChars(env, next_hop_ip, 0);
 
 
     ip_address_t remote_addr;
     ip_address_t *next_hop_ip_p;
+    const char *next_hop_ip_string = (*env)->GetStringUTFChars(env, next_hop_ip, 0);
     ip_address_pton(next_hop_ip_string, &remote_addr);
     next_hop_ip_p = &remote_addr;
-    facemgr_cfg_set_overlay(facemgr_cfg, AF_INET,
-                            NULL, source_port,
-                            next_hop_ip_p, next_hop_port);
-    facemgr_cfg_add_rule(facemgr_cfg, rule);
+
+    facemgr_cfg_rule_t *rule;
+    facemgr_cfg_get_rule(facemgr_cfg, NULL, netdevice_interface_type, &rule);
+    if (!rule) {
+        rule = facemgr_cfg_rule_create();
+        facemgr_cfg_rule_set_match(rule, NULL, netdevice_interface_type);
+
+        facemgr_cfg_set_overlay(facemgr_cfg, AF_INET,
+                                NULL, source_port,
+                                next_hop_ip_p, next_hop_port);
+        facemgr_cfg_add_rule(facemgr_cfg, rule);
+    } else {
+        facemgr_cfg_rule_set_overlay(rule, AF_INET,
+                                NULL, source_port,
+                                next_hop_ip_p, next_hop_port);
+    }
 }
 
 
@@ -454,8 +463,6 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_updateInterfaceIPv6(JN
                                                                               jstring next_hop_ip,
                                                                               jint next_hop_port) {
 
-    facemgr_cfg_rule_t *rule;
-    rule = facemgr_cfg_rule_create();
     netdevice_type_t netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
     switch (interface_type) {
         case 0:
@@ -470,27 +477,36 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_updateInterfaceIPv6(JN
         default:
             netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
     }
-    facemgr_cfg_rule_set_match(rule, NULL, netdevice_interface_type);
-    const char *next_hop_ip_string = (*env)->GetStringUTFChars(env, next_hop_ip, 0);
+
+
     ip_address_t remote_addr;
     ip_address_t *next_hop_ip_p;
+    const char *next_hop_ip_string = (*env)->GetStringUTFChars(env, next_hop_ip, 0);
     ip_address_pton(next_hop_ip_string, &remote_addr);
     next_hop_ip_p = &remote_addr;
 
-    facemgr_cfg_set_overlay(facemgr_cfg, AF_INET6,
-                            NULL, source_port,
-                            next_hop_ip_p, next_hop_port);
-    facemgr_cfg_add_rule(facemgr_cfg, rule);
+    facemgr_cfg_rule_t *rule;
+    facemgr_cfg_get_rule(facemgr_cfg, NULL, netdevice_interface_type, &rule);
+    if (!rule) {
+        rule = facemgr_cfg_rule_create();
+        facemgr_cfg_rule_set_match(rule, NULL, netdevice_interface_type);
+
+        facemgr_cfg_set_overlay(facemgr_cfg, AF_INET6,
+                                NULL, source_port,
+                                next_hop_ip_p, next_hop_port);
+        facemgr_cfg_add_rule(facemgr_cfg, rule);
+    } else {
+        facemgr_cfg_rule_set_overlay(rule, AF_INET6,
+                                     NULL, source_port,
+                                     next_hop_ip_p, next_hop_port);
+    }
 }
 
 JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_disableDiscovery(JNIEnv *env,
                                                                            jobject thiz,
                                                                            jboolean disable_discovery) {
-    facemgr_cfg_rule_t *rule;
-    rule = facemgr_cfg_rule_create();
-    facemgr_cfg_rule_set_discovery(rule, disable_discovery);
-    facemgr_cfg_add_rule(facemgr_cfg, rule);
+    facemgr_cfg_set_discovery(facemgr_cfg, disable_discovery);
 }
 
 JNIEXPORT void JNICALL

@@ -201,7 +201,7 @@
     <string name="wifi_nexthop_ipv4_key">wifi_nexthop_ipv4_key</string>
     <string name="wifi_nexthop_ipv4_summary">Next Hop</string>
     <string name="wifi_nexthop_ipv4_title">Next Hop</string>
-    <string name="default_wifi_nexthop_port_ipv4">9596</string>
+    <string name="default_wifi_nexthop_port_ipv4">9695</string>
     <string name="wifi_nexthop_port_ipv4_key">wifi_nexthop_port_ipv4_key</string>
     <string name="wifi_nexthop_port_ipv4_summary">Next Hop Port</string>
     <string name="wifi_nexthop_port_ipv4_title">Next Hop Port</string>
@@ -209,7 +209,7 @@
 
 
     <string name="wifi_ipv6_preference_title">WiFi IPv6</string>
-    <string name="default_wifi_source_port_ipv6">9596</string>
+    <string name="default_wifi_source_port_ipv6">9695</string>
     <string name="wifi_source_port_ipv6_key">wifi_source_port_ipv6_key</string>
     <string name="wifi_source_port_ipv6_summary">Source Port</string>
     <string name="wifi_source_port_ipv6_title">Source Port</string>
@@ -217,7 +217,7 @@
     <string name="wifi_nexthop_ipv6_key">wifi_nexthop_ipv6_key</string>
     <string name="wifi_nexthop_ipv6_summary">Next Hop</string>
     <string name="wifi_nexthop_ipv6_title">Next Hop</string>
-    <string name="default_wifi_nexthop_port_ipv6">9596</string>
+    <string name="default_wifi_nexthop_port_ipv6">9695</string>
     <string name="wifi_nexthop_port_ipv6_key">wifi_nexthop_port_ipv6_key</string>
     <string name="wifi_nexthop_port_ipv6_summary">Next Hop Port</string>
     <string name="wifi_nexthop_port_ipv6_title">Next Hop Port</string>
@@ -226,7 +226,7 @@
 
 
     <string name="cellular_ipv4_preference_title">Cellular IPv4</string>
-    <string name="default_cellular_source_port_ipv4">9596</string>
+    <string name="default_cellular_source_port_ipv4">9695</string>
     <string name="cellular_source_port_ipv4_key">cellular_source_port_ipv4_key</string>
     <string name="cellular_source_port_ipv4_summary">Source Port</string>
     <string name="cellular_source_port_ipv4_title">Source Port</string>
@@ -234,7 +234,7 @@
     <string name="cellular_nexthop_ipv4_key">cellular_nexthop_ipv4_key</string>
     <string name="cellular_nexthop_ipv4_summary">Next Hop</string>
     <string name="cellular_nexthop_ipv4_title">Next Hop</string>
-    <string name="default_cellular_nexthop_port_ipv4">9596</string>
+    <string name="default_cellular_nexthop_port_ipv4">9695</string>
     <string name="cellular_nexthop_port_ipv4_key">cellular_nexthop_port_ipv4_key</string>
     <string name="cellular_nexthop_port_ipv4_summary">Next Hop Port</string>
     <string name="cellular_nexthop_port_ipv4_title">Next Hop Port</string>
@@ -242,7 +242,7 @@
 
 
     <string name="cellular_ipv6_preference_title">Cellular IPv6</string>
-    <string name="default_cellular_source_port_ipv6">9596</string>
+    <string name="default_cellular_source_port_ipv6">9695</string>
     <string name="cellular_source_port_ipv6_key">cellular_source_port_ipv6_key</string>
     <string name="cellular_source_port_ipv6_summary">Source Port</string>
     <string name="cellular_source_port_ipv6_title">Source Port</string>
@@ -250,13 +250,13 @@
     <string name="cellular_nexthop_ipv6_key">cellular_nexthop_ipv6_key</string>
     <string name="cellular_nexthop_ipv6_summary">Next Hop</string>
     <string name="cellular_nexthop_ipv6_title">Next Hop</string>
-    <string name="default_cellular_nexthop_port_ipv6">9596</string>
+    <string name="default_cellular_nexthop_port_ipv6">9695</string>
     <string name="cellular_nexthop_port_ipv6_key">cellular_nexthop_port_ipv6_key</string>
     <string name="cellular_nexthop_port_ipv6_summary">Next Hop Port</string>
     <string name="cellular_nexthop_port_ipv6_title">Next Hop Port</string>
 
     <string name="wired_ipv4_preference_title">Wired IPv4</string>
-    <string name="default_wired_source_port_ipv4">9596</string>
+    <string name="default_wired_source_port_ipv4">9695</string>
     <string name="wired_source_port_ipv4_key">wired_source_port_ipv4_key</string>
     <string name="wired_source_port_ipv4_summary">Source Port</string>
     <string name="wired_source_port_ipv4_title">Source Port</string>
@@ -264,7 +264,7 @@
     <string name="wired_nexthop_ipv4_key">wired_nexthop_ipv4_key</string>
     <string name="wired_nexthop_ipv4_summary">Next Hop</string>
     <string name="wired_nexthop_ipv4_title">Next Hop</string>
-    <string name="default_wired_nexthop_port_ipv4">9596</string>
+    <string name="default_wired_nexthop_port_ipv4">9695</string>
     <string name="wired_nexthop_port_ipv4_key">wired_nexthop_port_ipv4_key</string>
     <string name="wired_nexthop_port_ipv4_summary">Next Hop Port</string>
     <string name="wired_nexthop_port_ipv4_title">Next Hop Port</string>
@@ -272,7 +272,7 @@
 
 
     <string name="wired_ipv6_preference_title">Wired IPv6</string>
-    <string name="default_wired_source_port_ipv6">9596</string>
+    <string name="default_wired_source_port_ipv6">9695</string>
     <string name="wired_source_port_ipv6_key">wired_source_port_ipv6_key</string>
     <string name="wired_source_port_ipv6_summary">Source Port</string>
     <string name="wired_source_port_ipv6_title">Source Port</string>
@@ -280,7 +280,7 @@
     <string name="wired_nexthop_ipv6_key">wired_nexthop_ipv6_key</string>
     <string name="wired_nexthop_ipv6_summary">Next Hop</string>
     <string name="wired_nexthop_ipv6_title">Next Hop</string>
-    <string name="default_wired_nexthop_port_ipv6">9596</string>
+    <string name="default_wired_nexthop_port_ipv6">9695</string>
     <string name="wired_nexthop_port_ipv6_key">wired_nexthop_port_ipv6_key</string>
     <string name="wired_nexthop_port_ipv6_summary">Next Hop Port</string>
     <string name="wired_nexthop_port_ipv6_title">Next Hop Port</string>
