@@ -37,10 +37,14 @@
 
 #include <hicn/facemgr.h>
 #include <hicn/policy.h>
-#include <hicn/util/ip_address.h>
-#include <hicn/facemgr/cfg.h>
 
+#include <hicn/util/ip_address.h>
+#include <hicn/util/log.h>
+
+#include <hicn/facemgr/cfg.h>
+#include <hicn/facemgr/api.h>
 #include <event2/event.h>
+
 
 
 static facemgr_cfg_t *facemgr_cfg;
@@ -277,6 +281,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgr(JNIEnv *e
 
     if (!_isRunningFacemgr) {
         facemgr_t *facemgr = facemgr_create_with_config(facemgr_cfg);
+        facemgr_set_jvm(facemgr, env, thiz);
         loop = event_base_new();
         facemgr_set_event_loop_handler(facemgr, loop, loop_register_fd, loop_unregister_event);
         facemgr_bootstrap(facemgr);
