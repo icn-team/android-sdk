@@ -284,6 +284,15 @@
     <string name="wired_nexthop_port_ipv6_key">wired_nexthop_port_ipv6_key</string>
     <string name="wired_nexthop_port_ipv6_summary">Next Hop Port</string>
     <string name="wired_nexthop_port_ipv6_title">Next Hop Port</string>
+    <string name="enable_wifi_key">enable_wifi_key</string>
+    <string name="auto">Auto</string>
+    <string name="enable_wifi_title">Enable WiFi</string>
+    <string name="enable_cellular_title">Enable Cellular</string>
+    <string name="enable_wired_title">Enable Wired</string>
+    <string name="enable_cellular_key">enable_cellular_key</string>
+    <string name="enable_wired_key">enable_wired_key</string>
+
+    <string name="checkbox_true">true</string>
 
 
 </resources>

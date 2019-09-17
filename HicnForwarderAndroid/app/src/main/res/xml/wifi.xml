@@ -19,6 +19,11 @@
         app:key="@string/wifi_key"
         app:title="@string/wifi_preference_title">
 
+        <SwitchPreference
+            app:defaultValue="string/true"
+            app:key="@string/enable_wifi_key"
+            app:title="@string/enable_wifi_title" />
+
         <Preference
             app:key="@string/wifi_ipv4_preferences_key"
             app:fragment="com.cisco.hicn.forwarder.preferences.WifiIPv4PreferencesFragment"

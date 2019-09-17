@@ -19,18 +19,23 @@
         app:key="@string/cellular_key"
         app:title="@string/cellular_preference_title">
 
+        <SwitchPreference
+            app:defaultValue="string/true"
+            app:key="@string/enable_cellular_key"
+            app:title="@string/enable_wifi_title" />
+
         <Preference
-            app:key="@string/cellular_ipv4_preferences_key"
             app:fragment="com.cisco.hicn.forwarder.preferences.CellularIPv4PreferencesFragment"
-            app:title="@string/cellular_ipv4_preferences_summary"
-            app:summary="@string/cellular_ipv4_preferences_summary"/>
+            app:key="@string/cellular_ipv4_preferences_key"
+            app:summary="@string/cellular_ipv4_preferences_summary"
+            app:title="@string/cellular_ipv4_preferences_summary" />
 
 
         <Preference
-            app:key="@string/cellular_ipv6_preferences_key"
             app:fragment="com.cisco.hicn.forwarder.preferences.CellularIPv6PreferencesFragment"
-            app:title="@string/cellular_ipv6_preferences_summary"
-            app:summary="@string/cellular_ipv6_preferences_summary" />
+            app:key="@string/cellular_ipv6_preferences_key"
+            app:summary="@string/cellular_ipv6_preferences_summary"
+            app:title="@string/cellular_ipv6_preferences_summary" />
 
     </PreferenceCategory>
 

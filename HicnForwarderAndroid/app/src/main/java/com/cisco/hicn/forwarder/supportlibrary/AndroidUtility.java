@@ -11,14 +11,14 @@ import com.cisco.hicn.forwarder.MainActivity;
 public class AndroidUtility {
 
     public static int getNetworkType(String networkName) {
-        if (MainActivity.interfacesHashMap.containsKey(networkName)) {
-            return MainActivity.interfacesHashMap.get(networkName);
-        } else {
-            int type = getNetworkType(MainActivity.context, networkName);
-            if (type > -1)
-                MainActivity.interfacesHashMap.put(networkName, type);
-            return type;
-        }
+        //if (MainActivity.interfacesHashMap.containsKey(networkName)) {
+        //    return MainActivity.interfacesHashMap.get(networkName);
+        //} else {
+        return getNetworkType(MainActivity.context, networkName);
+        //if (type > -1)
+        //    MainActivity.interfacesHashMap.put(networkName, type);
+        //return type;
+        //  }
     }
 
     public static int getNetworkType(Context context, String networkName) {
