@@ -14,7 +14,7 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/forwarder_preference_category">
+    <PreferenceCategory app:title="@string/face_management_preference_category">
 
 
         <CheckBoxPreference
