@@ -29,15 +29,6 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.HashMap;
 
-//import android.support.annotation.NonNull;
-//import android.support.design.widget.NavigationView;
-//import android.support.v4.app.Fragment;
-//import android.support.v4.app.FragmentManager;
-//import android.support.v4.app.FragmentTransaction;
-//import android.support.v4.widget.DrawerLayout;
-//import android.support.v7.app.ActionBarDrawerToggle;
-//import android.support.v7.app.AppCompatActivity;
-
 public class MainActivity extends AppCompatActivity
         implements Home.OnFragmentInteractionListener,
         PreferencesFragment.OnFragmentInteractionListener,
@@ -168,22 +159,6 @@ public class MainActivity extends AppCompatActivity
                 fragment = settings;
                 setTitle(menuItem.getTitle());
                 break;
-            /*case R.id.action_msg:
-                fragment = home;
-                setTitle(menuItem.getTitle());
-                break;
-            case R.id.action_video:
-                fragment = home;
-                setTitle(menuItem.getTitle());
-                break;
-            case R.id.action_info:
-                fragment = home;
-                setTitle(menuItem.getTitle());
-                break;*/
-            //case R.id.action_home:
-            //    fragment = home;
-            //    setTitle(menuItem.getTitle());
-            //    break;
             default:
                 fragment = home;
                 setTitle(menuItem.getTitle());
