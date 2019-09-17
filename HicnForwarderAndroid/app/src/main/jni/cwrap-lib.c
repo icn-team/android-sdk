@@ -281,7 +281,9 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgr(JNIEnv *e
 
     if (!_isRunningFacemgr) {
         facemgr_t *facemgr = facemgr_create_with_config(facemgr_cfg);
-        facemgr_set_jvm(facemgr, env, thiz);
+        JavaVM *jvm = NULL;
+        (*env)->GetJavaVM(env, &jvm);
+        facemgr_set_jvm(facemgr, env, thiz, jvm);
         loop = event_base_new();
         facemgr_set_event_loop_handler(facemgr, loop, loop_register_fd, loop_unregister_event);
         facemgr_bootstrap(facemgr);
@@ -451,11 +453,13 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_updateInterfaceIPv4(JN
         rule = facemgr_cfg_rule_create();
         facemgr_cfg_rule_set_match(rule, NULL, netdevice_interface_type);
 
+        __android_log_print(ANDROID_LOG_DEBUG, "cwraplib", "1");
         facemgr_cfg_set_overlay(facemgr_cfg, AF_INET,
                                 NULL, source_port,
                                 next_hop_ip_p, next_hop_port);
         facemgr_cfg_add_rule(facemgr_cfg, rule);
     } else {
+        __android_log_print(ANDROID_LOG_DEBUG, "cwraplib", "2");
         facemgr_cfg_rule_set_overlay(rule, AF_INET,
                                 NULL, source_port,
                                 next_hop_ip_p, next_hop_port);
