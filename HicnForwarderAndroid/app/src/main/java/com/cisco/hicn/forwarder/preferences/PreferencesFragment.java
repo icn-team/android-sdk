@@ -1,7 +1,9 @@
 package com.cisco.hicn.forwarder.preferences;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -28,6 +30,11 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle bundle, String s) {
 
         setPreferencesFromResource(R.xml.root, s);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        if (!sharedPreferences.contains(getString(R.string.enable_bonjour_key))) {
+        }
 
         getPreferenceScreen().findPreference(getString(R.string.enable_bonjour_key)).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 
