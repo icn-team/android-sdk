@@ -43,17 +43,9 @@ public class NativeAccess {
 
     public native void stopForwarder();
 
-
     public native boolean isRunningFacemgr();
 
     public native void startFacemgr();
-
-    //public native void startFacemgrWithConfig(String nextHopIpV4Wifi, int nextHopPortIpV4Wifi,
-    //                                          String nextHopIpV6Wifi, int nextHopPortIpV6Wifi,
-    //                                          String nextHopIpV4Radio, int nextHopPortIpV4Radio,
-    //                                          String nextHopIpV6Radio, int nextHopPortIpV6Radio,
-    //                                          String nextHopIpV4Wired, int nextHopPortIpV4Wired,
-    //                                          String nextHopIpV6Wired, int nextHopPortIpV6Wired);
 
     public native void stopFacemgr();
 
@@ -66,6 +58,10 @@ public class NativeAccess {
     public native void updateInterfaceIPv4(int interfaceType, int sourcePort, String nextHopIp, int nextHopPort);
 
     public native void updateInterfaceIPv6(int interfaceType, int sourcePort, String nextHopIp, int nextHopPort);
+
+    public native void unsetInterfaceIPv4(int interfaceType);
+
+    public native void unsetInterfaceIPv6(int interfaceType);
 
     public native String test();
 

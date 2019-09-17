@@ -21,18 +21,23 @@
             app:defaultValue="string/true"
             app:key="@string/enable_bonjour_key"
             app:summary="@string/enable_bonjour_summary"
+            android:defaultValue="@string/checkbox_true"
             app:title="@string/enable_bonjour_title" />
 
         <CheckBoxPreference
             app:defaultValue="string/true"
             app:key="@string/enable_nexthop_ipv4_key"
+            app:enabled="false"
             app:summary="@string/enable_nexthop_ipv4_summary"
+            android:defaultValue="@string/checkbox_true"
             app:title="@string/enable_nexthop_ipv4_title" />
 
         <CheckBoxPreference
             app:defaultValue="string/true"
             app:key="@string/enable_nexthop_ipv6_key"
+            app:enabled="false"
             app:summary="@string/enable_nexthop_ipv6_summary"
+            android:defaultValue="@string/checkbox_true"
             app:title="@string/enable_nexthop_ipv6_title" />
 
         <Preference

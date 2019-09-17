@@ -19,18 +19,23 @@
         app:key="wifi"
         app:title="@string/wired_preference_title">
 
+        <SwitchPreference
+            app:defaultValue="string/true"
+            app:key="@string/enable_wired_key"
+            app:title="@string/enable_wired_title" />
+
         <Preference
-            app:key="@string/wired_ipv4_preferences_key"
             app:fragment="com.cisco.hicn.forwarder.preferences.WiredIPv4PreferencesFragment"
-            app:title="@string/wired_ipv4_preferences_summary"
-            app:summary="@string/wired_ipv4_preferences_summary"/>
+            app:key="@string/wired_ipv4_preferences_key"
+            app:summary="@string/wired_ipv4_preferences_summary"
+            app:title="@string/wired_ipv4_preferences_summary" />
 
 
         <Preference
-            app:key="@string/wired_ipv6_preferences_key"
             app:fragment="com.cisco.hicn.forwarder.preferences.WiredIPv6PreferencesFragment"
-            app:title="@string/wired_ipv6_preferences_summary"
-            app:summary="@string/wired_ipv6_preferences_summary" />
+            app:key="@string/wired_ipv6_preferences_key"
+            app:summary="@string/wired_ipv6_preferences_summary"
+            app:title="@string/wired_ipv6_preferences_summary" />
 
     </PreferenceCategory>
 

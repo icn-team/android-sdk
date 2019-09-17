@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="nav_View">
-    <group android:checkableBehavior="single">
+    <!--<group android:checkableBehavior="single">
         <item
             android:id="@+id/action_home"
             android:enabled="true"
@@ -23,11 +23,11 @@
             android:title="@string/home"
             app:showAsAction="ifRoom" />
 
-    </group>
+    </group>-->
     <item android:title="General">
         <menu>
             <item
-                android:id="@+id/action_info"
+                android:id="@+id/forwarder"
                 android:enabled="true"
                 android:icon="@drawable/ic_cached_black_24px"
                 android:title="@string/home"

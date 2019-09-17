@@ -97,36 +97,48 @@ public class MainActivity extends AppCompatActivity
         boolean enableNexHopIPv6 = sharedPreferences.getBoolean(getString(R.string.enable_nexthop_ipv6_key), true);
         nativeAccess.disableIPv6(!enableNexHopIPv6);
 
-        int wifiSourcePortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wifi_source_port_ipv4_key), getString(R.string.default_wifi_source_port_ipv4)));
-        String wifiNextHopIPv4 = sharedPreferences.getString(getString(R.string.wifi_nexthop_ipv4_key), getString(R.string.default_wifi_nexthop_ipv4));
-        int wifiNextHopPortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wifi_nexthop_port_ipv4_key), getString(R.string.default_wifi_nexthop_port_ipv4)));
-        nativeAccess.updateInterfaceIPv4(Constants.NETDEVICE_TYPE_WIFI, wifiSourcePortIPv4, wifiNextHopIPv4, wifiNextHopPortIPv4);
+        boolean enableWifi = sharedPreferences.getBoolean(getString(R.string.enable_wifi_key), true);
 
-        int wifiSourcePortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wifi_source_port_ipv6_key), getString(R.string.default_wifi_source_port_ipv6)));
-        String wifiNextHopIPv6 = sharedPreferences.getString(getString(R.string.wifi_nexthop_ipv6_key), getString(R.string.default_wifi_nexthop_ipv6));
-        int wifiNextHopPortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wifi_nexthop_port_ipv6_key), getString(R.string.default_wifi_nexthop_port_ipv6)));
-        nativeAccess.updateInterfaceIPv6(Constants.NETDEVICE_TYPE_WIFI, wifiSourcePortIPv6, wifiNextHopIPv6, wifiNextHopPortIPv6);
+        if (enableWifi) {
 
-        int cellularSourcePortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.cellular_source_port_ipv4_key), getString(R.string.default_cellular_source_port_ipv4)));
-        String cellularNextHopIPv4 = sharedPreferences.getString(getString(R.string.cellular_nexthop_ipv4_key), getString(R.string.default_cellular_nexthop_ipv4));
-        int cellularNextHopPortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.cellular_nexthop_port_ipv4_key), getString(R.string.default_cellular_nexthop_port_ipv4)));
-        nativeAccess.updateInterfaceIPv4(Constants.NETDEVICE_TYPE_CELLULAR, cellularSourcePortIPv4, cellularNextHopIPv4, cellularNextHopPortIPv4);
+            int wifiSourcePortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wifi_source_port_ipv4_key), getString(R.string.default_wifi_source_port_ipv4)));
+            String wifiNextHopIPv4 = sharedPreferences.getString(getString(R.string.wifi_nexthop_ipv4_key), getString(R.string.default_wifi_nexthop_ipv4));
+            int wifiNextHopPortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wifi_nexthop_port_ipv4_key), getString(R.string.default_wifi_nexthop_port_ipv4)));
+            nativeAccess.updateInterfaceIPv4(Constants.NETDEVICE_TYPE_WIFI, wifiSourcePortIPv4, wifiNextHopIPv4, wifiNextHopPortIPv4);
 
-        int cellularSourcePortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.cellular_source_port_ipv6_key), getString(R.string.default_cellular_source_port_ipv6)));
-        String cellularNextHopIPv6 = sharedPreferences.getString(getString(R.string.cellular_nexthop_ipv6_key), getString(R.string.default_cellular_nexthop_ipv6));
-        int cellularNextHopPortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.cellular_nexthop_port_ipv6_key), getString(R.string.default_cellular_nexthop_port_ipv6)));
-        nativeAccess.updateInterfaceIPv6(Constants.NETDEVICE_TYPE_CELLULAR, cellularSourcePortIPv6, cellularNextHopIPv6, cellularNextHopPortIPv6);
+            int wifiSourcePortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wifi_source_port_ipv6_key), getString(R.string.default_wifi_source_port_ipv6)));
+            String wifiNextHopIPv6 = sharedPreferences.getString(getString(R.string.wifi_nexthop_ipv6_key), getString(R.string.default_wifi_nexthop_ipv6));
+            int wifiNextHopPortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wifi_nexthop_port_ipv6_key), getString(R.string.default_wifi_nexthop_port_ipv6)));
+            nativeAccess.updateInterfaceIPv6(Constants.NETDEVICE_TYPE_WIFI, wifiSourcePortIPv6, wifiNextHopIPv6, wifiNextHopPortIPv6);
+        }
 
-        int wiredSourcePortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wired_source_port_ipv4_key), getString(R.string.default_wired_source_port_ipv4)));
-        String wiredNextHopIPv4 = sharedPreferences.getString(getString(R.string.wired_nexthop_ipv4_key), getString(R.string.default_wired_nexthop_ipv4));
-        int wiredNextHopPortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wired_nexthop_port_ipv4_key), getString(R.string.default_wired_nexthop_port_ipv4)));
-        nativeAccess.updateInterfaceIPv4(Constants.NETDEVICE_TYPE_WIRED, wiredSourcePortIPv4, wiredNextHopIPv4, wiredNextHopPortIPv4);
+        boolean cellularWifi = sharedPreferences.getBoolean(getString(R.string.enable_cellular_key), true);
 
-        int wiredSourcePortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wired_source_port_ipv6_key), getString(R.string.default_wired_source_port_ipv6)));
-        String wiredNextHopIPv6 = sharedPreferences.getString(getString(R.string.wired_nexthop_ipv6_key), getString(R.string.default_wired_nexthop_ipv6));
-        int wiredNextHopPortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wired_nexthop_port_ipv6_key), getString(R.string.default_wired_nexthop_port_ipv6)));
-        nativeAccess.updateInterfaceIPv6(Constants.NETDEVICE_TYPE_WIRED, wiredSourcePortIPv6, wiredNextHopIPv6, wiredNextHopPortIPv6);
+        if (cellularWifi) {
+            int cellularSourcePortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.cellular_source_port_ipv4_key), getString(R.string.default_cellular_source_port_ipv4)));
+            String cellularNextHopIPv4 = sharedPreferences.getString(getString(R.string.cellular_nexthop_ipv4_key), getString(R.string.default_cellular_nexthop_ipv4));
+            int cellularNextHopPortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.cellular_nexthop_port_ipv4_key), getString(R.string.default_cellular_nexthop_port_ipv4)));
+            nativeAccess.updateInterfaceIPv4(Constants.NETDEVICE_TYPE_CELLULAR, cellularSourcePortIPv4, cellularNextHopIPv4, cellularNextHopPortIPv4);
 
+            int cellularSourcePortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.cellular_source_port_ipv6_key), getString(R.string.default_cellular_source_port_ipv6)));
+            String cellularNextHopIPv6 = sharedPreferences.getString(getString(R.string.cellular_nexthop_ipv6_key), getString(R.string.default_cellular_nexthop_ipv6));
+            int cellularNextHopPortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.cellular_nexthop_port_ipv6_key), getString(R.string.default_cellular_nexthop_port_ipv6)));
+            nativeAccess.updateInterfaceIPv6(Constants.NETDEVICE_TYPE_CELLULAR, cellularSourcePortIPv6, cellularNextHopIPv6, cellularNextHopPortIPv6);
+        }
+
+        boolean wiredWifi = sharedPreferences.getBoolean(getString(R.string.enable_cellular_key), true);
+
+        if (wiredWifi) {
+            int wiredSourcePortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wired_source_port_ipv4_key), getString(R.string.default_wired_source_port_ipv4)));
+            String wiredNextHopIPv4 = sharedPreferences.getString(getString(R.string.wired_nexthop_ipv4_key), getString(R.string.default_wired_nexthop_ipv4));
+            int wiredNextHopPortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wired_nexthop_port_ipv4_key), getString(R.string.default_wired_nexthop_port_ipv4)));
+            nativeAccess.updateInterfaceIPv4(Constants.NETDEVICE_TYPE_WIRED, wiredSourcePortIPv4, wiredNextHopIPv4, wiredNextHopPortIPv4);
+
+            int wiredSourcePortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wired_source_port_ipv6_key), getString(R.string.default_wired_source_port_ipv6)));
+            String wiredNextHopIPv6 = sharedPreferences.getString(getString(R.string.wired_nexthop_ipv6_key), getString(R.string.default_wired_nexthop_ipv6));
+            int wiredNextHopPortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wired_nexthop_port_ipv6_key), getString(R.string.default_wired_nexthop_port_ipv6)));
+            nativeAccess.updateInterfaceIPv6(Constants.NETDEVICE_TYPE_WIRED, wiredSourcePortIPv6, wiredNextHopIPv6, wiredNextHopPortIPv6);
+        }
         fragmentManager.beginTransaction().replace(R.id.viewLayout, home).commit();
 
     }

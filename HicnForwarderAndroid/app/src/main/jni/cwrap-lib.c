@@ -293,120 +293,10 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgr(JNIEnv *e
         facemgr_free(facemgr);
 
     }
-    //facemgr =
-
-
-
-    /*while (_isRunningFacemgr) {
-        __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap", "loop!");
-        sleep(1);
-    }*/
 
 }
 
-/*JNIEXPORT void JNICALL
-Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgrWithConfig(JNIEnv *env,
-                                                                                 jobject thiz,
-                                                                                 jstring next_hop_ip_v4_wifi,
-                                                                                 jint next_hop_port_ip_v4_wifi,
-                                                                                 jstring next_hop_ip_v6_wifi,
-                                                                                 jint next_hop_port_ip_v6_wifi,
-                                                                                 jstring next_hop_ip_v4_radio,
-                                                                                 jint next_hop_port_ip_v4_radio,
-                                                                                 jstring next_hop_ip_v6_radio,
-                                                                                 jint next_hop_port_ip_v6_radio,
-                                                                                 jstring next_hop_ip_v4_wired,
-                                                                                 jint next_hop_port_ip_v4_wired,
-                                                                                 jstring next_hop_ip_v6_wired,
-                                                                                 jint next_hop_port_ip_v6_wired) {
 
-    const char *nextHopIpV4Wifi = (*env)->GetStringUTFChars(env, next_hop_ip_v4_wifi, 0);
-    const char *nextHopIpV6Wifi = (*env)->GetStringUTFChars(env, next_hop_ip_v6_wifi, 0);
-    const char *nextHopIpV4Radio = (*env)->GetStringUTFChars(env, next_hop_ip_v4_radio, 0);
-    const char *nextHopIpV6Radio = (*env)->GetStringUTFChars(env, next_hop_ip_v6_radio, 0);
-    const char *nextHopIpV4Wired = (*env)->GetStringUTFChars(env, next_hop_ip_v4_wired, 0);
-    const char *nextHopIpV6Wired = (*env)->GetStringUTFChars(env, next_hop_ip_v6_wired, 0);
-
-    if (!_isRunningFacemgr) {
-        __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap",
-                            "nextHopIpV4Wifi: %s, nextHopPortIpV4Wifi: %d",
-                            nextHopIpV4Wifi, next_hop_port_ip_v4_wifi);
-
-        __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap",
-                            "nextHopIpV6Wifi: %s, nextHopPortIpV6Wifi: %d",
-                            nextHopIpV6Wifi, next_hop_port_ip_v6_wifi);
-
-        __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap",
-                            "nextHopIpV4Radio: %s, nextHopPortIpV4Radio: %d",
-                            nextHopIpV4Radio, next_hop_port_ip_v4_radio);
-
-        __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap",
-                            "nextHopIpV6Radio: %s, nextHopPortIpV6Radio: %d",
-                            nextHopIpV6Radio, next_hop_port_ip_v6_radio);
-
-        __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap",
-                            "nextHopIpV4Wired: %s, nextHopPortIpV4Wired: %d",
-                            nextHopIpV4Wired, next_hop_port_ip_v4_wired);
-
-        __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap",
-                            "nextHopIpV6Wired: %s, nextHopPortIpV6Wired: %d",
-                            nextHopIpV6Wired, next_hop_port_ip_v6_wired);
-
-
-        facemgr_t *facemgr = facemgr_create();
-        loop = event_base_new();
-        facemgr_set_event_loop_handler(facemgr, loop, loop_register_fd, loop_unregister_event);
-        facemgr_overlay_t *overlay = malloc(sizeof(facemgr_overlay_t));
-        *overlay = FACEMGR_OVERLAY_EMPTY;
-
-
-#ifndef DEBUG
-#endif
-
-        //WIFI
-        overlay->v4.local_port = 9695;
-        ip_address_pton(nextHopIpV4Wifi, &overlay->v4.remote_addr);
-        overlay->v4.remote_port = next_hop_port_ip_v4_wifi;
-        overlay->v6.local_port = 9695;
-        ip_address_pton(nextHopIpV6Wifi, &overlay->v6.remote_addr);
-        overlay->v6.remote_port = next_hop_port_ip_v6_wifi;
-//        facemgr_add_overlay(facemgr, "wlan0", overlay);
-
-        //LTE
-        overlay = malloc(sizeof(facemgr_overlay_t));
-        *overlay = FACEMGR_OVERLAY_EMPTY;
-
-        overlay->v4.local_port = 9695;
-        ip_address_pton(nextHopIpV4Radio, &overlay->v4.remote_addr);
-        overlay->v4.remote_port = next_hop_port_ip_v4_radio;
-        overlay->v6.local_port = 9695;
-        ip_address_pton(nextHopIpV6Radio, &overlay->v6.remote_addr);
-        overlay->v6.remote_port = next_hop_port_ip_v6_radio;
-        //     facemgr_add_overlay(facemgr, "radio0", overlay);
-
-
-        //WIRED
-        overlay = malloc(sizeof(facemgr_overlay_t));
-        *overlay = FACEMGR_OVERLAY_EMPTY;
-
-        overlay->v4.local_port = 9695;
-        ip_address_pton(nextHopIpV4Wired, &overlay->v4.remote_addr);
-        overlay->v4.remote_port = next_hop_port_ip_v4_wired;
-        overlay->v6.local_port = 9695;
-        ip_address_pton(nextHopIpV6Wired, &overlay->v6.remote_addr);
-        overlay->v6.remote_port = next_hop_port_ip_v6_wired;
-        //      facemgr_add_overlay(facemgr, "eth0", overlay);
-
-
-        facemgr_bootstrap(facemgr);
-        _isRunningFacemgr = true;
-        event_base_dispatch(loop);
-
-        facemgr_stop(facemgr);
-        sleep(1);
-        facemgr_free(facemgr);
-    }
-}*/
 
 JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_initConfig(JNIEnv *env, jobject thiz) {
@@ -414,7 +304,6 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_initConfig(JNIEnv *env
 #ifdef DEBUG
     log_conf.log_level = LOG_DEBUG;
 #endif
-    // TODO: implement initConfig()
 }
 
 JNIEXPORT void JNICALL
@@ -453,13 +342,11 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_updateInterfaceIPv4(JN
         rule = facemgr_cfg_rule_create();
         facemgr_cfg_rule_set_match(rule, NULL, netdevice_interface_type);
 
-        __android_log_print(ANDROID_LOG_DEBUG, "cwraplib", "1");
         facemgr_cfg_set_overlay(facemgr_cfg, AF_INET,
                                 NULL, source_port,
                                 next_hop_ip_p, next_hop_port);
         facemgr_cfg_add_rule(facemgr_cfg, rule);
     } else {
-        __android_log_print(ANDROID_LOG_DEBUG, "cwraplib", "2");
         facemgr_cfg_rule_set_overlay(rule, AF_INET,
                                 NULL, source_port,
                                 next_hop_ip_p, next_hop_port);
@@ -511,6 +398,58 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_updateInterfaceIPv6(JN
         facemgr_cfg_rule_set_overlay(rule, AF_INET6,
                                      NULL, source_port,
                                      next_hop_ip_p, next_hop_port);
+    }
+}
+
+JNIEXPORT void JNICALL
+Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_unsetInterfaceIPv4(JNIEnv *env,
+                                                                              jobject thiz,
+                                                                              jint interface_type) {
+    netdevice_type_t netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
+    switch (interface_type) {
+        case 0:
+            netdevice_interface_type = NETDEVICE_TYPE_WIFI;
+            break;
+        case 1:
+            netdevice_interface_type = NETDEVICE_TYPE_CELLULAR;
+            break;
+        case 2:
+            netdevice_interface_type = NETDEVICE_TYPE_WIRED;
+            break;
+        default:
+            netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
+    }
+
+    facemgr_cfg_rule_t *rule;
+    facemgr_cfg_get_rule(facemgr_cfg, NULL, netdevice_interface_type, &rule);
+    if (rule) {
+        facemgr_rule_unset_overlay(rule, AF_INET);
+    }
+}
+
+JNIEXPORT void JNICALL
+Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_unsetInterfaceIPv6(JNIEnv *env,
+                                                                             jobject thiz,
+                                                                             jint interface_type) {
+    netdevice_type_t netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
+    switch (interface_type) {
+        case 0:
+            netdevice_interface_type = NETDEVICE_TYPE_WIFI;
+            break;
+        case 1:
+            netdevice_interface_type = NETDEVICE_TYPE_CELLULAR;
+            break;
+        case 2:
+            netdevice_interface_type = NETDEVICE_TYPE_WIRED;
+            break;
+        default:
+            netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
+    }
+
+    facemgr_cfg_rule_t *rule;
+    facemgr_cfg_get_rule(facemgr_cfg, NULL, netdevice_interface_type, &rule);
+    if (rule) {
+        facemgr_rule_unset_overlay(rule, AF_INET6);
     }
 }
 
