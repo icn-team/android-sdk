@@ -49,7 +49,7 @@ public class NativeAccess {
 
     public native void stopFacemgr();
 
-    public native void disableDiscovery(boolean disableDiscovery);
+    public native void enableDiscovery(boolean enableDiscovery);
 
     public native void disableIPv4(boolean disableIPv4);
 

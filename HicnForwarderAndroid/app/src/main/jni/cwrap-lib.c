@@ -301,9 +301,9 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgr(JNIEnv *e
 JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_initConfig(JNIEnv *env, jobject thiz) {
     facemgr_cfg = facemgr_cfg_create();
-#ifdef DEBUG
+//#ifdef DEBUG
     log_conf.log_level = LOG_DEBUG;
-#endif
+//#endif
 }
 
 JNIEXPORT void JNICALL
@@ -454,10 +454,10 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_unsetInterfaceIPv6(JNI
 }
 
 JNIEXPORT void JNICALL
-Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_disableDiscovery(JNIEnv *env,
+Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_enableDiscovery(JNIEnv *env,
                                                                            jobject thiz,
-                                                                           jboolean disable_discovery) {
-    facemgr_cfg_set_discovery(facemgr_cfg, disable_discovery);
+                                                                           jboolean enable_discovery) {
+    facemgr_cfg_set_discovery(facemgr_cfg, enable_discovery);
 }
 
 JNIEXPORT void JNICALL

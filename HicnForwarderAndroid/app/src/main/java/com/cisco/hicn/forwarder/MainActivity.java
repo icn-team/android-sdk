@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity
 
         fillInterfaceTypes();
 
-
         setContentView(R.layout.activity_main);
         mDrawer = (DrawerLayout) findViewById(R.id.drawer);
         mToggle = new ActionBarDrawerToggle(this, mDrawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         boolean enableBonjour = sharedPreferences.getBoolean(getString(R.string.enable_bonjour_key), true);
-        nativeAccess.disableDiscovery(!enableBonjour);
+        nativeAccess.enableDiscovery(enableBonjour);
 
         boolean enableNexHopIPv4 = sharedPreferences.getBoolean(getString(R.string.enable_nexthop_ipv4_key), true);
         nativeAccess.disableIPv4(!enableNexHopIPv4);
