@@ -44,7 +44,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
 
                 NativeAccess nativeAccess = NativeAccess.getInstance();
 
-                nativeAccess.disableDiscovery(!enableBonjour);
+                nativeAccess.enableDiscovery(enableBonjour);
                 return true;
             }
         });
