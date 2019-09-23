@@ -28,7 +28,7 @@ public class AndroidUtility {
         }
         for (Network network : connectivityManager.getAllNetworks()) {
             LinkProperties prop = connectivityManager.getLinkProperties(network);
-            if (prop.getInterfaceName().equals(networkName)) {
+            if (prop.getInterfaceName()!= null &&  prop.getInterfaceName().equals(networkName)) {
                 NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(network);
                 if (capabilities == null) {
                     return -1; //error
