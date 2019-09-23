@@ -28,7 +28,7 @@ public class AndroidUtility {
         }
         for (Network network : connectivityManager.getAllNetworks()) {
             LinkProperties prop = connectivityManager.getLinkProperties(network);
-            if (prop.getInterfaceName()!= null &&  prop.getInterfaceName().equals(networkName)) {
+            if (prop.getInterfaceName()!= null &&  prop.getInterfaceName().equals(networkName.trim())) {
                 NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(network);
                 if (capabilities == null) {
                     return -1; //error
@@ -43,8 +43,6 @@ public class AndroidUtility {
                     return 3;
                 }
                 return 0; //not supported
-
-
             }
         }
         return -1; //error
