@@ -46,7 +46,6 @@
 #include <event2/event.h>
 
 
-
 static facemgr_cfg_t *facemgr_cfg;
 static bool _isRunning = false;
 static bool _isRunningFacemgr = false;
@@ -168,42 +167,6 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startForwarder(JNIEnv 
                                                                          jint capacity) {
 
 
-    //TODO remove
-    ////   jclass clazz = (*env)->FindClass(env, "com/cisco/hicn/forwarder/supportlibrary/AndroidUtility");
-    //JavaVM *jvm = NULL;
-    //(*env)->GetJavaVM(env, &jvm);
-    ////   jmethodID getNetworkType = (*env)->GetStaticMethodID(env, clazz, "getNetworkType", "(Ljava/lang/String;)I");
-    ////   jint aaa = (*env)->CallStaticIntMethod(env, clazz, getNetworkType,
-    ////                                          (*env)->NewStringUTF(env, "wlan0"));
-
-    ////    aaa = (*env)->CallStaticIntMethod(env, clazz, getNetworkType,
-    ////                                          (*env)->NewStringUTF(env, "radio0"));
-
-
-    ////    JavaVM *jvm = NULL;
-    //(*env)->GetJavaVM(env, &jvm);
-
-
-    //pass jvm to your library as a parameter
-
-    //jclass class = (jclass)((*env)->NewGlobalRef(env, clazz)));
-    //pass class to your library as parameter
-
-
-    //if you want to call the method in your library:
-    //JNIEnv *env;
-    //(*jvm)->AttachCurrentThread(jvm, &env, NULL);
-    //get the method reference
-    //jmethodID getNetworkType = (*env)->GetStaticMethodID(env, clazz, "getNetworkType", "(Ljava/lang/String;)I");
-    //call the static method
-    //jint aaa = (*env)->CallStaticIntMethod(env, clazz, getNetworkType,
-    //                                           (*env)->NewStringUTF(env, "wlan0"));
-
-
-    ///end remove
-
-
-
     if (!_isRunning) {
         __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap", "starting HicnFwd...");
 
@@ -213,13 +176,17 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startForwarder(JNIEnv 
         logger = logger_Create(stdoutReporter, parcClock_Wallclock());
         parcLogReporter_Release(&stdoutReporter);
         int logLevelArray[LoggerFacility_END];
-        /*_setLogLevel(logLevelArray, "all=debug");
+
+
+//#ifdef DEBUG
+        _setLogLevel(logLevelArray, "all=debug");
 
         for (int i = 0; i < LoggerFacility_END; i++) {
             if (logLevelArray[i] > -1) {
                 logger_SetLogLevel(logger, i, logLevelArray[i]);
             }
-        }*/
+        }
+//#endif
 
         hicnFwd = forwarder_Create(logger);
         Configuration *configuration = forwarder_GetConfiguration(hicnFwd);
@@ -280,6 +247,8 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgr(JNIEnv *e
 
 
     if (!_isRunningFacemgr) {
+        facemgr_face_type_t face_type = FACEMGR_FACE_TYPE_OVERLAY_UDP;
+        facemgr_cfg_set_face_type(facemgr_cfg, &face_type);
         facemgr_t *facemgr = facemgr_create_with_config(facemgr_cfg);
         JavaVM *jvm = NULL;
         (*env)->GetJavaVM(env, &jvm);
@@ -297,13 +266,13 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgr(JNIEnv *e
 }
 
 
-
 JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_initConfig(JNIEnv *env, jobject thiz) {
     facemgr_cfg = facemgr_cfg_create();
-//#ifdef DEBUG
+
+#ifdef DEBUG
     log_conf.log_level = LOG_DEBUG;
-//#endif
+#endif
 }
 
 JNIEXPORT void JNICALL
@@ -348,8 +317,8 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_updateInterfaceIPv4(JN
         facemgr_cfg_add_rule(facemgr_cfg, rule);
     } else {
         facemgr_cfg_rule_set_overlay(rule, AF_INET,
-                                NULL, source_port,
-                                next_hop_ip_p, next_hop_port);
+                                     NULL, source_port,
+                                     next_hop_ip_p, next_hop_port);
     }
 }
 
@@ -403,8 +372,8 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_updateInterfaceIPv6(JN
 
 JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_unsetInterfaceIPv4(JNIEnv *env,
-                                                                              jobject thiz,
-                                                                              jint interface_type) {
+                                                                             jobject thiz,
+                                                                             jint interface_type) {
     netdevice_type_t netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
     switch (interface_type) {
         case 0:
@@ -455,8 +424,8 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_unsetInterfaceIPv6(JNI
 
 JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_enableDiscovery(JNIEnv *env,
-                                                                           jobject thiz,
-                                                                           jboolean enable_discovery) {
+                                                                          jobject thiz,
+                                                                          jboolean enable_discovery) {
     facemgr_cfg_set_discovery(facemgr_cfg, enable_discovery);
 }
 
