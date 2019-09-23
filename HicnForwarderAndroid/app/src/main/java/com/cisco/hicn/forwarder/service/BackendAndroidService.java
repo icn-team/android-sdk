@@ -82,55 +82,7 @@ public class BackendAndroidService extends Service {
         NativeAccess nativeAccess = NativeAccess.getInstance();
         if (!nativeAccess.isRunningForwarder()) {
             Log.d(TAG, "Starting Backand Service");
-            SharedPreferences sharedPreferences =
-                    PreferenceManager.getDefaultSharedPreferences(this /* Activity context */);
-            capacity = Integer.parseInt(sharedPreferences.getString(getString(R.string.cache_size_key), "0"));
 
-            overlayDiscovery = sharedPreferences.getString(getString(R.string.overlay_discovery_key), getString(R.string.default_overlay_discovery));
-
-            if (getString(R.string.manual).equals(overlayDiscovery)) {
-
-                nextHopIpV4Wifi = sharedPreferences.getString(getString(R.string.nexthop_address_ipv4_key) + getString(R.string.wifi), getString(R.string.default_ipv4));
-
-                nextHopIpV6Wifi = sharedPreferences.getString(getString(R.string.nexthop_address_ipv6_key) + getString(R.string.wifi), getString(R.string.default_ipv6));
-
-                nextHopIpV4Radio = sharedPreferences.getString(getString(R.string.nexthop_address_ipv4_key) + getString(R.string.radio), getString(R.string.default_ipv4));
-
-                nextHopIpV6Radio = sharedPreferences.getString(getString(R.string.nexthop_address_ipv6_key) + getString(R.string.radio), getString(R.string.default_ipv6));
-
-                nextHopIpV4Wired = sharedPreferences.getString(getString(R.string.nexthop_address_ipv4_key) + getString(R.string.wired), getString(R.string.default_ipv4));
-
-                nextHopIpV6Wired = sharedPreferences.getString(getString(R.string.nexthop_address_ipv6_key) + getString(R.string.wired), getString(R.string.default_ipv6));
-
-                nextHopIpV4PortWifi = Integer.parseInt(sharedPreferences.getString(getString(R.string.nexthop_port_ipv4_key) + getString(R.string.wifi), getString(R.string.default_port)));
-
-                nextHopIpV6PortWifi = Integer.parseInt(sharedPreferences.getString(getString(R.string.nexthop_port_ipv6_key) + getString(R.string.wifi), getString(R.string.default_port)));
-
-                nextHopIpV4PortRadio = Integer.parseInt(sharedPreferences.getString(getString(R.string.nexthop_port_ipv4_key) + getString(R.string.radio), getString(R.string.default_port)));
-
-                nextHopIpV6PortRadio = Integer.parseInt(sharedPreferences.getString(getString(R.string.nexthop_port_ipv6_key) + getString(R.string.radio), getString(R.string.default_port)));
-
-                nextHopIpV4PortWired = Integer.parseInt(sharedPreferences.getString(getString(R.string.nexthop_port_ipv4_key) + getString(R.string.wired), getString(R.string.default_port)));
-
-                nextHopIpV6PortWired = Integer.parseInt(sharedPreferences.getString(getString(R.string.nexthop_port_ipv6_key) + getString(R.string.wired), getString(R.string.default_port)));
-
-
-                Log.d(TAG, "overlayDiscovery: " + overlayDiscovery);
-
-                Log.d(TAG, "nextHopIpV4Wifi: " + nextHopIpV4Wifi + ", nextHopIpV4PortWifi:" + nextHopIpV4PortWifi);
-
-                Log.d(TAG, "nextHopIpV6Wifi: " + nextHopIpV6Wifi + ", nextHopIpV6PortWifi:" + nextHopIpV6PortWifi);
-
-                Log.d(TAG, "nextHopIpV4WRadio: " + nextHopIpV4Radio + ", nextHopIpV4PortRadio:" + nextHopIpV4PortRadio);
-
-                Log.d(TAG, "nextHopIpV6Radio: " + nextHopIpV6Radio + ", nextHopIpV6PortRadio" + nextHopIpV6PortRadio);
-
-                Log.d(TAG, "nextHopIpV4Wired: " + nextHopIpV4Wired + ", nextHopIpV4PortWired:" + nextHopIpV4PortWired);
-
-                Log.d(TAG, "nextHopIpV6Wired: " + nextHopIpV6Wired + ", nextHopIpV6PortWired:" + nextHopIpV6PortWired);
-
-
-            }
 
             startBackend(intent);
 
