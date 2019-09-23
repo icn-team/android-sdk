@@ -33,13 +33,13 @@ public class AndroidUtility {
                 if (capabilities == null) {
                     return -1; //error
                 }
-                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
                     return 1;
                 }
-                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
                     return 2;
                 }
-                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
                     return 3;
                 }
                 return 0; //not supported
