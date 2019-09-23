@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity
         boolean enableNexHopIPv6 = sharedPreferences.getBoolean(getString(R.string.enable_nexthop_ipv6_key), true);
         nativeAccess.disableIPv6(!enableNexHopIPv6);
 
-        boolean enableWifi = sharedPreferences.getBoolean(getString(R.string.enable_wifi_key), true);
+        boolean enableWifi = sharedPreferences.getBoolean(getString(R.string.enable_wifi_key), false);
 
         if (enableWifi) {
 
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity
             nativeAccess.updateInterfaceIPv6(Constants.NETDEVICE_TYPE_WIFI, wifiSourcePortIPv6, wifiNextHopIPv6, wifiNextHopPortIPv6);
         }
 
-        boolean cellularWifi = sharedPreferences.getBoolean(getString(R.string.enable_cellular_key), true);
+        boolean cellularWifi = sharedPreferences.getBoolean(getString(R.string.enable_cellular_key), false);
 
         if (cellularWifi) {
             int cellularSourcePortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.cellular_source_port_ipv4_key), getString(R.string.default_cellular_source_port_ipv4)));
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity
             nativeAccess.updateInterfaceIPv6(Constants.NETDEVICE_TYPE_CELLULAR, cellularSourcePortIPv6, cellularNextHopIPv6, cellularNextHopPortIPv6);
         }
 
-        boolean wiredWifi = sharedPreferences.getBoolean(getString(R.string.enable_cellular_key), true);
+        boolean wiredWifi = sharedPreferences.getBoolean(getString(R.string.enable_wired_key), false);
 
         if (wiredWifi) {
             int wiredSourcePortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wired_source_port_ipv4_key), getString(R.string.default_wired_source_port_ipv4)));
