@@ -252,7 +252,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgr(JNIEnv *e
         facemgr_t *facemgr = facemgr_create_with_config(facemgr_cfg);
         JavaVM *jvm = NULL;
         (*env)->GetJavaVM(env, &jvm);
-        facemgr_set_jvm(facemgr, env, thiz, jvm);
+        facemgr_set_jvm(facemgr, jvm);
         loop = event_base_new();
         facemgr_set_event_loop_handler(facemgr, loop, loop_register_fd, loop_unregister_event);
         facemgr_bootstrap(facemgr);
