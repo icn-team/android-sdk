@@ -1,7 +1,9 @@
 package com.cisco.hicn.forwarder;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.LinkProperties;
 import android.net.Network;
@@ -18,6 +20,8 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -54,6 +58,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        checkEnabledPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        checkEnabledPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
+        checkEnabledPermission(Manifest.permission.FOREGROUND_SERVICE);
 
         MainActivity.context = getApplicationContext();
 
@@ -133,6 +141,19 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    private void checkEnabledPermission(String permission) {
+        if (ContextCompat.checkSelfPermission(this,
+                permission)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    permission)) {
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{permission},
+                        1);
+            }
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

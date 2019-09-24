@@ -5,8 +5,13 @@ import android.net.ConnectivityManager;
 import android.net.LinkProperties;
 import android.net.Network;
 import android.net.NetworkCapabilities;
+import android.util.Log;
 
 import com.cisco.hicn.forwarder.MainActivity;
+
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Collections;
 
 public class AndroidUtility {
 
@@ -26,9 +31,11 @@ public class AndroidUtility {
         if (connectivityManager == null) {
             return -1; //error
         }
+
+
         for (Network network : connectivityManager.getAllNetworks()) {
             LinkProperties prop = connectivityManager.getLinkProperties(network);
-            if (prop.getInterfaceName()!= null &&  prop.getInterfaceName().equals(networkName.trim())) {
+            if (prop.getInterfaceName() != null && prop.getInterfaceName().equals(networkName.trim())) {
                 NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(network);
                 if (capabilities == null) {
                     return -1; //error
@@ -44,6 +51,15 @@ public class AndroidUtility {
                 }
                 return 0; //not supported
             }
+
+        }
+
+        try {
+            NetworkInterface networkInterface = NetworkInterface.getByName(networkName);
+            if (networkInterface.isLoopback())
+                return 4;
+        } catch (SocketException e) {
+            Log.d(AndroidUtility.class.getCanonicalName(), "error");
         }
         return -1; //error
     }
