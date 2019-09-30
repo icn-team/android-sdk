@@ -47,6 +47,7 @@ import icn.forwarder.com.utility.Constants;
 import icn.forwarder.com.utility.ResourcesEnumerator;
 
 public class ForwarderAndroidActivity extends AppCompatActivity {
+    private static final String TAG = "ForwarderAndroidActivity";
 
     private Spinner sourceIpSpinner;
     private EditText sourcePortEditText;
@@ -62,7 +63,6 @@ public class ForwarderAndroidActivity extends AppCompatActivity {
     private List<String> sourceNetworkInterfaceArrayList = new ArrayList<>();
     private HashMap<String, String> addressesMap = new HashMap<String, String>();
     private SharedPreferences sharedPreferences;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +88,7 @@ public class ForwarderAndroidActivity extends AppCompatActivity {
                 }
             }
         } catch (SocketException ex) {
-            String LOG_TAG = null;
-            Log.e(LOG_TAG, ex.toString());
+            Log.e(TAG, ex.toString());
         }
         return addressesMap;
     }
@@ -128,6 +127,8 @@ public class ForwarderAndroidActivity extends AppCompatActivity {
                 sourceIpSpinner.setSelection(0);
             }
         }
+        sourceIpSpinner.setEnabled(false); // No more needed
+
         sourcePortEditText = findViewById(R.id.source_port_editext);
         sourcePortEditText.setText(sharedPreferences.getString(ResourcesEnumerator.SOURCE_PORT.key(), Constants.DEFAULT_SOURCE_PORT));
         sourceIpRefreshButton = findViewById(R.id.source_ip_refresh_button);
@@ -156,6 +157,8 @@ public class ForwarderAndroidActivity extends AppCompatActivity {
                 }
             }
         });
+        sourceIpRefreshButton.setEnabled(false); // No more needed
+
         nextHopIpEditText = findViewById(R.id.next_hop_ip_editext);
         nextHopIpEditText.setText(sharedPreferences.getString(ResourcesEnumerator.NEXT_HOP_IP.key(), Constants.DEFAULT_NEXT_HOP_IP));
         nextHopPortEditText = findViewById(R.id.next_hop_port_editext);
@@ -175,7 +178,7 @@ public class ForwarderAndroidActivity extends AppCompatActivity {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.v("Switch State=", "" + isChecked);
+                Log.v(TAG, "Switch State=" + isChecked);
                 if (isChecked) {
                     forwarderSwitch.setText(Constants.ENABLED);
                     SharedPreferences.Editor sharedPreferencesEditor = getSharedPreferences(Constants.FORWARDER_PREFERENCES, MODE_PRIVATE).edit();
