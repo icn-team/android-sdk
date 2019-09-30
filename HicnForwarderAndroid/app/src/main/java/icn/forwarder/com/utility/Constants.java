@@ -26,10 +26,12 @@ public class Constants {
     public static final String DEFAULT_SOURCE_PORT = "1111";
     public static final String DEFAULT_CAPACITY = "0";
     public static final String DEFAULT_CONFIGURATION =
-            "add listener udp listener0 %%source_ip%% %%source_port%%\n" +
-            "add connection udp conn0 %%next_hop_ip%% %%next_hop_port%% %%source_ip%% %%source_port%%\n" +
-            "add route conn0 %%prefix%%/%%netmask%% 1\n";
+            "add listener udp listener0 %%source_ip%% %%source_port%% %%interface_name%%\n" +
+            "add connection udp %%conn%% %%next_hop_ip%% %%next_hop_port%% %%source_ip%% %%source_port%%\n" +
+            "add route %%conn%% %%prefix%%/%%netmask%% 1\n";
     public static final String SOURCE_IP = "%%source_ip%%";
+    public static final String INTERFACE_NAME = "%%interface_name%%";
+    public static final String CONNECTION_NAME = "%%conn%%";
     public static final String SOURCE_PORT = "%%source_port%%";
     public static final String NEXT_HOP_IP = "%%next_hop_ip%%";
     public static final String NEXT_HOP_PORT = "%%next_hop_port%%";
