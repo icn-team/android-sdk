@@ -36,7 +36,8 @@
 
 static bool _isRunning = false;
 Forwarder *hicnFwd = NULL;
-
+static JNIEnv* _env;
+static jobject* _instance;
 
 JNIEXPORT jboolean JNICALL
 Java_icn_forwarder_com_supportlibrary_Forwarder_isRunning(JNIEnv *env, jobject instance) {
@@ -98,6 +99,8 @@ Java_icn_forwarder_com_supportlibrary_Forwarder_start(JNIEnv *env, jobject insta
                                                       jstring path_, jint capacity) {
     if (!_isRunning) {
         __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap", "starting HicnFwd...");
+        _env = env;
+        _instance = &instance;
 
         Logger *logger = NULL;
 
@@ -148,4 +151,24 @@ Java_icn_forwarder_com_supportlibrary_Forwarder_stop(JNIEnv *env, jobject instan
         forwarder_Destroy(&hicnFwd);
         _isRunning = false;
     }
+}
+
+static bool bindSocketWrap(JNIEnv *env, jobject instance, int sock, const char* ifname) {
+    jclass clazz = (*env)->GetObjectClass(env, instance);
+    jmethodID methodID = (*env)->GetMethodID(env, clazz, "bindSocket", "(ILjava/lang/String;)Z");
+    bool ret = false;
+    if (methodID) {
+        jstring ifnameStr = (*env)->NewStringUTF(env, ifname);
+        ret = (*env)->CallBooleanMethod(env, instance, methodID, sock, ifnameStr);
+    }
+    return ret;
+}
+
+int bindSocket(int sock, const char* ifname) {
+    if (!_env || !_instance) {
+        __android_log_print(ANDROID_LOG_ERROR, "HicnFwdWrap",
+                            "Call bindSocket, but JNI env/instance variables are not initialized.");
+        return -1;
+    }
+    return bindSocketWrap(_env, *_instance, sock, ifname) ? 0 : -1;
 }

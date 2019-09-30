@@ -15,9 +15,12 @@
 
 package icn.forwarder.com.supportlibrary;
 
+import android.util.Log;
+
 public class Forwarder {
 
     private static Forwarder sInstance = null;
+    private SocketBinder mSocketBinder;
 
     static {
         System.loadLibrary("forwarderWrap");
@@ -31,7 +34,15 @@ public class Forwarder {
     }
 
     private Forwarder() {
+    }
 
+    public void setSocketBinder(SocketBinder socketBinder) {
+        mSocketBinder = socketBinder;
+    }
+
+    private boolean bindSocket(int sock, String ifname) {
+        Log.i("Hicn.forwarder", "request to bind a socket(" + sock + ") with " + ifname);
+        return mSocketBinder.bindSocket(sock, ifname);
     }
 
     public native boolean isRunning();
