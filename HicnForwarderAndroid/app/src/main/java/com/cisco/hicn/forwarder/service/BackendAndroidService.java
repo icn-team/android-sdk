@@ -15,6 +15,7 @@
 
 package com.cisco.hicn.forwarder.service;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -24,20 +25,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.cisco.hicn.forwarder.ForwarderAndroidActivity;
 import com.cisco.hicn.forwarder.R;
 import com.cisco.hicn.forwarder.supportlibrary.NativeAccess;
+import com.cisco.hicn.forwarder.supportlibrary.NetworkServiceHelper;
+import com.cisco.hicn.forwarder.supportlibrary.SocketBinder;
 import com.cisco.hicn.forwarder.utility.Constants;
+import com.cisco.hicn.forwarder.utility.ResourcesEnumerator;
 
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.lang.annotation.Native;
 
 public class BackendAndroidService extends Service {
     private final static String TAG = "BackendService";
@@ -45,36 +52,18 @@ public class BackendAndroidService extends Service {
     private static Thread sForwarderThread = null;
     private static Thread sFacemgrThread = null;
 
+    private NetworkServiceHelper mNetService = new NetworkServiceHelper();
+    private SocketBinder mSocketBinder = new SocketBinder();
+
     public BackendAndroidService() {
     }
-
-    private int capacity = 0;
-
-    private String overlayDiscovery = null;
-
-    private String nextHopIpV4Wifi = null;
-    private int nextHopIpV4PortWifi = 9596;
-
-    private String nextHopIpV6Wifi = null;
-    private int nextHopIpV6PortWifi = 9596;
-
-    private String nextHopIpV4Radio = null;
-    private int nextHopIpV4PortRadio = 9596;
-
-    private String nextHopIpV6Radio = null;
-    private int nextHopIpV6PortRadio = 9596;
-
-    private String nextHopIpV4Wired = null;
-    private int nextHopIpV4PortWired = 9596;
-
-    private String nextHopIpV6Wired = null;
-    private int nextHopIpV6PortWired = 9596;
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
 
+    private int capacity;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -84,7 +73,12 @@ public class BackendAndroidService extends Service {
             Log.d(TAG, "Starting Backand Service");
 
 
-            startBackend(intent);
+            mNetService.init(this, mSocketBinder);
+            mHandler.sendMessageDelayed(mHandler.obtainMessage(EVENT_START_FORWARDER), 1000); // wait for mobile network is up
+
+
+            //    startBackend(intent);
+            //    mNetService.init(this, mSocketBinder);
 
 
         } else {
@@ -107,7 +101,32 @@ public class BackendAndroidService extends Service {
 
             stopForeground(true);
         }
+        mNetService.clear();
         super.onDestroy();
+    }
+
+    private static final int EVENT_START_FORWARDER = 1;
+
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case EVENT_START_FORWARDER:
+
+                    getCapacity();
+                    startBackend();
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
+
+    private void getCapacity() {
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.FORWARDER_PREFERENCES, MODE_PRIVATE);
+        this.capacity = Integer.parseInt(sharedPreferences.getString(ResourcesEnumerator.CAPACITY.key(), Constants.DEFAULT_CAPACITY));
+        ;
     }
 
     protected Runnable mForwarderRunner = new Runnable() {
@@ -116,12 +135,9 @@ public class BackendAndroidService extends Service {
         @Override
         public void run() {
             NativeAccess nativeAccess = NativeAccess.getInstance();
-
-            Log.d(TAG, "capacity: " + capacity);
+            nativeAccess.setSocketBinder(mSocketBinder);
             nativeAccess.startForwarder(capacity);
         }
-
-
     };
 
     protected Runnable mFacemgrRunner = new Runnable() {
@@ -130,37 +146,14 @@ public class BackendAndroidService extends Service {
         @Override
         public void run() {
             NativeAccess nativeAccess = NativeAccess.getInstance();
-            if (getString(R.string.manual).equals(overlayDiscovery)) {
-                Log.d(TAG, "nextHopIpV4Wifi: " + nextHopIpV4Wifi + ", nextHopIpV4PortWifi:" + nextHopIpV4PortWifi);
-                nativeAccess.startFacemgr();//WithConfig(nextHopIpV4Wifi, nextHopIpV4PortWifi,
-                //        nextHopIpV6Wifi, nextHopIpV6PortWifi,
-                //        nextHopIpV4Radio, nextHopIpV4PortRadio,
-                //        nextHopIpV6Radio, nextHopIpV6PortRadio,
-                //        nextHopIpV4Wired, nextHopIpV4PortWired,
-                //        nextHopIpV6Wired, nextHopIpV4PortWired);
 
-            } else {
-                nativeAccess.startFacemgr();
-            }
+            nativeAccess.startFacemgr();
         }
 
 
     };
 
- /*   private boolean writeToFile(String data, String path) {
-        Log.v(TAG, path + " " + data);
-        try (Writer writer = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(path), "utf-8"))) {
-            writer.write(data);
-            return true;
-        } catch (IOException e) {
-            Log.e(TAG, "File write failed: " + e.toString());
-            return false;
-        }
-    }
-*/
-
-    private void startBackend(Intent intent) {
+    private void startBackend() {
         String NOTIFICATION_CHANNEL_ID = "12345";
         Notification notification = null;
         if (Build.VERSION.SDK_INT >= 26) {
@@ -169,18 +162,18 @@ public class BackendAndroidService extends Service {
             Intent notificationIntent = new Intent(this, ForwarderAndroidActivity.class);
             PendingIntent activity = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            notificationBuilder.setContentTitle("BackendAndroid").setContentText("BackendAndroid").setOngoing(true).setContentIntent(activity);
+            notificationBuilder.setContentTitle("ForwarderAndroid").setContentText("ForwarderAndroid").setOngoing(true).setContentIntent(activity);
             notification = notificationBuilder.build();
         } else {
             notification = new Notification.Builder(this)
-                    .setContentTitle("BackendAndroid")
-                    .setContentText("BackendAndroid")
+                    .setContentTitle("ForwarderAndroid")
+                    .setContentText("ForwarderAndroid")
                     .build();
         }
 
         if (Build.VERSION.SDK_INT >= 26) {
-            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "BackendAndroid", NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setDescription("BackendAndroid");
+            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "ForwarderAndroid", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("ForwarderAndroid");
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(channel);
 
@@ -210,5 +203,42 @@ public class BackendAndroidService extends Service {
         Log.i(TAG, "BackendAndroid starterd");
 
     }
+
+    /*private void startBackend() {
+        String NOTIFICATION_CHANNEL_ID = "12345";
+        Notification notification = null;
+        if (Build.VERSION.SDK_INT >= 26) {
+            Notification.Builder notificationBuilder = new Notification.Builder(this, NOTIFICATION_CHANNEL_ID);
+
+            Intent notificationIntent = new Intent(this, ForwarderAndroidActivity.class);
+            PendingIntent activity = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            notificationBuilder.setContentTitle("ForwarderAndroid").setContentText("ForwarderAndroid").setOngoing(true).setContentIntent(activity);
+            notification = notificationBuilder.build();
+        } else {
+            notification = new Notification.Builder(this)
+                    .setContentTitle("ForwarderAndroid")
+                    .setContentText("ForwarderAndroid")
+                    .build();
+        }
+
+        if (Build.VERSION.SDK_INT >= 26) {
+            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "ForwarderAndroid", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("ForwarderAndroid");
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(channel);
+
+        }
+
+        startForeground(Constants.FOREGROUND_SERVICE, notification);
+
+        NativeAccess nativeAccess = NativeAccess.getInstance();
+        if (!nativeAccess.isRunningForwarder()) {
+            sForwarderThread = new Thread(mForwarderRunner, "ForwarderRunner");
+            sForwarderThread.start();
+        }
+
+        Log.i(TAG, "ForwarderAndroid started");
+    }*/
 
 }

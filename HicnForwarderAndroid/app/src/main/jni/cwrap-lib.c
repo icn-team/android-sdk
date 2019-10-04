@@ -49,6 +49,8 @@
 static facemgr_cfg_t *facemgr_cfg;
 static bool _isRunning = false;
 static bool _isRunningFacemgr = false;
+static JNIEnv *_env;
+static jobject *_instance;
 //forwarder
 Forwarder *hicnFwd = NULL;
 //facemgr
@@ -169,6 +171,8 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startForwarder(JNIEnv 
 
     if (!_isRunning) {
         __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap", "starting HicnFwd...");
+        _env = env;
+        _instance = &instance;
 
         Logger *logger = NULL;
 
@@ -178,7 +182,6 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startForwarder(JNIEnv 
         int logLevelArray[LoggerFacility_END];
 
 
-//#ifdef DEBUG
         _setLogLevel(logLevelArray, "all=debug");
 
         for (int i = 0; i < LoggerFacility_END; i++) {
@@ -186,7 +189,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startForwarder(JNIEnv 
                 logger_SetLogLevel(logger, i, logLevelArray[i]);
             }
         }
-//#endif
+
 
         hicnFwd = forwarder_Create(logger);
         Configuration *configuration = forwarder_GetConfiguration(hicnFwd);
@@ -451,4 +454,24 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_disableIPv6(JNIEnv *en
     facemgr_cfg_set_ipv4(rule, disable_ipv6);
     facemgr_cfg_add_rule(facemgr_cfg, rule);
 #endif
+}
+
+static bool bindSocketWrap(JNIEnv *env, jobject instance, int sock, const char *ifname) {
+    jclass clazz = (*env)->GetObjectClass(env, instance);
+    jmethodID methodID = (*env)->GetMethodID(env, clazz, "bindSocket", "(ILjava/lang/String;)Z");
+    bool ret = false;
+    if (methodID) {
+        jstring ifnameStr = (*env)->NewStringUTF(env, ifname);
+        ret = (*env)->CallBooleanMethod(env, instance, methodID, sock, ifnameStr);
+    }
+    return ret;
+}
+
+int bindSocket(int sock, const char *ifname) {
+    if (!_env || !_instance) {
+        __android_log_print(ANDROID_LOG_ERROR, "HicnFwdWrap",
+                            "Call bindSocket, but JNI env/instance variables are not initialized.");
+        return -1;
+    }
+    return bindSocketWrap(_env, *_instance, sock, ifname) ? 0 : -1;
 }
