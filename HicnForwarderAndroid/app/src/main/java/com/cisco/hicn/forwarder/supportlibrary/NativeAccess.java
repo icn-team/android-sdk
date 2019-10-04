@@ -15,9 +15,12 @@
 
 package com.cisco.hicn.forwarder.supportlibrary;
 
+import android.util.Log;
+
 public class NativeAccess {
 
     private static NativeAccess sInstance = null;
+    private SocketBinder mSocketBinder;
 
     static {
         System.loadLibrary("cwrap-lib");
@@ -29,6 +32,15 @@ public class NativeAccess {
             sInstance = new NativeAccess();
         }
         return sInstance;
+    }
+
+    public void setSocketBinder(SocketBinder socketBinder) {
+        mSocketBinder = socketBinder;
+    }
+
+    private boolean bindSocket(int sock, String ifname) {
+        Log.i("Hicn.forwarder", "request to bind a socket(" + sock + ") with " + ifname);
+        return mSocketBinder.bindSocket(sock, ifname);
     }
 
     private NativeAccess() {
