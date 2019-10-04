@@ -17,6 +17,8 @@ package com.cisco.hicn.forwarder.supportlibrary;
 
 import android.util.Log;
 
+import com.cisco.hicn.forwarder.utility.NetdeviceTypeEnum;
+
 public class NativeAccess {
 
     private static NativeAccess sInstance = null;

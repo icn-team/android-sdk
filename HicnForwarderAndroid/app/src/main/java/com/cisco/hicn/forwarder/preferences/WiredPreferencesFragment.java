@@ -10,6 +10,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import com.cisco.hicn.forwarder.R;
 import com.cisco.hicn.forwarder.supportlibrary.NativeAccess;
 import com.cisco.hicn.forwarder.utility.Constants;
+import com.cisco.hicn.forwarder.utility.NetdeviceTypeEnum;
 
 public class WiredPreferencesFragment extends PreferenceFragmentCompat {
     private SharedPreferences sharedPreferences;
@@ -41,20 +42,20 @@ public class WiredPreferencesFragment extends PreferenceFragmentCompat {
                     int wiredSourcePortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wired_source_port_ipv4_key), getString(R.string.default_wired_source_port_ipv4)));
                     String wiredNextHopIPv4 = sharedPreferences.getString(getString(R.string.wired_nexthop_ipv4_key), getString(R.string.default_wired_nexthop_ipv4));
                     int wiredNextHopPortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wired_nexthop_port_ipv4_key), getString(R.string.default_wired_nexthop_port_ipv4)));
-                    nativeAccess.updateInterfaceIPv4(Constants.NETDEVICE_TYPE_WIRED, wiredSourcePortIPv4, wiredNextHopIPv4, wiredNextHopPortIPv4);
+                    nativeAccess.updateInterfaceIPv4(NetdeviceTypeEnum.NETDEVICE_TYPE_WIRED.getValue(), wiredSourcePortIPv4, wiredNextHopIPv4, wiredNextHopPortIPv4);
 
                     int wiredSourcePortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wired_source_port_ipv6_key), getString(R.string.default_wired_source_port_ipv6)));
                     String wiredNextHopIPv6 = sharedPreferences.getString(getString(R.string.wired_nexthop_ipv6_key), getString(R.string.default_wired_nexthop_ipv6));
                     int wiredNextHopPortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wired_nexthop_port_ipv6_key), getString(R.string.default_wired_nexthop_port_ipv6)));
-                    nativeAccess.updateInterfaceIPv6(Constants.NETDEVICE_TYPE_WIRED, wiredSourcePortIPv6, wiredNextHopIPv6, wiredNextHopPortIPv6);
+                    nativeAccess.updateInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_WIRED.getValue(), wiredSourcePortIPv6, wiredNextHopIPv6, wiredNextHopPortIPv6);
                 } else {
                     getPreferenceScreen().findPreference(getString(R.string.enable_wired_key)).setSummary(getString(R.string.auto));
                     getPreferenceManager().findPreference((getString(R.string.wired_ipv4_preferences_key))).setEnabled(false);
                     getPreferenceManager().findPreference((getString(R.string.wired_ipv6_preferences_key))).setEnabled(false);
 
                     NativeAccess nativeAccess = NativeAccess.getInstance();
-                    nativeAccess.unsetInterfaceIPv4(Constants.NETDEVICE_TYPE_WIRED);
-                    nativeAccess.unsetInterfaceIPv6(Constants.NETDEVICE_TYPE_WIRED);
+                    nativeAccess.unsetInterfaceIPv4(NetdeviceTypeEnum.NETDEVICE_TYPE_WIRED.getValue());
+                    nativeAccess.unsetInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_WIRED.getValue());
                 }
                 return true;
 

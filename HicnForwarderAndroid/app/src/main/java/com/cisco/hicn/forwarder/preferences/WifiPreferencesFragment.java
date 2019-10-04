@@ -10,6 +10,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import com.cisco.hicn.forwarder.R;
 import com.cisco.hicn.forwarder.supportlibrary.NativeAccess;
 import com.cisco.hicn.forwarder.utility.Constants;
+import com.cisco.hicn.forwarder.utility.NetdeviceTypeEnum;
 
 public class WifiPreferencesFragment extends PreferenceFragmentCompat {
     private SharedPreferences sharedPreferences;
@@ -41,12 +42,12 @@ public class WifiPreferencesFragment extends PreferenceFragmentCompat {
                     int wifiSourcePortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wifi_source_port_ipv4_key), getString(R.string.default_wifi_source_port_ipv4)));
                     String wifiNextHopIPv4 = sharedPreferences.getString(getString(R.string.wifi_nexthop_ipv4_key), getString(R.string.default_wifi_nexthop_ipv4));
                     int wifiNextHopPortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wifi_nexthop_port_ipv4_key), getString(R.string.default_wifi_nexthop_port_ipv4)));
-                    nativeAccess.updateInterfaceIPv4(Constants.NETDEVICE_TYPE_WIFI, wifiSourcePortIPv4, wifiNextHopIPv4, wifiNextHopPortIPv4);
+                    nativeAccess.updateInterfaceIPv4(NetdeviceTypeEnum.NETDEVICE_TYPE_WIFI.getValue(), wifiSourcePortIPv4, wifiNextHopIPv4, wifiNextHopPortIPv4);
 
                     int wifiSourcePortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wifi_source_port_ipv6_key), getString(R.string.default_wifi_source_port_ipv6)));
                     String wifiNextHopIPv6 = sharedPreferences.getString(getString(R.string.wifi_nexthop_ipv6_key), getString(R.string.default_wifi_nexthop_ipv6));
                     int wifiNextHopPortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wifi_nexthop_port_ipv6_key), getString(R.string.default_wifi_nexthop_port_ipv6)));
-                    nativeAccess.updateInterfaceIPv6(Constants.NETDEVICE_TYPE_WIFI, wifiSourcePortIPv6, wifiNextHopIPv6, wifiNextHopPortIPv6);
+                    nativeAccess.updateInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_WIFI.getValue(), wifiSourcePortIPv6, wifiNextHopIPv6, wifiNextHopPortIPv6);
 
 
                 } else {
@@ -55,8 +56,8 @@ public class WifiPreferencesFragment extends PreferenceFragmentCompat {
                     getPreferenceManager().findPreference((getString(R.string.wifi_ipv6_preferences_key))).setEnabled(false);
 
                     NativeAccess nativeAccess = NativeAccess.getInstance();
-                    nativeAccess.unsetInterfaceIPv4(Constants.NETDEVICE_TYPE_WIFI);
-                    nativeAccess.unsetInterfaceIPv6(Constants.NETDEVICE_TYPE_WIFI);
+                    nativeAccess.unsetInterfaceIPv4(NetdeviceTypeEnum.NETDEVICE_TYPE_WIFI.getValue());
+                    nativeAccess.unsetInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_WIFI.getValue());
                 }
                 return true;
 
