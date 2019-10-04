@@ -314,7 +314,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_updateInterfaceIPv4(JN
         rule = facemgr_cfg_rule_create();
         facemgr_cfg_rule_set_match(rule, NULL, netdevice_interface_type);
 
-        facemgr_cfg_set_overlay(facemgr_cfg, AF_INET,
+        facemgr_cfg_rule_set_overlay(rule, AF_INET,
                                 NULL, source_port,
                                 next_hop_ip_p, next_hop_port);
         facemgr_cfg_add_rule(facemgr_cfg, rule);
@@ -363,7 +363,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_updateInterfaceIPv6(JN
         rule = facemgr_cfg_rule_create();
         facemgr_cfg_rule_set_match(rule, NULL, netdevice_interface_type);
 
-        facemgr_cfg_set_overlay(facemgr_cfg, AF_INET6,
+        facemgr_cfg_rule_set_overlay(rule, AF_INET6,
                                 NULL, source_port,
                                 next_hop_ip_p, next_hop_port);
         facemgr_cfg_add_rule(facemgr_cfg, rule);
@@ -378,8 +378,8 @@ JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_unsetInterfaceIPv4(JNIEnv *env,
                                                                              jobject thiz,
                                                                              jint interface_type) {
-    netdevice_type_t netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
-    switch (interface_type) {
+    netdevice_type_t netdevice_interface_type =(netdevice_type_t)interface_type;
+    /*switch (interface_type) {
         case 0:
             netdevice_interface_type = NETDEVICE_TYPE_WIFI;
             break;
@@ -391,7 +391,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_unsetInterfaceIPv4(JNI
             break;
         default:
             netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
-    }
+    }*/
 
     facemgr_cfg_rule_t *rule;
     facemgr_cfg_get_rule(facemgr_cfg, NULL, netdevice_interface_type, &rule);
@@ -404,8 +404,8 @@ JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_unsetInterfaceIPv6(JNIEnv *env,
                                                                              jobject thiz,
                                                                              jint interface_type) {
-    netdevice_type_t netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
-    switch (interface_type) {
+    netdevice_type_t netdevice_interface_type = (netdevice_type_t)interface_type;
+    /*switch (interface_type) {
         case 0:
             netdevice_interface_type = NETDEVICE_TYPE_WIFI;
             break;
@@ -417,7 +417,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_unsetInterfaceIPv6(JNI
             break;
         default:
             netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
-    }
+    }*/
 
     facemgr_cfg_rule_t *rule;
     facemgr_cfg_get_rule(facemgr_cfg, NULL, netdevice_interface_type, &rule);
