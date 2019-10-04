@@ -10,6 +10,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import com.cisco.hicn.forwarder.R;
 import com.cisco.hicn.forwarder.supportlibrary.NativeAccess;
 import com.cisco.hicn.forwarder.utility.Constants;
+import com.cisco.hicn.forwarder.utility.NetdeviceTypeEnum;
 
 import org.apache.http.conn.util.InetAddressUtilsHC4;
 
@@ -38,7 +39,7 @@ public class WiredIPv6PreferencesFragment extends PreferenceFragmentCompat {
 
                 NativeAccess nativeAccess = NativeAccess.getInstance();
 
-                nativeAccess.updateInterfaceIPv6(Constants.NETDEVICE_TYPE_WIRED, sourcePort, nextHopIp, nextHopPort);
+                nativeAccess.updateInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_WIRED.getValue(), sourcePort, nextHopIp, nextHopPort);
                 return true;
             }
         });
@@ -57,7 +58,7 @@ public class WiredIPv6PreferencesFragment extends PreferenceFragmentCompat {
 
                 NativeAccess nativeAccess = NativeAccess.getInstance();
 
-                nativeAccess.updateInterfaceIPv6(Constants.NETDEVICE_TYPE_WIRED, sourcePort, nextHopIp, nextHopPort);
+                nativeAccess.updateInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_WIRED.getValue(), sourcePort, nextHopIp, nextHopPort);
                 return true;
             }
         });
@@ -76,7 +77,7 @@ public class WiredIPv6PreferencesFragment extends PreferenceFragmentCompat {
 
                 NativeAccess nativeAccess = NativeAccess.getInstance();
 
-                nativeAccess.updateInterfaceIPv6(Constants.NETDEVICE_TYPE_WIRED, sourcePort, nextHopIp, nextHopPort);
+                nativeAccess.updateInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_WIRED.getValue(), sourcePort, nextHopIp, nextHopPort);
                 return true;
             }
         });
