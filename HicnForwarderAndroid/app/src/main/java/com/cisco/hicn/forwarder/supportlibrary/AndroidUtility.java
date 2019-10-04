@@ -8,6 +8,7 @@ import android.net.NetworkCapabilities;
 import android.util.Log;
 
 import com.cisco.hicn.forwarder.MainActivity;
+import com.cisco.hicn.forwarder.utility.Constants;
 
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -37,16 +38,16 @@ public class AndroidUtility {
             if (prop.getInterfaceName() != null && prop.getInterfaceName().equals(networkName.trim())) {
                 NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(network);
                 if (capabilities == null) {
-                    return -1; //error
+                    return Constants.AU_INTERFACE_TYPE_UNDEFINED; //error
                 }
                 if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
-                    return 1;
+                    return Constants.AU_INTERFACE_TYPE_WIRED;
                 }
                 if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-                    return 2;
+                    return Constants.AU_INTERFACE_TYPE_WIFI;
                 }
                 if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
-                    return 3;
+                    return Constants.AU_INTERFACE_TYPE_CELLULAR;
                 }
                 return 0; //not supported
             }
@@ -56,11 +57,11 @@ public class AndroidUtility {
         try {
             NetworkInterface networkInterface = NetworkInterface.getByName(networkName);
             if (networkInterface.isLoopback())
-                return 4;
+                return Constants.AU_INTERFACE_TYPE_LOOPBACK;
         } catch (SocketException e) {
             Log.d(AndroidUtility.class.getCanonicalName(), "error");
         }
-        return -1; //error
+        return Constants.AU_INTERFACE_TYPE_UNDEFINED; //error
     }
 
 }
