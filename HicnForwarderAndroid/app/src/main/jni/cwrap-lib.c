@@ -286,8 +286,8 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_updateInterfaceIPv4(JN
                                                                               jstring next_hop_ip,
                                                                               jint next_hop_port) {
 
-    netdevice_type_t netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
-    switch (interface_type) {
+    netdevice_type_t netdevice_interface_type = (netdevice_type_t)interface_type;
+    /*switch (interface_type) {
         case 0:
             netdevice_interface_type = NETDEVICE_TYPE_WIFI;
             break;
@@ -299,7 +299,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_updateInterfaceIPv4(JN
             break;
         default:
             netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
-    }
+    }*/
 
 
     ip_address_t remote_addr;
@@ -334,7 +334,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_updateInterfaceIPv6(JN
                                                                               jstring next_hop_ip,
                                                                               jint next_hop_port) {
 
-    netdevice_type_t netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
+    /*netdevice_type_t netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
     switch (interface_type) {
         case 0:
             netdevice_interface_type = NETDEVICE_TYPE_WIFI;
@@ -347,7 +347,8 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_updateInterfaceIPv6(JN
             break;
         default:
             netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
-    }
+    }*/
+    netdevice_type_t netdevice_interface_type = (netdevice_type_t)interface_type;
 
 
     ip_address_t remote_addr;
