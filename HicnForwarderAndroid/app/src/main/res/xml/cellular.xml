@@ -22,7 +22,7 @@
         <SwitchPreference
             app:defaultValue="string/true"
             app:key="@string/enable_cellular_key"
-            app:title="@string/enable_wifi_title" />
+            app:title="@string/enable_cellular_title" />
 
         <Preference
             app:fragment="com.cisco.hicn.forwarder.preferences.CellularIPv4PreferencesFragment"
