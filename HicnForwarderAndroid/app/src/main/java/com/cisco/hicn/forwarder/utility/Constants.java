@@ -39,12 +39,12 @@ public class Constants {
     public static final String CONFIGURATION_FILE_NAME = "forwarder.conf";
     public static final int FOREGROUND_SERVICE = 101;
 
-    public static final int NETDEVICE_TYPE_UNDEFINED = 0;
+    /*public static final int NETDEVICE_TYPE_UNDEFINED = 0;
     public static final int NETDEVICE_TYPE_LOOPBACK = 1;
     public static final int NETDEVICE_TYPE_WIRED = 2;
     public static final int NETDEVICE_TYPE_WIFI = 3;
     public static final int NETDEVICE_TYPE_CELLULAR = 4;
-    public static final int NETDEVICE_TYPE_VPN = 5;
+    public static final int NETDEVICE_TYPE_VPN = 5;*/
 
     public static final int AU_INTERFACE_TYPE_UNDEFINED = 0;
     public static final int AU_INTERFACE_TYPE_WIRED = 1;
