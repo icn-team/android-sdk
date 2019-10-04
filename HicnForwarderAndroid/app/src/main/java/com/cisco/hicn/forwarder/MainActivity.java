@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity
     private PreferencesFragment settings;
 
     public static Context context;
-    public static HashMap<String, Integer> interfacesHashMap = new HashMap<>();
+    //public static HashMap<String, Integer> interfacesHashMap = new HashMap<>();
 
 
     @Override
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity
 
         MainActivity.context = getApplicationContext();
 
-        fillInterfaceTypes();
+       // fillInterfaceTypes();
 
         setContentView(R.layout.activity_main);
         mDrawer = (DrawerLayout) findViewById(R.id.drawer);
@@ -197,27 +197,4 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    public void fillInterfaceTypes() {
-        interfacesHashMap.clear();
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        for (Network network : connectivityManager.getAllNetworks()) {
-            LinkProperties prop = connectivityManager.getLinkProperties(network);
-            NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(network);
-            if (capabilities == null) {
-                return; //error
-            }
-            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-                interfacesHashMap.put(prop.getInterfaceName(), 1);
-                continue;
-            }
-            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
-                interfacesHashMap.put(prop.getInterfaceName(), 2);
-                continue;
-            }
-            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
-                interfacesHashMap.put(prop.getInterfaceName(), 3);
-                continue;
-            }
-        }
-    }
 }
