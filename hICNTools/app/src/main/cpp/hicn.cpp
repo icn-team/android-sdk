@@ -163,7 +163,7 @@ JNIEXPORT void JNICALL
 Java_io_fd_hicn_hicntools_ui_fragments_HiPerfFragment_stopHiPerf(JNIEnv *env, jobject instance) {
 
     if (hiperfClient)
-        hiperfClient->resetaa();
+        hiperfClient->reset();
 
 }
 

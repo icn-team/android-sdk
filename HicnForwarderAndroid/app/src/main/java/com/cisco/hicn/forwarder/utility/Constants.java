@@ -15,40 +15,22 @@
 package com.cisco.hicn.forwarder.utility;
 
 public class Constants {
-    public static final String DEFAULT_NEXT_HOP_IP = "10.228.40.61";
-    public static final String DEFAULT_NEXT_HOP_PORT = "11111";
-    public static final String DEFAULT_NETMASK = "16";
-    public static final String DEFAULT_PREFIX = "b001::";
+
     public static final String ENABLED = "Enabled";
     public static final String DISABLED = "Disabled";
     public static final String FORWARDER_PREFERENCES = "forwarderPreferences";
-    public static final String DEFAULT_SOURCE_INTERFACE = "eth0";
-    public static final String DEFAULT_SOURCE_PORT = "1111";
     public static final String DEFAULT_CAPACITY = "0";
-    public static final String DEFAULT_CONFIGURATION =
-            "add listener udp listener0 %%source_ip%% %%source_port%%\n" +
-                    "add connection udp conn0 %%next_hop_ip%% %%next_hop_port%% %%source_ip%% %%source_port%%\n" +
-                    "add route conn0 %%prefix%%/%%netmask%% 1\n";
-    public static final String SOURCE_IP = "%%source_ip%%";
-    public static final String SOURCE_PORT = "%%source_port%%";
-    public static final String NEXT_HOP_IP = "%%next_hop_ip%%";
-    public static final String NEXT_HOP_PORT = "%%next_hop_port%%";
-    public static final String PREFIX = "%%prefix%%";
-    public static final String NETMASK = "%%netmask%%";
-    public static final String CONFIGURATION_PATH = "Configuration";
-    public static final String CONFIGURATION_FILE_NAME = "forwarder.conf";
-    public static final int FOREGROUND_SERVICE = 101;
 
-    /*public static final int NETDEVICE_TYPE_UNDEFINED = 0;
-    public static final int NETDEVICE_TYPE_LOOPBACK = 1;
-    public static final int NETDEVICE_TYPE_WIRED = 2;
-    public static final int NETDEVICE_TYPE_WIFI = 3;
-    public static final int NETDEVICE_TYPE_CELLULAR = 4;
-    public static final int NETDEVICE_TYPE_VPN = 5;*/
+    public static final int FOREGROUND_SERVICE = 101;
 
     public static final int AU_INTERFACE_TYPE_UNDEFINED = 0;
     public static final int AU_INTERFACE_TYPE_WIRED = 1;
     public static final int AU_INTERFACE_TYPE_WIFI = 2;
     public static final int AU_INTERFACE_TYPE_CELLULAR = 3;
     public static final int AU_INTERFACE_TYPE_LOOPBACK = 4;
+    public static final String HIPERF = "HIPERF";
+    public static final int VIEW_FORWARDER = 0;
+    public static final int VIEW_INTERFACES = 1;
+
+    public static int MAX_HIPING_TIME_LINECHART_XAXIS = 30;
 }

@@ -29,6 +29,8 @@
 
 #define TAG_HIPERF "HiPerf"
 
+#define FACEMGR_ANDROID_UTILITY_CLASS "com/cisco/hicn/forwarder/supportlibrary/AndroidUtility"
+
 namespace transport {
 
     namespace interface {
@@ -59,7 +61,6 @@ namespace transport {
             TransportProtocolAlgorithms transport_protocol_;
             bool rtc_;
             bool test_mode_;
-            jclass cls;
             JavaVM *jvm;
 
         };

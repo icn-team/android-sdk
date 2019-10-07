@@ -77,6 +77,8 @@ public class NativeAccess {
 
     public native void unsetInterfaceIPv6(int interfaceType);
 
-    public native String test();
+    public native void startHiPerf(String hicnName, double betaParameter, double dropFactorParameter, int windowSize, long statsInterval, boolean rtcProtocol);
+
+    public native void stopHiPerf();
 
 }

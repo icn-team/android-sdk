@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditTextPreference
+        android:inputType="numberDecimal"
+        app:defaultValue="@string/default_hiperf_raaqm_beta"
+        app:key="@string/hiperf_raaqm_beta_key"
+        app:summary="@string/hiperf_raaqm_beta_summary"
+        app:title="@string/hiperf_raaqm_beta_title"
+        app:useSimpleSummaryProvider="true" />
+
+    <EditTextPreference
+        android:inputType="numberDecimal"
+        app:defaultValue="@string/default_hiperf_raaqm_drop_factor"
+        app:key="@string/hiperf_raaqm_drop_factor_key"
+        app:summary="@string/hiperf_raaqm_drop_factor_summary"
+        app:title="@string/hiperf_raaqm_drop_factor_title"
+        app:useSimpleSummaryProvider="true" />
+
+    <SwitchPreference
+        app:defaultValue="@string/checkbox_false"
+        app:key="@string/enable_hiperf_window_size_key"
+        app:title="@string/enable_hiperf_window_size_title" />
+
+    <EditTextPreference
+        android:inputType="numberDecimal"
+        app:defaultValue="@string/default_hiperf_window_size"
+        app:key="@string/hiperf_window_size_key"
+        app:summary="@string/hiperf_window_size_summary"
+        app:title="@string/hiperf_window_size_title"
+        app:enabled="false"
+        app:useSimpleSummaryProvider="true" />
+
+    <SwitchPreference
+        app:defaultValue="@string/checkbox_false"
+        app:key="@string/enable_hiperf_rtc_protocol_key"
+        app:title="@string/enable_hiperf_rtc_protocol_title" />
+
+</PreferenceScreen>

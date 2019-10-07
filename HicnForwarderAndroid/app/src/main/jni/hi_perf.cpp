@@ -69,7 +69,18 @@ namespace transport {
                   expected_seg_(0),
                   lost_packets_(std::unordered_set<uint32_t>()),
                   rtc_callback_(configuration_.rtc_ ? new RTCCallback(*this) : nullptr),
-                  callback_(configuration_.rtc_ ? nullptr : new Callback(*this)) {}
+                  callback_(configuration_.rtc_ ? nullptr : new Callback(*this)) {
+            __android_log_print(ANDROID_LOG_INFO, TAG_HIPERF, "ciao");
+
+     /*       JNIEnv *env;
+            configuration_.jvm->AttachCurrentThread(&env, NULL);
+
+
+            jclass cls = env->FindClass(FACEMGR_ANDROID_UTILITY_CLASS);
+            jmethodID pushGoodput = env->GetStaticMethodID(cls, "pushGoodput", "(I)V");
+            env->CallStaticVoidMethod(cls, pushGoodput,(int) 10);*/
+
+        }
 
 
         HIperfClient::~HIperfClient() {
@@ -84,11 +95,6 @@ namespace transport {
                                                    const ContentObject &contentObject) {
             if (!configuration_.test_mode_) return;
 
-            JNIEnv *env;
-            configuration_.jvm->AttachCurrentThread(&env, NULL);
-
-            jmethodID hiperfPrintLog = env->GetStaticMethodID(configuration_.cls, "hioerfPrintLog",
-                                                              "(Ljava/lang/String;)V");
             uint32_t receivedSeg = contentObject.getName().getSuffix();
             auto payload = contentObject.getPayload();
 
@@ -102,8 +108,6 @@ namespace transport {
                     std::stringstream ss;
                     ss << "[STOP] producer is not producing content" << std::endl;
                     __android_log_print(ANDROID_LOG_INFO, TAG_HIPERF, "%s", ss.str().c_str());
-                    env->CallStaticVoidMethod(configuration_.cls, hiperfPrintLog,
-                                              env->NewStringUTF(ss.str().c_str()));
                     return;
                 }
 
@@ -113,8 +117,6 @@ namespace transport {
                        << ". Next expected packet " << productionSeg + 1
                        << std::endl;
                     __android_log_print(ANDROID_LOG_INFO, TAG_HIPERF, "%s", ss.str().c_str());
-                    env->CallStaticVoidMethod(configuration_.cls, hiperfPrintLog,
-                                              env->NewStringUTF(ss.str().c_str()));
 
                     expected_seg_ = productionSeg;
                 } else if (receivedSeg > productionSeg) {
@@ -123,8 +125,6 @@ namespace transport {
                     ss << "[WINDOW TO LARGE] received NACK for " << receivedSeg
                        << ". Next expected packet " << productionSeg << std::endl;
                     __android_log_print(ANDROID_LOG_INFO, TAG_HIPERF, "%s", ss.str().c_str());
-                    env->CallStaticVoidMethod(configuration_.cls, hiperfPrintLog,
-                                              env->NewStringUTF(ss.str().c_str()));
                 }
                 return;
             }
@@ -134,8 +134,6 @@ namespace transport {
                     std::stringstream ss;
                     ss << "[LOSS] lost packet " << i << std::endl;
                     __android_log_print(ANDROID_LOG_INFO, TAG_HIPERF, "%s", ss.str().c_str());
-                    env->CallStaticVoidMethod(configuration_.cls, hiperfPrintLog,
-                                              env->NewStringUTF(ss.str().c_str()));
 
                     lost_packets_.insert(i);
                 }
@@ -148,8 +146,6 @@ namespace transport {
                     std::stringstream ss;
                     ss << "[RECOVER] recovered packet " << receivedSeg << std::endl;
                     __android_log_print(ANDROID_LOG_INFO, TAG_HIPERF, "%s", ss.str().c_str());
-                    env->CallStaticVoidMethod(configuration_.cls, hiperfPrintLog,
-                                              env->NewStringUTF(ss.str().c_str()));
 
                     lost_packets_.erase(it);
                 } else {
@@ -157,8 +153,6 @@ namespace transport {
                     ss << "[OUT OF ORDER] recevied " << receivedSeg << " expedted "
                        << expected_seg_ << std::endl;
                     __android_log_print(ANDROID_LOG_INFO, TAG_HIPERF, "%s", ss.str().c_str());
-                    env->CallStaticVoidMethod(configuration_.cls, hiperfPrintLog,
-                                              env->NewStringUTF(ss.str().c_str()));
 
                 }
                 return;
@@ -167,25 +161,16 @@ namespace transport {
         }
 
         bool HIperfClient::verifyData(ConsumerSocket &c, const ContentObject &contentObject) {
-            JNIEnv *env;
-            configuration_.jvm->AttachCurrentThread(&env, NULL);
 
-            jmethodID hiperfPrintLog = env->GetStaticMethodID(configuration_.cls, "hioerfPrintLog",
-                                                              "(Ljava/lang/String;)V");
             if (contentObject.getPayloadType() == PayloadType::CONTENT_OBJECT) {
                 std::stringstream ss;
                 ss << "VERIFY CONTENT" << std::endl;
                 __android_log_print(ANDROID_LOG_INFO, TAG_HIPERF, "%s", ss.str().c_str());
-                env->CallStaticVoidMethod(configuration_.cls, hiperfPrintLog,
-                                          env->NewStringUTF(ss.str().c_str()));
 
             } else if (contentObject.getPayloadType() == PayloadType::MANIFEST) {
                 std::stringstream ss;
                 ss << "VERIFY MANIFEST" << std::endl;
                 __android_log_print(ANDROID_LOG_INFO, TAG_HIPERF, "%s", ss.str().c_str());
-                env->CallStaticVoidMethod(configuration_.cls, hiperfPrintLog,
-                                          env->NewStringUTF(ss.str().c_str()));
-
             }
 
             return true;
@@ -236,18 +221,10 @@ namespace transport {
             JNIEnv *env;
             configuration_.jvm->AttachCurrentThread(&env, NULL);
 
-            jmethodID hiperfPrintLog = env->GetStaticMethodID(configuration_.cls, "hioerfPrintLog",
-                                                              "(Ljava/lang/String;)V");
 
-
-            env->CallStaticVoidMethod(configuration_.cls, hiperfPrintLog,
-                                      env->NewStringUTF(ss.str().c_str()));
-
-            jmethodID hiperfUpdateGraphCallback = env->GetStaticMethodID(configuration_.cls,
-                                                                         "hiperfUpdateGraphCallback",
-                                                                         "(I)V");
-            env->CallStaticVoidMethod(configuration_.cls, hiperfUpdateGraphCallback,
-                                      (int) bandwidthFloat);
+            jclass cls = env->FindClass(FACEMGR_ANDROID_UTILITY_CLASS);
+            jmethodID pushGoodput = env->GetStaticMethodID(cls, "pushGoodput", "(I)V");
+            env->CallStaticVoidMethod(cls, pushGoodput,(int) bandwidthFloat);
 
             total_duration_milliseconds_ += (uint32_t) exact_duration.count();
             old_bytes_value_ = stats.getBytesRecv();
@@ -277,11 +254,6 @@ namespace transport {
                 std::stringstream ss;
                 ss << "ERROR -- Impossible to set the size of the window." << std::endl;
                 __android_log_print(ANDROID_LOG_ERROR, TAG_HIPERF, "%s", ss.str().c_str());
-
-//                configuration_.env->CallVoidMethod(configuration_.instance,
-                //                                                 configuration_.hiperfLogCallback,
-                //                                               configuration_.env->NewStringUTF(
-                //                                                     ss.str().c_str()));
 
                 return ERROR_SETUP;
             }
@@ -373,15 +345,6 @@ namespace transport {
             std::stringstream ss;
             ss << "Starting download of " << configuration_.name << std::endl;
             __android_log_print(ANDROID_LOG_INFO, TAG_HIPERF, "%s", ss.str().c_str());
-            JNIEnv *env;
-            configuration_.jvm->AttachCurrentThread(&env, NULL);
-
-            jmethodID hiperfPrintLog = env->GetStaticMethodID(configuration_.cls, "hioerfPrintLog",
-                                                              "(Ljava/lang/String;)V");
-
-
-            env->CallStaticVoidMethod(configuration_.cls, hiperfPrintLog,
-                                      env->NewStringUTF(ss.str().c_str()));
             signals_.async_wait([this](const std::error_code &, const int &) {
                 consumer_socket_->stop();
                 io_service_.stop();
@@ -424,16 +387,6 @@ namespace transport {
             std::stringstream ss;
             ss << "Error while reading from RTC socket" << std::endl;
             __android_log_print(ANDROID_LOG_INFO, TAG_HIPERF, "%s", ss.str().c_str());
-            JNIEnv *env;
-            client_.configuration_.jvm->AttachCurrentThread(&env, NULL);
-
-            jmethodID hiperfPrintLog = env->GetStaticMethodID(client_.configuration_.cls,
-                                                              "hioerfPrintLog",
-                                                              "(Ljava/lang/String;)V");
-
-
-            env->CallStaticVoidMethod(client_.configuration_.cls, hiperfPrintLog,
-                                      env->NewStringUTF(ss.str().c_str()));
             client_.io_service_.stop();
         }
 
@@ -441,16 +394,6 @@ namespace transport {
             std::stringstream ss;
             ss << "Data successfully read" << std::endl;
             __android_log_print(ANDROID_LOG_INFO, TAG_HIPERF, "%s", ss.str().c_str());
-            JNIEnv *env;
-            client_.configuration_.jvm->AttachCurrentThread(&env, NULL);
-
-            jmethodID hiperfPrintLog = env->GetStaticMethodID(client_.configuration_.cls,
-                                                              "hioerfPrintLog",
-                                                              "(Ljava/lang/String;)V");
-
-
-            env->CallStaticVoidMethod(client_.configuration_.cls, hiperfPrintLog,
-                                      env->NewStringUTF(ss.str().c_str()));
         }
 
         HIperfClient::Callback::Callback(HIperfClient
@@ -487,16 +430,6 @@ namespace transport {
             ss << "Error " << ec.message() << " while reading from socket"
                << std::endl;
             __android_log_print(ANDROID_LOG_ERROR, TAG_HIPERF, "%s", ss.str().c_str());
-            JNIEnv *env;
-            client_.configuration_.jvm->AttachCurrentThread(&env, NULL);
-
-            jmethodID hiperfPrintLog = env->GetStaticMethodID(client_.configuration_.cls,
-                                                              "hioerfPrintLog",
-                                                              "(Ljava/lang/String;)V");
-
-
-            env->CallStaticVoidMethod(client_.configuration_.cls, hiperfPrintLog,
-                                      env->NewStringUTF(ss.str().c_str()));
             client_.io_service_.stop();
         }
 
@@ -514,16 +447,7 @@ namespace transport {
                << (total_size * 8) * 1.0 / usec * 1.0 << " [Mbps]"
                << std::endl;
             __android_log_print(ANDROID_LOG_ERROR, TAG_HIPERF, "%s", ss.str().c_str());
-            JNIEnv *env;
-            client_.configuration_.jvm->AttachCurrentThread(&env, NULL);
 
-            jmethodID hiperfPrintLog = env->GetStaticMethodID(client_.configuration_.cls,
-                                                              "hioerfPrintLog",
-                                                              "(Ljava/lang/String;)V");
-
-
-            env->CallStaticVoidMethod(client_.configuration_.cls, hiperfPrintLog,
-                                      env->NewStringUTF(ss.str().c_str()));
             client_.io_service_.stop();
         }
 

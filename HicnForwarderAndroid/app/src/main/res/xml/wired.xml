@@ -20,7 +20,7 @@
         app:title="@string/wired_preference_title">
 
         <SwitchPreference
-            app:defaultValue="string/true"
+            app:defaultValue="@string/checkbox_true"
             app:key="@string/enable_wired_key"
             app:title="@string/enable_wired_title" />
 

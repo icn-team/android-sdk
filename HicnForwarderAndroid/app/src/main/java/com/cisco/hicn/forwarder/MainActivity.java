@@ -21,9 +21,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.cisco.hicn.forwarder.forwarder.ForwarderFragment;
 import com.cisco.hicn.forwarder.preferences.PreferencesFragment;
 import com.cisco.hicn.forwarder.supportlibrary.NativeAccess;
-import com.cisco.hicn.forwarder.utility.Constants;
 import com.cisco.hicn.forwarder.utility.NetdeviceTypeEnum;
 import com.google.android.material.navigation.NavigationView;
 
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        boolean enableBonjour = sharedPreferences.getBoolean(getString(R.string.enable_bonjour_key), true);
+        boolean enableBonjour = sharedPreferences.getBoolean(getString(R.string.enable_bonjour_key), false);
         nativeAccess.enableDiscovery(enableBonjour);
 
         boolean enableNexHopIPv4 = sharedPreferences.getBoolean(getString(R.string.enable_nexthop_ipv4_key), true);
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity
         boolean enableNexHopIPv6 = sharedPreferences.getBoolean(getString(R.string.enable_nexthop_ipv6_key), true);
         nativeAccess.disableIPv6(!enableNexHopIPv6);
 
-        boolean enableWifi = sharedPreferences.getBoolean(getString(R.string.enable_wifi_key), false);
+        boolean enableWifi = sharedPreferences.getBoolean(getString(R.string.enable_wifi_key), true);
 
         if (enableWifi) {
 
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity
             nativeAccess.updateInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_WIFI.getValue(), wifiSourcePortIPv6, wifiNextHopIPv6, wifiNextHopPortIPv6);
         }
 
-        boolean cellularWifi = sharedPreferences.getBoolean(getString(R.string.enable_cellular_key), false);
+        boolean cellularWifi = sharedPreferences.getBoolean(getString(R.string.enable_cellular_key), true);
 
         if (cellularWifi) {
             int cellularSourcePortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.cellular_source_port_ipv4_key), getString(R.string.default_cellular_source_port_ipv4)));
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity
             nativeAccess.updateInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_CELLULAR.getValue(), cellularSourcePortIPv6, cellularNextHopIPv6, cellularNextHopPortIPv6);
         }
 
-        boolean wiredWifi = sharedPreferences.getBoolean(getString(R.string.enable_wired_key), false);
+        boolean wiredWifi = sharedPreferences.getBoolean(getString(R.string.enable_wired_key), true);
 
         if (wiredWifi) {
             int wiredSourcePortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wired_source_port_ipv4_key), getString(R.string.default_wired_source_port_ipv4)));
