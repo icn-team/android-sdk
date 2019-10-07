@@ -393,7 +393,7 @@ namespace transport {
             return ERROR_SUCCESS;
         }
 
-        void HIperfClient::resetaa() {
+        void HIperfClient::reset() {
             consumer_socket_->stop();
             io_service_.stop();
         }

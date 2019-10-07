@@ -111,7 +111,7 @@ namespace transport {
 
             int run();
 
-            void resetaa();
+            void reset();
 
         private:
             class RTCCallback : public ConsumerSocket::ReadCallback {

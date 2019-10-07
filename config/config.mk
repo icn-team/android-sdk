@@ -30,6 +30,7 @@ DISTILLERY_GITHUB_UPSTREAM_REPO?=${DISTILLERY_GITHUB_UPSTREAM_URL}/CCNx_Distille
 # directory. If this is not true, it's convenient to assign the variable at the
 # shell.
 export DISTILLERY_ROOT_DIR?=$(shell pwd)
+DISTILLERY_BUILD_DIR_PREFIX="build"
 # This is a variable that can be used to multiplex the build.
 # If you set this variable the default output directories will have this
 # appended to them
@@ -38,15 +39,15 @@ DISTILLERY_BUILD_NAME?=
 # This is the directory where things are built.
 # Note that if some modules don't support off-tree builds you may have problems
 DISTILLERY_BUILD_DIR?=${DISTILLERY_ROOT_DIR}/$(shell if [ "${ANDROID_ARCH}" = "arm" ]; \
-then echo build_armv7-a; \
+then echo ${DISTILLERY_BUILD_DIR_PREFIX}_armv7-a; \
 else \
 if [ "${ANDROID_ARCH}" = "x86" ]; then \
-echo build_x86; \
+echo ${DISTILLERY_BUILD_DIR_PREFIX}_x86; \
 else \
 if [ "${ANDROID_ARCH}" = "x86_64" ]; then \
-echo build_x86_64; \
+echo ${DISTILLERY_BUILD_DIR_PREFIX}_x86_64; \
 else \
-echo build_aarch64; \
+echo ${DISTILLERY_BUILD_DIR_PREFIX}_aarch64; \
 fi; \
 fi; \
 fi;)
@@ -62,16 +63,17 @@ MAKE_BUILD_FLAGS?=-j8
 # This is the directory where all the ccn software will be installed. This
 # directory will be DELETED if you do a make clobber. Do not treat this the
 # same way you would treat a system install directory.
+export DISTILLERY_INSTALL_DIR_PREFIX="usr"
 DISTILLERY_INSTALL_DIR?=${DISTILLERY_ROOT_DIR}/$(shell if [ "${ANDROID_ARCH}" = "arm" ]; \
-then echo usr_armv7-a; \
+then echo ${DISTILLERY_INSTALL_DIR_PREFIX}_armv7-a; \
 else \
 if [ "${ANDROID_ARCH}" = "x86" ]; then \
-echo usr_i686; \
+echo ${DISTILLERY_INSTALL_DIR_PREFIX}_i686; \
 else \
 if [ "${ANDROID_ARCH}" = "x86_64" ]; then \
-echo usr_x86_64; \
+echo ${DISTILLERY_INSTALL_DIR_PREFIX}_x86_64; \
 else \
-echo usr_aarch64; \
+echo ${DISTILLERY_INSTALL_DIR_PREFIX}_aarch64; \
 fi; \
 fi; \
 fi;)
@@ -151,6 +153,7 @@ echo arm64-v8a; \
 fi; \
 fi; \
 fi;)
+export DISTILLERY_BUILD_DIR_PREFIX
 export QT_HOME=${DISTILLERY_ROOT_DIR}/qt/Qt
 export DISTILLERY_BUILD_DIR
 export DISTILLERY_INSTALL_DIR

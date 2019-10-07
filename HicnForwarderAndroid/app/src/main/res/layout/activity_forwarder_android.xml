@@ -270,7 +270,7 @@
             </LinearLayout>
 
 
-            <android.support.v4.widget.NestedScrollView
+            <androidx.core.widget.NestedScrollView
 
                 android:layout_width="fill_parent"
                 android:layout_height="200dp"
@@ -286,7 +286,7 @@
                     android:inputType="textMultiLine"
                     android:text="add listener udp remote0 %%source_ip%% %%source_port%% %%interface_name%% add connection udp %%conn%% %%destination_ip%% %%destination_port%% %%source_ip%% %%source_port%%  # Route add route %%conn%% ccnx:/webserver 1# Local listeners add listener tcp local0 127.0.0.1 9695 add listener udp local1 127.0.0.1 9695  # Remote face add listener udp remote0 %%source_ip%% %%source_port%% add connection udp conn0 %%destination_ip%% %%destination_port%% %%source_ip%% %%source_port%%  # Route add route conn0 ccnx:/webserver 1# Local listeners add listener tcp local0 127.0.0.1 9695 add listener udp local1 127.0.0.1 9695  # Remote face add listener udp remote0 %%source_ip%% %%source_port%% add connection udp conn0 %%destination_ip%% %%destination_port%% %%source_ip%% %%source_port%%  # Route add route conn0 ccnx:/webserver 1# Local listeners add listener tcp local0 127.0.0.1 9695 add listener udp local1 127.0.0.1 9695  # Remote face add listener udp remote0 %%source_ip%% %%source_port%% add connection udp conn0 %%destination_ip%% %%destination_port%% %%source_ip%% %%source_port%%  # Route add route conn0 ccnx:/webserver 1# Local listeners add listener tcp local0 127.0.0.1 9695 add listener udp local1 127.0.0.1 9695  # Remote face add listener udp remote0 %%source_ip%% %%source_port%% add connection udp conn0 %%destination_ip%% %%destination_port%% %%source_ip%% %%source_port%%  # Route add route conn0 ccnx:/webserver 1"
                     app:layout_constraintVertical_bias="0.33999997" />
-            </android.support.v4.widget.NestedScrollView>
+            </androidx.core.widget.NestedScrollView>
 
 
             <Switch

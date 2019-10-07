@@ -17,7 +17,8 @@ DISTILLERY_VERSION=2.0
 
 default.target: help
 
-all: init_depend install-all init_qt
+all: init_depend install-all
+#init_qt
 
 ##############################################################
 # Variables
@@ -123,49 +124,49 @@ android_viper_debug:
 	./scripts/compile_androidviper.sh DEBUG
 
 curl-clean:
-	@rm -rf ${DISTILLERY_INSTALL_DIR}/lib/libcurl.*
-	@rm -rf ${DISTILLERY_INSTALL_DIR}/include/curl
-	@rm -rf ${DISTILLERY_BUILD_DIR}/curl
+	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/lib/libcurl.*
+	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/include/curl
+	@rm -rf ${DISTILLERY_BUILD_DIR_PREFIX}_*/curl
 	
 openssl-clean:
-	@rm -rf ${DISTILLERY_INSTALL_DIR}/lib/libssl.*
-	@rm -rf ${DISTILLERY_INSTALL_DIR}/lib/libcrypto.*
-	@rm -rf ${DISTILLERY_INSTALL_DIR}/include/openssl
+	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/lib/libssl.*
+	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/lib/libcrypto.*
+	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/include/openssl
 	@rm -rf external/openssl*
 
 event-clean:
-	@rm -rf ${DISTILLERY_BUILD_DIR}/libevent
-	@rm -rf ${DISTILLERY_INSTALL_DIR}/lib/libevent*
-	@rm -rf ${DISTILLERY_INSTALL_DIR}/include/event2
-	@rm -rf ${DISTILLERY_INSTALL_DIR}/include/ev*.h
+	@rm -rf ${DISTILLERY_BUILD_DIR_PREFIX}_*/libevent
+	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/lib/libevent*
+	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/include/event2
+	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/include/ev*.h
 		
 xml2-clean:
-	@rm -rf ${DISTILLERY_BUILD_DIR}/libxml2
-	@rm -rf ${DISTILLERY_INSTALL_DIR}/lib/libxml2*
-	@rm -rf ${DISTILLERY_INSTALL_DIR}/include/libxml
+	@rm -rf ${DISTILLERY_BUILD_DIR_PREFIX}_*/libxml2
+	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/lib/libxml2*
+	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/include/libxml
 
 libconfig-clean:
-	@rm -rf ${DISTILLERY_BUILD_DIR}/libconfig
-	@rm -rf ${DISTILLERY_INSTALL_DIR}/lib/libconfig*
-	@rm -rf ${DISTILLERY_INSTALL_DIR}/include/libconfig*
+	@rm -rf ${DISTILLERY_BUILD_DIR_PREFIX}_*/libconfig
+	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/lib/libconfig*
+	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/include/libconfig*
 	
 asio-clean:
-	@rm -rf ${DISTILLERY_INSTALL_DIR}/include/asio*
+	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/include/asio*
 
 libparc-clean:
-	@rm -rf ${DISTILLERY_BUILD_DIR}/cframework
-	@rm -rf ${DISTILLERY_INSTALL_DIR}/lib/libparc.*
-	@rm -rf ${DISTILLERY_INSTALL_DIR}/include/parc
+	@rm -rf ${DISTILLERY_BUILD_DIR_PREFIX}_*/cframework
+	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/lib/libparc.*
+	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/include/parc
 
 ffmpeg-clean:
-	@rm -rf ${DISTILLERY_INSTALL_DIR}/lib/libav.*
-	@rm -rf ${DISTILLERY_INSTALL_DIR}/include/libav*
-	@rm -rf ${DISTILLERY_INSTALL_DIR}/include/libsw*
+	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/lib/libav.*
+	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/include/libav*
+	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/include/libsw*
 
 libdash-clean:
-	@rm -rf ${DISTILLERY_BUILD_DIR}/viper/libdash
-	@rm -rf ${DISTILLERY_INSTALL_DIR}/lib/libdash.*
-	@rm -rf ${DISTILLERY_INSTALL_DIR}/include/libdash
+	@rm -rf ${DISTILLERY_BUILD_DIR_PREFIX}_*/viper/libdash
+	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/lib/libdash.*
+	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/include/libdash
 
 dependencies-clean: event-clean openssl-clean curl-clean xml2-clean libconfig-clean libparc-clean asio-clean ffmpeg-clean libdash-clean
 	
@@ -181,20 +182,21 @@ ndk-clean:
 androidsdk-clean: sdk-clean ndk-clean
 
 hicn-clean:
-	@rm -rf ${DISTILLERY_BUILD_DIR}/hicn
-	@rm -rf ${DISTILLERY_INSTALL_DIR}/lib/libhicn.*
-	@rm -rf ${DISTILLERY_INSTALL_DIR}/include/hicn
+	@rm -rf ${DISTILLERY_BUILD_DIR_PREFIX}_*/hicn
+	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/lib/libhicn.*
+	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/include/hicn
 
 viper-clean:
-	@rm -rf ${DISTILLERY_BUILD_DIR}/viper
+	@rm -rf ${DISTILLERY_BUILD_DIR_PREFIX}_*/viper
 	
 	
 qt-clean:
 	@rm -rf qt/Qt
 
 qtav-clean:
-	@bash ${DISTILLERY_BUILD_DIR}/qtav/sdk_uninstall.sh
-	@rm -rf ${DISTILLERY_BUILD_DIR}/qtav
+	@echo ${DISTILLERY_BUILD_DIR_PREFIX}
+	@for each in ${DISTILLERY_BUILD_DIR_PREFIX}_*/qtav/sdk_uninstall.sh ; do bash $$each ; done
+	@rm -rf ${DISTILLERY_BUILD_DIR_PREFIX}_*/qtav
 
 	
 all-clean: dependencies-clean hicn-clean qt-clean qtav-clean viper-clean
