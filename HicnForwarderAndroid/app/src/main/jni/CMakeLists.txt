@@ -30,7 +30,7 @@ find_package(Threads REQUIRED)
 
 include_directories(${LIBHICNLIGHT_INCLUDE_DIRS})
 
-find_package(LibTransport REQUIRED)
+find_package(Libtransport REQUIRED)
 include_directories(${LIBTRANSPORT_INCLUDE_DIRS})
 
 add_library( # Sets the name of the library.
