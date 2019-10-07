@@ -20,7 +20,7 @@
         app:title="@string/cellular_preference_title">
 
         <SwitchPreference
-            app:defaultValue="string/true"
+            app:defaultValue="string/checkbox_true"
             app:key="@string/enable_cellular_key"
             app:title="@string/enable_cellular_title" />
 

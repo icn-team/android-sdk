@@ -1,4 +1,4 @@
-package com.cisco.hicn.forwarder;
+package com.cisco.hicn.forwarder.forwarder;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.cisco.hicn.forwarder.R;
 import com.cisco.hicn.forwarder.service.BackendAndroidService;
 import com.cisco.hicn.forwarder.supportlibrary.NativeAccess;
 import com.cisco.hicn.forwarder.utility.Constants;

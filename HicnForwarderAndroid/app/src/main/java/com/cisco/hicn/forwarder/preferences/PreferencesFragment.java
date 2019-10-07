@@ -31,11 +31,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
 
         setPreferencesFromResource(R.xml.root, s);
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-
-        if (!sharedPreferences.contains(getString(R.string.enable_bonjour_key))) {
-        }
-
         getPreferenceScreen().findPreference(getString(R.string.enable_bonjour_key)).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 
             @Override

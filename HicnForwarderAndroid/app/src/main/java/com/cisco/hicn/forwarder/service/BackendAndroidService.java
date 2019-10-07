@@ -77,10 +77,6 @@ public class BackendAndroidService extends Service {
             mHandler.sendMessageDelayed(mHandler.obtainMessage(EVENT_START_FORWARDER), 1000); // wait for mobile network is up
 
 
-            //    startBackend(intent);
-            //    mNetService.init(this, mSocketBinder);
-
-
         } else {
             Log.d(TAG, "Forwarder already running.");
         }
@@ -203,42 +199,5 @@ public class BackendAndroidService extends Service {
         Log.i(TAG, "BackendAndroid starterd");
 
     }
-
-    /*private void startBackend() {
-        String NOTIFICATION_CHANNEL_ID = "12345";
-        Notification notification = null;
-        if (Build.VERSION.SDK_INT >= 26) {
-            Notification.Builder notificationBuilder = new Notification.Builder(this, NOTIFICATION_CHANNEL_ID);
-
-            Intent notificationIntent = new Intent(this, ForwarderAndroidActivity.class);
-            PendingIntent activity = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-            notificationBuilder.setContentTitle("ForwarderAndroid").setContentText("ForwarderAndroid").setOngoing(true).setContentIntent(activity);
-            notification = notificationBuilder.build();
-        } else {
-            notification = new Notification.Builder(this)
-                    .setContentTitle("ForwarderAndroid")
-                    .setContentText("ForwarderAndroid")
-                    .build();
-        }
-
-        if (Build.VERSION.SDK_INT >= 26) {
-            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "ForwarderAndroid", NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setDescription("ForwarderAndroid");
-            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.createNotificationChannel(channel);
-
-        }
-
-        startForeground(Constants.FOREGROUND_SERVICE, notification);
-
-        NativeAccess nativeAccess = NativeAccess.getInstance();
-        if (!nativeAccess.isRunningForwarder()) {
-            sForwarderThread = new Thread(mForwarderRunner, "ForwarderRunner");
-            sForwarderThread.start();
-        }
-
-        Log.i(TAG, "ForwarderAndroid started");
-    }*/
 
 }
