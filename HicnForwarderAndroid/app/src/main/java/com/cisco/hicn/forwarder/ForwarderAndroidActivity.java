@@ -47,22 +47,6 @@ import java.util.List;
 
 public class ForwarderAndroidActivity extends AppCompatActivity {
 
-    private Spinner sourceIpSpinner;
-    private EditText sourcePortEditText;
-    private EditText nextHopIpEditText;
-    private EditText nextHopPortEditText;
-    private EditText configurationEditText;
-    private EditText prefixEditText;
-    private EditText netmaskEditText;
-    private EditText capacityEditText;
-    private Switch forwarderSwitch;
-    private Button sourceIpRefreshButton;
-    private List<String> sourceIpArrayList = new ArrayList<String>();
-    private List<String> sourceNetworkInterfaceArrayList = new ArrayList<>();
-    private HashMap<String, String> addressesMap = new HashMap<String, String>();
-    private SharedPreferences sharedPreferences;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +55,6 @@ public class ForwarderAndroidActivity extends AppCompatActivity {
         checkEnabledPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         checkEnabledPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
         checkEnabledPermission(Manifest.permission.FOREGROUND_SERVICE);
-
 
 
         //init();
@@ -111,124 +94,6 @@ public class ForwarderAndroidActivity extends AppCompatActivity {
         }
     }
 
-    /*
-    private void init() {
-        sourceIpSpinner = (Spinner) findViewById(R.id.source_ip_spinner);
-        sharedPreferences = getSharedPreferences(Constants.FORWARDER_PREFERENCES, MODE_PRIVATE);
-        addressesMap = getLocalIpAddress();
-        for (String networkInterface : addressesMap.keySet()) {
-            sourceIpArrayList.add(networkInterface + ": " + addressesMap.get(networkInterface));
-            sourceNetworkInterfaceArrayList.add(networkInterface);
-        }
-        if (addressesMap.size() > 0) {
-            ArrayAdapter<String> sourceIpSpinnerArrayAdapter = new ArrayAdapter<String>(this,
-                    android.R.layout.simple_spinner_item, sourceIpArrayList);
-            sourceIpSpinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            sourceIpSpinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_layout);
-            sourceIpSpinner.setAdapter(sourceIpSpinnerArrayAdapter);
-            if (sourceNetworkInterfaceArrayList.indexOf(sharedPreferences.getString(ResourcesEnumerator.SOURCE_NETWORK_INTERFACE.key(), Constants.DEFAULT_SOURCE_INTERFACE)) > -1) {
-                sourceIpSpinner.setSelection(sourceNetworkInterfaceArrayList.indexOf(sharedPreferences.getString(ResourcesEnumerator.SOURCE_NETWORK_INTERFACE.key(), Constants.DEFAULT_SOURCE_INTERFACE)));
-            } else {
-                sourceIpSpinner.setSelection(0);
-            }
-        }
-        sourcePortEditText = findViewById(R.id.source_port_editext);
-        sourcePortEditText.setText(sharedPreferences.getString(ResourcesEnumerator.SOURCE_PORT.key(), Constants.DEFAULT_SOURCE_PORT));
-        sourceIpRefreshButton = findViewById(R.id.source_ip_refresh_button);
-        sourceIpRefreshButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                addressesMap = getLocalIpAddress();
-                sourceIpArrayList.clear();
-                sourceNetworkInterfaceArrayList.clear();
-                for (String networkInterface : addressesMap.keySet()) {
-                    sourceIpArrayList.add(networkInterface + ": " + addressesMap.get(networkInterface));
-                    sourceNetworkInterfaceArrayList.add(networkInterface);
-                }
-                if (addressesMap.size() > 0) {
-                    ArrayAdapter<String> sourceIpComboArrayAdapter = new ArrayAdapter<String>(v.getContext(),
-                            android.R.layout.simple_spinner_item, sourceIpArrayList);
-                    sourceIpComboArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    sourceIpComboArrayAdapter.setDropDownViewResource(R.layout.spinner_layout);
-                    sourceIpSpinner.setAdapter(sourceIpComboArrayAdapter);
-                    if (sourceNetworkInterfaceArrayList.indexOf(sharedPreferences.getString(ResourcesEnumerator.SOURCE_NETWORK_INTERFACE.key(), Constants.DEFAULT_SOURCE_INTERFACE)) > -1) {
-                        sourceIpSpinner.setSelection(sourceNetworkInterfaceArrayList.indexOf(sharedPreferences.getString(ResourcesEnumerator.SOURCE_NETWORK_INTERFACE.key(), Constants.DEFAULT_SOURCE_INTERFACE)));
-                    } else {
-                        sourceIpSpinner.setSelection(0);
-                    }
-                }
-            }
-        });
-        nextHopIpEditText = findViewById(R.id.next_hop_ip_editext);
-        nextHopIpEditText.setText(sharedPreferences.getString(ResourcesEnumerator.NEXT_HOP_IP.key(), Constants.DEFAULT_NEXT_HOP_IP));
-        nextHopPortEditText = findViewById(R.id.next_hop_port_editext);
-        nextHopPortEditText.setText(sharedPreferences.getString(ResourcesEnumerator.NEXT_HOP_PORT.key(), Constants.DEFAULT_NEXT_HOP_PORT));
-
-        configurationEditText = findViewById(R.id.configuration_edittext);
-        configurationEditText.setText(sharedPreferences.getString(ResourcesEnumerator.CONFIGURATION.key(), Constants.DEFAULT_CONFIGURATION));
-        prefixEditText = findViewById(R.id.prefix_editext);
-        prefixEditText.setText(sharedPreferences.getString(ResourcesEnumerator.PREFIX.key(), Constants.DEFAULT_PREFIX));
-        netmaskEditText = findViewById(R.id.netmask_edittext);
-        netmaskEditText.setText(sharedPreferences.getString(ResourcesEnumerator.NETMASK.key(), Constants.DEFAULT_NETMASK));
-        capacityEditText = findViewById(R.id.capacity_edittext);
-        capacityEditText.setText(sharedPreferences.getString(ResourcesEnumerator.CAPACITY.key(),Constants.DEFAULT_CAPACITY));
-        forwarderSwitch = findViewById(R.id.forwarder_switch);
-
-        forwarderSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.v("Switch State=", "" + isChecked);
-                if (isChecked) {
-                    forwarderSwitch.setText(Constants.ENABLED);
-                    SharedPreferences.Editor sharedPreferencesEditor = getSharedPreferences(Constants.FORWARDER_PREFERENCES, MODE_PRIVATE).edit();
-                    sharedPreferencesEditor.putString(ResourcesEnumerator.SOURCE_NETWORK_INTERFACE.key(), sourceNetworkInterfaceArrayList.get(sourceIpSpinner.getSelectedItemPosition()));
-                    sharedPreferencesEditor.putString(ResourcesEnumerator.SOURCE_IP.key(), addressesMap.get(sourceNetworkInterfaceArrayList.get(sourceIpSpinner.getSelectedItemPosition())));
-                    sharedPreferencesEditor.putString(ResourcesEnumerator.SOURCE_PORT.key(), sourcePortEditText.getText().toString());
-                    sharedPreferencesEditor.putString(ResourcesEnumerator.NEXT_HOP_IP.key(), nextHopIpEditText.getText().toString());
-                    sharedPreferencesEditor.putString(ResourcesEnumerator.NEXT_HOP_PORT.key(), nextHopPortEditText.getText().toString());
-                    sharedPreferencesEditor.putString(ResourcesEnumerator.CONFIGURATION.key(), configurationEditText.getText().toString());
-                    sharedPreferencesEditor.putString(ResourcesEnumerator.PREFIX.key(), prefixEditText.getText().toString());
-                    sharedPreferencesEditor.putString(ResourcesEnumerator.NETMASK.key(), netmaskEditText.getText().toString());
-                    sharedPreferencesEditor.putString(ResourcesEnumerator.CAPACITY.key(), capacityEditText.getText().toString());
-                    sharedPreferencesEditor.commit();
-                    sourceIpSpinner.setEnabled(false);
-                    sourceIpRefreshButton.setEnabled(false);
-                    sourcePortEditText.setEnabled(false);
-                    nextHopIpEditText.setEnabled(false);
-                    nextHopPortEditText.setEnabled(false);
-                    prefixEditText.setEnabled(false);
-                    netmaskEditText.setEnabled(false);
-                    capacityEditText.setEnabled(false);
-                    configurationEditText.setEnabled(false);
-                    startForwarder();
-
-                } else {
-                    forwarderSwitch.setText(Constants.DISABLED);
-                    sourceIpSpinner.setEnabled(true);
-                    sourceIpRefreshButton.setEnabled(true);
-                    sourcePortEditText.setEnabled(true);
-                    nextHopIpEditText.setEnabled(true);
-                    nextHopPortEditText.setEnabled(true);
-                    prefixEditText.setEnabled(true);
-                    netmaskEditText.setEnabled(true);
-                    capacityEditText.setEnabled(true);
-                    configurationEditText.setEnabled(true);
-                    stopForwarder();
-                }
-            }
-
-        });
-
-        if (Forwarder.getInstance().isRunning()) {
-            forwarderSwitch.setText(Constants.ENABLED);
-            forwarderSwitch.setChecked(true);
-        } else {
-            forwarderSwitch.setText(Constants.DISABLED);
-        }
-    }
-*/
     private void startForwarder() {
         Intent intent = new Intent(this, BackendAndroidService.class);
         startService(intent);

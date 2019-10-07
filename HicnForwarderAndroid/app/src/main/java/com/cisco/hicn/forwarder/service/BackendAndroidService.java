@@ -32,6 +32,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.cisco.hicn.forwarder.ForwarderAndroidActivity;
+import com.cisco.hicn.forwarder.MainActivity;
 import com.cisco.hicn.forwarder.R;
 import com.cisco.hicn.forwarder.supportlibrary.NativeAccess;
 import com.cisco.hicn.forwarder.supportlibrary.NetworkServiceHelper;
@@ -155,7 +156,7 @@ public class BackendAndroidService extends Service {
         if (Build.VERSION.SDK_INT >= 26) {
             Notification.Builder notificationBuilder = new Notification.Builder(this, NOTIFICATION_CHANNEL_ID);
 
-            Intent notificationIntent = new Intent(this, ForwarderAndroidActivity.class);
+            Intent notificationIntent = new Intent(this, MainActivity.class);
             PendingIntent activity = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             notificationBuilder.setContentTitle("ForwarderAndroid").setContentText("ForwarderAndroid").setOngoing(true).setContentIntent(activity);
