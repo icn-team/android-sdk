@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package icn.forwarder.com.supportlibrary;
+package com.cisco.hicn.forwarder.supportlibrary;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -22,9 +22,8 @@ import android.net.LinkProperties;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
-import android.support.annotation.NonNull;
 import android.util.Log;
-
+import androidx.annotation.NonNull;
 import java.net.Inet4Address;
 
 public class NetworkServiceHelper {
