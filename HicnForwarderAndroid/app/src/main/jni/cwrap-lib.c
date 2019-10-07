@@ -182,7 +182,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startForwarder(JNIEnv 
         int logLevelArray[LoggerFacility_END];
 
 
-        _setLogLevel(logLevelArray, "all=debug");
+        _setLogLevel(logLevelArray, "all=info");
 
         for (int i = 0; i < LoggerFacility_END; i++) {
             if (logLevelArray[i] > -1) {
@@ -197,19 +197,6 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startForwarder(JNIEnv 
             configuration_SetObjectStoreSize(configuration, capacity);
         }
         forwarder_SetupLocalListeners(hicnFwd, PORT_NUMBER);
-        /*if (path_) {
-            const char *configFileName = (*env)->GetStringUTFChars(env, path_, 0);
-            FILE *file = fopen(configFileName, "rb");
-            char row[255];
-            while (fgets(row, sizeof(row), file) != NULL) {
-                __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap", "log file %s", row);
-            }
-
-            fclose(file);
-
-            //forwarder_SetupAllListeners(hicnFwd, PORT_NUMBER, NULL);
-            forwarder_SetupFromConfigFile(hicnFwd, configFileName);
-        }*/
         Dispatcher *dispatcher = forwarder_GetDispatcher(hicnFwd);
         _isRunning = true;
         dispatcher_Run(dispatcher);
