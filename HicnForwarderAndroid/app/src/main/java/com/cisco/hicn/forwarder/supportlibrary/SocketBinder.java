@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package icn.forwarder.com.supportlibrary;
+package com.cisco.hicn.forwarder.supportlibrary;
 
 import android.net.Network;
 import android.util.Log;
