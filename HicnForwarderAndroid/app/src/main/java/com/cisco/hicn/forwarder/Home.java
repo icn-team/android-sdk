@@ -60,7 +60,7 @@ public class Home extends Fragment {
         hiperf = new HiPerfFragment();
         hiperf.setHome(this);
 
-        fragmentManager.beginTransaction().replace(R.id.subviewLayout, hiperf).commit();
+        fragmentManager.beginTransaction().replace(R.id.subviewLayout, forwarder).commit();
     }
 
     @Override
