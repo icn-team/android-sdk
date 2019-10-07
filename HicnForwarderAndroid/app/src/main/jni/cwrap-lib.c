@@ -287,20 +287,6 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_updateInterfaceIPv4(JN
                                                                               jint next_hop_port) {
 
     netdevice_type_t netdevice_interface_type = (netdevice_type_t)interface_type;
-    /*switch (interface_type) {
-        case 0:
-            netdevice_interface_type = NETDEVICE_TYPE_WIFI;
-            break;
-        case 1:
-            netdevice_interface_type = NETDEVICE_TYPE_CELLULAR;
-            break;
-        case 2:
-            netdevice_interface_type = NETDEVICE_TYPE_WIRED;
-            break;
-        default:
-            netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
-    }*/
-
 
     ip_address_t remote_addr;
     ip_address_t *next_hop_ip_p;
@@ -334,20 +320,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_updateInterfaceIPv6(JN
                                                                               jstring next_hop_ip,
                                                                               jint next_hop_port) {
 
-    /*netdevice_type_t netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
-    switch (interface_type) {
-        case 0:
-            netdevice_interface_type = NETDEVICE_TYPE_WIFI;
-            break;
-        case 1:
-            netdevice_interface_type = NETDEVICE_TYPE_CELLULAR;
-            break;
-        case 2:
-            netdevice_interface_type = NETDEVICE_TYPE_WIRED;
-            break;
-        default:
-            netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
-    }*/
+
     netdevice_type_t netdevice_interface_type = (netdevice_type_t)interface_type;
 
 
@@ -367,6 +340,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_updateInterfaceIPv6(JN
                                 NULL, source_port,
                                 next_hop_ip_p, next_hop_port);
         facemgr_cfg_add_rule(facemgr_cfg, rule);
+
     } else {
         facemgr_cfg_rule_set_overlay(rule, AF_INET6,
                                      NULL, source_port,

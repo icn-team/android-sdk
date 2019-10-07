@@ -18,7 +18,7 @@
 
 
         <CheckBoxPreference
-            android:defaultValue="true"
+            android:defaultValue="false"
             app:key="@string/enable_bonjour_key"
             app:summary="@string/enable_bonjour_summary"
             app:title="@string/enable_bonjour_title" />
@@ -51,6 +51,13 @@
             app:fragment="com.cisco.hicn.forwarder.preferences.WiredPreferencesFragment"
             app:summary="@string/wired_preference_summary"
             app:title="@string/wired_preference_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/hiper_category">
+        <Preference
+            app:fragment="com.cisco.hicn.forwarder.preferences.HiperfPreferencesFragment"
+            app:summary="@string/hiperf_preferences_summary"
+            app:title="@string/hiperf_preferences_title" />
     </PreferenceCategory>
 
 </PreferenceScreen>

@@ -1,6 +1,7 @@
 package com.cisco.hicn.forwarder;
 
 import androidx.fragment.app.FragmentManager;
+
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.cisco.hicn.forwarder.forwarder.ForwarderFragment;
+import com.cisco.hicn.forwarder.hiperf.HiPerfFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /**
@@ -25,15 +28,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  * create an instance of this fragment.
  */
 public class Home extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     BottomNavigationView bottomNavigationView;
 
     FragmentManager fragmentManager;
@@ -41,27 +35,16 @@ public class Home extends Fragment {
     ForwarderFragment forwarder;
     InterfaceFragment interfaces;
     ApplicationsFragment applications;
+    HiPerfFragment hiperf;
 
     private OnFragmentInteractionListener mListener;
 
     public Home() {
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Home.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Home newInstance(String param1, String param2) {
+    public static Home newInstance() {
         Home fragment = new Home();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -74,13 +57,10 @@ public class Home extends Fragment {
 
         forwarder = new ForwarderFragment();
         interfaces = new InterfaceFragment();
-        applications = new ApplicationsFragment();
+        hiperf = new HiPerfFragment();
+        hiperf.setHome(this);
 
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-        fragmentManager.beginTransaction().replace(R.id.subviewLayout, forwarder).commit();
+        fragmentManager.beginTransaction().replace(R.id.subviewLayout, hiperf).commit();
     }
 
     @Override
@@ -92,7 +72,8 @@ public class Home extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        bottomNavigationView = (BottomNavigationView)getView().findViewById(R.id.bottom_navigation);
+        bottomNavigationView = (BottomNavigationView) getView().findViewById(R.id.bottom_navigation);
+
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -105,8 +86,11 @@ public class Home extends Fragment {
                             case R.id.action_interfaces:
                                 fragment = interfaces;
                                 break;
-                            case R.id.action_applications:
+                            /*case R.id.action_applications:
                                 fragment = applications;
+                                break;*/
+                            case R.id.action_hiperf:
+                                fragment = hiperf;
                                 break;
                             default:
                                 return false;
@@ -156,4 +140,14 @@ public class Home extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    public void disableItem(int index) {
+        bottomNavigationView.findViewById(index).setEnabled(false);
+    }
+
+    public void enableItem(int index) {
+        bottomNavigationView.findViewById(index).setEnabled(true);
+    }
+
+
 }

@@ -11,11 +11,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 cmake_minimum_required(VERSION 3.4.1)
-
+set(CMAKE_CXX_STANDARD 14)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
-message("->${CMAKE_SOURCE_DIR}")
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(CMAKE_FIND_ROOT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../../../../usr_${CMAKE_SYSTEM_PROCESSOR};${CMAKE_FIND_ROOT_PATH}")
 find_package(OpenSSL REQUIRED)
@@ -30,6 +29,9 @@ find_package(Threads REQUIRED)
 
 
 include_directories(${LIBHICNLIGHT_INCLUDE_DIRS})
+
+find_package(LibTransport REQUIRED)
+include_directories(${LIBTRANSPORT_INCLUDE_DIRS})
 
 add_library( # Sets the name of the library.
         cwrap-lib
@@ -47,7 +49,7 @@ add_library( # Sets the name of the library.
         SHARED
 
         # Provides a relative path to your source file(s).
-        cppwrap-lib.cpp)
+        cppwrap-lib.cpp hi_perf.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
@@ -80,4 +82,4 @@ target_link_libraries( # Specifies the target library.
 
         # Links the target library to the log library
         # included in the NDK.
-        ${log-lib})
+        ${log-lib} ${LIBTRANSPORT_LIBRARIES} ${HICN_LIBRARIES} ${LIBPARC_LIBRARIES} ${LIBEVENT_LIBRARIES} ${CONFIG_LIBRARY} ${OPENSSL_LIBRARIES})

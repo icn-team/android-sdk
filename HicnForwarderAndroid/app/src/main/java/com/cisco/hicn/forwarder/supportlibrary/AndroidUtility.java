@@ -12,19 +12,23 @@ import com.cisco.hicn.forwarder.utility.Constants;
 
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.util.Collections;
+import java.util.Queue;
 
 public class AndroidUtility {
 
+    private static AndroidUtility sInstance = null;
+
+    private Queue<Integer> hiperfGraphQueue;
+
+    public static AndroidUtility getInstance() {
+        if (sInstance == null) {
+            sInstance = new AndroidUtility();
+        }
+        return sInstance;
+    }
+
     public static int getNetworkType(String networkName) {
-        //if (MainActivity.interfacesHashMap.containsKey(networkName)) {
-        //    return MainActivity.interfacesHashMap.get(networkName);
-        //} else {
         return getNetworkType(MainActivity.context, networkName);
-        //if (type > -1)
-        //    MainActivity.interfacesHashMap.put(networkName, type);
-        //return type;
-        //  }
     }
 
     public static int getNetworkType(Context context, String networkName) {
@@ -49,7 +53,7 @@ public class AndroidUtility {
                 if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
                     return Constants.AU_INTERFACE_TYPE_CELLULAR;
                 }
-                return 0; //not supported
+                return Constants.AU_INTERFACE_TYPE_UNDEFINED; //not supported
             }
 
         }
@@ -62,6 +66,19 @@ public class AndroidUtility {
             Log.d(AndroidUtility.class.getCanonicalName(), "error");
         }
         return Constants.AU_INTERFACE_TYPE_UNDEFINED; //error
+    }
+
+    public void setHiperfGraphQueue(Queue<Integer> hiperfGraphQueue) {
+        this.hiperfGraphQueue = hiperfGraphQueue;
+    }
+
+   public Queue<Integer>getHiperfGraphQueue() {
+        return hiperfGraphQueue;
+   }
+
+    static void pushGoodput(int goodput) {
+        Log.d("hiperf", "goodput: " + goodput);
+        AndroidUtility.getInstance().getHiperfGraphQueue().add(goodput);
     }
 
 }

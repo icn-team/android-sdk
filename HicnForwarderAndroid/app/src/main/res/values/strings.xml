@@ -293,6 +293,53 @@
     <string name="enable_wired_key">enable_wired_key</string>
 
     <string name="checkbox_true">true</string>
+    <string name="hiperf">hIperf</string>
+
+
+
+    <string name="hiperf_hicn_name">HICN Name</string>
+    <string name="default_hiperf_hicn_name">b001::1</string>
+
+    <string name="hiperf_raaqm_beta_parameter">RAAQM Beta</string>
+    <string name="hiperf_raaqm_drop_factor_parameter">RAAQM Drop Factor</string>
+    <string name="hiperf_fixed_window_size">Fixed Window Size</string>
+    <string name="hiperf_window_size">Window Size</string>
+    <string name="hiperf_stats_interval">Stats Interval[ms]</string>
+    <string name="hiperf_rtc_protocol">Rtc Protocol</string>
+    <string name="hiperf_start_button">Start</string>
+    <string name="hiperf_stop_button">Stop</string>
+    <string name="hiperf_autoscroll">Autoscroll</string>
+    <string name="hiperf_more_options">More Options</string>
+    <string name="hiperf_hide_options">Hide Options</string>
+    <string name="hiperf_cancel_log_button">Cancel</string>
+    <string name="hiperf_shared_preferences">hiperf_shared_preferences</string>
+    <string name="hiperf_hicn_name_key">hiperf_hicn_name_key</string>
+    <string name="hiperf_raaqm_beta_parameter_key">hiperf_raaqm_beta_parameter_key</string>
+    <string name="hiperf_raaqm_drop_factor_parameter_key">hiperf_raaqm_drop_factor_parameter_key</string>
+    <string name="hiperf_fixed_window_size_key">hiperf_fixed_window_size_key</string>
+    <string name="hiperf_window_size_key">hiperf_window_size_key</string>
+    <string name="hiperf_rtc_protocol_key">hiperf_rtc_protocol_key</string>
+    <string name="hiperf_stats_interval_key">hiperf_stats_interval_key</string>
+    <string name="hiperf_log_autosroll_key">hiperf_log_autoscroll_key</string>
+    <string name="hiper_category">hIperf</string>
+    <string name="hiperf_preferences_title">hIperf Configuration</string>
+    <string name="hiperf_preferences_summary">Configure hIperf Parameters</string>
+    <string name="hiperf_raaqm_beta_key">hiperf_raaqm_beta_key</string>
+    <string name="default_hiperf_raaqm_beta">0.99</string>
+    <string name="hiperf_raaqm_beta_summary">RAAQM Beta</string>
+    <string name="hiperf_raaqm_beta_title">RAAQM Beta</string>
+    <string name="default_hiperf_raaqm_drop_factor">0.003</string>
+    <string name="hiperf_raaqm_drop_factor_key">hiperf_raaqm_drop_factor_key</string>
+    <string name="hiperf_raaqm_drop_factor_summary">RAAQM Drop Factor</string>
+    <string name="hiperf_raaqm_drop_factor_title">RAAQM Drop Factor</string>
+    <string name="checkbox_false">false</string>
+    <string name="enable_hiperf_window_size_key">enable_hiperf_window_size_key</string>
+    <string name="enable_hiperf_window_size_title">Fixed Window Size</string>
+    <string name="enable_hiperf_rtc_protocol_key">enable_hiperf_rtc_protocol_key</string>
+    <string name="enable_hiperf_rtc_protocol_title">RTC Protocol</string>
+    <string name="default_hiperf_window_size">10</string>
+    <string name="hiperf_window_size_summary">Window Size</string>
+    <string name="hiperf_window_size_title">Window Size</string>
 
 
 </resources>
