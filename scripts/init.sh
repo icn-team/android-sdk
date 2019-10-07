@@ -99,6 +99,8 @@ fi
 if [ ! -d curl ]; then
 	echo "curl  not found"
 	git clone https://github.com/curl/curl.git
+	cd curl
+	git checkout tags/curl-7_66_0
 fi
 
 
