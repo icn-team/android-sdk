@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2019 Cisco and/or its affiliates.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.cisco.hicn.forwarder;
 
 import android.content.Context;
@@ -10,15 +25,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link InterfaceFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link InterfaceFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class InterfaceFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,15 +41,6 @@ public class InterfaceFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment InterfaceFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static InterfaceFragment newInstance(String param1, String param2) {
         InterfaceFragment fragment = new InterfaceFragment();
         Bundle args = new Bundle();
