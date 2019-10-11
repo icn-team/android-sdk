@@ -148,24 +148,10 @@ cd ../
 if [ ! -d ${INSTALLATION_DIR}/include/openssl ]; then
 	echo "OpenSSL Libs not found!"
 	echo "Compile OpenSSL"
-	cd ${BASE_DIR}/external
 	export ANDROID_NDK_ROOT=${BASE_DIR}/sdk/ndk-bundle
-	if [ "$ABI" = "arm" ]; then
-        bash ${BASE_DIR}/scripts/build-openssl-android.sh 26 26 armeabi
-        cp ${BASE_DIR}/external/openssl-lib/armeabi/*.a ${INSTALLATION_DIR}/lib/
-        cp -r ${BASE_DIR}/external/openssl-lib/armeabi/include/openssl ${INSTALLATION_DIR}/include/
-    elif [ "$ABI" = "arm64" ]; then
-        bash ${BASE_DIR}/scripts/build-openssl-android.sh 26 26 arm64-v8a
-        cp ${BASE_DIR}/external/openssl-lib/arm64-v8a/*.a ${INSTALLATION_DIR}/lib/
-        cp -r ${BASE_DIR}/external/openssl-lib/arm64-v8a/include/openssl ${INSTALLATION_DIR}/include/
-    elif [ "$ABI" = "x86" ]; then
-        bash ${BASE_DIR}/scripts/build-openssl-android.sh 26 26 x86
-        cp ${BASE_DIR}/external/openssl-lib/x86/*.a ${INSTALLATION_DIR}/lib/
-        cp -r ${BASE_DIR}/external/openssl-lib/x86/include/openssl ${INSTALLATION_DIR}/include/
-    else
-    	bash ${BASE_DIR}/scripts/build-openssl-android.sh 26 26 x86_64
-        cp ${BASE_DIR}/external/openssl-lib/x86_64/*.a ${INSTALLATION_DIR}/lib/
-        cp -r ${BASE_DIR}/external/openssl-lib/x86_64/include/openssl ${INSTALLATION_DIR}/include/
-	fi
+    bash ${BASE_DIR}/scripts/build-openssl.sh android-$ABI  $ANDROID_NDK_ROOT $BASE_DIR/external
+	cp $BASE_DIR/external/openssl-android-$ABI/*.a ${INSTALLATION_DIR}/lib/
+	cp -r $BASE_DIR/external/openssl-android-$ABI/include/openssl ${INSTALLATION_DIR}/include/
+	rm -rf $BASE_DIR/external/openssl-android-$ABI
 fi
 

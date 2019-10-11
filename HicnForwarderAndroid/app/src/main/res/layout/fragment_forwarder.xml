@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
     Copyright (c) 2019 Cisco and/or its affiliates.
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -20,33 +19,35 @@
     android:layout_height="match_parent"
     tools:context="com.cisco.hicn.forwarder.MainActivity">
 
-    <TextView
-        android:id="@+id/forwarder_status_text_view"
-        android:layout_width="428dp"
-        android:layout_height="62dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/hicn_is_disabled"
-        android:textAlignment="center"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toTopOf="@+id/forwarder_switch"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.529"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
 
-    <Switch
-        android:id="@+id/forwarder_switch"
-        android:layout_width="136dp"
-        android:layout_height="141dp"
-        android:layout_centerInParent="true"
-        android:scaleX="3"
-        android:scaleY="3"
-        android:text=""
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/forwarder_status_text_view" />
+        android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/forwarder_status_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/hicn_is_disabled"
+            android:textAlignment="center"
+            android:textSize="36sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+            <Switch
+                android:id="@+id/forwarder_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:scaleX="3"
+                android:scaleY="3"
+                android:text="" />
+        </RelativeLayout>
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
