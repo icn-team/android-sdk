@@ -11,6 +11,8 @@
 # define BUILD_64   1
 #endif
 
+
+#define FACEMGR_ANDROID_UTILITY_CLASS "com/cisco/hicn/forwarder/supportlibrary/AndroidUtility"
 static JavaVM *g_VM;
 JNIEnv *j_env;
 
@@ -30,6 +32,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startHiPerf(JNIEnv *en
 
     JavaVM *jvm = NULL;
     env->GetJavaVM(&jvm);
+    jclass cls = env->FindClass(FACEMGR_ANDROID_UTILITY_CLASS);
 
 
     transport::interface::ClientConfiguration client_configuration;
@@ -38,6 +41,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startHiPerf(JNIEnv *en
     client_configuration.beta = (double) beta_parameter;
     client_configuration.drop_factor = (double) drop_factor_parameter;
     client_configuration.jvm = jvm;
+    client_configuration.cls = reinterpret_cast<jclass>(env->NewGlobalRef(cls));
     if ((int) window_size >= 0) {
         client_configuration.window = (int) window_size;
     }
