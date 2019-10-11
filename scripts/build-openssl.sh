@@ -43,7 +43,7 @@ architecture=$ARCH
 
 # Create the make file
 cd ${OPENSSL_DIR}
-./Configure ${architecture} -D__ANDROID_API__=$ANDROID_API no-shared
+./Configure -d ${architecture} -D__ANDROID_API__=$ANDROID_API no-shared
 
 # Build
 make
