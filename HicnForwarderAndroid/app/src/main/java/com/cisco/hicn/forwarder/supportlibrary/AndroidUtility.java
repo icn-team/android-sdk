@@ -91,9 +91,13 @@ public class AndroidUtility {
         return hiperfGraphQueue;
    }
 
-    static void pushGoodput(int goodput) {
+   public static void pushGoodput(int goodput) {
         Log.d("hiperf", "goodput: " + goodput);
         AndroidUtility.getInstance().getHiperfGraphQueue().add(goodput);
     }
 
+
+    public static int getTextureCount() {
+     return 0;
+    }
 }

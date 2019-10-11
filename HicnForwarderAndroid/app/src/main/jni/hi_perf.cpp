@@ -221,10 +221,8 @@ namespace transport {
             JNIEnv *env;
             configuration_.jvm->AttachCurrentThread(&env, NULL);
 
-
-            jclass cls = env->FindClass(FACEMGR_ANDROID_UTILITY_CLASS);
-            jmethodID pushGoodput = env->GetStaticMethodID(cls, "pushGoodput", "(I)V");
-            env->CallStaticVoidMethod(cls, pushGoodput,(int) bandwidthFloat);
+            jmethodID pushGoodput = env->GetStaticMethodID(configuration_.cls, "pushGoodput", "(I)V");
+            env->CallStaticVoidMethod(configuration_.cls, pushGoodput,(int) bandwidthFloat);
 
             total_duration_milliseconds_ += (uint32_t) exact_duration.count();
             old_bytes_value_ = stats.getBytesRecv();
