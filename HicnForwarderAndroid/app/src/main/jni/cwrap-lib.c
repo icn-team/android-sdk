@@ -182,7 +182,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startForwarder(JNIEnv 
         int logLevelArray[LoggerFacility_END];
 
 
-        _setLogLevel(logLevelArray, "all=info");
+        _setLogLevel(logLevelArray, "all=debug");
 
         for (int i = 0; i < LoggerFacility_END; i++) {
             if (logLevelArray[i] > -1) {
