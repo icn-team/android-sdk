@@ -36,11 +36,11 @@ public class WifiPreferencesFragment extends PreferenceFragmentCompat {
 
          sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         if (sharedPreferences.getBoolean(getString(R.string.enable_wifi_key), false)) {
-            getPreferenceScreen().findPreference(getString(R.string.enable_wifi_key)).setSummary(getString(R.string.manual));
+            getPreferenceScreen().findPreference(getString(R.string.enable_wifi_key)).setSummary(getString(R.string.enabled));
             getPreferenceManager().findPreference((getString(R.string.wifi_ipv4_preferences_key))).setEnabled(true);
             getPreferenceManager().findPreference((getString(R.string.wifi_ipv6_preferences_key))).setEnabled(true);
         } else {
-            getPreferenceScreen().findPreference(getString(R.string.enable_wifi_key)).setSummary(getString(R.string.auto));
+            getPreferenceScreen().findPreference(getString(R.string.enable_wifi_key)).setSummary(getString(R.string.disabled));
             getPreferenceManager().findPreference((getString(R.string.wifi_ipv4_preferences_key))).setEnabled(false);
             getPreferenceManager().findPreference((getString(R.string.wifi_ipv6_preferences_key))).setEnabled(false);
         }
@@ -49,7 +49,7 @@ public class WifiPreferencesFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 if ((boolean) newValue) {
-                    getPreferenceScreen().findPreference(getString(R.string.enable_wifi_key)).setSummary(getString(R.string.manual));
+                    getPreferenceScreen().findPreference(getString(R.string.enable_wifi_key)).setSummary(getString(R.string.enabled));
                     getPreferenceManager().findPreference((getString(R.string.wifi_ipv4_preferences_key))).setEnabled(true);
                     getPreferenceManager().findPreference((getString(R.string.wifi_ipv6_preferences_key))).setEnabled(true);
 
@@ -66,7 +66,7 @@ public class WifiPreferencesFragment extends PreferenceFragmentCompat {
 
 
                 } else {
-                    getPreferenceScreen().findPreference(getString(R.string.enable_wifi_key)).setSummary(getString(R.string.auto));
+                    getPreferenceScreen().findPreference(getString(R.string.enable_wifi_key)).setSummary(getString(R.string.disabled));
                     getPreferenceManager().findPreference((getString(R.string.wifi_ipv4_preferences_key))).setEnabled(false);
                     getPreferenceManager().findPreference((getString(R.string.wifi_ipv6_preferences_key))).setEnabled(false);
 
