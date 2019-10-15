@@ -25,12 +25,6 @@ cd ../..
 cd src/viper
 git pull
 cd ../..
-cd src/curl
-git pull
-cd ../..
-#cd src/jsoncpp
-#git pull
-#cd ../..
 cd src/libevent
 git pull
 cd ../..

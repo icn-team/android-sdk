@@ -36,11 +36,11 @@ public class CellularPreferencesFragment extends PreferenceFragmentCompat {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         if (sharedPreferences.getBoolean(getString(R.string.enable_cellular_key), false)) {
-            getPreferenceScreen().findPreference(getString(R.string.enable_cellular_key)).setSummary(getString(R.string.manual));
+            getPreferenceScreen().findPreference(getString(R.string.enable_cellular_key)).setSummary(getString(R.string.enabled));
             getPreferenceManager().findPreference((getString(R.string.cellular_ipv4_preferences_key))).setEnabled(true);
             getPreferenceManager().findPreference((getString(R.string.cellular_ipv6_preferences_key))).setEnabled(true);
         } else {
-            getPreferenceScreen().findPreference(getString(R.string.enable_cellular_key)).setSummary(getString(R.string.auto));
+            getPreferenceScreen().findPreference(getString(R.string.enable_cellular_key)).setSummary(getString(R.string.disabled));
             getPreferenceManager().findPreference((getString(R.string.cellular_ipv4_preferences_key))).setEnabled(false);
             getPreferenceManager().findPreference((getString(R.string.cellular_ipv6_preferences_key))).setEnabled(false);
         }
@@ -49,7 +49,7 @@ public class CellularPreferencesFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 if ((boolean) newValue) {
-                    getPreferenceScreen().findPreference(getString(R.string.enable_cellular_key)).setSummary(getString(R.string.manual));
+                    getPreferenceScreen().findPreference(getString(R.string.enable_cellular_key)).setSummary(getString(R.string.enabled));
                     getPreferenceManager().findPreference((getString(R.string.cellular_ipv4_preferences_key))).setEnabled(true);
                     getPreferenceManager().findPreference((getString(R.string.cellular_ipv6_preferences_key))).setEnabled(true);
 
@@ -64,7 +64,7 @@ public class CellularPreferencesFragment extends PreferenceFragmentCompat {
                     int cellularNextHopPortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.cellular_nexthop_port_ipv6_key), getString(R.string.default_cellular_nexthop_port_ipv6)));
                     nativeAccess.updateInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_CELLULAR.getValue(), cellularSourcePortIPv6, cellularNextHopIPv6, cellularNextHopPortIPv6);
                 } else {
-                    getPreferenceScreen().findPreference(getString(R.string.enable_cellular_key)).setSummary(getString(R.string.auto));
+                    getPreferenceScreen().findPreference(getString(R.string.enable_cellular_key)).setSummary(getString(R.string.disabled));
                     getPreferenceManager().findPreference((getString(R.string.cellular_ipv4_preferences_key))).setEnabled(false);
                     getPreferenceManager().findPreference((getString(R.string.cellular_ipv6_preferences_key))).setEnabled(false);
 

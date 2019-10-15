@@ -116,7 +116,7 @@ public class HiPerfFragment extends Fragment {
 
         context = getActivity();
         hiperfSharedPreferences = context.getSharedPreferences(
-                getString(R.string.hiperf_shared_preferences), Context.MODE_PRIVATE);
+                Constants.FORWARDER_PREFERENCES, Context.MODE_PRIVATE);
         root = inflater.inflate(R.layout.fragment_hiperf, container, false);
         initHiPerfFragment(root);
         return root;

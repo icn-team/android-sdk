@@ -56,7 +56,6 @@ Forwarder *hicnFwd = NULL;
 //facemgr
 static struct event_base *loop;
 
-//facemgr_t *facemgr;
 
 typedef struct {
     void (*cb)(void *, ...);

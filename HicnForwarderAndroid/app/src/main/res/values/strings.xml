@@ -84,7 +84,7 @@
     <string name="wired">Wired</string>
     <string name="default_ipv4">10.20.30.40</string>
     <string name="default_ipv6">ffff::1</string>
-    <string name="default_port">9596</string>
+    <string name="default_port">9695</string>
 
 
 
@@ -193,7 +193,7 @@
 
 
     <string name="wifi_ipv4_preference_title">WiFi IPv4</string>
-    <string name="default_wifi_source_port_ipv4">9596</string>
+    <string name="default_wifi_source_port_ipv4">9695</string>
     <string name="wifi_source_port_ipv4_key">wifi_source_port_ipv4_key</string>
     <string name="wifi_source_port_ipv4_summary">Source Port</string>
     <string name="wifi_source_port_ipv4_title">Source Port</string>
@@ -286,9 +286,9 @@
     <string name="wired_nexthop_port_ipv6_title">Next Hop Port</string>
     <string name="enable_wifi_key">enable_wifi_key</string>
     <string name="auto">Auto</string>
-    <string name="enable_wifi_title">Enable WiFi</string>
-    <string name="enable_cellular_title">Enable Cellular</string>
-    <string name="enable_wired_title">Enable Wired</string>
+    <string name="enable_wifi_title">Manual Configuration</string>
+    <string name="enable_cellular_title">Manual Configuration</string>
+    <string name="enable_wired_title">Manual Configuration</string>
     <string name="enable_cellular_key">enable_cellular_key</string>
     <string name="enable_wired_key">enable_wired_key</string>
 
@@ -340,6 +340,8 @@
     <string name="default_hiperf_window_size">10</string>
     <string name="hiperf_window_size_summary">Window Size</string>
     <string name="hiperf_window_size_title">Window Size</string>
+    <string name="disabled">Disabled</string>
+    <string name="enabled">Enabled</string>
 
 
 </resources>
