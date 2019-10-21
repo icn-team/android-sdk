@@ -208,8 +208,8 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgr(JNIEnv *e
         loop = loop_create();
         facemgr_set_callback(facemgr, loop, (void*)loop_callback);
         facemgr_bootstrap(facemgr);
-        loop_dispatch(loop);
         _isRunningFacemgr = true;
+        loop_dispatch(loop);
         facemgr_stop(facemgr);
         loop_undispatch(loop);
         loop_free(loop);
