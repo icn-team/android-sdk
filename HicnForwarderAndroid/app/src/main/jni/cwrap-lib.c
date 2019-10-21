@@ -43,6 +43,7 @@
 
 #include <hicn/facemgr/cfg.h>
 #include <hicn/facemgr/api.h>
+#include <hicn/facemgr/loop.h>
 #include <event2/event.h>
 
 
@@ -54,19 +55,8 @@ static jobject *_instance;
 //forwarder
 Forwarder *hicnFwd = NULL;
 //facemgr
-static struct event_base *loop;
+static loop_t *loop;
 
-
-typedef struct {
-    void (*cb)(void *, ...);
-
-    void *args;
-} cb_wrapper_args_t;
-
-void cb_wrapper(evutil_socket_t fd, short what, void *arg) {
-    cb_wrapper_args_t *cb_wrapper_args = arg;
-    cb_wrapper_args->cb(cb_wrapper_args->args);
-}
 
 int
 loop_unregister_event(struct event_base *loop, struct event *event) {
@@ -79,31 +69,6 @@ loop_unregister_event(struct event_base *loop, struct event *event) {
     return 0;
 }
 
-
-struct event *
-loop_register_fd(struct event_base *loop, int fd, void *cb, void *cb_args) {
-    // TODO: not freed
-    cb_wrapper_args_t *cb_wrapper_args = malloc(sizeof(cb_wrapper_args_t));
-    *cb_wrapper_args = (cb_wrapper_args_t) {
-            .cb = cb,
-            .args = cb_args,
-    };
-
-    evutil_make_socket_nonblocking(fd);
-    struct event *event = event_new(loop, fd, EV_READ | EV_PERSIST, cb_wrapper, cb_wrapper_args);
-    if (!event)
-        goto ERR_EVENT_NEW;
-
-    if (event_add(event, NULL) < 0)
-        goto ERR_EVENT_ADD;
-
-    return event;
-
-    ERR_EVENT_ADD:
-    event_free(event);
-    ERR_EVENT_NEW:
-    return NULL;
-}
 
 
 JNIEXPORT jboolean JNICALL
@@ -224,9 +189,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_isRunningFacemgr(JNIEn
 JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_stopFacemgr(JNIEnv *env, jobject thiz) {
     if (_isRunningFacemgr) {
-        event_base_loopbreak(loop);
-        sleep(2);
-        loop = NULL;
+        loop_break(loop);
         _isRunningFacemgr = false;
     }
 }
@@ -242,16 +205,16 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgr(JNIEnv *e
         JavaVM *jvm = NULL;
         (*env)->GetJavaVM(env, &jvm);
         facemgr_set_jvm(facemgr, jvm);
-        loop = event_base_new();
-        facemgr_set_event_loop_handler(facemgr, loop, loop_register_fd, loop_unregister_event);
+        loop = loop_create();
+        facemgr_set_callback(facemgr, loop, (void*)loop_callback);
         facemgr_bootstrap(facemgr);
+        loop_dispatch(loop);
         _isRunningFacemgr = true;
-        event_base_dispatch(loop);
         facemgr_stop(facemgr);
+        loop_undispatch(loop);
+        loop_free(loop);
         facemgr_free(facemgr);
-
     }
-
 }
 
 
@@ -339,20 +302,6 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_unsetInterfaceIPv4(JNI
                                                                              jobject thiz,
                                                                              jint interface_type) {
     netdevice_type_t netdevice_interface_type =(netdevice_type_t)interface_type;
-    /*switch (interface_type) {
-        case 0:
-            netdevice_interface_type = NETDEVICE_TYPE_WIFI;
-            break;
-        case 1:
-            netdevice_interface_type = NETDEVICE_TYPE_CELLULAR;
-            break;
-        case 2:
-            netdevice_interface_type = NETDEVICE_TYPE_WIRED;
-            break;
-        default:
-            netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
-    }*/
-
     facemgr_cfg_rule_t *rule;
     facemgr_cfg_get_rule(facemgr_cfg, NULL, netdevice_interface_type, &rule);
     if (rule) {
@@ -365,20 +314,6 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_unsetInterfaceIPv6(JNI
                                                                              jobject thiz,
                                                                              jint interface_type) {
     netdevice_type_t netdevice_interface_type = (netdevice_type_t)interface_type;
-    /*switch (interface_type) {
-        case 0:
-            netdevice_interface_type = NETDEVICE_TYPE_WIFI;
-            break;
-        case 1:
-            netdevice_interface_type = NETDEVICE_TYPE_CELLULAR;
-            break;
-        case 2:
-            netdevice_interface_type = NETDEVICE_TYPE_WIRED;
-            break;
-        default:
-            netdevice_interface_type = NETDEVICE_TYPE_UNDEFINED;
-    }*/
-
     facemgr_cfg_rule_t *rule;
     facemgr_cfg_get_rule(facemgr_cfg, NULL, netdevice_interface_type, &rule);
     if (rule) {
