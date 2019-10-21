@@ -102,6 +102,7 @@ if [ ! -d curl ]; then
 	git clone https://github.com/curl/curl.git
 	cd curl
 	git checkout tags/curl-7_66_0
+	cd ..
 fi
 
 
