@@ -70,15 +70,6 @@ namespace transport {
                   lost_packets_(std::unordered_set<uint32_t>()),
                   rtc_callback_(configuration_.rtc_ ? new RTCCallback(*this) : nullptr),
                   callback_(configuration_.rtc_ ? nullptr : new Callback(*this)) {
-            __android_log_print(ANDROID_LOG_INFO, TAG_HIPERF, "ciao");
-
-     /*       JNIEnv *env;
-            configuration_.jvm->AttachCurrentThread(&env, NULL);
-
-
-            jclass cls = env->FindClass(FACEMGR_ANDROID_UTILITY_CLASS);
-            jmethodID pushGoodput = env->GetStaticMethodID(cls, "pushGoodput", "(I)V");
-            env->CallStaticVoidMethod(cls, pushGoodput,(int) 10);*/
 
         }
 
