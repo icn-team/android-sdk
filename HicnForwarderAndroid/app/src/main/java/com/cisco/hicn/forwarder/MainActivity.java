@@ -54,14 +54,12 @@ public class MainActivity extends AppCompatActivity
     private ActionBarDrawerToggle mToggle;
     private NavigationView nav_View;
     private FragmentManager fragmentManager;
-    private FrameLayout viewLayout;
 
 
     private Home home;
     private PreferencesFragment settings;
 
     public static Context context;
-    //public static HashMap<String, Integer> interfacesHashMap = new HashMap<>();
 
 
     @Override
@@ -74,17 +72,15 @@ public class MainActivity extends AppCompatActivity
 
         MainActivity.context = getApplicationContext();
 
-       // fillInterfaceTypes();
 
         setContentView(R.layout.activity_main);
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer);
+        mDrawer = findViewById(R.id.drawer);
         mToggle = new ActionBarDrawerToggle(this, mDrawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.addDrawerListener(mToggle);
         mToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        nav_View = (NavigationView) findViewById(R.id.nav_View);
+        nav_View = findViewById(R.id.nav_View);
         nav_View.setNavigationItemSelectedListener(this);
-        viewLayout = (FrameLayout) findViewById(R.id.viewLayout);
         fragmentManager = getSupportFragmentManager();
 
         // Declare fragments here
