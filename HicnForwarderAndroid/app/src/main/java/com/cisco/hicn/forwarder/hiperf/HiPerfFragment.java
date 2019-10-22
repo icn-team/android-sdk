@@ -21,6 +21,7 @@ import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.os.Bundle;
 
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,10 +87,7 @@ public class HiPerfFragment extends Fragment {
 
     //UI behavior
     private boolean hiperfRunning = false;
-    /*private boolean expandadbleLayoutExpanded = false;
 
-    private boolean autoScrollEnabled = true;
-    */
     private ArrayList<Entry> hiperfTimeArrayList = new ArrayList<>();
     private ArrayList<Integer> hiperfTimeIntArrayList = new ArrayList<>();
     private ArrayList<Long> hipintTimestampArrayList = new ArrayList<>();
@@ -115,8 +113,7 @@ public class HiPerfFragment extends Fragment {
             Bundle savedInstanceState) {
 
         context = getActivity();
-        hiperfSharedPreferences = context.getSharedPreferences(
-                Constants.FORWARDER_PREFERENCES, Context.MODE_PRIVATE);
+        hiperfSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         root = inflater.inflate(R.layout.fragment_hiperf, container, false);
         initHiPerfFragment(root);
         return root;
