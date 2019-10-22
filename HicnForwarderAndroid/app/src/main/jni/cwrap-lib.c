@@ -329,27 +329,17 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_enableDiscovery(JNIEnv
 }
 
 JNIEXPORT void JNICALL
-Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_disableIPv4(JNIEnv *env, jobject thiz,
-                                                                      jboolean disable_ipv4) {
+Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_enableIPv4(JNIEnv *env, jobject thiz,
+                                                                      jboolean enable_ipv4) {
 
-#if 0
-    facemgr_cfg_rule_t *rule;
-    rule = facemgr_cfg_rule_create();
-    facemgr_cfg_set_ipv4(rule, disable_ipv4);
-    facemgr_cfg_add_rule(facemgr_cfg, rule);
-#endif
+    facemgr_cfg_set_ipv4(facemgr_cfg, enable_ipv4);
 }
 
 JNIEXPORT void JNICALL
-Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_disableIPv6(JNIEnv *env, jobject thiz,
-                                                                      jboolean disable_ipv6) {
+Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_enableIPv6(JNIEnv *env, jobject thiz,
+                                                                      jboolean enable_ipv6) {
 
-#if 0
-    facemgr_cfg_rule_t *rule;
-    rule = facemgr_cfg_rule_create();
-    facemgr_cfg_set_ipv4(rule, disable_ipv6);
-    facemgr_cfg_add_rule(facemgr_cfg, rule);
-#endif
+    facemgr_cfg_set_ipv4(facemgr_cfg, enable_ipv6);
 }
 
 static bool bindSocketWrap(JNIEnv *env, jobject instance, int sock, const char *ifname) {

@@ -98,11 +98,12 @@ public class MainActivity extends AppCompatActivity
         boolean enableBonjour = sharedPreferences.getBoolean(getString(R.string.enable_bonjour_key), false);
         nativeAccess.enableDiscovery(enableBonjour);
 
-        boolean enableNexHopIPv4 = sharedPreferences.getBoolean(getString(R.string.enable_nexthop_ipv4_key), true);
-        nativeAccess.disableIPv4(!enableNexHopIPv4);
 
-        boolean enableNexHopIPv6 = sharedPreferences.getBoolean(getString(R.string.enable_nexthop_ipv6_key), true);
-        nativeAccess.disableIPv6(!enableNexHopIPv6);
+        boolean enableNexHopIPv4 = sharedPreferences.getBoolean(getString(R.string.enable_nexthop_ipv4_key), true);
+        nativeAccess.enableIPv4(!enableNexHopIPv4);
+
+        boolean enableNexHopIPv6 = sharedPreferences.getBoolean(getString(R.string.enable_nexthop_ipv6_key), false);
+        nativeAccess.enableIPv6(enableNexHopIPv6);
 
         boolean enableWifi = sharedPreferences.getBoolean(getString(R.string.enable_wifi_key), true);
 

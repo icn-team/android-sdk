@@ -65,9 +65,9 @@ public class NativeAccess {
 
     public native void enableDiscovery(boolean enableDiscovery);
 
-    public native void disableIPv4(boolean disableIPv4);
+    public native void enableIPv4(boolean disableIPv4);
 
-    public native void disableIPv6(boolean disableIPv6);
+    public native void enableIPv6(boolean disableIPv6);
 
     public native void updateInterfaceIPv4(int interfaceType, int sourcePort, String nextHopIp, int nextHopPort);
 
