@@ -70,7 +70,6 @@ loop_unregister_event(struct event_base *loop, struct event *event) {
 }
 
 
-
 JNIEXPORT jboolean JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_isRunningForwarder(JNIEnv *env,
                                                                              jobject instance) {
@@ -206,7 +205,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startFacemgr(JNIEnv *e
         (*env)->GetJavaVM(env, &jvm);
         facemgr_set_jvm(facemgr, jvm);
         loop = loop_create();
-        facemgr_set_callback(facemgr, loop, (void*)loop_callback);
+        facemgr_set_callback(facemgr, loop, (void *) loop_callback);
         facemgr_bootstrap(facemgr);
         _isRunningFacemgr = true;
         loop_dispatch(loop);
@@ -235,7 +234,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_updateInterfaceIPv4(JN
                                                                               jstring next_hop_ip,
                                                                               jint next_hop_port) {
 
-    netdevice_type_t netdevice_interface_type = (netdevice_type_t)interface_type;
+    netdevice_type_t netdevice_interface_type = (netdevice_type_t) interface_type;
 
     ip_address_t remote_addr;
     ip_address_t *next_hop_ip_p;
@@ -250,8 +249,8 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_updateInterfaceIPv4(JN
         facemgr_cfg_rule_set_match(rule, NULL, netdevice_interface_type);
 
         facemgr_cfg_rule_set_overlay(rule, AF_INET,
-                                NULL, source_port,
-                                next_hop_ip_p, next_hop_port);
+                                     NULL, source_port,
+                                     next_hop_ip_p, next_hop_port);
         facemgr_cfg_add_rule(facemgr_cfg, rule);
     } else {
         facemgr_cfg_rule_set_overlay(rule, AF_INET,
@@ -270,7 +269,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_updateInterfaceIPv6(JN
                                                                               jint next_hop_port) {
 
 
-    netdevice_type_t netdevice_interface_type = (netdevice_type_t)interface_type;
+    netdevice_type_t netdevice_interface_type = (netdevice_type_t) interface_type;
 
 
     ip_address_t remote_addr;
@@ -286,8 +285,8 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_updateInterfaceIPv6(JN
         facemgr_cfg_rule_set_match(rule, NULL, netdevice_interface_type);
 
         facemgr_cfg_rule_set_overlay(rule, AF_INET6,
-                                NULL, source_port,
-                                next_hop_ip_p, next_hop_port);
+                                     NULL, source_port,
+                                     next_hop_ip_p, next_hop_port);
         facemgr_cfg_add_rule(facemgr_cfg, rule);
 
     } else {
@@ -301,7 +300,7 @@ JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_unsetInterfaceIPv4(JNIEnv *env,
                                                                              jobject thiz,
                                                                              jint interface_type) {
-    netdevice_type_t netdevice_interface_type =(netdevice_type_t)interface_type;
+    netdevice_type_t netdevice_interface_type = (netdevice_type_t) interface_type;
     facemgr_cfg_rule_t *rule;
     facemgr_cfg_get_rule(facemgr_cfg, NULL, netdevice_interface_type, &rule);
     if (rule) {
@@ -313,7 +312,7 @@ JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_unsetInterfaceIPv6(JNIEnv *env,
                                                                              jobject thiz,
                                                                              jint interface_type) {
-    netdevice_type_t netdevice_interface_type = (netdevice_type_t)interface_type;
+    netdevice_type_t netdevice_interface_type = (netdevice_type_t) interface_type;
     facemgr_cfg_rule_t *rule;
     facemgr_cfg_get_rule(facemgr_cfg, NULL, netdevice_interface_type, &rule);
     if (rule) {
@@ -326,20 +325,6 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_enableDiscovery(JNIEnv
                                                                           jobject thiz,
                                                                           jboolean enable_discovery) {
     facemgr_cfg_set_discovery(facemgr_cfg, enable_discovery);
-}
-
-JNIEXPORT void JNICALL
-Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_enableIPv4(JNIEnv *env, jobject thiz,
-                                                                      jboolean enable_ipv4) {
-
-    facemgr_cfg_set_ipv4(facemgr_cfg, enable_ipv4);
-}
-
-JNIEXPORT void JNICALL
-Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_enableIPv6(JNIEnv *env, jobject thiz,
-                                                                      jboolean enable_ipv6) {
-
-    facemgr_cfg_set_ipv6(facemgr_cfg, enable_ipv6);
 }
 
 static bool bindSocketWrap(JNIEnv *env, jobject instance, int sock, const char *ifname) {
@@ -360,4 +345,24 @@ int bindSocket(int sock, const char *ifname) {
         return -1;
     }
     return bindSocketWrap(_env, *_instance, sock, ifname) ? 0 : -1;
+}
+
+JNIEXPORT void JNICALL
+Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_enableIPv6(JNIEnv *env, jobject thiz,
+                                                                     jint enable_ipv6) {
+    int enableIPv6 = enable_ipv6;
+    __android_log_print(ANDROID_LOG_DEBUG, "HicnFacemgrWrap", "enableIPv6: %d", enableIPv6);
+    facemgr_cfg_set_ipv6(facemgr_cfg, enableIPv6);
+    return enableIPv6;
+
+}
+
+JNIEXPORT void JNICALL
+Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_enableIPv4(JNIEnv *env, jobject thiz,
+                                                                     jint enable_ipv4) {
+    int enableIPv4 = enable_ipv4;
+
+    __android_log_print(ANDROID_LOG_DEBUG, "HicnFacemgrWrap", "enableIPv4: %d", enableIPv4);
+    facemgr_cfg_set_ipv4(facemgr_cfg, enableIPv4);
+    return enableIPv4;
 }

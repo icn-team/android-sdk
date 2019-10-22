@@ -68,5 +68,3 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_stopHiPerf(JNIEnv *env
         hiperfClient->reset();
 
 }
-
-
