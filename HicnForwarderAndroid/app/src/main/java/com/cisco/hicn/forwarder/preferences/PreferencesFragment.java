@@ -67,7 +67,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
 
                 NativeAccess nativeAccess = NativeAccess.getInstance();
 
-                nativeAccess.disableIPv4(!enableNextHopIPv4);
+                nativeAccess.enableIPv4(enableNextHopIPv4);
                 return true;
             }
         });
@@ -80,7 +80,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
 
                 NativeAccess nativeAccess = NativeAccess.getInstance();
 
-                nativeAccess.disableIPv6(!enableNextHopIPv6);
+                nativeAccess.enableIPv6(enableNextHopIPv6);
                 return true;
             }
         });
