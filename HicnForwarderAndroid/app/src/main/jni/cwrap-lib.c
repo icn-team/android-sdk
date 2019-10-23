@@ -353,8 +353,6 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_enableIPv6(JNIEnv *env
     int enableIPv6 = enable_ipv6;
     __android_log_print(ANDROID_LOG_DEBUG, "HicnFacemgrWrap", "enableIPv6: %d", enableIPv6);
     facemgr_cfg_set_ipv6(facemgr_cfg, enableIPv6);
-    return enableIPv6;
-
 }
 
 JNIEXPORT void JNICALL
@@ -364,5 +362,4 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_enableIPv4(JNIEnv *env
 
     __android_log_print(ANDROID_LOG_DEBUG, "HicnFacemgrWrap", "enableIPv4: %d", enableIPv4);
     facemgr_cfg_set_ipv4(facemgr_cfg, enableIPv4);
-    return enableIPv4;
 }
