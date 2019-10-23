@@ -49,7 +49,7 @@ public class HiperfPreferencesFragment extends PreferenceFragmentCompat {
 
                 int hiperfRaaqm = Integer.parseInt((String) newValue);
 
-                if (hiperfRaaqm < 0 && hiperfRaaqm > 1000)
+                if (hiperfRaaqm < 0 || hiperfRaaqm > 1000)
                     return false;
                 return true;
             }
@@ -61,7 +61,7 @@ public class HiperfPreferencesFragment extends PreferenceFragmentCompat {
 
                 int hiperfRaaqmDropFactor = Integer.parseInt((String) newValue);
 
-                if (hiperfRaaqmDropFactor < 0 && hiperfRaaqmDropFactor > 100)
+                if (hiperfRaaqmDropFactor < 0 || hiperfRaaqmDropFactor > 100)
                     return false;
                 return true;
             }
