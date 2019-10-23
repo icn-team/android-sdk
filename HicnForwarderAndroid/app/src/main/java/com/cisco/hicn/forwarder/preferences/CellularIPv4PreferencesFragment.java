@@ -47,7 +47,7 @@ public class CellularIPv4PreferencesFragment extends PreferenceFragmentCompat {
 
                 int sourcePort = Integer.parseInt((String) newValue);
 
-                if (sourcePort < 0 && sourcePort > 65535)
+                if (sourcePort < 0 || sourcePort > 65535)
                     return false;
                 String nextHopIp = sharedPreferences.getString(getString(R.string.cellular_nexthop_ipv4_key), getString(R.string.default_cellular_nexthop_ipv4));
                 int nextHopPort = Integer.parseInt(sharedPreferences.getString(getString(R.string.cellular_nexthop_port_ipv4_key), getString(R.string.default_cellular_nexthop_port_ipv4)));
@@ -84,7 +84,7 @@ public class CellularIPv4PreferencesFragment extends PreferenceFragmentCompat {
 
                 int nextHopPort = Integer.parseInt((String) newValue);
 
-                if (nextHopPort < 0 && nextHopPort > 65535)
+                if (nextHopPort < 0 || nextHopPort > 65535)
                     return false;
                 int sourcePort = Integer.parseInt(sharedPreferences.getString(getString(R.string.cellular_source_port_ipv4_key), getString(R.string.default_cellular_source_port_ipv4)));
 
