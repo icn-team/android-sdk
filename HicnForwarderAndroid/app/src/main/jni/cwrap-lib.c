@@ -144,8 +144,11 @@ Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_startForwarder(JNIEnv 
         parcLogReporter_Release(&stdoutReporter);
         int logLevelArray[LoggerFacility_END];
 
-
+#ifdef NDEBUG
+        _setLogLevel(logLevelArray, "all=info");
+#else
         _setLogLevel(logLevelArray, "all=debug");
+#endif
 
         for (int i = 0; i < LoggerFacility_END; i++) {
             if (logLevelArray[i] > -1) {
@@ -221,7 +224,9 @@ JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_NativeAccess_initConfig(JNIEnv *env, jobject thiz) {
     facemgr_cfg = facemgr_cfg_create();
 
-#ifdef DEBUG
+#ifdef NDEBUG
+    log_conf.log_level = LOG_INFO;
+#else
     log_conf.log_level = LOG_DEBUG;
 #endif
 }
