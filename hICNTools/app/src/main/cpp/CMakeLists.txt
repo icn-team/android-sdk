@@ -8,14 +8,13 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(CMAKE_FIND_ROOT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../../../../usr_${CMAKE_SYSTEM_PROCESSOR};${CMAKE_FIND_ROOT_PATH}")
-message("---> ${CMAKE_FIND_ROOT_PATH}")
 
 find_package(OpenSSL REQUIRED)
 find_package(LibEvent REQUIRED)
 find_package(Threads REQUIRED)
 find_package(Libparc REQUIRED)
 find_package(Libhicn REQUIRED)
-find_package(LibTransport REQUIRED)
+find_package(Libtransport REQUIRED)
 include_directories(${LIBTRANSPORT_INCLUDE_DIRS})
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
