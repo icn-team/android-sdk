@@ -10,7 +10,6 @@ jobs:
     - name: Build and Deploy
       uses: docker://docker.pkg.github.com/icn-team/android-build/hicn
         with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-      env:
-        run: | 
-          bash build_apk.sh
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      run: | 
+        bash build_apk.sh
