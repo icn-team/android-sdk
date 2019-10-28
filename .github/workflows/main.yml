@@ -12,4 +12,5 @@ jobs:
         with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
       env:
-        run: |  bash build_apk.sh
+        run: | 
+          bash build_apk.sh
