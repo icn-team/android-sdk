@@ -11,5 +11,6 @@ jobs:
       uses: docker://docker.pkg.github.com/icn-team/android-build/hicn
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.DOCKER_USERNAME }}
       run: | 
         bash build_apk.sh
