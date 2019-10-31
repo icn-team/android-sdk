@@ -91,57 +91,57 @@
                     android:layout_height="match_parent"
                     android:layout_above="@+id/seekBar1" />
             </LinearLayout>
-<!--
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingTop="10dp">
+            <!--
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:paddingTop="10dp">
 
-                <android.support.v4.widget.NestedScrollView
-                    android:id="@+id/hiperf_log_scrollview"
-                    android:layout_width="fill_parent"
-                    android:layout_height="400dp"
-                    android:background="@drawable/border">
+                            <android.support.v4.widget.NestedScrollView
+                                android:id="@+id/hiperf_log_scrollview"
+                                android:layout_width="fill_parent"
+                                android:layout_height="400dp"
+                                android:background="@drawable/border">
 
-                    <EditText
-                        android:id="@+id/hiperf_log_edittext"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@android:color/transparent"
-                        android:ems="10"
-                        android:inputType="none"
-                        app:layout_constraintVertical_bias="0.33999997" />
-                </android.support.v4.widget.NestedScrollView>
-            </LinearLayout>
+                                <EditText
+                                    android:id="@+id/hiperf_log_edittext"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="fill_parent"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="5dp"
+                                    android:background="@android:color/transparent"
+                                    android:ems="10"
+                                    android:inputType="none"
+                                    app:layout_constraintVertical_bias="0.33999997" />
+                            </android.support.v4.widget.NestedScrollView>
+                        </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:paddingTop="10dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:paddingTop="10dp">
 
-                <CheckBox
-                    android:id="@+id/hiperf_log_autoscroll_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="dddl" />
+                            <CheckBox
+                                android:id="@+id/hiperf_log_autoscroll_checkbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="true"
+                                android:text="dddl" />
 
-                <Button
-                    android:id="@+id/hiperf_reset_log_button"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:background="@drawable/custom_button"
-                    android:text="eee"
-                    android:textColor="#FFFFFFFF" />
-            </LinearLayout>
-            -->
+                            <Button
+                                android:id="@+id/hiperf_reset_log_button"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:background="@drawable/custom_button"
+                                android:text="eee"
+                                android:textColor="#FFFFFFFF" />
+                        </LinearLayout>
+                        -->
 
         </LinearLayout>
 

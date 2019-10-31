@@ -15,18 +15,14 @@
 
 package com.cisco.hicn.forwarder.preferences;
 
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.cisco.hicn.forwarder.R;
-import com.cisco.hicn.forwarder.supportlibrary.NativeAccess;
-
-//import com.cisco.hicn.forwarder.R;
+import com.cisco.hicn.forwarder.supportlibrary.Facemgr;
+import com.cisco.hicn.forwarder.supportlibrary.HProxy;
 
 public class PreferencesFragment extends PreferenceFragmentCompat {
 
@@ -44,45 +40,42 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
 
-        setPreferencesFromResource(R.xml.root, s);
+        HProxy hProxy = HProxy.getInstance();
 
-        getPreferenceScreen().findPreference(getString(R.string.enable_bonjour_key)).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        if (hProxy.isHProxyEnabled()) {
+            setPreferencesFromResource(R.xml.root_proxy, s);
+        } else {
+            setPreferencesFromResource(R.xml.root_no_proxy, s);
+        }
 
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                boolean enableBonjour = (boolean) newValue;
+        getPreferenceScreen().findPreference(getString(R.string.enable_bonjour_key)).setOnPreferenceChangeListener((preference, newValue) -> {
+            boolean enableBonjour = (boolean) newValue;
 
-                NativeAccess nativeAccess = NativeAccess.getInstance();
+            Facemgr facemgr = Facemgr.getInstance();
 
-                nativeAccess.enableDiscovery(enableBonjour);
-                return true;
-            }
+            facemgr.enableDiscovery(enableBonjour);
+            return true;
+
         });
 
-        getPreferenceScreen().findPreference(getString(R.string.enable_nexthop_ipv4_key)).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        getPreferenceScreen().findPreference(getString(R.string.enable_nexthop_ipv4_key)).setOnPreferenceChangeListener((preference, newValue) -> {
+            boolean enableNextHopIPv4 = (boolean) newValue;
 
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                boolean enableNextHopIPv4 = (boolean) newValue;
+            Facemgr facemgr = Facemgr.getInstance();
 
-                NativeAccess nativeAccess = NativeAccess.getInstance();
+            facemgr.enableIPv4(enableNextHopIPv4 ? 1 : 0);
+            return true;
 
-                nativeAccess.enableIPv4(enableNextHopIPv4 ? 1 : 0);
-                return true;
-            }
         });
 
-        getPreferenceScreen().findPreference(getString(R.string.enable_nexthop_ipv6_key)).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        getPreferenceScreen().findPreference(getString(R.string.enable_nexthop_ipv6_key)).setOnPreferenceChangeListener((preference, newValue) -> {
+            boolean enableNextHopIPv6 = (boolean) newValue;
 
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                boolean enableNextHopIPv6 = (boolean) newValue;
+            Facemgr facemgr = Facemgr.getInstance();
 
-                NativeAccess nativeAccess = NativeAccess.getInstance();
+            facemgr.enableIPv6(enableNextHopIPv6 ? 1 : 0);
+            return true;
 
-                nativeAccess.enableIPv6(enableNextHopIPv6 ? 1 : 0);
-                return true;
-            }
         });
 
     }

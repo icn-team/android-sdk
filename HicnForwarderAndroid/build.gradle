@@ -15,6 +15,9 @@
 
 buildscript {
     
+    ext {
+        ENABLE_HPROXY = 0
+    }
     repositories {
         google()
         jcenter()

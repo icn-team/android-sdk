@@ -18,19 +18,28 @@ public class Constants {
 
     public static final String ENABLED = "Enabled";
     public static final String DISABLED = "Disabled";
-    public static final String FORWARDER_PREFERENCES = "forwarderPreferences";
     public static final String DEFAULT_CAPACITY = "0";
 
     public static final int FOREGROUND_SERVICE = 101;
+
 
     public static final int AU_INTERFACE_TYPE_UNDEFINED = 0;
     public static final int AU_INTERFACE_TYPE_WIRED = 1;
     public static final int AU_INTERFACE_TYPE_WIFI = 2;
     public static final int AU_INTERFACE_TYPE_CELLULAR = 3;
     public static final int AU_INTERFACE_TYPE_LOOPBACK = 4;
+    public static final int AU_INTERFACE_TYPE_UNAVAILABLE = 5;
     public static final String HIPERF = "HIPERF";
-    public static final int VIEW_FORWARDER = 0;
-    public static final int VIEW_INTERFACES = 1;
+    public static final String NETDEVICE = "netdevice";
+    public static final String NETDEVICE_TYPE = "netdevice_type";
+    public static final String FAMILY = "family";
+    public static final String LOCAL_ADDR = "local_addr";
+    public static final String LOCAL_PORT = "local_port";
+    public static final String REMOTE_ADDR = "remote_addr";
+    public static final String REMOTE_PORT = "remote_port";
+    public static final String FACE_TYPE = "face_type";
+    public static final String STATUS = "status";
+    public static final String ERROR = "error";
 
-    public static int MAX_HIPING_TIME_LINECHART_XAXIS = 30;
+    public static int MAX_HIPERF_TIME_LINECHART_XAXIS = 30;
 }

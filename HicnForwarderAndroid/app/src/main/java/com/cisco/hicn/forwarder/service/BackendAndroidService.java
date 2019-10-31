@@ -31,21 +31,13 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.cisco.hicn.forwarder.ForwarderAndroidActivity;
 import com.cisco.hicn.forwarder.MainActivity;
-import com.cisco.hicn.forwarder.R;
-import com.cisco.hicn.forwarder.supportlibrary.NativeAccess;
+import com.cisco.hicn.forwarder.supportlibrary.Facemgr;
+import com.cisco.hicn.forwarder.supportlibrary.Forwarder;
 import com.cisco.hicn.forwarder.supportlibrary.NetworkServiceHelper;
 import com.cisco.hicn.forwarder.supportlibrary.SocketBinder;
 import com.cisco.hicn.forwarder.utility.Constants;
 import com.cisco.hicn.forwarder.utility.ResourcesEnumerator;
-
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.lang.annotation.Native;
 
 public class BackendAndroidService extends Service {
     private final static String TAG = "BackendService";
@@ -69,11 +61,9 @@ public class BackendAndroidService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        NativeAccess nativeAccess = NativeAccess.getInstance();
-        if (!nativeAccess.isRunningForwarder()) {
+        Forwarder forwarder = Forwarder.getInstance();
+        if (!forwarder.isRunningForwarder()) {
             Log.d(TAG, "Starting Backand Service");
-
-
             mNetService.init(this, mSocketBinder);
             mHandler.sendMessageDelayed(mHandler.obtainMessage(EVENT_START_FORWARDER), 1000); // wait for mobile network is up
 
@@ -87,14 +77,15 @@ public class BackendAndroidService extends Service {
 
     @Override
     public void onDestroy() {
-        NativeAccess nativeAccess = NativeAccess.getInstance();
+        Facemgr facemgr = Facemgr.getInstance();
         Log.d(TAG, "Destroying Forwarder");
-        if (nativeAccess.isRunningFacemgr()) {
-            nativeAccess.stopFacemgr();
+        if (facemgr.isRunningFacemgr()) {
+            facemgr.stopFacemgr();
         }
 
-        if (nativeAccess.isRunningForwarder()) {
-            nativeAccess.stopForwarder();
+        Forwarder forwarder = Forwarder.getInstance();
+        if (forwarder.isRunningForwarder()) {
+            forwarder.stopForwarder();
 
             stopForeground(true);
         }
@@ -121,33 +112,22 @@ public class BackendAndroidService extends Service {
     };
 
     private void getCapacity() {
-        SharedPreferences sharedPreferences = getSharedPreferences(Constants.FORWARDER_PREFERENCES, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         this.capacity = Integer.parseInt(sharedPreferences.getString(ResourcesEnumerator.CAPACITY.key(), Constants.DEFAULT_CAPACITY));
         ;
     }
 
-    protected Runnable mForwarderRunner = new Runnable() {
-
-        //private String path;
-        @Override
-        public void run() {
-            NativeAccess nativeAccess = NativeAccess.getInstance();
-            nativeAccess.setSocketBinder(mSocketBinder);
-            nativeAccess.startForwarder(capacity);
-        }
+    protected Runnable mForwarderRunner = () -> {
+        Forwarder forwarder = Forwarder.getInstance();
+        forwarder.setSocketBinder(mSocketBinder);
+        forwarder.startForwarder(capacity);
     };
 
-    protected Runnable mFacemgrRunner = new Runnable() {
 
-        //private String path;
-        @Override
-        public void run() {
-            NativeAccess nativeAccess = NativeAccess.getInstance();
+    protected Runnable mFacemgrRunner = () -> {
+        Facemgr facemgr = Facemgr.getInstance();
 
-            nativeAccess.startFacemgr();
-        }
-
-
+        facemgr.startFacemgr();
     };
 
     private void startBackend() {
@@ -179,8 +159,8 @@ public class BackendAndroidService extends Service {
         startForeground(Constants.FOREGROUND_SERVICE, notification);
 
 
-        NativeAccess nativeAccess = NativeAccess.getInstance();
-        if (!nativeAccess.isRunningForwarder()) {
+        Forwarder forwarder = Forwarder.getInstance();
+        if (!forwarder.isRunningForwarder()) {
             sForwarderThread = new Thread(mForwarderRunner, "BackendAndroid");
             sForwarderThread.start();
         }
@@ -191,7 +171,8 @@ public class BackendAndroidService extends Service {
             e.printStackTrace();
         }
 
-        if (!nativeAccess.isRunningFacemgr()) {
+        Facemgr facemgr = Facemgr.getInstance();
+        if (!facemgr.isRunningFacemgr()) {
             sFacemgrThread = new Thread(mFacemgrRunner, "BackendAndroid");
             sFacemgrThread.start();
         }
