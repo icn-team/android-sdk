@@ -25,7 +25,6 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -37,16 +36,17 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.cisco.hicn.forwarder.forwarder.ForwarderFragment;
+import com.cisco.hicn.forwarder.interfaces.InterfacesFragment;
 import com.cisco.hicn.forwarder.preferences.PreferencesFragment;
-import com.cisco.hicn.forwarder.supportlibrary.NativeAccess;
+import com.cisco.hicn.forwarder.supportlibrary.Facemgr;
 import com.cisco.hicn.forwarder.utility.NetdeviceTypeEnum;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity
-        implements Home.OnFragmentInteractionListener,
+        implements
         PreferencesFragment.OnFragmentInteractionListener,
         ForwarderFragment.OnFragmentInteractionListener,
-        InterfaceFragment.OnFragmentInteractionListener,
+        InterfacesFragment.OnFragmentInteractionListener,
         ApplicationsFragment.OnFragmentInteractionListener,
         NavigationView.OnNavigationItemSelectedListener {
 
@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity
         checkEnabledPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         checkEnabledPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
         checkEnabledPermission(Manifest.permission.FOREGROUND_SERVICE);
+        checkEnabledPermission(Manifest.permission.BIND_VPN_SERVICE);
 
         MainActivity.context = getApplicationContext();
 
@@ -87,19 +88,19 @@ public class MainActivity extends AppCompatActivity
         home = new Home();
         settings = new PreferencesFragment();
 
-        NativeAccess nativeAccess = NativeAccess.getInstance();
+        Facemgr facemgr = Facemgr.getInstance();
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         boolean enableBonjour = sharedPreferences.getBoolean(getString(R.string.enable_bonjour_key), false);
-        nativeAccess.enableDiscovery(enableBonjour);
+        facemgr.enableDiscovery(enableBonjour);
 
 
         boolean enableNexHopIPv4 = sharedPreferences.getBoolean(getString(R.string.enable_nexthop_ipv4_key), true);
-        nativeAccess.enableIPv4(enableNexHopIPv4 ? 1 : 0);
+        facemgr.enableIPv4(enableNexHopIPv4 ? 1 : 0);
 
         boolean enableNexHopIPv6 = sharedPreferences.getBoolean(getString(R.string.enable_nexthop_ipv6_key), false);
-        nativeAccess.enableIPv6(enableNexHopIPv6 ? 1 : 0);
+        facemgr.enableIPv6(enableNexHopIPv6 ? 1 : 0);
 
         boolean enableWifi = sharedPreferences.getBoolean(getString(R.string.enable_wifi_key), true);
 
@@ -108,12 +109,12 @@ public class MainActivity extends AppCompatActivity
             int wifiSourcePortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wifi_source_port_ipv4_key), getString(R.string.default_wifi_source_port_ipv4)));
             String wifiNextHopIPv4 = sharedPreferences.getString(getString(R.string.wifi_nexthop_ipv4_key), getString(R.string.default_wifi_nexthop_ipv4));
             int wifiNextHopPortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wifi_nexthop_port_ipv4_key), getString(R.string.default_wifi_nexthop_port_ipv4)));
-            nativeAccess.updateInterfaceIPv4(NetdeviceTypeEnum.NETDEVICE_TYPE_WIFI.getValue(), wifiSourcePortIPv4, wifiNextHopIPv4, wifiNextHopPortIPv4);
+            facemgr.updateInterfaceIPv4(NetdeviceTypeEnum.NETDEVICE_TYPE_WIFI.getValue(), wifiSourcePortIPv4, wifiNextHopIPv4, wifiNextHopPortIPv4);
 
             int wifiSourcePortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wifi_source_port_ipv6_key), getString(R.string.default_wifi_source_port_ipv6)));
             String wifiNextHopIPv6 = sharedPreferences.getString(getString(R.string.wifi_nexthop_ipv6_key), getString(R.string.default_wifi_nexthop_ipv6));
             int wifiNextHopPortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wifi_nexthop_port_ipv6_key), getString(R.string.default_wifi_nexthop_port_ipv6)));
-            nativeAccess.updateInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_WIFI.getValue(), wifiSourcePortIPv6, wifiNextHopIPv6, wifiNextHopPortIPv6);
+            facemgr.updateInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_WIFI.getValue(), wifiSourcePortIPv6, wifiNextHopIPv6, wifiNextHopPortIPv6);
         }
 
         boolean cellularWifi = sharedPreferences.getBoolean(getString(R.string.enable_cellular_key), true);
@@ -122,12 +123,12 @@ public class MainActivity extends AppCompatActivity
             int cellularSourcePortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.cellular_source_port_ipv4_key), getString(R.string.default_cellular_source_port_ipv4)));
             String cellularNextHopIPv4 = sharedPreferences.getString(getString(R.string.cellular_nexthop_ipv4_key), getString(R.string.default_cellular_nexthop_ipv4));
             int cellularNextHopPortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.cellular_nexthop_port_ipv4_key), getString(R.string.default_cellular_nexthop_port_ipv4)));
-            nativeAccess.updateInterfaceIPv4(NetdeviceTypeEnum.NETDEVICE_TYPE_CELLULAR.getValue(), cellularSourcePortIPv4, cellularNextHopIPv4, cellularNextHopPortIPv4);
+            facemgr.updateInterfaceIPv4(NetdeviceTypeEnum.NETDEVICE_TYPE_CELLULAR.getValue(), cellularSourcePortIPv4, cellularNextHopIPv4, cellularNextHopPortIPv4);
 
             int cellularSourcePortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.cellular_source_port_ipv6_key), getString(R.string.default_cellular_source_port_ipv6)));
             String cellularNextHopIPv6 = sharedPreferences.getString(getString(R.string.cellular_nexthop_ipv6_key), getString(R.string.default_cellular_nexthop_ipv6));
             int cellularNextHopPortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.cellular_nexthop_port_ipv6_key), getString(R.string.default_cellular_nexthop_port_ipv6)));
-            nativeAccess.updateInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_CELLULAR.getValue(), cellularSourcePortIPv6, cellularNextHopIPv6, cellularNextHopPortIPv6);
+            facemgr.updateInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_CELLULAR.getValue(), cellularSourcePortIPv6, cellularNextHopIPv6, cellularNextHopPortIPv6);
         }
 
         boolean wiredWifi = sharedPreferences.getBoolean(getString(R.string.enable_wired_key), true);
@@ -136,12 +137,12 @@ public class MainActivity extends AppCompatActivity
             int wiredSourcePortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wired_source_port_ipv4_key), getString(R.string.default_wired_source_port_ipv4)));
             String wiredNextHopIPv4 = sharedPreferences.getString(getString(R.string.wired_nexthop_ipv4_key), getString(R.string.default_wired_nexthop_ipv4));
             int wiredNextHopPortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wired_nexthop_port_ipv4_key), getString(R.string.default_wired_nexthop_port_ipv4)));
-            nativeAccess.updateInterfaceIPv4(NetdeviceTypeEnum.NETDEVICE_TYPE_WIRED.getValue(), wiredSourcePortIPv4, wiredNextHopIPv4, wiredNextHopPortIPv4);
+            facemgr.updateInterfaceIPv4(NetdeviceTypeEnum.NETDEVICE_TYPE_WIRED.getValue(), wiredSourcePortIPv4, wiredNextHopIPv4, wiredNextHopPortIPv4);
 
             int wiredSourcePortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wired_source_port_ipv6_key), getString(R.string.default_wired_source_port_ipv6)));
             String wiredNextHopIPv6 = sharedPreferences.getString(getString(R.string.wired_nexthop_ipv6_key), getString(R.string.default_wired_nexthop_ipv6));
             int wiredNextHopPortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wired_nexthop_port_ipv6_key), getString(R.string.default_wired_nexthop_port_ipv6)));
-            nativeAccess.updateInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_WIRED.getValue(), wiredSourcePortIPv6, wiredNextHopIPv6, wiredNextHopPortIPv6);
+            facemgr.updateInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_WIRED.getValue(), wiredSourcePortIPv6, wiredNextHopIPv6, wiredNextHopPortIPv6);
         }
         fragmentManager.beginTransaction().replace(R.id.viewLayout, home).commit();
 
@@ -199,8 +200,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-        //you can leave it empty
     }
-
 
 }

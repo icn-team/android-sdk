@@ -20,7 +20,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.os.Bundle;
-
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,9 +32,10 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.cisco.hicn.forwarder.Home;
 import com.cisco.hicn.forwarder.R;
 import com.cisco.hicn.forwarder.supportlibrary.AndroidUtility;
-import com.cisco.hicn.forwarder.supportlibrary.NativeAccess;
+import com.cisco.hicn.forwarder.supportlibrary.Hiperf;
 import com.cisco.hicn.forwarder.utility.Constants;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.LimitLine;
@@ -56,13 +56,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ArrayBlockingQueue;
 
-import com.cisco.hicn.forwarder.Home;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 
 public class HiPerfFragment extends Fragment {
 
-
+    private LineData aaa;
     private static final String ARG_SECTION_NUMBER = "section_number";
     private String TAG = Constants.HIPERF;
     //UI elements
@@ -90,7 +87,7 @@ public class HiPerfFragment extends Fragment {
 
     private ArrayList<Entry> hiperfTimeArrayList = new ArrayList<>();
     private ArrayList<Integer> hiperfTimeIntArrayList = new ArrayList<>();
-    private ArrayList<Long> hipintTimestampArrayList = new ArrayList<>();
+    private ArrayList<Long> hiperfTimestampArrayList = new ArrayList<>();
     private long hiperfStartGraph = 0;
     private Home home;
 
@@ -128,107 +125,114 @@ public class HiPerfFragment extends Fragment {
         hiperfStartButton = root.findViewById(R.id.hiperf_start_button);
         hiperfStopButton = root.findViewById(R.id.hiperf_stop_button);
         hiperfStopButton.setEnabled(false);
-        hiperfTimeLineChart = root.findViewById(R.id.hiperf_time_linechart);
+
+
 
         hiperfHicnNameEditText.setText(hiperfSharedPreferences.getString(getString(R.string.hiperf_hicn_name_key), getString(R.string.default_hiperf_hicn_name)));
-        hiperfStartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+
+        if (hiperfRunning) {
+            hiperfStartButton.setEnabled(false);
+            hiperfHicnNameEditText.setEnabled(false);
+            hiperfStopButton.setEnabled(true);
+        } else {
+
+            hiperfStartButton.setEnabled(true);
+            hiperfStopButton.setEnabled(false);
+            hiperfHicnNameEditText.setEnabled(true);
+        }
 
 
-                hiperfHicnNameEditText.setEnabled(false);
-                hiperfStartButton.setEnabled(false);
-                hiperfStopButton.setEnabled(true);
-                SharedPreferences.Editor hiperfEditor = hiperfSharedPreferences.edit();
-                hiperfEditor.putString(getString(R.string.hiperf_hicn_name_key), hiperfHicnNameEditText.getText().toString());
-                hiperfEditor.commit();
-                hiperfRunning = true;
-                hiperfTime = new Timer();
-                hiperfStartGraph = System.currentTimeMillis() / 1000;
-                hiperfGraphQueue.clear();
-                hiperfTime.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        setHiperfTimeLineChartData(0, 0, true);
+        hiperfStartButton.setOnClickListener(view -> {
+            hiperfRunning = true;
 
-                        home.disableItem(R.id.action_forwarder);
-                        home.disableItem(R.id.action_interfaces);
+            hiperfHicnNameEditText.setEnabled(false);
+            hiperfStartButton.setEnabled(false);
+            hiperfStopButton.setEnabled(true);
+            SharedPreferences.Editor hiperfEditor = hiperfSharedPreferences.edit();
+            hiperfEditor.putString(getString(R.string.hiperf_hicn_name_key), hiperfHicnNameEditText.getText().toString());
+            hiperfEditor.commit();
+            hiperfRunning = true;
+            hiperfTime = new Timer();
+            hiperfStartGraph = System.currentTimeMillis() / 1000;
+            hiperfGraphQueue.clear();
 
-                        hiperfGraphTimer = new Timer();
+            hiperfTime.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    setHiperfTimeLineChartData(0, 0, true);
 
-                        hiperfGraphTimer.scheduleAtFixedRate(new TimerTask() {
-                            public void run() {
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (hiperfGraphQueue.size() > 0) {
-                                            int bandwidth = hiperfGraphQueue.poll();
-                                            setHiperfTimeLineChartData(System.currentTimeMillis(), bandwidth, false);
-                                        } else {
-                                            setHiperfTimeLineChartData(System.currentTimeMillis(), 0, false);
+                    hiperfGraphTimer = new Timer();
+
+                    hiperfGraphTimer.scheduleAtFixedRate(new TimerTask() {
+                        public void run() {
+
+                            if (hiperfGraphQueue.size() > 0) {
+                                int bandwidth = hiperfGraphQueue.poll();
+                                setHiperfTimeLineChartData(System.currentTimeMillis(), bandwidth, false);
+                            } else {
+                                setHiperfTimeLineChartData(System.currentTimeMillis(), 0, false);
+                            }
+
+                            if (isAdded() && isVisible()) {
+                                getActivity().runOnUiThread(() -> {
+                                            hiperfTimeLineChart.invalidate();
                                         }
-                                        hiperfTimeLineChart.invalidate();
-                                    }
-                                });
-
+                                );
                             }
-                        }, 0, 1000);
 
-                        SharedPreferences.Editor hiperfEditor = hiperfSharedPreferences.edit();
-                        hiperfEditor.putString(getString(R.string.hiperf_hicn_name_key), hiperfHicnNameEditText.getText().toString());
-
-                        hiperfEditor.commit();
-
-                        NativeAccess nativeAccess = NativeAccess.getInstance();
-
-                        float raaqmBetaParameter = hiperfSharedPreferences.getFloat(getString(R.string.hiperf_raaqm_beta_parameter_key), Float.parseFloat(getString(R.string.default_hiperf_raaqm_beta)));
-
-                        float raaqmDrppFactorParameter = hiperfSharedPreferences.getFloat(getString(R.string.hiperf_raaqm_drop_factor_key), Float.parseFloat(getString(R.string.default_hiperf_raaqm_drop_factor)));
-
-                        int windowSize = -1;
-
-                        if (hiperfSharedPreferences.getBoolean(getString(R.string.enable_hiperf_window_size_key), false)) {
-                            windowSize = hiperfSharedPreferences.getInt(getString(R.string.enable_hiperf_window_size_key), Integer.parseInt(getString(R.string.default_hiperf_window_size)));
                         }
+                    }, 0, 1000);
 
-                        boolean enableRtcProtocol = hiperfSharedPreferences.getBoolean(getString(R.string.enable_hiperf_rtc_protocol_key), false);
+                    SharedPreferences.Editor hiperfEditor = hiperfSharedPreferences.edit();
+                    hiperfEditor.putString(getString(R.string.hiperf_hicn_name_key), hiperfHicnNameEditText.getText().toString());
 
-                        nativeAccess.startHiPerf(
-                                hiperfHicnNameEditText.getText().toString(), raaqmBetaParameter, raaqmDrppFactorParameter, windowSize, 1000, enableRtcProtocol);
+                    hiperfEditor.commit();
 
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
+                    Hiperf hiperf = Hiperf.getInstance();
 
-                                hiperfHicnNameEditText.setEnabled(true);
+                    float raaqmBetaParameter = hiperfSharedPreferences.getFloat(getString(R.string.hiperf_raaqm_beta_parameter_key), Float.parseFloat(getString(R.string.default_hiperf_raaqm_beta)));
 
-                                hiperfStartButton.setEnabled(true);
-                                hiperfStopButton.setEnabled(false);
-                            }
-                        });
-                        hiperfRunning = false;
+                    float raaqmDrppFactorParameter = hiperfSharedPreferences.getFloat(getString(R.string.hiperf_raaqm_drop_factor_key), Float.parseFloat(getString(R.string.default_hiperf_raaqm_drop_factor)));
+
+                    int windowSize = -1;
+
+                    if (hiperfSharedPreferences.getBoolean(getString(R.string.enable_hiperf_window_size_key), false)) {
+                        windowSize = hiperfSharedPreferences.getInt(getString(R.string.enable_hiperf_window_size_key), Integer.parseInt(getString(R.string.default_hiperf_window_size)));
                     }
-                }, 0);
-            }
+
+                    boolean enableRtcProtocol = hiperfSharedPreferences.getBoolean(getString(R.string.enable_hiperf_rtc_protocol_key), false);
+
+                    hiperf.startHiPerf(
+                            hiperfHicnNameEditText.getText().toString(), raaqmBetaParameter, raaqmDrppFactorParameter, windowSize, 1000, enableRtcProtocol);
+                    if (isAdded() && isVisible()) {
+                        getActivity().runOnUiThread(() -> {
+                                    hiperfHicnNameEditText.setEnabled(true);
+                                    hiperfStartButton.setEnabled(true);
+                                    hiperfStopButton.setEnabled(false);
+                                }
+                        );
+                    }
+                    hiperfRunning = false;
+                }
+            }, 0);
+
         });
 
-        hiperfStopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        hiperfStopButton.setOnClickListener(view -> {
 
-
-                home.enableItem(R.id.action_forwarder);
-
-                home.enableItem(R.id.action_interfaces);
-
-                NativeAccess nativeAccess = NativeAccess.getInstance();
-                nativeAccess.stopHiPerf();
-                hiperfTime.cancel();
-                hiperfGraphTimer.cancel();//shutdownNow();
-
-            }
+            Hiperf hiperf = Hiperf.getInstance();
+            hiperf.stopHiPerf();
+            hiperfTime.cancel();
+            hiperfGraphTimer.cancel();
+            hiperfRunning = false;
         });
 
+
+        hiperfTimeLineChart = root.findViewById(R.id.hiperf_time_linechart);
+        if (hiperfTimeArrayList.size() == 0)
+            setHiperfTimeLineChartData(0, 0, true);
+        else
+            recoverHiperfTimeLineChartData();
         hiperfTimeLineChart.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
         hiperfTimeLineChart.getLegend().setEnabled(false);
         hiperfTimeLineChart.setBackgroundColor(Color.WHITE);
@@ -248,7 +252,6 @@ public class HiPerfFragment extends Fragment {
         hiperfTimeLineChart.getAxisRight().setEnabled(false);
         yAxis.enableGridDashedLine(10f, 10f, 0f);
         yAxis.setAxisMaximum(100f);
-        yAxis.setAxisMinimum(-5f);
 
 
         // // Create Limit Lines // //
@@ -259,23 +262,85 @@ public class HiPerfFragment extends Fragment {
         llXAxis.setTextSize(10f);
         yAxis.setDrawLimitLinesBehindData(true);
         xAxis.setDrawLimitLinesBehindData(true);
-        hiperfTimeLineChart.animateX(1500);
-        setHiperfTimeLineChartData(0, 0, true);
-
     }
 
+    private void recoverHiperfTimeLineChartData() {
+        XAxis xAxis = hiperfTimeLineChart.getXAxis();
+        YAxis yAxis = hiperfTimeLineChart.getAxisLeft();
+        long maxValue = (int) hiperfTimeArrayList.get(hiperfTimeArrayList.size() - 1).getY();
+
+        yAxis.enableGridDashedLine(10f, 10f, 0f);
+        yAxis.setAxisMaximum(maxValue + (int) (maxValue * 0.10) + 5);
+        yAxis.setAxisMinimum(-5);
+
+
+        // vertical grid lines
+        xAxis.enableGridDashedLine(10f, 10f, 0f);
+
+        xAxis.setAxisMinimum(hiperfTimeArrayList.get(hiperfTimeArrayList.size() - 1).getX() - 30);
+        xAxis.setAxisMaximum(hiperfTimeArrayList.get(hiperfTimeArrayList.size() - 1).getX());
+
+        LineDataSet set1 = new LineDataSet(hiperfTimeArrayList, "HiPerf");
+
+
+        set1.setDrawIcons(false);
+
+        // draw dashed line
+        set1.enableDashedLine(10f, 5f, 0f);
+
+        // black lines and points
+        set1.setColor(Color.BLACK);
+        set1.setCircleColor(Color.BLACK);
+
+        // line thickness and point size
+        set1.setLineWidth(1f);
+        set1.setCircleRadius(3f);
+
+        // draw points as solid circles
+        set1.setDrawCircleHole(false);
+
+        // customize legend entry
+        set1.setFormLineWidth(1f);
+        set1.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
+        set1.setFormSize(15.f);
+
+        // text size of values
+        set1.setValueTextSize(9f);
+
+        // draw selection line as dashed
+        set1.enableDashedHighlightLine(10f, 5f, 0f);
+
+        // set the filled area
+        set1.setDrawFilled(true);
+        set1.setFillFormatter(new IFillFormatter() {
+            @Override
+            public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
+                return hiperfTimeLineChart.getAxisLeft().getAxisMinimum();
+            }
+        });
+
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(set1); // add the data sets
+        LineData data = new LineData(dataSets);
+        hiperfTimeLineChart.setData(data);
+        set1.setValues(hiperfTimeArrayList);
+        set1.notifyDataSetChanged();
+        hiperfTimeLineChart.getData().notifyDataChanged();
+        hiperfTimeLineChart.notifyDataSetChanged();
+
+    }
 
     private void setHiperfTimeLineChartData(long timestamp, int value, boolean init) {
         if (init) {
             hiperfTimeArrayList.clear();
             hiperfTimeIntArrayList.clear();
-            hipintTimestampArrayList.clear();
+            hiperfTimestampArrayList.clear();
         }
 
         int countOldValues = 0;
 
-        for (int i = 0; i < hipintTimestampArrayList.size(); i++) {
-            if ((timestamp / 1000 - hiperfStartGraph) - hipintTimestampArrayList.get(i) > Constants.MAX_HIPING_TIME_LINECHART_XAXIS) {
+        for (int i = 0; i < hiperfTimestampArrayList.size(); i++) {
+            if ((timestamp / 1000 - hiperfStartGraph) - hiperfTimestampArrayList.get(i) > Constants.MAX_HIPERF_TIME_LINECHART_XAXIS) {
                 countOldValues++;
             }
             break;
@@ -284,7 +349,7 @@ public class HiPerfFragment extends Fragment {
         for (int i = 0; i < countOldValues; i++) {
             hiperfTimeArrayList.remove(0);
             hiperfTimeIntArrayList.remove(0);
-            hipintTimestampArrayList.remove(0);
+            hiperfTimestampArrayList.remove(0);
         }
 
         Log.d(TAG, "hiperfTimeIntArrayList size: " + hiperfTimeIntArrayList.size());
@@ -293,15 +358,14 @@ public class HiPerfFragment extends Fragment {
             XAxis xAxis = hiperfTimeLineChart.getXAxis();
             hiperfTimeArrayList.add(new Entry(timestamp / 1000 - hiperfStartGraph, value));//, getResources().getDrawable(R.drawable.star)));
             hiperfTimeIntArrayList.add(value);
-            hipintTimestampArrayList.add(timestamp / 1000 - hiperfStartGraph);
+            hiperfTimestampArrayList.add(timestamp / 1000 - hiperfStartGraph);
 
             YAxis yAxis = hiperfTimeLineChart.getAxisLeft();
             long maxValue = Collections.max(hiperfTimeIntArrayList);
 
             yAxis.enableGridDashedLine(10f, 10f, 0f);
             yAxis.setAxisMaximum(maxValue + (int) (maxValue * 0.10) + 5);
-            yAxis.setAxisMinimum(-3);
-
+            yAxis.setAxisMinimum(-5);
 
             // vertical grid lines
             xAxis.enableGridDashedLine(10f, 10f, 0f);

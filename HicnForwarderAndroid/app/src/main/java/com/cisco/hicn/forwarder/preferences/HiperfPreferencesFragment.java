@@ -14,10 +14,10 @@
  */
 
 package com.cisco.hicn.forwarder.preferences;
+
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.cisco.hicn.forwarder.R;
@@ -43,41 +43,34 @@ public class HiperfPreferencesFragment extends PreferenceFragmentCompat {
         getPreferenceScreen().findPreference(getString(R.string.hiperf_window_size_key)).setEnabled(getPreferenceScreen().findPreference(getString(R.string.enable_hiperf_window_size_key)).isEnabled());
 
 
-        getPreferenceScreen().findPreference(getString(R.string.hiperf_raaqm_beta_key)).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
+        getPreferenceScreen().findPreference(getString(R.string.hiperf_raaqm_beta_key)).setOnPreferenceChangeListener((preference, newValue) -> {
 
-                int hiperfRaaqm = Integer.parseInt((String) newValue);
+            int hiperfRaaqm = Integer.parseInt((String) newValue);
 
-                if (hiperfRaaqm < 0 || hiperfRaaqm > 1000)
-                    return false;
-                return true;
-            }
+            if (hiperfRaaqm < 0 || hiperfRaaqm > 65535)
+                return false;
+            return true;
+
         });
 
-        getPreferenceScreen().findPreference(getString(R.string.hiperf_raaqm_drop_factor_key)).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
+        getPreferenceScreen().findPreference(getString(R.string.hiperf_raaqm_drop_factor_key)).setOnPreferenceChangeListener((preference, newValue) -> {
 
-                int hiperfRaaqmDropFactor = Integer.parseInt((String) newValue);
+            int hiperfRaaqmDropFactor = Integer.parseInt((String) newValue);
 
-                if (hiperfRaaqmDropFactor < 0 || hiperfRaaqmDropFactor > 100)
-                    return false;
-                return true;
-            }
+            if (hiperfRaaqmDropFactor < 0 || hiperfRaaqmDropFactor > 100)
+                return false;
+            return true;
+
         });
 
 
-        getPreferenceScreen().findPreference(getString(R.string.enable_hiperf_window_size_key)).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        getPreferenceScreen().findPreference(getString(R.string.enable_hiperf_window_size_key)).setOnPreferenceChangeListener((preference, newValue) -> {
+            boolean enableWindowSize = (boolean) newValue;
 
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                boolean enableWindowSize = (boolean) newValue;
+            getPreferenceScreen().findPreference(getString(R.string.hiperf_window_size_key)).setEnabled(enableWindowSize);
 
-                getPreferenceScreen().findPreference(getString(R.string.hiperf_window_size_key)).setEnabled(enableWindowSize);
+            return true;
 
-                return true;
-            }
         });
 
     }

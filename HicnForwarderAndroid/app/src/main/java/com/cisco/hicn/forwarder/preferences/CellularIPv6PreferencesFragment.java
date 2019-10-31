@@ -23,8 +23,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.cisco.hicn.forwarder.R;
-import com.cisco.hicn.forwarder.supportlibrary.NativeAccess;
-import com.cisco.hicn.forwarder.utility.Constants;
+import com.cisco.hicn.forwarder.supportlibrary.Facemgr;
 import com.cisco.hicn.forwarder.utility.NetdeviceTypeEnum;
 
 import org.apache.http.conn.util.InetAddressUtilsHC4;
@@ -53,9 +52,9 @@ public class CellularIPv6PreferencesFragment extends PreferenceFragmentCompat {
                 String nextHopIp = sharedPreferences.getString(getString(R.string.cellular_nexthop_ipv6_key), getString(R.string.default_cellular_nexthop_ipv6));
                 int nextHopPort = Integer.parseInt(sharedPreferences.getString(getString(R.string.cellular_nexthop_port_ipv6_key), getString(R.string.default_cellular_nexthop_port_ipv6)));
 
-                NativeAccess nativeAccess = NativeAccess.getInstance();
+                Facemgr facemgr = Facemgr.getInstance();
 
-                nativeAccess.updateInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_CELLULAR.getValue(), sourcePort, nextHopIp, nextHopPort);
+                facemgr.updateInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_CELLULAR.getValue(), sourcePort, nextHopIp, nextHopPort);
                 return true;
             }
         });
@@ -72,9 +71,9 @@ public class CellularIPv6PreferencesFragment extends PreferenceFragmentCompat {
                 int sourcePort = Integer.parseInt(sharedPreferences.getString(getString(R.string.cellular_source_port_ipv6_key), getString(R.string.default_cellular_source_port_ipv6)));
                 int nextHopPort = Integer.parseInt(sharedPreferences.getString(getString(R.string.cellular_nexthop_port_ipv6_key), getString(R.string.default_cellular_nexthop_port_ipv6)));
 
-                NativeAccess nativeAccess = NativeAccess.getInstance();
+                Facemgr facemgr = Facemgr.getInstance();
 
-                nativeAccess.updateInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_CELLULAR.getValue(), sourcePort, nextHopIp, nextHopPort);
+                facemgr.updateInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_CELLULAR.getValue(), sourcePort, nextHopIp, nextHopPort);
                 return true;
             }
         });
@@ -91,9 +90,9 @@ public class CellularIPv6PreferencesFragment extends PreferenceFragmentCompat {
 
                 String nextHopIp = sharedPreferences.getString(getString(R.string.cellular_nexthop_ipv6_key), getString(R.string.default_cellular_nexthop_ipv6));
 
-                NativeAccess nativeAccess = NativeAccess.getInstance();
+                Facemgr facemgr = Facemgr.getInstance();
 
-                nativeAccess.updateInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_CELLULAR.getValue(), sourcePort, nextHopIp, nextHopPort);
+                facemgr.updateInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_CELLULAR.getValue(), sourcePort, nextHopIp, nextHopPort);
                 return true;
             }
         });
