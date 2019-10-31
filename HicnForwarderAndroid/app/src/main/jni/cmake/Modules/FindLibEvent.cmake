@@ -48,7 +48,12 @@ find_library(LIBEVENT_LIBRARY NAMES event
   PATH_SUFFIXES lib
   DOC "Find the LibEvent libraries" )
 
-set(LIBEVENT_LIBRARIES ${LIBEVENT_LIBRARY})
+find_library(LIBEVENT_PTHREADS_LIBRARY NAMES event_pthreads
+  HINTS ${LIBEVENT_SEARCH_PATH_LIST}
+  PATH_SUFFIXES lib
+  DOC "Find the LibEvent libraries" )
+
+set(LIBEVENT_LIBRARIES ${LIBEVENT_LIBRARY} ${LIBEVENT_PTHREADS_LIBRARY})
 set(LIBEVENT_INCLUDE_DIRS ${LIBEVENT_INCLUDE_DIR})
 
 include(FindPackageHandleStandardArgs)

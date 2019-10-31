@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+    Copyright (c) 2019 Cisco and/or its affiliates.
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at:
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditTextPreference
+        android:inputType="textUri"
+        app:defaultValue="@string/default_hproxy_server"
+        app:key="@string/hproxy_server_key"
+        app:summary="@string/hproxy_server_summary"
+        app:title="@string/hproxy_server_title"
+        app:useSimpleSummaryProvider="true" />
+
+    <EditTextPreference
+        android:inputType="number"
+        app:defaultValue="@string/default_hproxy_server_port"
+        app:key="@string/hproxy_server_port_key"
+        app:summary="@string/hproxy_server_port_summary"
+        app:title="@string/hproxy_server_port_title"
+        app:useSimpleSummaryProvider="true" />
+
+    <EditTextPreference
+        android:inputType="text"
+        app:defaultValue="@string/default_hproxy_secret"
+        app:key="@string/hproxy_secret_key"
+        app:summary="@string/hproxy_secret_summary"
+        app:title="@string/hproxy_secret_title"
+        app:useSimpleSummaryProvider="true" />
+
+    <EditTextPreference
+        android:inputType="textUri"
+        app:defaultValue="@string/default_hproxy_consumer_name"
+        app:key="@string/hproxy_consumer_name_key"
+        app:summary="@string/hproxy_consumer_name_summary"
+        app:title="@string/hproxy_consumer_name_title"
+        app:useSimpleSummaryProvider="true" />
+
+    <EditTextPreference
+        android:inputType="textUri"
+        app:defaultValue="@string/default_hproxy_producer_name"
+        app:key="@string/hproxy_producer_name_key"
+        app:summary="@string/hproxy_producer_name_summary"
+        app:title="@string/hproxy_producer_name_title"
+        app:useSimpleSummaryProvider="true" />
+
+    <EditTextPreference
+        android:inputType="textUri"
+        app:defaultValue="@string/default_hproxy_dns_server"
+        app:key="@string/hproxy_dns_server_key"
+        app:summary="@string/hproxy_dns_server_summary"
+        app:title="@string/hproxy_dns_server_title"
+        app:useSimpleSummaryProvider="true" />
+
+</PreferenceScreen>
