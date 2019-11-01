@@ -7,7 +7,7 @@ jobs:
       - uses: azure/docker-login@v1
         with:
           login-server: docker.pkg.github.com
-          username: ${{ secrets.DOCKER_USERNAME }}
+          username: icn-team
           password: ${{ secrets.DOCKER_PASSWORD }}
       - run: |
           docker pull docker.pkg.github.com/icn-team/android-build/hapk:latest
