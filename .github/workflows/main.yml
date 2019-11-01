@@ -3,7 +3,8 @@ on: [push]
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-     name: Pull 
+    steps:
+    - name: Pull 
       run: |
         docker login docker.pkg.github.com --username icn-team --password "${GITHUB_PACKAGE_REGISTRY_TOKEN}"
         docker pull docker.pkg.github.com/icn-team/android-build/hicn:latest
@@ -11,3 +12,5 @@ jobs:
         GITHUB_PACKAGE_REGISTRY_TOKEN: ${{ secrets.GITHUB_PACKAGE_REGISTRY_TOKEN }}
     - name: Build 
       uses: docker://icn-team/android-build/hicn:latest
+      uses: actions/checkout@master
+      run: bash build_apk.sh
