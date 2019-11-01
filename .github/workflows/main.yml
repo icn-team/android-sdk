@@ -10,7 +10,8 @@ jobs:
         docker pull docker.pkg.github.com/icn-team/android-build/hicn:latest
       env:
         GITHUB_PACKAGE_REGISTRY_TOKEN: ${{ secrets.GITHUB_PACKAGE_REGISTRY_TOKEN }}
-    - name: Build 
+    - name: Checkout 
       uses: docker://icn-team/android-build/hicn:latest
       uses: actions/checkout@master
+    - name: Build  
       run: bash build_apk.sh
