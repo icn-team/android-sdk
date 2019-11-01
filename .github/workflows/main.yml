@@ -17,9 +17,5 @@ jobs:
         shell: bash
         run: |
           docker pull docker.pkg.github.com/icn-team/android-build/hapk:latest
-      - name: 'Build in docker'
-        shell: bash 
-        run: bash build_apk.sh
-        with:
-          image: docker.pkg.github.com/icn-team/android-build/hapk:latest 
-        
+          docker run -it  -v $PWD:/hicn  docker.pkg.github.com/icn-team/android-build/hapk bash -c "bash /hicn/build_apk.sh; cp /apks/* /hicn"
+          ls .

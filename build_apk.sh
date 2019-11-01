@@ -25,8 +25,8 @@ if [ ! -d /src/android-sdk ]; then
     git clone https://github.com/icn-team/android-sdk.git /src/android-sdk
 fi
 
-ln -s /usr_aarch64 /src/android-sdk
-ln -s /usr_i686 /src/android-sdk
+ln -sf /usr_aarch64 /src/android-sdk
+ln -sf /usr_i686 /src/android-sdk
 
 cd /src/android-sdk/HicnForwarderAndroid
 echo sdk.dir=${ANDROID_HOME} > local.properties
