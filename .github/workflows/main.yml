@@ -1,0 +1,23 @@
+name: Build and Deploy
+on: [push]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@master
+
+      - name: 'Docker Registry Login' 
+        uses: azure/docker-login@v1
+        with:
+          login-server: docker.pkg.github.com
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: 'Pull Docker Image'    
+        shell: bash
+        run: |
+          docker pull docker.pkg.github.com/icn-team/android-build/hapk:latest
+      - name: 'Build apks'
+        shell: bash
+        run: |
+          docker run -it -d -v $PWD:/hicn  docker.pkg.github.com/icn-team/android-build/hapk bash -c "bash /hicn/build_apk.sh; cp /apks/* /hicn"
