@@ -3,7 +3,6 @@ on: [push]
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    container: docker.pkg.github.com/icn-team/android-build/hicn:latest
     steps:
       - uses: azure/docker-login@v1
         with:
@@ -13,6 +12,7 @@ jobs:
       - run: |
           docker pull docker.pkg.github.com/icn-team/android-build/hapk:latest
       - uses: actions/checkout@master
+      - uses: docker://docker.pkg.github.com/icn-team/android-build/hapk:latest
       - name: Build
         run: |
           ./build_apk.sh
