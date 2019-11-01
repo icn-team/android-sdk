@@ -6,10 +6,10 @@ jobs:
     container: docker.pkg.github.com/icn-team/android-build/hicn:latest
     steps:
       - uses: azure/docker-login@v1
-      with:
-        login-server: docker.pkg.github.com/icn-team/android-build
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+        with:
+          login-server: docker.pkg.github.com/icn-team/android-build
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
       - run: |
         docker pull docker.pkg.github.com/icn-team/android-build/hapk:latest
       - uses: actions/checkout@master
