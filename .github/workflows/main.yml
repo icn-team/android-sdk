@@ -12,7 +12,6 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
       - run: |
         docker pull docker.pkg.github.com/icn-team/android-build/hapk:latest
-    steps:
       - uses: actions/checkout@master
       - name: Build
         run: |
