@@ -18,8 +18,8 @@ jobs:
         run: |
           docker pull docker.pkg.github.com/icn-team/android-build/hapk:latest
       - name: 'Build in docker'
-        run: |
-          bash build_apk.sh
-         with:
+        shell: bash 
+        run: bash build_apk.sh
+        with:
           image: docker.pkg.github.com/icn-team/android-build/hapk:latest 
         
