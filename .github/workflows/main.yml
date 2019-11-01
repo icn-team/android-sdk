@@ -22,4 +22,4 @@ jobs:
         with:
           image: docker.pkg.github.com/icn-team/android-build/hapk:latest 
           run: |
-            ./build_apk.sh
+            bash build_apk.sh
