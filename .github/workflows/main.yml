@@ -24,4 +24,4 @@ jobs:
       - name: 'Push apks to releases'
         shell: bash
         run: |
-          curl http://ipv4.download.thinkbroadband.com/5MB.zip --output 5MB.zip
+          ls /hicn
