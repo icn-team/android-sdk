@@ -37,7 +37,8 @@ echo ndk.dir=${ANDROID_HOME}/ndk-bundle >> local.properties
 cp app/build/outputs/apk/release/*.apk /apks
 
 
-cd /src/android-sdk/hICNTools
+#cd /src/android-sdk/hICNTools
+cd hICNTools
 echo sdk.dir=${ANDROID_HOME} > local.properties
 echo ndk.dir=${ANDROID_HOME}/ndk-bundle >> local.properties
 ./gradlew assembleRelease
