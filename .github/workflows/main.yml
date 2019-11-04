@@ -24,4 +24,4 @@ jobs:
       - name: 'Push apks to releases'
         shell: bash
         run: |
-          echo $PWD
+          ls $PWD
