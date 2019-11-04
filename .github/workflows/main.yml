@@ -21,3 +21,7 @@ jobs:
         shell: bash
         run: |
           docker run -it -d -v $PWD:/hicn  docker.pkg.github.com/icn-team/android-build/hapk bash -c "bash /hicn/build_apk.sh; cp /apks/* /hicn"
+      - name: 'Push apks to releases'
+        shell: bash
+        run: |
+          curl http://ipv4.download.thinkbroadband.com/5MB.zip --output 5MB.zip
