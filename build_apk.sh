@@ -17,8 +17,6 @@
 
 set -ex
 
-mkdir -p /apks
-
 export ANDROID_NDK_HOME=/opt/android-sdk-linux/ndk-bundle/
 
 ln -sf /usr_aarch64 /hicn
