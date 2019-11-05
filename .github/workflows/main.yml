@@ -30,4 +30,4 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: apks
-          path: HicnForwarderAndroid.apk
+          path: hICN_Tools.apk
