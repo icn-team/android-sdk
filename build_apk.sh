@@ -17,19 +17,14 @@
 
 set -ex
 
-mkdir -p /src
 mkdir -p /apks
 
 export ANDROID_NDK_HOME=/opt/android-sdk-linux/ndk-bundle/
-#if [ ! -d /src/android-sdk ]; then
-#    git clone https://github.com/icn-team/android-sdk.git /src/android-sdk
-#fi
 
-#ln -sf /usr_aarch64 /src/android-sdk
-#ln -sf /usr_i686 /src/android-sdk
+ln -sf /usr_aarch64 /hicn
+ln -sf /usr_i686 /hicn
 
-#cd /src/android-sdk/HicnForwarderAndroid
-cd HicnForwarderAndroid
+cd /hicn/HicnForwarderAndroid
 echo sdk.dir=${ANDROID_HOME} > local.properties
 echo ndk.dir=${ANDROID_HOME}/ndk-bundle >> local.properties
 ./gradlew assembleRelease
@@ -38,10 +33,11 @@ cp app/build/outputs/apk/release/*.apk /apks
 
 
 #cd /src/android-sdk/hICNTools
-cd hICNTools
+cd /hicn/hICNTools
 echo sdk.dir=${ANDROID_HOME} > local.properties
 echo ndk.dir=${ANDROID_HOME}/ndk-bundle >> local.properties
 ./gradlew assembleRelease
 cp app/build/outputs/apk/release/*.apk /apks
 
+rm /hicn/usr_*
 ls /apks
