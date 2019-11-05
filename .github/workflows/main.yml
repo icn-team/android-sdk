@@ -21,16 +21,11 @@ jobs:
         shell: bash
         run: |
           docker run -v $PWD:/hicn  docker.pkg.github.com/icn-team/android-build/hicn bash -c "bash /hicn/build_apk.sh"
-      - name: 'Push HicnForwarder to releases'
+      - name: 'Push Apks artifacts'
         uses: actions/upload-artifact@v1
         with:
           name: apks
-          path: HicnForwarderAndroid.apk
-      - name: 'Push hICN Tools to releases'
-        uses: actions/upload-artifact@v1
-        with:
-          name: apks
-          path: hICN_Tools.apk
+          path: '*.apk'
       - name: 'Curl'
         shell: bash
         run: |
