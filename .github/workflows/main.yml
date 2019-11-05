@@ -20,7 +20,7 @@ jobs:
       - name: 'Build apks'
         shell: bash
         run: |
-          docker run -v $PWD:/hicn  docker.pkg.github.com/icn-team/android-build/hicn bash -c "bash /hicn/build_apk.sh; cp /apks/* /hicn"
+          docker run -v $PWD:/hicn  docker.pkg.github.com/icn-team/android-build/hicn bash -c "bash /hicn/build_apk.sh"
       # - name: 'Push apks to releases'
         #uses: actions/upload-artifact@v1
         #with:
