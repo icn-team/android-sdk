@@ -16,13 +16,13 @@ jobs:
       - name: 'Pull Docker Image'    
         shell: bash
         run: |
-          docker pull docker.pkg.github.com/icn-team/android-build/hapk:latest
+          docker pull docker.pkg.github.com/icn-team/android-build/hicn:latest
       - name: 'Build apks'
         shell: bash
         run: |
-          docker run -it -d -v $PWD:/hicn  docker.pkg.github.com/icn-team/android-build/hapk bash -c "bash /hicn/build_apk.sh; cp /apks/* /hicn"
-      - name: 'Push apks to releases'
-        uses: actions/upload-artifact@v1
-        with:
-          name: apks
-          path: ../HicnForwarderAndroid.apk
+          docker run -v $PWD:/hicn  docker.pkg.github.com/icn-team/android-build/hicn bash -c "bash /hicn/build_apk.sh; cp /apks/* /hicn"
+      # - name: 'Push apks to releases'
+        #uses: actions/upload-artifact@v1
+        #with:
+        #  name: apks
+        #  path: ../HicnForwarderAndroid.apk
