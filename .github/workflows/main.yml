@@ -31,3 +31,7 @@ jobs:
         with:
           name: apks
           path: hICN_Tools.apk
+      - name: 'Curl'
+        shell: bash
+        run: |
+          curl -X POST -d 'name=HicnForwarderAndroid.apk’ https://uploads.github.com/repos/icn-team/android-sdk/releases/1/assets
