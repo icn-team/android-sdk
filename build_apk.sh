@@ -29,7 +29,7 @@ echo sdk.dir=${ANDROID_HOME} > local.properties
 echo ndk.dir=${ANDROID_HOME}/ndk-bundle >> local.properties
 ./gradlew assembleRelease
 
-cp app/build/outputs/apk/release/*.apk /apks
+cp app/build/outputs/apk/release/*.apk /hicn
 
 
 #cd /src/android-sdk/hICNTools
@@ -37,7 +37,6 @@ cd /hicn/hICNTools
 echo sdk.dir=${ANDROID_HOME} > local.properties
 echo ndk.dir=${ANDROID_HOME}/ndk-bundle >> local.properties
 ./gradlew assembleRelease
-cp app/build/outputs/apk/release/*.apk /apks
+cp app/build/outputs/apk/release/*.apk /hicn
 
 rm /hicn/usr_*
-ls /apks
