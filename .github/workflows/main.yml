@@ -7,7 +7,7 @@ jobs:
       - name: 'Remove old assets'
         shell: bash
         run: |
-          curl -X GET -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://uploads.github.com/repos/icn-team/android-sdk/releases/tags/refs/heads/master
+          curl -IL -X GET -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://uploads.github.com/repos/icn-team/android-sdk/releases/tags/refs/heads/master
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@master
 
@@ -33,7 +33,7 @@ jobs:
       - name: 'Remove old assets'
         shell: bash
         run: |
-          curl -X DELETE -u ${{ secrets.GITHUB_TOKEN }} https://uploads.github.com/repos/icn-team/android-sdk/releases/21250805/assets/apks/hICN_Tools.apk
+          curl -IL -X DELETE -u ${{ secrets.GITHUB_TOKEN }} https://uploads.github.com/repos/icn-team/android-sdk/releases/21250805/assets/apks/hICN_Tools.apk
       #- name: Create Release
       #  id: create_release
       #  uses: actions/create-release@v1.0.0
