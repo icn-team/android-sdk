@@ -33,20 +33,27 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          release_name: Android
           draft: false
-          prerelease: false
-      - name: Upload Release Asset
+          prerelease: true
+      - name: Upload Release Asset (hICN_Tools)
         id: upload-release-asset 
         uses: actions/upload-release-asset@v1.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          upload_url: ${{ steps.create_release.outputs.upload_url }} 
           asset_path: ./apks/hICN_Tools.apk
           asset_name: hICN_Tools.apk
           asset_content_type: application/zip
-      #- name: 'Curl'
-      #  shell: bash
-      #  run: |
-      #    curl -u ${{ secrets.DOCKER_USERNAME }}:${{ secrets.DOCKER_PASSWORD }} -X POST -d 'name=HicnForwarderAndroid.apk' https://uploads.github.com/repos/icn-team/android-sdk/releases/1/assets
+      - name: Upload Release Asset (HicnForwarderAndroid.apk)
+        id: upload-release-asset-hicnforwarder
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./apks/HicnForwarderAndroid.apk
+          asset_name: HicnForwarderAndroid.apk
+          asset_content_type: application/zip
+     
