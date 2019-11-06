@@ -4,10 +4,6 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: 'Remove old assets'
-        shell: bash
-        run: |
-          ASSETS_IDS=$(curl --silent -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/icn-team/android-sdk/releases/tags/release" | jq -r '.assets[]' | jq -r '.id');for ASSET_ID in $ASSETS_IDS ; do curl -X DELETE --silent -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/icn-team/android-sdk/releases/assets/$ASSET_ID"; done;
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@master
 
@@ -30,6 +26,11 @@ jobs:
         with:
           name: apks
           path: apks
+      - name: 'Remove old assets'
+        shell: bash
+        run: |
+          ASSETS_IDS=$(curl --silent -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/icn-team/android-sdk/releases/tags/release" | jq -r '.assets[]' | jq -r '.id');for ASSET_ID in $ASSETS_IDS ; do curl -X DELETE --silent -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/icn-team/android-sdk/releases/assets/$ASSET_ID"; done;
+      
     #- name: Create Release
       #  id: create_release
       #  uses: actions/create-release@v1.0.0
