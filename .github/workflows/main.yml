@@ -26,6 +26,10 @@ jobs:
         with:
           name: apks
           path: apks
+      - name: 'Remove old assets'
+        shell: bash
+        run: |
+          curl -X DELETE -u ${{ secrets.GITHUB_TOKEN }} https://uploads.github.com/repos/icn-team/android-sdk/releases/21250805/assets/apks/HicnForwarderAndroid.apk
       #- name: Create Release
       #  id: create_release
       #  uses: actions/create-release@v1.0.0
