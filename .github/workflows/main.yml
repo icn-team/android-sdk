@@ -4,6 +4,10 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: 'Remove old assets'
+        shell: bash
+        run: |
+          curl -X DELETE -u ${{ secrets.GITHUB_TOKEN }} https://uploads.github.com/repos/icn-team/android-sdk/releases/21250805/assets/apks/HicnForwarderAndroid.apk
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@master
 
