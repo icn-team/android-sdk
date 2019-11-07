@@ -23,7 +23,7 @@ jobs:
       - name: 'Build apks'
         shell: bash
         run: |
-          docker run -v $PWD:/hicn  docker.pkg.github.com/icn-team/android-build/hicn bash -c "bash /hicn/build_apk.sh"; mkdir -p apks; cp *.apk apks/
+          docker run -v $PWD:/hicn  docker.pkg.github.com/icn-team/android-build/hicn bash -c "bash /hicn/ci/build_apk.sh"; mkdir -p apks; cp *.apk apks/
       - name: 'Push Apks artifacts'
         uses: actions/upload-artifact@v1
         with:
@@ -33,17 +33,6 @@ jobs:
         shell: bash
         run: |
           ASSETS_IDS=$(curl --silent -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/icn-team/android-sdk/releases/tags/release" | jq -r '.assets[]' | jq -r '.id');for ASSET_ID in $ASSETS_IDS ; do curl -X DELETE --silent -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/icn-team/android-sdk/releases/assets/$ASSET_ID"; done;
-      
-    #- name: Create Release
-      #  id: create_release
-      #  uses: actions/create-release@v1.0.0
-      #  env:
-      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #  with:
-      #    tag_name: ${{ github.ref }}
-      #    release_name: Android Application ${{ github.ref }}
-      #    draft: false
-      #    prerelease: true
       - name: Upload Release Asset (hICN_Tools)
         id: upload-release-asset 
         uses: actions/upload-release-asset@v1.0.1
@@ -63,5 +52,15 @@ jobs:
           upload_url: https://uploads.github.com/repos/icn-team/android-sdk/releases/21250805/assets{?name,label}
           asset_path: ./apks/HicnForwarderAndroid.apk
           asset_name: HicnForwarderAndroid.apk
+          asset_content_type: application/zip
+      - name: Upload Release Asset (Viper)
+        id: upload-release-asset-hicnforwarder
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: https://uploads.github.com/repos/icn-team/android-sdk/releases/21250805/assets{?name,label}
+          asset_path: ./apks/viper-arm64.apk
+          asset_name: viper-arm64.apk
           asset_content_type: application/zip
      
