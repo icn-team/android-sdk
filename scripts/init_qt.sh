@@ -28,8 +28,8 @@ if [ "$ABI" = "arm64" ]; then
 			git clone https://github.com/benlau/qtci.git
 		fi
 		export PATH=$PATH:`pwd`/qtci/bin:`pwd`/qtci/recipes
-		export QT_CI_PACKAGES=qt.qt5.5123.android_arm64_v8a,qt.qt5.5123.qtcharts.android_arm64_v8a,qt.qt5.5123.qtcharts
-		install-qt 5.12.3
+		export QT_CI_PACKAGES=qt.qt5.5131.android_arm64_v8a,qt.qt5.5131.qtcharts.android_arm64_v8a,qt.qt5.5131.qtcharts
+		install-qt 5.13.1
 	fi
 	if [ ! -d ffmpeg ]; then
 		if [ ! -f ffmpeg-master-android-clang.tar.xz ]; then
@@ -46,7 +46,7 @@ if [ "$ABI" = "arm64" ]; then
 	export ANDROID_NDK_ROOT=${NDK}
 	export PATH=$PATH:${ANDROID_HOME}/tools:${JAVA_HOME}/bin
 
-	if [ ! -d ${QT_HOME}/5.12.3/android_arm64_v8a/include/QtAV ]; then
+	if [ ! -d ${QT_HOME}/5.13.1/android_arm64_v8a/include/QtAV ]; then
     	if [ ! -d QtAV ]; then
        		git clone https://github.com/wang-bin/QtAV.git
     	fi
@@ -57,7 +57,7 @@ if [ "$ABI" = "arm64" ]; then
 		echo "LIBS = -L${BASE_PATH}/usr_aarch64/lib/" >> .qmake.conf
 		mkdir -p ${DISTILLERY_BUILD_DIR}/qtav
 		cd ${DISTILLERY_BUILD_DIR}/qtav
-		${QT_HOME}/5.12.3/android_arm64_v8a/bin/qmake $BASE_PATH/qt/QtAV/QtAV.pro -spec android-clang 
+		${QT_HOME}/5.13.1/android_arm64_v8a/bin/qmake $BASE_PATH/qt/QtAV/QtAV.pro -spec android-clang 
 		make
 		make install INSTALL_ROOT=android_arm64_v8a
 		sh sdk_install.sh
