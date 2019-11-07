@@ -54,7 +54,11 @@ jobs:
           asset_name: HicnForwarderAndroid.apk
           asset_content_type: application/zip
       - name: Upload Release Asset (Viper)
+<<<<<<< HEAD
         id: upload-release-asset-hicnforwarder
+=======
+        id: upload-release-asset-viper
+>>>>>>> 8a32031c2416267f6308c5a00c977e978e069eb4
         uses: actions/upload-release-asset@v1.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
