@@ -4,3 +4,4 @@
 /sdk
 /qt
 /external/openssl*
+.distillery.stamp
