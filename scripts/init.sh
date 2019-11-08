@@ -147,7 +147,7 @@ if [ ! -d libconfig ]; then
 	echo "libconfig not found"
 	git clone https://github.com/hyperrealm/libconfig.git
 	cd libconfig
-	git checkout tags/v1.7.2
+	git checkout a6b370e78578f5bf594f8efe0802cdc9b9d18f1a
 	cd ..
 	sed -i -- '2s/$/include(CheckSymbolExists)/' libconfig/CMakeLists.txt 
 fi
