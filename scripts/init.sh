@@ -93,7 +93,7 @@ fi
 
 if [ ! -d hicn ]; then
 	echo "libhicn not found"
-	git clone git@github.com:icn-team/android-sdk.git
+	git clone git@github.com:FDio/hicn.git
 fi
 
 if [ ! -d curl ]; then
