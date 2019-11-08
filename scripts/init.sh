@@ -93,7 +93,7 @@ fi
 
 if [ ! -d hicn ]; then
 	echo "libhicn not found"
-	git clone git@github.com:icn-team/android-sdk.git
+	git clone git@github.com:FDio/hicn.git
 fi
 
 if [ ! -d curl ]; then
@@ -108,7 +108,10 @@ fi
 
 if [ ! -d libxml2 ]; then
 	echo "libxml2 not found"
-	git clone https://github.com/GNOME/libxml2.git
+	git clone git@github.com:GNOME/libxml2.git
+	cd libxml2
+	git checkout tags/v2.9.9
+	cd ..
 	cp $BASE_DIR/external/libxml2/CMakeLists.txt libxml2
 	cp $BASE_DIR/external/libxml2/xmlversion.h libxml2/include/libxml
 	cp $BASE_DIR/external/libxml2/config.h libxml2
@@ -122,6 +125,9 @@ fi
 if [ ! -d libevent ]; then
     echo "libevent not found"
 	git clone https://github.com/libevent/libevent.git
+	cd libevent
+	git checkout tags/release-2.1.11-stable
+	cd ..
 fi
 
 if [ ! -d ${INSTALLATION_DIR}/include/asio ]; then
