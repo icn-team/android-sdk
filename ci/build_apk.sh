@@ -45,7 +45,7 @@ ${QT_HOME}/$QT_VERSION/android_${ANDROID_ARCH}/bin/androiddeployqt --output hicn
 cp /build_aarch64/viper/hicn-viper-arm64_v8a//build/outputs/apk/hicn-viper-arm64_v8a-release-signed.apk /hicn
 mv /hicn/hicn-viper-arm64_v8a-release-signed.apk /hicn/viper-arm64.apk
 
-export DISTILLARY_INSTALLATION_PATH=/usr_aarch64/
+export DISTILLARY_INSTALLATION_PATH=/usr_i686/
 export ANDROID_ARCH=x86
 mkdir -p /build_i686/viper
 cd /build_i686/viper
