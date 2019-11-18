@@ -32,11 +32,11 @@ cd android-sdk
 Compile everything (dependencies and hICN modules)
 
 ```
+make update
 export ANDROID_ARCH="arm64"
 make all
 export ANDROID_ARCH="x86"
 make all
-
 ```
 
 The hICN Distillery software will be installed in android-sdk/usr_aarch64 and android-sdk/usr_i686
@@ -98,30 +98,31 @@ Here's a short summary:
 - `make help`				- This help message
 - `make all`				- Download sdk, ndk and dependencies, configure, compile and install all software in DISTILLERY_INSTALL_DIR
 - `make init_depend` 		- Download sdk, ndk and dependencies, compile and install all dependencies in DISTILLERY_INSTALL
-- `make update`				- git pull the different modules to the head of master
+- `make update`				- update hicn to the right commit
 - `make install-all` 		- Configure, compile and install all software in DISTILLERY_INSTALL_DIR
-- `curl-clean`				- Clean curl files and libs
-- `openssl-clean`			- Clean opennssl files and libs
-- `asio-clean`				- Clean asio files
-- `event-clean`				- Clean libevent files and libs
-- `ffmpeg-clean`			- Clean ffmpeg files and libs
-- `libconfig-clean`			- Clean libconfig files and libs
-- `xml2-clean`				- Clean libxml2 files and libs
-- `libdash-clean`			- Clean libdash files and libs
-- `viper-clean`				- Clean viper files
-- `dependencies-clean`	 	- Clean all dependencies files and libs
-- `sdk-clean`				- Clean sdk files
-- `ndk-clean`				- Clean ndk files
-- `androidsdk-clean`		- Clean sdk, ndk and cmake files
-- `libparc-clean`			- Clean libparc files and libs
-- `hicn-clean`				- Clean hicn files and libs
-- `all-clean`				- Clean	all files and libs
-- `android_hicnforwarder`	- Build HicnForwader apk for android
-- `android_hicnforwarder_debug`	- Build HicnForwader apk for android in debug mode
-- `android_hicntools`		- Build HicnForwader apk for android
-- `android_hicntools_debug`	- Build HicnForwader apk for android in debug mode
-- `android_viper`			- Build Viper apk for android apk in debug mode (only arm64)
-- `android_viper_debug`		- Build Viper apk for android apk (only arm64)
+- `make curl-clean`				- Clean curl files and libs
+- `make openssl-clean`			- Clean opennssl files and libs
+- `make asio-clean`				- Clean asio files
+- `make event-clean`				- Clean libevent files and libs
+- `make ffmpeg-clean`			- Clean ffmpeg files and libs
+- `make libconfig-clean`			- Clean libconfig files and libs
+- `make xml2-clean`				- Clean libxml2 files and libs
+- `make libdash-clean`			- Clean libdash files and libs
+- `make viper-clean`				- Clean viper files
+- `make dependencies-clean`	 	- Clean all dependencies files and libs
+- `make sdk-clean`				- Clean sdk files
+- `make ndk-clean`				- Clean ndk files
+- `make androidsdk-clean`		- Clean sdk, ndk and cmake files
+- `make libparc-clean`			- Clean libparc files and libs
+- `make hicn-clean`				- Clean hicn files and libs
+- `make all-clean`				- Clean	all files and libs
+- `make android_hicnforwarder`	- Build HicnForwader apk for android
+- `make android_hicnforwarder_debug`	- Build HicnForwader apk for android in debug mode
+- `make android_hicntools`		- Build HicnForwader apk for android
+- `make android_hicntools_debug`	- Build HicnForwader apk for android in debug mode
+- `make android_viper`			- Build Viper apk for android apk in debug mode (only arm64)
+- `make android_viper_debug`		- Build Viper apk for android apk (only arm64)
+- `make version`		- Print the version of installed modules
 
 
 ## Configuration ##
