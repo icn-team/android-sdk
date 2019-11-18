@@ -52,11 +52,11 @@ if [ "$ABI" = "arm64" ]; then
 		fi
 		cp -r ffmpeg/include/* ${BASE_PATH}/usr_aarch64/include/
 		cp ffmpeg/lib/arm64-v8a/lib* ${BASE_PATH}/usr_aarch64/lib/
-		touch ${BASE_PATH}/${VERSIONS_FILE}
+		touch ${VERSIONS_FILE}
 		echo ${ABI}_ffmpeg
-		echo ${BASE_PATH}/${VERSIONS_FILE}
-		sed -i '' '/arm64_ffmpeg/d' ${BASE_PATH}/${VERSIONS_FILE}
-		echo ${ABI}_ffmpeg=4.2 >> ${BASE_PATH}/${VERSIONS_FILE}
+		echo ${VERSIONS_FILE}
+		sed -i '' '/arm64_ffmpeg/d' ${VERSIONS_FILE}
+		echo ${ABI}_ffmpeg=4.2 >> ${VERSIONS_FILE}
 	fi
 
 
@@ -83,9 +83,9 @@ if [ "$ABI" = "arm64" ]; then
 		make install INSTALL_ROOT=android_arm64_v8a
 		sh sdk_install.sh
 		QTAV_VERSION=$(git --git-dir=$BASE_PATH/qt/QtAV/.git --work-tree=$BASE_PATH/qt/QtAV/ log -1 --format="%H")
-		touch ${BASE_PATH}/${VERSIONS_FILE}
-		sed -i '' '/${ABI}_QtAV/d' ${BASE_PATH}/${VERSIONS_FILE}
-		echo ${ABI}_QtAV=${QTAV_VERSION} >> ${BASE_PATH}/${VERSIONS_FILE}
+		touch ${VERSIONS_FILE}
+		sed -i '' '/${ABI}_QtAV/d' ${VERSIONS_FILE}
+		echo ${ABI}_QtAV=${QTAV_VERSION} >> ${VERSIONS_FILE}
 		 
 	fi
 elif [ "$ABI" = "x86" ]; then
@@ -123,9 +123,9 @@ elif [ "$ABI" = "x86" ]; then
 		fi
 		cp -r ffmpeg/include/* ${BASE_PATH}/usr_i686/include/
 		cp ffmpeg/lib/x86/lib* ${BASE_PATH}/usr_i686/lib/
-		touch ${BASE_PATH}/${VERSIONS_FILE}
-		sed -i '' '/x86_ffmpeg/d' ${BASE_PATH}/${VERSIONS_FILE}
-		echo ${ABI}_ffmpeg=4.2 >> ${BASE_PATH}/${VERSIONS_FILE}
+		touch ${VERSIONS_FILE}
+		sed -i '' '/x86_ffmpeg/d' ${VERSIONS_FILE}
+		echo ${ABI}_ffmpeg=4.2 >> ${VERSIONS_FILE}
 	fi
 	export ANDROID_SDK_ROOT=${SDK}
 	export ANDROID_NDK_ROOT=${NDK}
@@ -148,8 +148,8 @@ elif [ "$ABI" = "x86" ]; then
 		make install INSTALL_ROOT=android_x86
 		sh sdk_install.sh
 		QTAV_VERSION=$(git --git-dir=$BASE_PATH/qt/QtAV/.git --work-tree=$BASE_PATH/qt/QtAV/ log -1 --format="%H")
-		touch ${BASE_PATH}/${VERSIONS_FILE}
-		sed -i '' '/${ABI}_QtAV/d' ${BASE_PATH}/${VERSIONS_FILE}
-		echo ${ABI}_QtAV=${QTAV_VERSION} >> ${BASE_PATH}/${VERSIONS_FILE}
+		touch ${VERSIONS_FILE}
+		sed -i '' '/${ABI}_QtAV/d' ${VERSIONS_FILE}
+		echo ${ABI}_QtAV=${QTAV_VERSION} >> ${VERSIONS_FILE}
 	fi
 fi
