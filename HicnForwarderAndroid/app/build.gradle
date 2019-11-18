@@ -88,7 +88,6 @@ def enableHProxy() {
 
 def String getProjectProperty(String propertyName)
 {
-    println propertyName
     String value = "0"
     if (hasProperty(propertyName))
     {
