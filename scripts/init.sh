@@ -23,60 +23,50 @@ export BASE_DIR=`pwd`
 mkdir -p ${INSTALLATION_DIR}
 mkdir -p ${INSTALLATION_DIR}/include
 mkdir -p ${INSTALLATION_DIR}/lib
-if [ -z ${SDK_PATH} ]; then
+
+if [ -z ${SDK_PATH} ]  ; then
 	mkdir -p sdk
 	cd sdk
-	if [ ! -d sdk ]; then
-		if [ $OS = darwin ]; then
-			if [ ! -f android-sdk_r24.4.1-macosx.zip ]; then
-				wget http://dl.google.com/android/android-sdk_r24.4.1-macosx.zip
-			fi
-			
-			echo "unzip android-sdk"
-			unzip -q android-sdk_r24.4.1-macosx.zip
-			mv android-sdk-macosx sdk
-		else
-			if [ ! -f android-sdk_r24.4.1-linux.tgz ]; then
-				wget http://dl.google.com/android/android-sdk_r24.4.1-linux.tgz
-			fi
-			echo "untar android-sdk"
-			tar zxf android-sdk_r24.4.1-linux.tgz
-			mv android-sdk-linux sdk
+	if [ ! -d tools ]; then
+		if [ ! -f sdk-tools-${OS}-${ANDROID_SDK_TOOLS_REV}.zip ]; then
+		    wget --quiet https://dl.google.com/android/repository/sdk-tools-${OS}-${ANDROID_SDK_TOOLS_REV}.zip
 		fi
-		mkdir -p sdk/licenses
-		echo "\n24333f8a63b6825ea9c5514f83c2829b004d1fee" > "sdk/licenses/android-sdk-license"
-		echo "\n8933bad161af4178b1185d1a37fbf41ea5269c55" >> "sdk/licenses/android-sdk-license"
-		echo "\n84831b9409646a918e30573bab4c9c91346d8abd" > "sdk/licenses/android-sdk-preview-license"
-		echo "y" | ./sdk/tools/android update sdk --filter platform-tools,build-tools-28.0.3,android-28,extra-android-m2repository,extra-google-m2repository --no-ui --all --force
-		echo "y" | ./sdk/tools/android update sdk --filter "android-28" --no-ui --all --force 
-		echo "y" | ./sdk/tools/android update sdk --no-ui --all --filter build-tools-28.0.3
+		unzip -qq sdk-tools-${OS}-${ANDROID_SDK_TOOLS_REV}.zip
 	fi
+	if [ ! -d build-tools ] || [ ! -d extras ] || [ ! -d licenses ] || [ ! -d patcher ] || [ ! -d platform-tools ] || [ ! -d platforms ]; then 
+		echo yes | tools/bin/sdkmanager --licenses > /dev/null
+		echo yes | tools/bin/sdkmanager --update
+		echo yes | tools/bin/sdkmanager 'tools'
+		echo yes | tools/bin/sdkmanager 'platform-tools'
+		echo yes | tools/bin/sdkmanager 'build-tools;'$ANDROID_BUILD_TOOLS
+		echo yes | tools/bin/sdkmanager 'platforms;android-'$ANDROID_COMPILE_SDK
+		echo yes | tools/bin/sdkmanager 'platforms;android-28'
+		echo yes | tools/bin/sdkmanager 'extras;android;m2repository'
+		echo yes | tools/bin/sdkmanager 'extras;google;google_play_services'
+		echo yes | tools/bin/sdkmanager 'extras;google;m2repository'
+    fi
 	cd ..
 fi
 
 if [ -z ${NDK_PATH} ]; then
-    mkdir -p sdk
+	mkdir -p sdk
 	cd sdk
-	if [ ! -d ndk-bundle ]; then
-		if [ ! -f android-ndk-r19c-${OS}-${ARCH}.zip ]; then
-		    wget https://dl.google.com/android/repository/android-ndk-r19c-${OS}-${ARCH}.zip
+	if [ ! -d tools ]; then
+		if [ ! -f sdk-tools-${OS}-${ANDROID_SDK_TOOLS_REV}.zip ]; then
+		    wget --quiet https://dl.google.com/android/repository/sdk-tools-${OS}-${ANDROID_SDK_TOOLS_REV}.zip
 		fi
-		
-		echo "unzip android-ndk"
-		unzip -q android-ndk-r19c-${OS}-${ARCH}.zip
-		mv android-ndk-r19c ndk-bundle
+		unzip -qq sdk-tools-${OS}-${ANDROID_SDK_TOOLS_REV}.zip
+	fi
+	if [ ! -d build-tools ] || [ ! -d cmake ] || [ ! -d ndk-bundle ] || [ ! -d platform-tools ] || [ ! -d platforms ]; then
+		echo yes | tools/bin/sdkmanager 'tools'
+		echo yes | tools/bin/sdkmanager 'platform-tools'
+		echo yes | tools/bin/sdkmanager 'build-tools;'$ANDROID_BUILD_TOOLS
+		echo yes | tools/bin/sdkmanager 'cmake;'$ANDROID_CMAKE_REV
+		echo yes | tools/bin/sdkmanager --channel=3 --channel=1 'cmake;'$ANDROID_CMAKE_REV_3_10
+		echo yes | tools/bin/sdkmanager 'ndk-bundle'
 	fi
 	cd ..
 fi
-
-export TOOLCHAIN=$BASE_DIR/sdk/toolchain_$ABI
-
-if [ ! -d $TOOLCHAIN ];then
-	echo "creating toolchain"
-	python $NDK/build/tools/make_standalone_toolchain.py \
-        --arch $ABI --api 26 --install-dir $TOOLCHAIN
-fi
-
 
 mkdir -p src
 cd src
@@ -94,8 +84,34 @@ fi
 if [ ! -d hicn ]; then
 	echo "libhicn not found"
 	git clone git@github.com:FDio/hicn.git
+	cd hicn
+	git checkout $HICN_COMMIT
+	for hash in $(git log -100 --format="%H")
+	do
+		if ! grep -q $hash "${BASE_DIR}/${BLACKLIST_FILE}"; then
+  			actual_hash=$(git log -1 --format="%H")
+  			if [ "${hash}" != "${actual_hash}" ]; then
+  				git checkout $hash
+  				if [ -f ${BASE_DIR}/${VERSIONS_FILE} ]; then
+  					installed_version_arm64=$(cat ${BASE_DIR}/${VERSIONS_FILE} | grep "arm64_hicn" | awk -F "=" '{print $2;}')
+  					if [ "$installed_version_arm64" != "$hash" ]; then
+  						rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_arm64/lib/libhicn*
+						rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_arm64/lib/libfacemgr.*
+						rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_arm64/include/hicn
+  					fi
+  					installed_version_x86=$(cat ${BASE_DIR}/${VERSIONS_FILE} | grep "x86_hicn" | awk -F "=" '{print $2;}')
+  					if [ "$installed_version_armx86" != "$hash" ]; then
+  						rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_x86/lib/libhicn*
+						rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_x86/lib/libfacemgr.*
+						rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_x86/include/hicn
+  					fi
+  				fi
+  			fi
+  			break
+		fi
+	done
+	cd ..
 fi
-
 if [ ! -d curl ]; then
 	echo "curl  not found"
 	git clone https://github.com/curl/curl.git
@@ -177,5 +193,8 @@ if [ ! -d ${INSTALLATION_DIR}/include/openssl ]; then
         cp ${BASE_DIR}/external/openssl-lib/x86_64/*.a ${INSTALLATION_DIR}/lib/
         cp -r ${BASE_DIR}/external/openssl-lib/x86_64/include/openssl ${INSTALLATION_DIR}/include/
 	fi
+	touch ${BASE_DIR}/${VERSIONS_FILE}
+	sed -i '' '/${ABI}_openssl/d' ${BASE_DIR}/${VERSIONS_FILE}
+	echo ${ABI}_openssl=1.1.0h >> ${BASE_DIR}/${VERSIONS_FILE}
 fi
 

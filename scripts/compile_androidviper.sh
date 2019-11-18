@@ -18,6 +18,7 @@
 
 #!/bin/bash
 set -e
+BASIC_HOME=${QT_HOME}
 export ANDROID_ARCH=arm64_v8a
 export ANDROID_HOME=${SDK}
 export ANDROID_NDK_HOST=${OS}-${ARCH}
@@ -28,19 +29,39 @@ export ANDROID_API_VERSION=android-28
 export PATH=$PATH:${ANDROID_HOME}/tools:${JAVA_HOME}/bin
 export DISTILLARY_INSTALLATION_PATH=${DISTILLERY_ROOT_DIR}/usr_aarch64/
 export QT_VERSION=5.13.1
-#echo $QT_HOME
-#cd ${DISTILLERY_ROOT_DIR}
-export DISTILLARY_INSTALLATION_PATH=${DISTILLERY_ROOT_DIR}/usr_aarch64
+export QT_HOME=${BASIC_HOME}_arm64
 if [ "$1" = "DEBUG" ]; then
-	mkdir -p ${DISTILLERY_BUILD_DIR}/viper_debug
-	cd ${DISTILLERY_BUILD_DIR}/viper_debug
+	mkdir -p build_aarch64/viper_debug
+	cd build_aarch64/viper_debug
 	${QT_HOME}/${QT_VERSION}/android_${ANDROID_ARCH}/bin/qmake -r -spec android-clang ${DISTILLERY_ROOT_DIR}/src/viper/viper.pro  "TRANSPORT_LIBRARY = HICNET" CONFIG+=debug CONFIG+=qml_debug
 	make
 	make install INSTALL_ROOT=hicn-viper-${ANDROID_ARCH}
 	${QT_HOME}/${QT_VERSION}/android_${ANDROID_ARCH}/bin/androiddeployqt --output hicn-viper-${ANDROID_ARCH} --verbose --input android-libviper.so-deployment-settings.json --gradle --android-platform ${ANDROID_NDK_PLATFORM} --stacktrace --debug --target ${ANDROID_NDK_PLATFORM} --debug --sign ${DISTILLERY_ROOT_DIR}/src/viper/android/viper.keystore viper --storepass icn_viper
 else
-	mkdir -p ${DISTILLERY_BUILD_DIR}/viper
-	cd ${DISTILLERY_BUILD_DIR}/viper
+	mkdir -p build_aarch64/viper
+	cd build_aarch64/viper
+	${QT_HOME}/${QT_VERSION}/android_${ANDROID_ARCH}/bin/qmake -r -spec android-clang ${DISTILLERY_ROOT_DIR}/src/viper/viper.pro  "TRANSPORT_LIBRARY = HICNET"
+	make
+	make install INSTALL_ROOT=hicn-viper-${ANDROID_ARCH}
+	${QT_HOME}/${QT_VERSION}/android_${ANDROID_ARCH}/bin/androiddeployqt --output hicn-viper-${ANDROID_ARCH} --verbose --input android-libviper.so-deployment-settings.json \
+	--gradle --android-platform ${ANDROID_NDK_PLATFORM} --stacktrace --release --target ${ANDROID_NDK_PLATFORM} --release --sign ${DISTILLERY_ROOT_DIR}/src/viper/android/viper.keystore viper --storepass icn_viper
+fi
+cd ..
+
+export ANDROID_ARCH=x86
+export DISTILLARY_INSTALLATION_PATH=${DISTILLERY_ROOT_DIR}/usr_i686/
+export QT_VERSION=5.13.1
+export QT_HOME=${BASIC_HOME}_x86
+if [ "$1" = "DEBUG" ]; then
+	mkdir -p build_i686/viper_debug
+	cd build_i686/viper_debug
+	${QT_HOME}/${QT_VERSION}/android_${ANDROID_ARCH}/bin/qmake -r -spec android-clang ${DISTILLERY_ROOT_DIR}/src/viper/viper.pro  "TRANSPORT_LIBRARY = HICNET" CONFIG+=debug CONFIG+=qml_debug
+	make
+	make install INSTALL_ROOT=hicn-viper-${ANDROID_ARCH}
+	${QT_HOME}/${QT_VERSION}/android_${ANDROID_ARCH}/bin/androiddeployqt --output hicn-viper-${ANDROID_ARCH} --verbose --input android-libviper.so-deployment-settings.json --gradle --android-platform ${ANDROID_NDK_PLATFORM} --stacktrace --debug --target ${ANDROID_NDK_PLATFORM} --debug --sign ${DISTILLERY_ROOT_DIR}/src/viper/android/viper.keystore viper --storepass icn_viper
+else
+	mkdir -p build_i686/viper
+	cd build_i686/viper
 	${QT_HOME}/${QT_VERSION}/android_${ANDROID_ARCH}/bin/qmake -r -spec android-clang ${DISTILLERY_ROOT_DIR}/src/viper/viper.pro  "TRANSPORT_LIBRARY = HICNET"
 	make
 	make install INSTALL_ROOT=hicn-viper-${ANDROID_ARCH}
