@@ -92,14 +92,14 @@ if [ ! -d hicn ]; then
   			actual_hash=$(git log -1 --format="%H")
   			if [ "${hash}" != "${actual_hash}" ]; then
   				git checkout $hash
-  				if [ -f ${BASE_DIR}/${VERSIONS_FILE} ]; then
-  					installed_version_arm64=$(cat ${BASE_DIR}/${VERSIONS_FILE} | grep "arm64_hicn" | awk -F "=" '{print $2;}')
+  				if [ -f ${VERSIONS_FILE} ]; then
+  					installed_version_arm64=$(cat ${VERSIONS_FILE} | grep "arm64_hicn" | awk -F "=" '{print $2;}')
   					if [ "$installed_version_arm64" != "$hash" ]; then
   						rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_arm64/lib/libhicn*
 						rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_arm64/lib/libfacemgr.*
 						rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_arm64/include/hicn
   					fi
-  					installed_version_x86=$(cat ${BASE_DIR}/${VERSIONS_FILE} | grep "x86_hicn" | awk -F "=" '{print $2;}')
+  					installed_version_x86=$(cat ${VERSIONS_FILE} | grep "x86_hicn" | awk -F "=" '{print $2;}')
   					if [ "$installed_version_armx86" != "$hash" ]; then
   						rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_x86/lib/libhicn*
 						rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_x86/lib/libfacemgr.*
@@ -193,8 +193,8 @@ if [ ! -d ${INSTALLATION_DIR}/include/openssl ]; then
         cp ${BASE_DIR}/external/openssl-lib/x86_64/*.a ${INSTALLATION_DIR}/lib/
         cp -r ${BASE_DIR}/external/openssl-lib/x86_64/include/openssl ${INSTALLATION_DIR}/include/
 	fi
-	touch ${BASE_DIR}/${VERSIONS_FILE}
-	sed -i '' '/${ABI}_openssl/d' ${BASE_DIR}/${VERSIONS_FILE}
-	echo ${ABI}_openssl=1.1.0h >> ${BASE_DIR}/${VERSIONS_FILE}
+	touch ${VERSIONS_FILE}
+	sed -i '' '/${ABI}_openssl/d' ${VERSIONS_FILE}
+	echo ${ABI}_openssl=1.1.0h >> ${VERSIONS_FILE}
 fi
 
