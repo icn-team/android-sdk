@@ -6,3 +6,4 @@
 /external/openssl*
 .distillery.stamp
 **/.DS_Store
+.versions

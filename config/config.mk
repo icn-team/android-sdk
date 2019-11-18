@@ -118,7 +118,7 @@ CMAKE_MAKE_TEST_ARGS?="ARGS=-j16"
 # CCNX software and libaries.  They are also used by various packaging scripts.
 CCNX_HOME=${DISTILLERY_INSTALL_DIR}
 export DISTILLERY_ROOT_DIR
-export SDK=$(shell if [ -z ${SDK_PATH} ]; then echo ${DISTILLERY_ROOT_DIR}/sdk/sdk; else echo ${SDK_PATH}; fi;)
+export SDK=$(shell if [ -z ${SDK_PATH} ]; then echo ${DISTILLERY_ROOT_DIR}/sdk/; else echo ${SDK_PATH}; fi;)
 export NDK=$(shell if [ -z ${NDK_PATH} ]; then echo ${DISTILLERY_ROOT_DIR}/sdk/ndk-bundle; else echo ${NDK_PATH}; fi;)
 export CMAKE=$(shell if [ -z ${CMAKE_PATH} ]; then echo ${DISTILLERY_ROOT_DIR}/sdk/cmake/bin/; else echo ${CMAKE_PATH}; fi;)
 export OS=$(shell uname | tr '[:upper:]' '[:lower:]')
@@ -158,3 +158,11 @@ export QT_HOME=${DISTILLERY_ROOT_DIR}/qt/Qt
 export DISTILLERY_BUILD_DIR
 export DISTILLERY_INSTALL_DIR
 export ANDROID_PLATFORM=android-26
+export ANDROID_COMPILE_SDK=27
+export ANDROID_BUILD_TOOLS=28.0.3
+export ANDROID_SDK_TOOLS_REV=4333796
+export ANDROID_CMAKE_REV=3.6.4111459
+export ANDROID_CMAKE_REV_3_10=3.10.2.4988404
+export VERSIONS_FILE=.versions
+export HICN_COMMIT=master
+export BLACKLIST_FILE=config/blacklistfile
