@@ -36,7 +36,9 @@
 #   Location where to put the xcode project Defaults to
 #   ${DISTILLERY_XCODE_DIR}/Module
 
-
+#@AAAA=$(shell cd ${$1_SOURCE_DIR} && git describe --tags && cd -)
+#	@echo "$1=$(shell git --git-dir=${$1_SOURCE_DIR}/.git --work-tree=${$1_SOURCE_DIR} describe --tags)" >> file.txt
+	
 define addModule
 $(eval $(call addGitModule,$1))
 $(eval modules+=$1)
@@ -46,10 +48,13 @@ $1: $1.build $1.install
 $1.step: $1.build $1.check $1.install
 
 $1.build: ${$1_BUILD_DIR}/Makefile
-	${MAKE} ${MAKE_BUILD_FLAGS} -C ${$1_BUILD_DIR} 
+	${MAKE} ${MAKE_BUILD_FLAGS} -C ${$1_BUILD_DIR}
 
 $1.install: ${$1_BUILD_DIR}/Makefile
 	@${MAKE} ${MAKE_BUILD_FLAGS} -C ${$1_BUILD_DIR} install
+	@touch ${VERSIONS_FILE}
+	@sed -i '' '/${ABI}_$(shell basename $1)/d' ${VERSIONS_FILE}
+	@echo "${ABI}_$(shell basename $1)=$(shell cd ${$1_SOURCE_DIR} && git log -1 --format="%H")" >> ${VERSIONS_FILE}
 
 $1.clean: ${$1_BUILD_DIR}/Makefile
 	@${MAKE} ${MAKE_BUILD_FLAGS} -C ${$1_BUILD_DIR} clean

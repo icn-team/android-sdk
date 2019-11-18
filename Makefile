@@ -17,7 +17,7 @@ DISTILLERY_VERSION=2.0
 
 default.target: help
 
-all: init_depend install-all
+all: init_depend install-all init_qt
 #init_qt
 
 ##############################################################
@@ -171,38 +171,45 @@ libdash-clean:
 dependencies-clean: event-clean openssl-clean curl-clean xml2-clean libconfig-clean libparc-clean asio-clean ffmpeg-clean libdash-clean
 	
 sdk-clean:
-	@rm -rf sdk/android-sdk_*
-	@rm -rf sdk/sdk
+	@rm -rf sdk/build-tools
+	@rm -rf sdk/extras
+	@rm -rf sdk/licenses
+	@rm -rf sdk/patcher
+	@rm -rf sdk/platform-tools
+	@rm -rf sdk/platforms
+	@rm sdk/sdk-tools-lin
 	
 ndk-clean:
-	@rm -rf sdk/android-ndk-*
 	@rm -rf sdk/ndk-bundle
+	@rm -rf sdk/cmake
 
 	
-androidsdk-clean: sdk-clean ndk-clean
+androidsdk-clean: ndk-clean sdk-clean
 
 hicn-clean:
 	@rm -rf ${DISTILLERY_BUILD_DIR_PREFIX}_*/hicn
-	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/lib/libhicn.*
+	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/lib/libhicn*
+	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/lib/libfacemgr.*
 	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/include/hicn
 
 viper-clean:
 	@rm -rf ${DISTILLERY_BUILD_DIR_PREFIX}_*/viper
 	
-	
 qt-clean:
-	@rm -rf qt/Qt
+	@rm -rf qt/Qt_*
 
 qtav-clean:
 	@echo ${DISTILLERY_BUILD_DIR_PREFIX}
 	@for each in ${DISTILLERY_BUILD_DIR_PREFIX}_*/qtav/sdk_uninstall.sh ; do bash $$each ; done
 	@rm -rf ${DISTILLERY_BUILD_DIR_PREFIX}_*/qtav
 
-	
+version:
+	./scripts/print_env_version.sh
+
 all-clean: dependencies-clean hicn-clean qt-clean qtav-clean viper-clean
 
 update:
-	./scripts/update.sh
+	./scripts/update.sh ${COMMIT}
 
 help:
 	@echo "---- Basic build targets ----"

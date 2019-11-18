@@ -16,12 +16,50 @@
 #!/bin/bash
 set -ex
 
+BASE_DIR=`pwd`
 cd src/cframework
 git pull
 cd ../..
+
+if [ "$1" == "" ]; then
+	HICN_COMMIT_LOCAL=$HICN_COMMIT
+else
+	HICN_COMMIT_LOCAL=$1
+fi
+
 cd src/hicn
-git pull
+git fetch
+git checkout $HICN_COMMIT_LOCAL
+for hash in $(git log -100 --format="%H")
+do
+	if ! grep -q $hash "${BASE_DIR}/${BLACKLIST_FILE}"; then
+		actual_hash=$(git log -1 --format="%H")
+		if [ "${hash}" != "${actual_hash}" ]; then
+			git checkout $hash
+			if [ -f ${BASE_DIR}/${VERSIONS_FILE} ]; then
+				installed_version_arm64=$(cat ${BASE_DIR}/${VERSIONS_FILE} | grep "arm64_hicn" | awk -F "=" '{print $2;}')
+				if [ "$installed_version_arm64" != "$hash" ]; then
+					rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_arm64/lib/libhicn*
+					rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_arm64/lib/libfacemgr.*
+					rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_arm64/include/hicn
+				fi
+				installed_version_x86=$(cat ${BASE_DIR}/${VERSIONS_FILE} | grep "x86_hicn" | awk -F "=" '{print $2;}')
+				if [ "$installed_version_armx86" != "$hash" ]; then
+					rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_x86/lib/libhicn*
+					rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_x86/lib/libfacemgr.*
+					rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_x86/include/hicn
+				fi
+			fi
+		fi
+		break
+	fi
+done
 cd ../..
+
+
+#cd src/hicn
+#git pull
+#cd ../..
 cd src/viper
 git pull
 cd ../..
