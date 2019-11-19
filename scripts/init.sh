@@ -125,7 +125,7 @@ fi
 
 if [ ! -d libxml2 ]; then
 	echo "libxml2 not found"
-	git clone git@github.com:GNOME/libxml2.git
+	git clone https://github.com/GNOME/libxml2.git
 	cd libxml2
 	git checkout tags/v2.9.9
 	cd ..
