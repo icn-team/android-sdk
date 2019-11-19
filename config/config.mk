@@ -165,4 +165,10 @@ export ANDROID_CMAKE_REV=3.6.4111459
 export ANDROID_CMAKE_REV_3_10=3.10.2.4988404
 export VERSIONS_FILE=${DISTILLERY_ROOT_DIR}/.versions
 export HICN_COMMIT=master
-export BLACKLIST_FILE=config/blacklistfile
+export BLACKLIST_FILE=$(shell pwd)/config/blacklistfile
+AAA=$(shell echo $OS)
+export SED=$(shell if [ "${OS}" = "darwin" ]; then \
+echo gsed; \
+else \
+echo sed; \
+fi)
