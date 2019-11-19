@@ -84,7 +84,7 @@ fi
 
 if [ ! -d hicn ]; then
 	echo "libhicn not found"
-	git clone git@github.com:FDio/hicn.git
+	git clone https://github.com/FDio/hicn.git
 	cd hicn
 	git checkout $HICN_COMMIT
 	for hash in $(git log -100 --format="%H")
