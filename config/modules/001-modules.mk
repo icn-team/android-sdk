@@ -53,8 +53,8 @@ $1.build: ${$1_BUILD_DIR}/Makefile
 $1.install: ${$1_BUILD_DIR}/Makefile
 	@${MAKE} ${MAKE_BUILD_FLAGS} -C ${$1_BUILD_DIR} install
 	@touch ${VERSIONS_FILE}
-	@sed -i '' '/${ABI}_$(shell basename $1)/d' ${VERSIONS_FILE}
-	@cd ${$1_SOURCE_DIR}  && git log -1 --format="%H" | sed -e 's/^/${ABI}_$(shell basename $1)=/;' >> ${VERSIONS_FILE}
+	@${SED} -i "/${ABI}_$(shell basename $1)/d" ${VERSIONS_FILE}
+	@cd ${$1_SOURCE_DIR}  && git log -1 --format="%H" | ${SED} -e 's/^/${ABI}_$(shell basename $1)=/;' >> ${VERSIONS_FILE}
 
 $1.clean: ${$1_BUILD_DIR}/Makefile
 	@${MAKE} ${MAKE_BUILD_FLAGS} -C ${$1_BUILD_DIR} clean
