@@ -16,6 +16,7 @@
 #!/bin/bash
 
 set -ex
+
 ABI=$1
 INSTALLATION_DIR=$2
 OS=`echo $OS | tr '[:upper:]' '[:lower:]'`
@@ -83,7 +84,7 @@ fi
 
 if [ ! -d hicn ]; then
 	echo "libhicn not found"
-	git clone git@github.com:FDio/hicn.git
+	git clone https://github.com/FDio/hicn.git
 	cd hicn
 	git checkout $HICN_COMMIT
 	for hash in $(git log -100 --format="%H")
@@ -124,18 +125,14 @@ fi
 
 if [ ! -d libxml2 ]; then
 	echo "libxml2 not found"
-	git clone git@github.com:GNOME/libxml2.git
+	git clone https://github.com/GNOME/libxml2.git
 	cd libxml2
 	git checkout tags/v2.9.9
 	cd ..
 	cp $BASE_DIR/external/libxml2/CMakeLists.txt libxml2
 	cp $BASE_DIR/external/libxml2/xmlversion.h libxml2/include/libxml
 	cp $BASE_DIR/external/libxml2/config.h libxml2
-	if [ $OS = darwin ]; then
-		sed -i '' '1s/^/#include <errno.h>/' libxml2/triodef.h
-	else
-		sed -i '1s/^/#include <errno.h>/' libxml2/triodef.h
-	fi
+	${SED} -i '1s/^/#include <errno.h>/' libxml2/triodef.h
 fi
 
 if [ ! -d libevent ]; then
@@ -165,7 +162,7 @@ if [ ! -d libconfig ]; then
 	cd libconfig
 	git checkout a6b370e78578f5bf594f8efe0802cdc9b9d18f1a
 	cd ..
-	sed -i -- '2s/$/include(CheckSymbolExists)/' libconfig/CMakeLists.txt 
+	${SED} -i -- '2s/$/include(CheckSymbolExists)/' libconfig/CMakeLists.txt 
 fi
 
 cd ../
@@ -194,7 +191,7 @@ if [ ! -d ${INSTALLATION_DIR}/include/openssl ]; then
         cp -r ${BASE_DIR}/external/openssl-lib/x86_64/include/openssl ${INSTALLATION_DIR}/include/
 	fi
 	touch ${VERSIONS_FILE}
-	sed -i '' '/${ABI}_openssl/d' ${VERSIONS_FILE}
+    ${SED} -i "/${ABI}_openssl/d" ${VERSIONS_FILE}
 	echo ${ABI}_openssl=1.1.0h >> ${VERSIONS_FILE}
 fi
 
