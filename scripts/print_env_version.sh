@@ -17,37 +17,34 @@
 
 set -e
 
-function getVersionFromVersionsFile()
-{
+getVersionFromVersionsFile () {
     local component=$1
     local abi=$2
     local result=$3
     local  hash=$(cat ${VERSIONS_FILE} | grep "${abi}_${component}" | awk -F "=" '{print $2;}')
-    if [ "${hash}" == "" ]; then
+    if [ "${hash}" = "" ]; then
     	eval $result="'not installed'"
     else
 		eval $result="'${hash}'"
     fi
 }
 
-function getVersionFromSdkManager()
-{
+getVersionFromSdkManager () {
 	local component=$1
 	local result=$2
-	local version=$(cat ${TEMP_FILE} | grep "$component" | awk -F "\|" '{ print $2; }' | xargs)
-	if [ "${version}" == "" ]; then
+	local version=$(cat ${TEMP_FILE} | grep "$component" | awk -F "|" '{ print $2; }' | xargs)
+	if [ "${version}" = "" ]; then
     	eval $result="'not installed'"
     else
 		eval $result="'$version'"
     fi
 }
 
-function getVersionFromQt()
-{
+getVersionFromQt () {
 	local abi=$1
 	local result=$2
 	local version=$(cat qt/Qt_$abi/components.xml | grep ApplicationName | awk '{print $2}' | awk -F "<" '{print $1}')
-	if [ "${version}" == "" ]; then
+	if [ "${version}" = "" ]; then
     	eval $result="'not installed'"
     else
 		eval $result="'$version'"
@@ -181,7 +178,7 @@ echo "hicn arm64 version = ${HICN_VERSION_ARM64}"
 echo "hicn x86 version = ${HICN_VERSION_X86}"
 echo "libdash arm64 version = ${LIBDASH_VERSION_ARM64}"
 echo "libdash x86 version = ${LIBDASH_VERSION_X86}"
-echo "QtAV arm64 version = ${QTAV_VERSION_X86}"
+echo "QtAV arm64 version = ${QTAV_VERSION_ARM64}"
 echo "QtAV x86 version = ${QTAV_VERSION_X86}"
 echo "ffmpeg arm64 version = ${FFMPEG_VERSION_ARM64}"
 echo "ffmpeg x86 version = ${FFMPEG_VERSION_X86}"

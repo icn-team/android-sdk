@@ -55,7 +55,7 @@ if [ "$ABI" = "arm64" ]; then
 		touch ${VERSIONS_FILE}
 		echo ${ABI}_ffmpeg
 		echo ${VERSIONS_FILE}
-		sed -i '' '/arm64_ffmpeg/d' ${VERSIONS_FILE}
+		${SED} -i "/arm64_ffmpeg/d" ${VERSIONS_FILE}
 		echo ${ABI}_ffmpeg=4.2 >> ${VERSIONS_FILE}
 	fi
 
@@ -84,7 +84,7 @@ if [ "$ABI" = "arm64" ]; then
 		sh sdk_install.sh
 		QTAV_VERSION=$(git --git-dir=$BASE_PATH/qt/QtAV/.git --work-tree=$BASE_PATH/qt/QtAV/ log -1 --format="%H")
 		touch ${VERSIONS_FILE}
-		sed -i '' '/${ABI}_QtAV/d' ${VERSIONS_FILE}
+		${SED} -i "/${ABI}_QtAV/d" ${VERSIONS_FILE}
 		echo ${ABI}_QtAV=${QTAV_VERSION} >> ${VERSIONS_FILE}
 		 
 	fi
@@ -124,7 +124,7 @@ elif [ "$ABI" = "x86" ]; then
 		cp -r ffmpeg/include/* ${BASE_PATH}/usr_i686/include/
 		cp ffmpeg/lib/x86/lib* ${BASE_PATH}/usr_i686/lib/
 		touch ${VERSIONS_FILE}
-		sed -i '' '/x86_ffmpeg/d' ${VERSIONS_FILE}
+		${SED} -i "/x86_ffmpeg/d" ${VERSIONS_FILE}
 		echo ${ABI}_ffmpeg=4.2 >> ${VERSIONS_FILE}
 	fi
 	export ANDROID_SDK_ROOT=${SDK}
@@ -149,7 +149,7 @@ elif [ "$ABI" = "x86" ]; then
 		sh sdk_install.sh
 		QTAV_VERSION=$(git --git-dir=$BASE_PATH/qt/QtAV/.git --work-tree=$BASE_PATH/qt/QtAV/ log -1 --format="%H")
 		touch ${VERSIONS_FILE}
-		sed -i '' '/${ABI}_QtAV/d' ${VERSIONS_FILE}
+		${SED} -i "/${ABI}_QtAV/d" ${VERSIONS_FILE}
 		echo ${ABI}_QtAV=${QTAV_VERSION} >> ${VERSIONS_FILE}
 	fi
 fi
