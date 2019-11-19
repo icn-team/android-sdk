@@ -89,7 +89,7 @@ if [ ! -d hicn ]; then
 	git checkout $HICN_COMMIT
 	for hash in $(git log -100 --format="%H")
 	do
-		if ! grep -q $hash "${BASE_DIR}/${BLACKLIST_FILE}"; then
+		if ! grep -q $hash "${BLACKLIST_FILE}"; then
   			actual_hash=$(git log -1 --format="%H")
   			if [ "${hash}" != "${actual_hash}" ]; then
   				git checkout $hash
