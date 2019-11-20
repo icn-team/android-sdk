@@ -1,14 +1,12 @@
 package com.cisco.hicn.forwarder.service;
 
 import android.app.PendingIntent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.VpnService;
 import android.os.ParcelFileDescriptor;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.cisco.hicn.forwarder.R;
+import com.cisco.hicn.forwarder.supportlibrary.Forwarder;
 import com.cisco.hicn.forwarder.supportlibrary.HProxy;
 
 import java.io.IOException;
@@ -56,16 +54,12 @@ public class ProxyThread implements Runnable {
     private Properties mParameters;
 
     public ProxyThread(final VpnService service, final int connectionId,
-                       final String serverName, final int serverPort, final String secret,
-                       final String consumerName, final String producerName, BackendProxyService backendProxyService) {
+                       final String serverName, final int serverPort, final String secret) {
         mService = service;
         mConnectionId = connectionId;
         mServerName = serverName;
         mServerPort = serverPort;
         mSharedSecret = secret;
-        mHicnConsumerName = consumerName;
-        mHicnProducerName = producerName;
-        mBackendProxyService = backendProxyService;
     }
 
     /**
@@ -108,53 +102,33 @@ public class ProxyThread implements Runnable {
 
     private boolean run(SocketAddress server)
             throws IOException, InterruptedException, IllegalArgumentException {
-        // TODO Connect to known configuration server and get initial configuration:
-        //  - Proxy at server side
-        //  - hICN names to use (for publishing and retrieving)
-        // TODO Then, once gotten the initial configuration
-        //  - Proxy at server side will give tun parameters to client
-        //  - Client will setup local tun and start forwarding
-
-        // For now server parameters will be obtained through UI and tun params will be hardcoded
-        // for the one client case
-
-        // Create tun device
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mBackendProxyService);
-        final String dns = prefs.getString(mBackendProxyService.getString(R.string.hproxy_dns_server_key), mBackendProxyService.getString(R.string.default_hproxy_dns_server));
-
-        Properties params = new Properties();
-        params.put("ADDRESS", "192.168.168.1");
-        params.put("PREFIX_LENGTH", "24");
-        params.put("ROUTE_ADDRESS", "0.0.0.0");
-        params.put("ROUTE_PREFIX_LENGTH", "0");
-        params.put("DNS", dns);
-        params.put("WEBEX_APP", "com.cisco.wx2.android");
-
-        configureTun(params);
-
 
         // If we arrived here it means no error occurred during configuration.
         // Now create the instance of the proxy and configure it.
         mProxyInstance = HProxy.getInstance();
-        mProxyInstance.setVpnConnector(mInterface.getFd());
-        mProxyInstance.setIcnConnector(mHicnConsumerName, mHicnProducerName);
-        mProxyInstance.setUdpTunnelConnector(mServerName, Integer.toString(mServerPort));
-
-        // Link connectors
-        mProxyInstance.linkConnectors();
 
         // start Service and block
-        mProxyInstance.start();
+        // Get instance of forwarder
+
+        Forwarder forwarder = Forwarder.getInstance();
+
+        while (!forwarder.isRunningForwarder()) {
+            // wait for the forwarder ro run.
+            Log.d(getTag(), "Hicn forwarder is not started yet. Waiting before activating the proxy.");
+            TimeUnit.MILLISECONDS.sleep(500);
+        }
+
+        mProxyInstance.setProxyInstance(this);
+        mProxyInstance.start(mServerName, mServerPort);
 
         return true;
     }
 
-    private void configureTun(Properties parameters) {
+    public int configureTun(Properties parameters) {
         // If the old interface has exactly the same parameters, use it!
         if (mInterface != null && parameters.equals(mParameters)) {
             Log.i(getTag(), "Using the previous interface");
-            return;
+            return -1;
         }
 
         VpnService.Builder builder = mService.new Builder();
@@ -212,6 +186,8 @@ public class ProxyThread implements Runnable {
         }
 
         Log.i(getTag(), "New interface: " + mInterface + " (" + parameters + ")");
+
+        return mInterface.getFd();
     }
 
     private final String getTag() {
