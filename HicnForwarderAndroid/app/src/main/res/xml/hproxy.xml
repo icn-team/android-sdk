@@ -38,29 +38,4 @@
         app:summary="@string/hproxy_secret_summary"
         app:title="@string/hproxy_secret_title"
         app:useSimpleSummaryProvider="true" />
-
-    <EditTextPreference
-        android:inputType="textUri"
-        app:defaultValue="@string/default_hproxy_consumer_name"
-        app:key="@string/hproxy_consumer_name_key"
-        app:summary="@string/hproxy_consumer_name_summary"
-        app:title="@string/hproxy_consumer_name_title"
-        app:useSimpleSummaryProvider="true" />
-
-    <EditTextPreference
-        android:inputType="textUri"
-        app:defaultValue="@string/default_hproxy_producer_name"
-        app:key="@string/hproxy_producer_name_key"
-        app:summary="@string/hproxy_producer_name_summary"
-        app:title="@string/hproxy_producer_name_title"
-        app:useSimpleSummaryProvider="true" />
-
-    <EditTextPreference
-        android:inputType="textUri"
-        app:defaultValue="@string/default_hproxy_dns_server"
-        app:key="@string/hproxy_dns_server_key"
-        app:summary="@string/hproxy_dns_server_summary"
-        app:title="@string/hproxy_dns_server_title"
-        app:useSimpleSummaryProvider="true" />
-
 </PreferenceScreen>

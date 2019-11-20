@@ -15,6 +15,9 @@
 
 package com.cisco.hicn.forwarder.supportlibrary;
 
+import com.cisco.hicn.forwarder.service.ProxyThread;
+
+import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class HProxy {
@@ -24,6 +27,7 @@ public class HProxy {
     private int mVpnConnector = -1;
     private int mUdpTunnelConnector = -1;
     private int mIcnConnector = -1;
+    private ProxyThread mProxyThread;
 
     static {
         System.loadLibrary("hproxy-wrapper");
@@ -36,64 +40,35 @@ public class HProxy {
         return sInstance;
     }
 
+    public void setProxyInstance(ProxyThread proxyThread) {
+        mProxyThread = proxyThread;
+    }
+
     private HProxy() {
         initConfig();
     }
 
     public native void initConfig();
 
+    public int createTunDevice(String vpn_address, int prefix_length,
+                               String route_address,
+                               int route_prefix_length, String dns) {
+        Properties params = new Properties();
+        params.put("ADDRESS", vpn_address);
+        params.put("PREFIX_LENGTH", Integer.toString(prefix_length));
+        params.put("ROUTE_ADDRESS",route_address);
+        params.put("ROUTE_PREFIX_LENGTH", Integer.toString(route_prefix_length));
+        params.put("DNS", dns);
+        params.put("WEBEX_APP", "com.cisco.wx2.android");
+        int ret = mProxyThread.configureTun(params);
+        return ret;
+    }
+
     public native boolean isRunning();
 
-    public native void start();
+    public native void start(String remote_address, int remote_port);
 
     public native void stop();
-
-    public void setIcnConnector(String consumerName, String producerName) {
-        mIcnConnector = mNextConnectorId.getAndIncrement();
-        addIcnConnectorInternal(mIcnConnector, consumerName, producerName);
-    }
-
-    public void setUdpTunnelConnector(String remoteAddress, String remotePort) {
-        mUdpTunnelConnector = mNextConnectorId.getAndIncrement();
-        addUdpTunnelConnectorInternal(mUdpTunnelConnector, remoteAddress, remotePort);
-    }
-
-    public void setVpnConnector(int fd) {
-        mVpnConnector = mNextConnectorId.getAndIncrement();
-        addVpnConnectorInternal(mVpnConnector, fd);
-    }
-
-    public void linkConnectors() {
-        // ICN to VPN
-        linkConnectors(mIcnConnector, mVpnConnector);
-
-        // UDP to VPN
-        linkConnectors(mUdpTunnelConnector, mVpnConnector);
-
-        // VPN to ICN/UDP (UDP is done internally)
-        // TODO make connection to UDP explicit
-        linkConnectors(mVpnConnector, mIcnConnector);
-    }
-
-    private void linkConnectors(int connectorId0, int connectorId1) {
-        if (connectorId0 == mVpnConnector) {
-            linkTunToConnector(connectorId0, connectorId1);
-        } else {
-            linkConnectorsInternal(connectorId0, connectorId1);
-        }
-    }
-
-    private native void linkConnectorsInternal(int connectorId0, int connectorId1);
-
-    private native void linkTunToConnector(int connectorId0, int connectorId1);
-
-    private native void removeConnectorInternal(int connectorId);
-
-    private native int addIcnConnectorInternal(int connectorId, String consumerName, String producerName);
-
-    private native int addUdpTunnelConnectorInternal(int connectorId, String remoteAddress, String remotePort);
-
-    private native int addVpnConnectorInternal(int connectorId, int fd);
 
     public native boolean isHProxyEnabled();
 }

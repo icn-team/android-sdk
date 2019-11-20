@@ -101,12 +101,12 @@ public class BackendProxyService extends VpnService implements Handler.Callback 
 
     private void disconnect() {
         mHandler.sendEmptyMessage(R.string.hproxy_disconnect);
+        mProxyInstance.stop();
         setConnectingThread(null);
         setProxy(null);
 
         stopForeground(true);
         stopSelf();
-
     }
 
     private void connect() {
@@ -120,11 +120,9 @@ public class BackendProxyService extends VpnService implements Handler.Callback 
         final String serverPortString = prefs.getString(getString(R.string.hproxy_server_port_key), getString(R.string.default_hproxy_server_port));
         final int serverPort = Integer.parseInt(serverPortString);
         final String secret = prefs.getString(getString(R.string.hproxy_secret_key), getString(R.string.default_hproxy_secret));
-        final String hicnConsumerName = prefs.getString(getString(R.string.hproxy_consumer_name_key), getString(R.string.default_hproxy_consumer_name));
-        final String hicnProducerName = prefs.getString(getString(R.string.hproxy_producer_name_key), getString(R.string.default_hproxy_producer_name));
 
         this.startConnection(new ProxyThread(this, mNextConnectionId.getAndIncrement(),
-                serverAddress, serverPort, secret, hicnConsumerName, hicnProducerName, this));
+                serverAddress, serverPort, secret));
     }
 
     private void startConnection(final ProxyThread proxy) {
