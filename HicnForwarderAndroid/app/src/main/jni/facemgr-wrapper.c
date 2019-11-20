@@ -229,7 +229,6 @@ Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_getListFacelets(JNIEnv *env
         char *buffer;
 
         facemgr_list_facelets_json(facemgr, &buffer);
-        printf("%s\n", buffer);
         jstrBuffer = (*env)->NewStringUTF(env, buffer);
         free(buffer);
     }
