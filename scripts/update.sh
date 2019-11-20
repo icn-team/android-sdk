@@ -30,7 +30,7 @@ else
 fi
 if [ -d src/hicn ]; then
 	cd src/hicn
-	git fetch
+	git pull origin master
 	git checkout $HICN_COMMIT_LOCAL
 	for hash in $(git log -100 --format="%H")
 	do
