@@ -56,11 +56,10 @@ target_include_directories(hproxy-wrapper PUBLIC
 
 if (ENABLE_HPROXY)
     target_compile_definitions(hproxy-wrapper PRIVATE
-            "-DASIO_STANDALONE -DENABLE_HPROXY")
+            "-DASIO_STANDALONE" "-DENABLE_HPROXY" "-DWITH_POLICY=1")
 else ()
     target_compile_definitions(hproxy-wrapper PRIVATE
             "-DASIO_STANDALONE")
-
 endif ()
 
 find_library(log-lib log)
@@ -98,6 +97,7 @@ target_link_libraries(hproxy-wrapper
         ${HICN_HPROXY_LIBRARIES}
         ${log-lib}
         ${LIBTRANSPORT_LIBRARIES}
+        ${LIBHICNCTRL_LIBRARIES}
         ${HICN_LIBRARIES}
         ${LIBPARC_LIBRARIES}
         ${LIBEVENT_LIBRARIES}

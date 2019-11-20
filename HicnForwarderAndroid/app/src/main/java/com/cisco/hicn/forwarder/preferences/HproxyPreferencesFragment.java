@@ -71,37 +71,6 @@ public class HproxyPreferencesFragment extends PreferenceFragmentCompat {
 
         });
 
-
-        getPreferenceScreen().findPreference(getString(R.string.hproxy_consumer_name_key)).setOnPreferenceChangeListener((preference, newValue) -> {
-
-            String consumerName = (String) newValue;
-            if (!InetAddressUtilsHC4.isIPv6Address(consumerName)) {
-                return false;
-            }
-            return true;
-
-        });
-
-        getPreferenceScreen().findPreference(getString(R.string.hproxy_producer_name_key)).setOnPreferenceChangeListener((preference, newValue) -> {
-
-            String producerName = (String) newValue;
-            if (!InetAddressUtilsHC4.isIPv6Address(producerName)) {
-                return false;
-            }
-            return true;
-
-        });
-
-        getPreferenceScreen().findPreference(getString(R.string.hproxy_dns_server_key)).setOnPreferenceChangeListener((preference, newValue) -> {
-
-            String serverAddress = (String) newValue;
-            if (!InetAddressUtilsHC4.isIPv4Address(serverAddress)) {
-                return false;
-            }
-            return true;
-
-        });
-
     }
 
     public interface OnFragmentInteractionListener {
