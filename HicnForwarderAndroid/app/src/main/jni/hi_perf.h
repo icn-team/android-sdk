@@ -59,6 +59,7 @@ namespace transport {
             TransportProtocolAlgorithms transport_protocol_;
             bool rtc_;
             bool test_mode_;
+            uint32_t interest_lifetime_;
             JavaVM *jvm;
             jclass cls;
 
