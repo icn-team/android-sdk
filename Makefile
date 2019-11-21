@@ -12,7 +12,7 @@
  # See the License for the specific language governing permissions and
  # limitations under the License.
  ##############################################################################
-
+SHELL:=/bin/bash
 DISTILLERY_VERSION=2.0
 
 default.target: help
