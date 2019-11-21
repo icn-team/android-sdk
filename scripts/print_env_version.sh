@@ -148,7 +148,7 @@ else
 fi
 echo "\n"
 echo "#############################################################################"
-echo "HICN ABDROID-SDK"
+echo "HICN ANDROID-SDK"
 echo "andoroid-sdk version = ${HICN_ANDROID_SDK_VERION}"
 echo "#############################################################################"
 echo "ANDROID ENVIRONMENT"
