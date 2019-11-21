@@ -29,6 +29,7 @@ namespace transport {
                   download_size(0),
                   report_interval_milliseconds_(1000),
                   rtc_(false),
+                  interest_lifetime_(1000),
                   test_mode_(false) {}
 
 
@@ -235,7 +236,14 @@ namespace transport {
             }
 
             consumer_socket_ = std::make_unique<ConsumerSocket>(transport_protocol);
+            if (consumer_socket_->setSocketOption(INTEREST_LIFETIME,
+                        configuration_.interest_lifetime_) == SOCKET_OPTION_NOT_SET) {
+                std::stringstream ss;
+                ss << "ERROR -- Impossible to set the interest lifetime." << std::endl;
+                __android_log_print(ANDROID_LOG_ERROR, TAG_HIPERF, "%s", ss.str().c_str());
 
+                return ERROR_SETUP;
+            }
 
             if (consumer_socket_->setSocketOption(CURRENT_WINDOW_SIZE,
                                                   configuration_.window) ==
