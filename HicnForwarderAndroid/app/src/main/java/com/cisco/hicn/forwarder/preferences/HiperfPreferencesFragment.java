@@ -18,7 +18,10 @@ package com.cisco.hicn.forwarder.preferences;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreference;
 
 import com.cisco.hicn.forwarder.R;
 
@@ -40,7 +43,9 @@ public class HiperfPreferencesFragment extends PreferenceFragmentCompat {
 
         setPreferencesFromResource(R.xml.hiperf, s);
 
-        getPreferenceScreen().findPreference(getString(R.string.hiperf_window_size_key)).setEnabled(getPreferenceScreen().findPreference(getString(R.string.enable_hiperf_window_size_key)).isEnabled());
+        SwitchPreference enableHiperWindowSizeCheckBoxPreference = getPreferenceScreen().findPreference(getString(R.string.enable_hiperf_window_size_key));
+
+        getPreferenceScreen().findPreference(getString(R.string.hiperf_window_size_key)).setEnabled(enableHiperWindowSizeCheckBoxPreference.isChecked());
 
 
         getPreferenceScreen().findPreference(getString(R.string.hiperf_raaqm_beta_key)).setOnPreferenceChangeListener((preference, newValue) -> {
@@ -50,7 +55,6 @@ public class HiperfPreferencesFragment extends PreferenceFragmentCompat {
             if (hiperfRaaqm < 0 || hiperfRaaqm > 65535)
                 return false;
             return true;
-
         });
 
         getPreferenceScreen().findPreference(getString(R.string.hiperf_raaqm_drop_factor_key)).setOnPreferenceChangeListener((preference, newValue) -> {
@@ -60,9 +64,16 @@ public class HiperfPreferencesFragment extends PreferenceFragmentCompat {
             if (hiperfRaaqmDropFactor < 0 || hiperfRaaqmDropFactor > 100)
                 return false;
             return true;
-
         });
 
+        getPreferenceScreen().findPreference(getString(R.string.hiperf_interest_lifetime_key)).setOnPreferenceChangeListener((preference, newValue) -> {
+
+            long hiperfInterestLifetime = Long.parseLong((String) newValue);
+
+            if (hiperfInterestLifetime < 0 || hiperfInterestLifetime > 10000000)
+                return false;
+            return true;
+        });
 
         getPreferenceScreen().findPreference(getString(R.string.enable_hiperf_window_size_key)).setOnPreferenceChangeListener((preference, newValue) -> {
             boolean enableWindowSize = (boolean) newValue;
@@ -70,7 +81,6 @@ public class HiperfPreferencesFragment extends PreferenceFragmentCompat {
             getPreferenceScreen().findPreference(getString(R.string.hiperf_window_size_key)).setEnabled(enableWindowSize);
 
             return true;
-
         });
 
     }
