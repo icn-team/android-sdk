@@ -127,7 +127,6 @@ public class HiPerfFragment extends Fragment {
         hiperfStopButton.setEnabled(false);
 
 
-
         hiperfHicnNameEditText.setText(hiperfSharedPreferences.getString(getString(R.string.hiperf_hicn_name_key), getString(R.string.default_hiperf_hicn_name)));
 
         if (hiperfRunning) {
@@ -192,18 +191,20 @@ public class HiPerfFragment extends Fragment {
 
                     float raaqmBetaParameter = hiperfSharedPreferences.getFloat(getString(R.string.hiperf_raaqm_beta_parameter_key), Float.parseFloat(getString(R.string.default_hiperf_raaqm_beta)));
 
-                    float raaqmDrppFactorParameter = hiperfSharedPreferences.getFloat(getString(R.string.hiperf_raaqm_drop_factor_key), Float.parseFloat(getString(R.string.default_hiperf_raaqm_drop_factor)));
+                    float raaqmDropFactorParameter = Float.valueOf(hiperfSharedPreferences.getString(getString(R.string.hiperf_raaqm_drop_factor_key), getString(R.string.default_hiperf_raaqm_drop_factor)));
 
+                    long interestLifetimeParameter = Long.valueOf(hiperfSharedPreferences.getString(getString(R.string.hiperf_interest_lifetime_key), getString(R.string.default_hiperf_interest_lifetime)));
                     int windowSize = -1;
 
                     if (hiperfSharedPreferences.getBoolean(getString(R.string.enable_hiperf_window_size_key), false)) {
-                        windowSize = hiperfSharedPreferences.getInt(getString(R.string.enable_hiperf_window_size_key), Integer.parseInt(getString(R.string.default_hiperf_window_size)));
+                        String ccc = hiperfSharedPreferences.getString(getString(R.string.hiperf_window_size_key), getString(R.string.default_hiperf_window_size));
+                        windowSize = Integer.valueOf(hiperfSharedPreferences.getString(getString(R.string.hiperf_window_size_key), getString(R.string.default_hiperf_window_size)));
                     }
 
                     boolean enableRtcProtocol = hiperfSharedPreferences.getBoolean(getString(R.string.enable_hiperf_rtc_protocol_key), false);
 
                     hiperf.startHiPerf(
-                            hiperfHicnNameEditText.getText().toString(), raaqmBetaParameter, raaqmDrppFactorParameter, windowSize, 1000, enableRtcProtocol);
+                            hiperfHicnNameEditText.getText().toString(), raaqmBetaParameter, raaqmDropFactorParameter, windowSize, 1000, enableRtcProtocol, interestLifetimeParameter);
                     if (isAdded() && isVisible()) {
                         getActivity().runOnUiThread(() -> {
                                     hiperfHicnNameEditText.setEnabled(true);
