@@ -21,12 +21,13 @@ transport::interface::HIperfClient *hiperfClient = nullptr;
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_Hiperf_startHiPerf(JNIEnv *env, jobject thiz,
-                                                                      jstring hicn_name,
-                                                                      jdouble beta_parameter,
-                                                                      jdouble drop_factor_parameter,
-                                                                      jint window_size,
-                                                                      jlong stats_interval,
-                                                                      jboolean rtc_protocol) {
+                                                                jstring hicn_name,
+                                                                jdouble beta_parameter,
+                                                                jdouble drop_factor_parameter,
+                                                                jint window_size,
+                                                                jlong stats_interval,
+                                                                jboolean rtc_protocol,
+                                                                jlong interest_lifetime) {
     const char *hicnName = env->GetStringUTFChars(hicn_name, 0);
 
 
@@ -34,7 +35,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_Hiperf_startHiPerf(JNIEnv *env, job
     env->GetJavaVM(&jvm);
     jclass cls = env->FindClass(FACEMGR_ANDROID_UTILITY_CLASS);
 
-
+    __android_log_print(ANDROID_LOG_INFO, "AAA", "AAA %d", interest_lifetime);
     transport::interface::ClientConfiguration client_configuration;
     client_configuration.name = std::string(hicnName);
     client_configuration.rtc_ = (bool) rtc_protocol;
@@ -42,6 +43,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_Hiperf_startHiPerf(JNIEnv *env, job
     client_configuration.drop_factor = (double) drop_factor_parameter;
     client_configuration.jvm = jvm;
     client_configuration.cls = reinterpret_cast<jclass>(env->NewGlobalRef(cls));
+    client_configuration.interest_lifetime_ = (long) interest_lifetime;
     if ((int) window_size >= 0) {
         client_configuration.window = (int) window_size;
     }

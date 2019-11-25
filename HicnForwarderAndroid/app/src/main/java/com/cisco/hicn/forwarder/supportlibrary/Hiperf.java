@@ -31,7 +31,13 @@ public class Hiperf {
     }
 
 
-    public native void startHiPerf(String hicnName, double betaParameter, double dropFactorParameter, int windowSize, long statsInterval, boolean rtcProtocol);
+    public native void startHiPerf(String hicnName,
+                                   double betaParameter,
+                                   double dropFactorParameter,
+                                   int windowSize,
+                                   long statsInterval,
+                                   boolean rtcProtocol,
+                                   long interestLiftime);
 
     public native void stopHiPerf();
 
