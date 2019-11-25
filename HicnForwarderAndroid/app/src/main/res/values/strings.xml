@@ -386,6 +386,10 @@
     <string name="interface_show_all">Show All</string>
     <string name="default_interface_showall">false</string>
     <string name="interface_showall_key">interface_showall_key</string>
+    <string name="default_hiperf_interest_lifetime">1000</string>
+    <string name="hiperf_interest_lifetime_key">hiperf_interest_lifetime_key</string>
+    <string name="hiperf_interest_lifetime_summary">Interest LIfetime [ms]</string>
+    <string name="hiperf_interest_lifetime_title">Interest LIfetime [ms]</string>
 
 
 </resources>
