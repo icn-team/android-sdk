@@ -34,8 +34,6 @@ Java_com_cisco_hicn_forwarder_supportlibrary_Hiperf_startHiPerf(JNIEnv *env, job
     JavaVM *jvm = NULL;
     env->GetJavaVM(&jvm);
     jclass cls = env->FindClass(FACEMGR_ANDROID_UTILITY_CLASS);
-
-    __android_log_print(ANDROID_LOG_INFO, "AAA", "AAA %d", interest_lifetime);
     transport::interface::ClientConfiguration client_configuration;
     client_configuration.name = std::string(hicnName);
     client_configuration.rtc_ = (bool) rtc_protocol;
