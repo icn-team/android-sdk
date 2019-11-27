@@ -55,7 +55,7 @@ Forwarder *hicnFwd = NULL;
 
 JNIEXPORT jboolean JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_Forwarder_isRunningForwarder(JNIEnv *env,
-                                                                             jobject instance) {
+                                                                          jobject instance) {
     return _isRunning;
 }
 
@@ -111,8 +111,9 @@ static void _setLogLevel(int logLevelArray[LoggerFacility_END],
 
 JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_Forwarder_startForwarder(JNIEnv *env,
-                                                                         jobject instance,
-                                                                         jint capacity) {
+                                                                      jobject instance,
+                                                                      jint capacity,
+                                                                      jboolean enableLogs) {
 
 
     if (!_isRunning) {
@@ -127,11 +128,10 @@ Java_com_cisco_hicn_forwarder_supportlibrary_Forwarder_startForwarder(JNIEnv *en
         parcLogReporter_Release(&stdoutReporter);
         int logLevelArray[LoggerFacility_END];
 
-#ifdef NDEBUG
-        _setLogLevel(logLevelArray, "all=info");
-#else
-        _setLogLevel(logLevelArray, "all=debug");
-#endif
+
+        if ((bool) (enableLogs == JNI_TRUE)) {
+            _setLogLevel(logLevelArray, "all=debug");
+        }
 
         for (int i = 0; i < LoggerFacility_END; i++) {
             if (logLevelArray[i] > -1) {
@@ -155,7 +155,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_Forwarder_startForwarder(JNIEnv *en
 
 JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_Forwarder_stopForwarder(JNIEnv *env,
-                                                                        jobject instance) {
+                                                                     jobject instance) {
     if (_isRunning) {
         __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap", "stopping HicnFwd...");
         dispatcher_Stop(forwarder_GetDispatcher(hicnFwd));

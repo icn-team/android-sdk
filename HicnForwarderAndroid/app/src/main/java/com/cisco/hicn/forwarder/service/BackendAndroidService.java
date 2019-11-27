@@ -32,12 +32,12 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.cisco.hicn.forwarder.MainActivity;
+import com.cisco.hicn.forwarder.R;
 import com.cisco.hicn.forwarder.supportlibrary.Facemgr;
 import com.cisco.hicn.forwarder.supportlibrary.Forwarder;
 import com.cisco.hicn.forwarder.supportlibrary.NetworkServiceHelper;
 import com.cisco.hicn.forwarder.supportlibrary.SocketBinder;
 import com.cisco.hicn.forwarder.utility.Constants;
-import com.cisco.hicn.forwarder.utility.ResourcesEnumerator;
 
 public class BackendAndroidService extends Service {
     private final static String TAG = "BackendService";
@@ -57,6 +57,7 @@ public class BackendAndroidService extends Service {
     }
 
     private int capacity;
+    private boolean forwarderLogs;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -104,6 +105,7 @@ public class BackendAndroidService extends Service {
                 case EVENT_START_FORWARDER:
 
                     getCapacity();
+                    enableForwarderLog();
                     startBackend();
                     break;
             }
@@ -113,14 +115,18 @@ public class BackendAndroidService extends Service {
 
     private void getCapacity() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        this.capacity = Integer.parseInt(sharedPreferences.getString(ResourcesEnumerator.CAPACITY.key(), Constants.DEFAULT_CAPACITY));
-        ;
+        this.capacity = Integer.parseInt(sharedPreferences.getString(getString(R.string.cache_size_key), getString(R.string.default_cache_size)));
+    }
+
+    private void enableForwarderLog() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        this.forwarderLogs = sharedPreferences.getBoolean(getString(R.string.enable_forwarder_log_key), false);
     }
 
     protected Runnable mForwarderRunner = () -> {
         Forwarder forwarder = Forwarder.getInstance();
         forwarder.setSocketBinder(mSocketBinder);
-        forwarder.startForwarder(capacity);
+        forwarder.startForwarder(capacity, forwarderLogs);
     };
 
 
