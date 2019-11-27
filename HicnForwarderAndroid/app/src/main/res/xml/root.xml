@@ -26,6 +26,12 @@
             app:title="@string/cache_size_title"
             app:useSimpleSummaryProvider="true"></EditTextPreference>
 
+        <CheckBoxPreference
+            android:defaultValue="false"
+            app:key="@string/enable_forwarder_log_key"
+            app:summary="@string/enable_forwarder_log_summary"
+            app:title="@string/enable_forwarder_log_title" />
+
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/face_management_preference_category">
