@@ -57,7 +57,7 @@ public class BackendAndroidService extends Service {
     }
 
     private int capacity;
-    private boolean forwarderLogs;
+    private int logLevel;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -105,7 +105,7 @@ public class BackendAndroidService extends Service {
                 case EVENT_START_FORWARDER:
 
                     getCapacity();
-                    enableForwarderLog();
+                    getLogLevel();
                     startBackend();
                     break;
             }
@@ -118,15 +118,15 @@ public class BackendAndroidService extends Service {
         this.capacity = Integer.parseInt(sharedPreferences.getString(getString(R.string.cache_size_key), getString(R.string.default_cache_size)));
     }
 
-    private void enableForwarderLog() {
+    private void getLogLevel() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        this.forwarderLogs = sharedPreferences.getBoolean(getString(R.string.enable_forwarder_log_key), false);
+        this.logLevel = Integer.parseInt(sharedPreferences.getString(getString(R.string.log_level_key), getString(R.string.default_log_level)));
     }
 
     protected Runnable mForwarderRunner = () -> {
         Forwarder forwarder = Forwarder.getInstance();
         forwarder.setSocketBinder(mSocketBinder);
-        forwarder.startForwarder(capacity, forwarderLogs);
+        forwarder.startForwarder(capacity, logLevel);
     };
 
 
