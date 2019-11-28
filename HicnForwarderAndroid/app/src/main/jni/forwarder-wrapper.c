@@ -113,7 +113,7 @@ JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_Forwarder_startForwarder(JNIEnv *env,
                                                                       jobject instance,
                                                                       jint capacity,
-                                                                      jboolean enableLogs) {
+                                                                      jint logLevel) {
 
 
     if (!_isRunning) {
@@ -128,9 +128,33 @@ Java_com_cisco_hicn_forwarder_supportlibrary_Forwarder_startForwarder(JNIEnv *en
         parcLogReporter_Release(&stdoutReporter);
         int logLevelArray[LoggerFacility_END];
 
-
-        if ((bool) (enableLogs == JNI_TRUE)) {
-            _setLogLevel(logLevelArray, "all=debug");
+        switch ((int) logLevel) {
+            case 0:
+                _setLogLevel(logLevelArray, "all=off");
+                break;
+            case 1:
+                _setLogLevel(logLevelArray, "all=all");
+                break;
+            case 2:
+                _setLogLevel(logLevelArray, "all=emergency");
+                break;
+            case 3:
+                _setLogLevel(logLevelArray, "all=error");
+                break;
+            case 4:
+                _setLogLevel(logLevelArray, "all=warning");
+                break;
+            case 7:
+                _setLogLevel(logLevelArray, "all=notice");
+                break;
+            case 8:
+                _setLogLevel(logLevelArray, "all=info");
+                break;
+            case 9:
+                _setLogLevel(logLevelArray, "all=debug");
+                break;
+            default:
+                _setLogLevel(logLevelArray, "all=off");
         }
 
         for (int i = 0; i < LoggerFacility_END; i++) {
