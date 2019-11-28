@@ -390,9 +390,9 @@
     <string name="hiperf_interest_lifetime_key">hiperf_interest_lifetime_key</string>
     <string name="hiperf_interest_lifetime_summary">Interest LIfetime [ms]</string>
     <string name="hiperf_interest_lifetime_title">Interest LIfetime [ms]</string>
-    <string name="enable_forwarder_log_key">enable_forwarder_log_key</string>
-    <string name="enable_forwarder_log_summary">Enable Forwarder Logs</string>
-    <string name="enable_forwarder_log_title">Enable Forwarder Logs</string>
+    <string name="log_level_key">log_level_key</string>
+    <string name="log_level_title">Log Level</string>
+    <string name="default_log_level">0</string>
 
 
 </resources>

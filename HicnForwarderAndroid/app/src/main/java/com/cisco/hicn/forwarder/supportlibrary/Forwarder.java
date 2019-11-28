@@ -47,7 +47,7 @@ public class Forwarder {
 
     public native boolean isRunningForwarder();
 
-    public native void startForwarder(int capacity, boolean enableLogs);
+    public native void startForwarder(int capacity, int logLevel);
 
     public native void stopForwarder();
 }

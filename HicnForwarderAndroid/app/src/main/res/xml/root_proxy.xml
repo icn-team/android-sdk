@@ -23,7 +23,15 @@
             app:key="@string/cache_size_key"
             app:summary="@string/cache_size_summary"
             app:title="@string/cache_size_title"
-            app:useSimpleSummaryProvider="true"></EditTextPreference>
+            app:useSimpleSummaryProvider="true" />
+
+        <DropDownPreference
+            android:defaultValue="@string/default_log_level"
+            android:entries="@array/log_level"
+            android:entryValues="@array/log_level_values"
+            android:key="@string/log_level_key"
+            android:title="@string/log_level_title"
+            app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 
