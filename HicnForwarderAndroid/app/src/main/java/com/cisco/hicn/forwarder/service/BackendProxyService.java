@@ -84,11 +84,6 @@ public class BackendProxyService extends VpnService implements Handler.Callback 
     }
 
     @Override
-    public void onDestroy() {
-        disconnect();
-    }
-
-    @Override
     public boolean handleMessage(Message message) {
         Toast.makeText(this, message.what, Toast.LENGTH_SHORT).show();
         if (message.what != R.string.hproxy_disconnected) {
@@ -101,9 +96,9 @@ public class BackendProxyService extends VpnService implements Handler.Callback 
 
     private void disconnect() {
         mHandler.sendEmptyMessage(R.string.hproxy_disconnect);
-        mProxyInstance.stop();
         setConnectingThread(null);
         setProxy(null);
+        mProxyInstance.stop();
 
         stopForeground(true);
         stopSelf();
@@ -135,7 +130,7 @@ public class BackendProxyService extends VpnService implements Handler.Callback 
         proxy.setConfigureIntent(mConfigureIntent);
         proxy.setOnEstablishListener(tunInterface -> {
             mHandler.sendEmptyMessage(R.string.hproxy_connected);
-            mConnectingThread.compareAndSet(thread, null);
+            mConnectingThread.compareAndSet(null, thread);
             setProxy(new Proxy(thread, tunInterface));
         });
         thread.start();
@@ -151,12 +146,7 @@ public class BackendProxyService extends VpnService implements Handler.Callback 
     private void setProxy(final Proxy proxy) {
         final Proxy oldProxy = mProxy.getAndSet(proxy);
         if (oldProxy != null) {
-            try {
-                oldProxy.first.interrupt();
-                oldProxy.second.close();
-            } catch (IOException e) {
-                Log.e(TAG, "Closing VPN interface", e);
-            }
+            oldProxy.first.interrupt();
         }
     }
 
