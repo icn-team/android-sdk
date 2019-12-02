@@ -43,7 +43,11 @@ Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_start(JNIEnv *env, jobject i
 extern "C" JNIEXPORT jboolean JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_isRunning(JNIEnv *env, jobject instance) {
 #ifdef ENABLE_HPROXY
-    return jboolean(proxy->isRunning());
+    if (proxy) {
+        return jboolean(proxy->isRunning());
+    }
+
+    return JNI_FALSE;
 #else
     return JNI_FALSE;
 #endif
@@ -100,6 +104,8 @@ Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_isHProxyEnabled(JNIEnv *env,
 extern "C" JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_stop(JNIEnv *env, jobject instance) {
 #ifdef ENABLE_HPROXY
-    proxy->stop();
+    if (proxy) {
+      proxy->stop();
+    }
 #endif
 }
