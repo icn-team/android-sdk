@@ -28,8 +28,8 @@ export ARCH=$(uname -m)
 export ANDROID_HOME=${ANDROID_HOME} 
 export ANDROID_NDK_HOST=${OS}-${ARCH}
 export ANDROID_NDK_PLATFORM=android-28
-export ANDROID_NDK_ROOT=${ANDROID_HOME}/ndk-bundle
-export ANDROID_SDK_ROOT=${ANDROID_HOME}
+export ANDROID_NDK_ROOT=/sdk/ndk-bundle
+export ANDROID_SDK_ROOT=/sdk
 export ANDROID_API_VERSION=android-28
 export PATH=$PATH:${ANDROID_HOME}/tools:${JAVA_HOME}/bin
 
