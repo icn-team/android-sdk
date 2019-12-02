@@ -16,7 +16,8 @@
 #!/bin/bash
 
 set -ex
-
+QT_VERSION=5.13.1
+ls /
 #mkdir -p /src
 export ANDROID_NDK_HOME=/hicn/sdk/ndk-bundle
 if [ ! -d /src/viper ]; then
