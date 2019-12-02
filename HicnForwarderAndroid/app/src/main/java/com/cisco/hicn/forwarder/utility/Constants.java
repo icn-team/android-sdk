@@ -30,6 +30,7 @@ public class Constants {
     public static final int AU_INTERFACE_TYPE_LOOPBACK = 4;
     public static final int AU_INTERFACE_TYPE_UNAVAILABLE = 5;
     public static final String HIPERF = "HIPERF";
+    public static final String ID = "id";
     public static final String NETDEVICE = "netdevice";
     public static final String NETDEVICE_TYPE = "netdevice_type";
     public static final String FAMILY = "family";
