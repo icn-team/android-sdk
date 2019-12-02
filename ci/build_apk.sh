@@ -33,8 +33,10 @@ export ANDROID_SDK_ROOT=/sdk
 export ANDROID_API_VERSION=android-28
 export PATH=$PATH:${ANDROID_HOME}/tools:${JAVA_HOME}/bin
 
+
 export ANDROID_ARCH=arm64_v8a
 export DISTILLARY_INSTALLATION_PATH=/usr_aarch64/
+export QT_HOST_PREFIX=/qt/Qt/$QT_VERSION/android_${ANDROID_ARCH}
 mkdir -p /build_aarch64/viper
 cd /build_aarch64/viper
 /qt/Qt/$QT_VERSION/android_${ANDROID_ARCH}/bin/qmake -r -spec android-clang /src/viper/viper.pro  "TRANSPORT_LIBRARY = HICNET"
@@ -47,6 +49,7 @@ cp /build_aarch64/viper/hicn-viper-arm64_v8a//build/outputs/apk/hicn-viper-arm64
 mv /hicn/hicn-viper-arm64_v8a-release-signed.apk /hicn/viper-arm64.apk
 
 export DISTILLARY_INSTALLATION_PATH=/usr_i686/
+export QT_HOST_PREFIX=/qt/Qt/$QT_VERSION/android_${ANDROID_ARCH}
 export ANDROID_ARCH=x86
 mkdir -p /build_i686/viper
 cd /build_i686/viper
