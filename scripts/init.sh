@@ -1,4 +1,4 @@
- #############################################################################
+#############################################################################
  # Copyright (c) 2017 Cisco and/or its affiliates.
  # Licensed under the Apache License, Version 2.0 (the "License");
  # you may not use this file except in compliance with the License.
@@ -194,4 +194,3 @@ if [ ! -d ${INSTALLATION_DIR}/include/openssl ]; then
     ${SED} -i "/${ABI}_openssl/d" ${VERSIONS_FILE}
 	echo ${ABI}_openssl=1.1.0h >> ${VERSIONS_FILE}
 fi
-
