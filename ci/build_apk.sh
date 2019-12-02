@@ -63,8 +63,8 @@ ln -sf /usr_aarch64 /hicn
 ln -sf /usr_i686 /hicn
 
 cd /hicn/HicnForwarderAndroid
-echo sdk.dir=${ANDROID_HOME} > local.properties
-echo ndk.dir=${ANDROID_HOME}/ndk-bundle >> local.properties
+echo sdk.dir=/sdk > local.properties
+echo ndk.dir=/sdk/ndk-bundle >> local.properties
 ./gradlew assembleRelease
 
 cp app/build/outputs/apk/release/*.apk /hicn
