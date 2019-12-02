@@ -46,11 +46,9 @@ Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_isRunning(JNIEnv *env, jobje
     if (proxy) {
         return jboolean(proxy->isRunning());
     }
+#endif
 
     return JNI_FALSE;
-#else
-    return JNI_FALSE;
-#endif
 }
 
 static int
