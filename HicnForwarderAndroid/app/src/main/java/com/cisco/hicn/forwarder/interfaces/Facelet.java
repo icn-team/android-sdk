@@ -16,6 +16,7 @@
 package com.cisco.hicn.forwarder.interfaces;
 
 public class Facelet {
+    private int id;
     private String netdevice;
     private String netdeviceType;
     private String family;
@@ -27,7 +28,7 @@ public class Facelet {
     private String status;
     private boolean error;
 
-    public Facelet(String netdevice,
+    public Facelet(int id, String netdevice,
                    String netdeviceType,
                    String family,
                    String localAddr,
@@ -37,6 +38,7 @@ public class Facelet {
                    String faceType,
                    String status,
                    boolean error) {
+        this.id = id;
         this.netdevice = netdevice;
         this.netdeviceType = netdeviceType;
         this.family = family;
@@ -49,6 +51,7 @@ public class Facelet {
         this.error = error;
     }
 
+    public int getId() { return id;}
 
     public String getNetdevice() {
         return netdevice;

@@ -54,18 +54,14 @@ public class InterfacesFragment extends Fragment {
     private ListView listView;
     private SharedPreferences sharedPreferences;
     private static FaceletAdapter faceletAdapter;
-    //    private static CustomAdapter adapter;
     private int bottomSize = 0;
 
     private HashMap<String, Facelet> faceletHashMap = new HashMap<>();
-
-    // private ArrayList<DataModel> dataModels;
 
 
     private OnFragmentInteractionListener mListener;
 
     public InterfacesFragment() {
-        // Required empty public constructor
     }
 
 
@@ -146,6 +142,7 @@ public class InterfacesFragment extends Fragment {
                     JSONObject listFaceletsJsonObject = new JSONObject(listFaceletsString);
                     JSONArray listFaceletsJsonArray = listFaceletsJsonObject.getJSONArray("facelets");
                     for (int i = 0; i < listFaceletsJsonArray.length(); i++) {
+                        int id = getJSONInt(listFaceletsJsonArray.getJSONObject(i), Constants.ID);
                         String netdevice = getJSONString(listFaceletsJsonArray.getJSONObject(i), Constants.NETDEVICE);
                         String netdeviceType = getJSONString(listFaceletsJsonArray.getJSONObject(i), Constants.NETDEVICE_TYPE);
                         String family = getJSONString(listFaceletsJsonArray.getJSONObject(i), Constants.FAMILY);
@@ -159,11 +156,11 @@ public class InterfacesFragment extends Fragment {
                         if (!showAll) {
                             if (status.equals("CLEAN")) {
                                 sharedPreferences.getBoolean(getString(R.string.interface_showall_key), Boolean.getBoolean(getString(R.string.default_interface_showall)));
-                                faceletHashMapLocal.put(netdevice + family, new Facelet(netdevice, netdeviceType, family, localAddr, localPort, remoteAddr, remotePort, faceType, status, error));
+                                faceletHashMapLocal.put(netdevice + family + id, new Facelet(id, netdevice, netdeviceType, family, localAddr, localPort, remoteAddr, remotePort, faceType, status, error));
                             }
                         } else {
                             sharedPreferences.getBoolean(getString(R.string.interface_showall_key), Boolean.getBoolean(getString(R.string.default_interface_showall)));
-                            faceletHashMapLocal.put(netdevice + family, new Facelet(netdevice, netdeviceType, family, localAddr, localPort, remoteAddr, remotePort, faceType, status, error));
+                            faceletHashMapLocal.put(netdevice + family + id , new Facelet(id, netdevice, netdeviceType, family, localAddr, localPort, remoteAddr, remotePort, faceType, status, error));
                         }
                     }
 
