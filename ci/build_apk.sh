@@ -18,7 +18,7 @@
 set -ex
 
 #mkdir -p /src
-export ANDROID_NDK_HOME=/opt/android-sdk-linux/ndk-bundle/
+export ANDROID_NDK_HOME=/hicn/sdk/ndk-bundle
 if [ ! -d /src/viper ]; then
 	git clone -b viper/master https://gerrit.fd.io/r/cicn /src/viper
 fi
@@ -36,10 +36,10 @@ export ANDROID_ARCH=arm64_v8a
 export DISTILLARY_INSTALLATION_PATH=/usr_aarch64/
 mkdir -p /build_aarch64/viper
 cd /build_aarch64/viper
-${QT_HOME}/$QT_VERSION/android_${ANDROID_ARCH}/bin/qmake -r -spec android-clang /src/viper/viper.pro  "TRANSPORT_LIBRARY = HICNET"
+/qt/Qt/$QT_VERSION/android_${ANDROID_ARCH}/bin/qmake -r -spec android-clang /src/viper/viper.pro  "TRANSPORT_LIBRARY = HICNET"
 make
 make install INSTALL_ROOT=hicn-viper-${ANDROID_ARCH}
-${QT_HOME}/$QT_VERSION/android_${ANDROID_ARCH}/bin/androiddeployqt --output hicn-viper-${ANDROID_ARCH} --verbose --input android-libviper.so-deployment-settings.json --gradle --android-platform ${ANDROID_NDK_PLATFORM} --stacktrace --release --target ${ANDROID_NDK_PLATFORM} --release \
+/qt/Qt/android_${ANDROID_ARCH}/bin/androiddeployqt --output hicn-viper-${ANDROID_ARCH} --verbose --input android-libviper.so-deployment-settings.json --gradle --android-platform ${ANDROID_NDK_PLATFORM} --stacktrace --release --target ${ANDROID_NDK_PLATFORM} --release \
 --sign /src/viper/android/viper.keystore viper --storepass icn_viper
 
 cp /build_aarch64/viper/hicn-viper-arm64_v8a//build/outputs/apk/hicn-viper-arm64_v8a-release-signed.apk /hicn
@@ -49,10 +49,10 @@ export DISTILLARY_INSTALLATION_PATH=/usr_i686/
 export ANDROID_ARCH=x86
 mkdir -p /build_i686/viper
 cd /build_i686/viper
-${QT_HOME}/$QT_VERSION/android_${ANDROID_ARCH}/bin/qmake -r -spec android-clang /src/viper/viper.pro  "TRANSPORT_LIBRARY = HICNET"
+/qt/Qt/$QT_VERSION/android_${ANDROID_ARCH}/bin/qmake -r -spec android-clang /src/viper/viper.pro  "TRANSPORT_LIBRARY = HICNET"
 make
 make install INSTALL_ROOT=hicn-viper-${ANDROID_ARCH}
-${QT_HOME}/$QT_VERSION/android_${ANDROID_ARCH}/bin/androiddeployqt --output hicn-viper-${ANDROID_ARCH} --verbose --input android-libviper.so-deployment-settings.json --gradle --android-platform ${ANDROID_NDK_PLATFORM} --stacktrace --release --target ${ANDROID_NDK_PLATFORM} --release \
+/qt/Qt/$QT_VERSION/android_${ANDROID_ARCH}/bin/androiddeployqt --output hicn-viper-${ANDROID_ARCH} --verbose --input android-libviper.so-deployment-settings.json --gradle --android-platform ${ANDROID_NDK_PLATFORM} --stacktrace --release --target ${ANDROID_NDK_PLATFORM} --release \
 --sign /src/viper/android/viper.keystore viper --storepass icn_viper
 
 cp /build_i686/viper/hicn-viper-x86//build/outputs/apk/hicn-viper-x86-release-signed.apk /hicn
@@ -70,8 +70,8 @@ echo ndk.dir=${ANDROID_HOME}/ndk-bundle >> local.properties
 cp app/build/outputs/apk/release/*.apk /hicn
 
 cd /hicn/hICNTools
-echo sdk.dir=${ANDROID_HOME} > local.properties
-echo ndk.dir=${ANDROID_HOME}/ndk-bundle >> local.properties
+echo sdk.dir=/sdk > local.properties
+echo ndk.dir=/sdk/ndk-bundle >> local.properties
 ./gradlew assembleRelease
 cp app/build/outputs/apk/release/*.apk /hicn
 
