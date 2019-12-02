@@ -84,11 +84,6 @@ public class BackendProxyService extends VpnService implements Handler.Callback 
     }
 
     @Override
-    public void onDestroy() {
-//        disconnect();
-    }
-
-    @Override
     public boolean handleMessage(Message message) {
         Toast.makeText(this, message.what, Toast.LENGTH_SHORT).show();
         if (message.what != R.string.hproxy_disconnected) {
