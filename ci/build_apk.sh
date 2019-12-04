@@ -16,10 +16,9 @@
 #!/bin/bash
 
 set -ex
-QT_VERSION=5.13.1
-ls /
-#mkdir -p /src
-export ANDROID_NDK_HOME=/hicn/sdk/ndk-bundle
+export QT_VERSION=5.13.1
+export QT_HOME=/qt/Qt
+export ANDROID_NDK_HOME=/sdk/ndk-bundle
 if [ ! -d /src/viper ]; then
 	git clone -b viper/master https://gerrit.fd.io/r/cicn /src/viper
 fi
@@ -28,25 +27,28 @@ export ARCH=$(uname -m)
 export ANDROID_HOME=${ANDROID_HOME} 
 export ANDROID_NDK_HOST=${OS}-${ARCH}
 export ANDROID_NDK_PLATFORM=android-28
-export ANDROID_NDK_ROOT=${ANDROID_HOME}/ndk-bundle
-export ANDROID_SDK_ROOT=${ANDROID_HOME}
+export ANDROID_NDK_ROOT=/sdk/ndk-bundle
+export ANDROID_SDK_ROOT=/sdk
 export ANDROID_API_VERSION=android-28
 export PATH=$PATH:${ANDROID_HOME}/tools:${JAVA_HOME}/bin
 
+
 export ANDROID_ARCH=arm64_v8a
 export DISTILLARY_INSTALLATION_PATH=/usr_aarch64/
+export QT_HOST_PREFIX=/qt/Qt/$QT_VERSION/android_${ANDROID_ARCH}
 mkdir -p /build_aarch64/viper
 cd /build_aarch64/viper
 /qt/Qt/$QT_VERSION/android_${ANDROID_ARCH}/bin/qmake -r -spec android-clang /src/viper/viper.pro  "TRANSPORT_LIBRARY = HICNET"
 make
 make install INSTALL_ROOT=hicn-viper-${ANDROID_ARCH}
-/qt/Qt/android_${ANDROID_ARCH}/bin/androiddeployqt --output hicn-viper-${ANDROID_ARCH} --verbose --input android-libviper.so-deployment-settings.json --gradle --android-platform ${ANDROID_NDK_PLATFORM} --stacktrace --release --target ${ANDROID_NDK_PLATFORM} --release \
+/qt/Qt/$QT_VERSION/android_${ANDROID_ARCH}/bin/androiddeployqt --output hicn-viper-${ANDROID_ARCH} --verbose --input android-libviper.so-deployment-settings.json --gradle --android-platform ${ANDROID_NDK_PLATFORM} --stacktrace --release --target ${ANDROID_NDK_PLATFORM} --release \
 --sign /src/viper/android/viper.keystore viper --storepass icn_viper
 
 cp /build_aarch64/viper/hicn-viper-arm64_v8a//build/outputs/apk/hicn-viper-arm64_v8a-release-signed.apk /hicn
 mv /hicn/hicn-viper-arm64_v8a-release-signed.apk /hicn/viper-arm64.apk
 
 export DISTILLARY_INSTALLATION_PATH=/usr_i686/
+export QT_HOST_PREFIX=/qt/Qt/$QT_VERSION/android_${ANDROID_ARCH}
 export ANDROID_ARCH=x86
 mkdir -p /build_i686/viper
 cd /build_i686/viper
