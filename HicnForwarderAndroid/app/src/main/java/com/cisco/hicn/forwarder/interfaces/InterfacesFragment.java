@@ -201,7 +201,7 @@ public class InterfacesFragment extends Fragment {
                             facelet.setError(faceletLocal.isError());
                         } else {
                             Facelet faceletLocal = faceletHashMapLocal.get(key);
-                            faceletHashMap.put(faceletLocal.getNetdevice() + faceletLocal.getFamily(), faceletLocal);
+                            faceletHashMap.put(faceletLocal.getNetdevice() + faceletLocal.getFamily() + faceletLocal.getId(), faceletLocal);
                             faceletAdapter.add(faceletLocal);
                         }
                     }
