@@ -7,6 +7,7 @@ import android.net.VpnService;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
+import com.cisco.hicn.forwarder.preferences.HproxyPreferencesFragment;
 import com.cisco.hicn.forwarder.supportlibrary.Forwarder;
 import com.cisco.hicn.forwarder.supportlibrary.HProxy;
 
@@ -155,12 +156,12 @@ public class ProxyThread implements Runnable {
         }
 
         PackageManager packageManager = mService.getPackageManager();
-        String webexTeams = parameters.getProperty("WEBEX_APP");
+        HProxy hproxy = HProxy.getInstance();
         try {
-            packageManager.getPackageInfo(webexTeams, 0);
-            builder.addAllowedApplication(webexTeams);
+            packageManager.getPackageInfo(hproxy.getProxifiedPackageName(), 0);
+            builder.addAllowedApplication(hproxy.getProxifiedPackageName());
         } catch (PackageManager.NameNotFoundException e) {
-            Log.e(getTag(), "The webex teams app is not installed.");
+            Log.e(getTag(), hproxy.getProxifiedAppName() + " is not installed.");
         }
 
         // Close the old interface since the parameters have been changed.
