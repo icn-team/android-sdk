@@ -53,13 +53,13 @@ public class HProxy {
     public int createTunDevice(String vpn_address, int prefix_length,
                                String route_address,
                                int route_prefix_length, String dns) {
+        HProxy hproxy = HProxy.getInstance();
         Properties params = new Properties();
         params.put("ADDRESS", vpn_address);
         params.put("PREFIX_LENGTH", Integer.toString(prefix_length));
         params.put("ROUTE_ADDRESS",route_address);
         params.put("ROUTE_PREFIX_LENGTH", Integer.toString(route_prefix_length));
         params.put("DNS", dns);
-        params.put("WEBEX_APP", "com.cisco.wx2.android");
         int ret = mProxyThread.configureTun(params);
         return ret;
     }
@@ -71,4 +71,7 @@ public class HProxy {
     public native void stop();
 
     public native boolean isHProxyEnabled();
+
+    public native String getProxifiedAppName();
+    public native String getProxifiedPackageName();
 }
