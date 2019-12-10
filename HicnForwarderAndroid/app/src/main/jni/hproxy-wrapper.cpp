@@ -107,3 +107,26 @@ Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_stop(JNIEnv *env, jobject in
     }
 #endif
 }
+
+extern "C" JNIEXPORT jstring JNICALL
+Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_getProxifiedAppName(JNIEnv *env, jobject thiz) {
+#ifdef ENABLE_HPROXY
+
+    return env->NewStringUTF(HicnProxy::getProxifiedAppName().c_str());
+#else
+    std::string appName = "App";
+    return env->NewStringUTF(appName.c_str());
+#endif
+
+}
+
+extern "C" JNIEXPORT jstring JNICALL
+Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_getProxifiedPackageName(JNIEnv *env, jobject thiz) {
+#ifdef ENABLE_HPROXY
+    return env->NewStringUTF(HicnProxy::getProxifiedPackageName().c_str());
+#else
+    std::string packageName = "fd.io.hicn";
+    return env->NewStringUTF(packageName.c_str());
+#endif
+
+}
