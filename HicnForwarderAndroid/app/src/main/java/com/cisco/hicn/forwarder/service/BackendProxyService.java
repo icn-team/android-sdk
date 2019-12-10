@@ -21,7 +21,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.VpnService;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.ParcelFileDescriptor;
@@ -43,6 +45,7 @@ public class BackendProxyService extends VpnService implements Handler.Callback 
 
     public static final String ACTION_CONNECT = "com.cisco.hicn.forwarder.START";
     public static final String ACTION_DISCONNECT = "com.cisco.hicn.forwarder.STOP";
+    private static final int FAILURE_MESSAGE = 1;
 
     private Handler mHandler;
 
@@ -78,6 +81,18 @@ public class BackendProxyService extends VpnService implements Handler.Callback 
             disconnect();
             return START_NOT_STICKY;
         } else {
+            HProxy hproxy = HProxy.getInstance();
+            try {
+                getPackageManager().getPackageInfo(hproxy.getProxifiedPackageName(), 0);
+            } catch (PackageManager.NameNotFoundException e) {
+                String stringMessage = hproxy.getProxifiedAppName() + " " + getString(R.string.not_found);
+                Toast.makeText(this, stringMessage, Toast.LENGTH_LONG).show();
+                updateForegroundNotification(stringMessage);
+
+                disconnect();
+                return START_NOT_STICKY;
+            }
+
             connect();
             return START_STICKY;
         }
@@ -92,13 +107,13 @@ public class BackendProxyService extends VpnService implements Handler.Callback 
         return true;
     }
 
-
-
     private void disconnect() {
-        mHandler.sendEmptyMessage(R.string.hproxy_disconnect);
-        setConnectingThread(null);
-        setProxy(null);
-        mProxyInstance.stop();
+        if (mProxyInstance != null) {
+            mHandler.sendEmptyMessage(R.string.hproxy_disconnect);
+            setConnectingThread(null);
+            setProxy(null);
+            mProxyInstance.stop();
+        }
 
         stopForeground(true);
         stopSelf();
@@ -151,34 +166,7 @@ public class BackendProxyService extends VpnService implements Handler.Callback 
     }
 
     private void updateForegroundNotification(final int message) {
-        /*final String NOTIFICATION_CHANNEL_ID = "HProxy";
-
-        Notification notification = null;
-        if (Build.VERSION.SDK_INT >= 26) {
-            Notification.Builder notificationBuilder = new Notification.Builder(this, NOTIFICATION_CHANNEL_ID);
-
-            Intent notificationIntent = new Intent(this, MainActivity.class);
-            PendingIntent activity = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-            notificationBuilder.setContentTitle("HProxy").setContentText("HProxy").setOngoing(true).setContentIntent(activity);
-            notification = notificationBuilder.setAutoCancel(true).build();
-
-        } else {
-            notification = new Notification.Builder(this)
-                    .setContentTitle("HProxy")
-                    .setContentText("HProxy").setAutoCancel(true)
-                    .build();
-        }
-
-        if (Build.VERSION.SDK_INT >= 26) {
-            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "HProxy", NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setDescription("HProxy");
-            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.createNotificationChannel(channel);
-        }
-
-        startForeground(Constants.FOREGROUND_SERVICE, notification);*/
-        final String NOTIFICATION_CHANNEL_ID = "ToyVpn";
+        final String NOTIFICATION_CHANNEL_ID = "HProxy";
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(
                 NOTIFICATION_SERVICE);
         mNotificationManager.createNotificationChannel(new NotificationChannel(
@@ -186,6 +174,19 @@ public class BackendProxyService extends VpnService implements Handler.Callback 
                 NotificationManager.IMPORTANCE_DEFAULT));
         startForeground(1, new Notification.Builder(this, NOTIFICATION_CHANNEL_ID)
                 .setContentText(getString(message))
+                .setContentIntent(mConfigureIntent)
+                .build());
+    }
+
+    private void updateForegroundNotification(final String message) {
+        final String NOTIFICATION_CHANNEL_ID = "HProxy";
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(
+                NOTIFICATION_SERVICE);
+        mNotificationManager.createNotificationChannel(new NotificationChannel(
+                NOTIFICATION_CHANNEL_ID, NOTIFICATION_CHANNEL_ID,
+                NotificationManager.IMPORTANCE_DEFAULT));
+        startForeground(1, new Notification.Builder(this, NOTIFICATION_CHANNEL_ID)
+                .setContentText(message)
                 .setContentIntent(mConfigureIntent)
                 .build());
     }
