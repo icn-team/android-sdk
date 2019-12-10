@@ -30,7 +30,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_start(JNIEnv *env, jobject i
 
     hproxy::connectors::ConnectorConfig config_connector(
             ConfigConnectorType::UDP_TUNNEL_CONNECTOR, _remote_address, std::to_string(remote_port),
-            std::string("0.0.0.0"));
+            std::string("0.0.0.0"), "udp-tunnel");
 
     uint64_t secret = 12345678910;
     hproxy::config::ClientConfiguration config_automation;
