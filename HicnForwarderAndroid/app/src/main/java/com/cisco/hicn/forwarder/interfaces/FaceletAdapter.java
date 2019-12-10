@@ -36,6 +36,7 @@ public class FaceletAdapter extends ArrayAdapter<Facelet> implements View.OnClic
     }
 
     private static class ViewHolder {
+        TextView idTextView;
         TextView netdeviceTextView;
         TextView netdeviceTypeTextView;
         TextView familyTextView;
@@ -63,6 +64,7 @@ public class FaceletAdapter extends ArrayAdapter<Facelet> implements View.OnClic
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.row_item, parent, false);
+            viewHolder.idTextView = convertView.findViewById(R.id.id);
             viewHolder.netdeviceTextView = convertView.findViewById(R.id.netdevice);
             viewHolder.netdeviceTypeTextView = convertView.findViewById(R.id.netdevice_type);
             viewHolder.familyTextView = convertView.findViewById(R.id.family);
@@ -79,6 +81,7 @@ public class FaceletAdapter extends ArrayAdapter<Facelet> implements View.OnClic
         }
 
         assert facelet != null;
+        viewHolder.idTextView.setText(facelet.getId() < 0 ? "-" : "" + facelet.getId());
         viewHolder.netdeviceTextView.setText(facelet.getNetdevice() == null ? "-" : facelet.getNetdevice());
         viewHolder.netdeviceTypeTextView.setText(facelet.getNetdeviceType() == null ? "-" : facelet.getNetdeviceType());
         viewHolder.familyTextView.setText(facelet.getFamily() == null ? "-" : facelet.getFamily());
