@@ -393,6 +393,7 @@
     <string name="log_level_key">log_level_key</string>
     <string name="log_level_title">Log Level</string>
     <string name="default_log_level">0</string>
+    <string name="interface_id">ID</string>
 
 
 </resources>
