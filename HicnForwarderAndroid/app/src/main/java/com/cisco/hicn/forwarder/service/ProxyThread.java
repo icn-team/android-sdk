@@ -98,7 +98,7 @@ public class ProxyThread implements Runnable {
             }
             Log.i(getTag(), "Giving up");
         } catch (IOException | InterruptedException | IllegalArgumentException e) {
-            Log.e(getTag(), "Connection failed, exiting", e);
+            Log.e(getTag(), "Proxy stopped, exiting", e);
         }
     }
 
@@ -122,6 +122,8 @@ public class ProxyThread implements Runnable {
 
         mProxyInstance.setProxyInstance(this);
         mProxyInstance.start(mServerName, mServerPort);
+
+        Log.i(getTag(), "HProxy stopped.");
 
         return true;
     }
@@ -190,6 +192,16 @@ public class ProxyThread implements Runnable {
         Log.i(getTag(), "New interface: " + mInterface + " (" + parameters + ")");
 
         return mInterface.getFd();
+    }
+
+    public int closeTun() {
+        try {
+            mInterface.close();
+        } catch(IOException e) {
+            Log.e(getTag(), "Closing VPN interface", e);
+        }
+
+        return 0;
     }
 
     private final String getTag() {
