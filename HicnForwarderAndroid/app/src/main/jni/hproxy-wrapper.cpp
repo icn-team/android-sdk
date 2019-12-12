@@ -72,6 +72,19 @@ createTunDeviceWrap(JNIEnv *env, jobject instance, const char *vpn_address, uint
     return ret;
 }
 
+static int
+closeTunDeviceWrap(JNIEnv *env, jobject instance) {
+    jclass clazz = env->GetObjectClass(instance);
+    jmethodID methodID = env->GetMethodID(clazz, "closeTunDevice", "()I");
+
+    int ret = -1;
+    if (methodID) {
+        ret = env->CallIntMethod(instance, methodID);
+    }
+
+    return ret;
+}
+
 extern "C" int createTunDevice(const char *vpn_address, uint16_t prefix_length,
                     const char *route_address,
                     uint16_t route_prefix_length, const char *dns) {
@@ -84,6 +97,20 @@ extern "C" int createTunDevice(const char *vpn_address, uint16_t prefix_length,
 
     return createTunDeviceWrap(_env, *_instance, vpn_address, prefix_length, route_address,
                                route_prefix_length, dns);
+#else
+    return 0;
+#endif
+}
+
+extern "C" int closeTunDevice() {
+#ifdef ENABLE_HPROXY
+    if (!_env || !_instance) {
+        __android_log_print(ANDROID_LOG_ERROR, "HProxyWrap",
+                            "Call createTunDevice, but _env and _instance variables are not initialized.");
+        return -1;
+    }
+
+    return closeTunDeviceWrap(_env, *_instance);
 #else
     return 0;
 #endif
