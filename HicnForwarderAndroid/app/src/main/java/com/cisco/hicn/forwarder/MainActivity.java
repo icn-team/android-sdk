@@ -92,9 +92,11 @@ public class MainActivity extends AppCompatActivity
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+        int facemgrLogLevel = Integer.parseInt(sharedPreferences.getString(getString(R.string.facemgr_log_level_key), getString(R.string.facemgr_default_log_level)));
+        facemgr.setLogLevel(facemgrLogLevel);
+
         boolean enableBonjour = sharedPreferences.getBoolean(getString(R.string.enable_bonjour_key), false);
         facemgr.enableDiscovery(enableBonjour);
-
 
         boolean enableNexHopIPv4 = sharedPreferences.getBoolean(getString(R.string.enable_nexthop_ipv4_key), true);
         facemgr.enableIPv4(enableNexHopIPv4 ? 1 : 0);

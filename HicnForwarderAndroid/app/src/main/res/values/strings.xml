@@ -390,11 +390,14 @@
     <string name="hiperf_interest_lifetime_key">hiperf_interest_lifetime_key</string>
     <string name="hiperf_interest_lifetime_summary">Interest LIfetime [ms]</string>
     <string name="hiperf_interest_lifetime_title">Interest LIfetime [ms]</string>
-    <string name="log_level_key">log_level_key</string>
-    <string name="log_level_title">Log Level</string>
-    <string name="default_log_level">0</string>
+    <string name="forwarder_log_level_key">forwarder_log_level_key</string>
+    <string name="forwarder_log_level_title">Log Level</string>
+    <string name="forwarder_default_log_level">0</string>
+    <string name="facemgr_default_log_level">3</string>
     <string name="interface_id">ID</string>
     <string name="not_found">not found</string>
+    <string name="facemgr_log_level_title">Log Level</string>
+    <string name="facemgr_log_level_key">facemgr_log_level_key</string>
 
 
 </resources>

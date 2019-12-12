@@ -120,7 +120,7 @@ public class BackendAndroidService extends Service {
 
     private void getLogLevel() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        this.logLevel = Integer.parseInt(sharedPreferences.getString(getString(R.string.log_level_key), getString(R.string.default_log_level)));
+        this.logLevel = Integer.parseInt(sharedPreferences.getString(getString(R.string.forwarder_log_level_key), getString(R.string.forwarder_default_log_level)));
     }
 
     protected Runnable mForwarderRunner = () -> {
