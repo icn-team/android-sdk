@@ -49,16 +49,9 @@ public class BackendProxyService extends VpnService implements Handler.Callback 
 
     private Handler mHandler;
 
-    private static class Proxy extends Pair<Thread, ParcelFileDescriptor> {
-        public Proxy(Thread thread, ParcelFileDescriptor pfd) {
-            super(thread, pfd);
-        }
-    }
-
     private PendingIntent mConfigureIntent;
 
     private final AtomicReference<Thread> mConnectingThread = new AtomicReference<>();
-    private final AtomicReference<Proxy> mProxy = new AtomicReference<>();
 
     private HProxy mProxyInstance = null;
     private AtomicInteger mNextConnectionId = new AtomicInteger(1);
@@ -69,7 +62,7 @@ public class BackendProxyService extends VpnService implements Handler.Callback 
         if (mHandler == null) {
             mHandler = new Handler(this);
         }
-        // Create the intent to "configure" the connection (just start ToyVpnClient).
+
         mConfigureIntent = PendingIntent.getActivity(this, 0, new Intent(this, ForwarderFragment.class),
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
@@ -111,8 +104,8 @@ public class BackendProxyService extends VpnService implements Handler.Callback 
         if (mProxyInstance != null) {
             mHandler.sendEmptyMessage(R.string.hproxy_disconnect);
             setConnectingThread(null);
-            setProxy(null);
             mProxyInstance.stop();
+            mProxyInstance = null;
         }
 
         stopForeground(true);
@@ -146,8 +139,8 @@ public class BackendProxyService extends VpnService implements Handler.Callback 
         proxy.setOnEstablishListener(tunInterface -> {
             mHandler.sendEmptyMessage(R.string.hproxy_connected);
             mConnectingThread.compareAndSet(null, thread);
-            setProxy(new Proxy(thread, tunInterface));
         });
+
         thread.start();
     }
 
@@ -155,13 +148,6 @@ public class BackendProxyService extends VpnService implements Handler.Callback 
         final Thread oldThread = mConnectingThread.getAndSet(thread);
         if (oldThread != null) {
             oldThread.interrupt();
-        }
-    }
-
-    private void setProxy(final Proxy proxy) {
-        final Proxy oldProxy = mProxy.getAndSet(proxy);
-        if (oldProxy != null) {
-            oldProxy.first.interrupt();
         }
     }
 
