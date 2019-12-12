@@ -88,7 +88,6 @@ modules_dir=
 	include config/modules/109-curl.mk
 	include config/modules/120-libparc.mk
 	include config/modules/130-hicn.mk
-        include config/modules/140-hproxy.mk
 	include config/modules/610-libdash.mk
 
 # Load user defined modules
