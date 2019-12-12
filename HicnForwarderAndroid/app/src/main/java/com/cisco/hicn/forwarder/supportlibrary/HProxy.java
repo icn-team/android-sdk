@@ -53,7 +53,6 @@ public class HProxy {
     public int createTunDevice(String vpn_address, int prefix_length,
                                String route_address,
                                int route_prefix_length, String dns) {
-        HProxy hproxy = HProxy.getInstance();
         Properties params = new Properties();
         params.put("ADDRESS", vpn_address);
         params.put("PREFIX_LENGTH", Integer.toString(prefix_length));
@@ -62,6 +61,10 @@ public class HProxy {
         params.put("DNS", dns);
         int ret = mProxyThread.configureTun(params);
         return ret;
+    }
+
+    public int closeTunDevice() {
+        return mProxyThread.closeTun();
     }
 
     public native boolean isRunning();
