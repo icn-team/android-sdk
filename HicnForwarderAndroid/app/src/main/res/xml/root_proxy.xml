@@ -26,16 +26,23 @@
             app:useSimpleSummaryProvider="true" />
 
         <DropDownPreference
-            android:defaultValue="@string/default_log_level"
-            android:entries="@array/log_level"
-            android:entryValues="@array/log_level_values"
-            android:key="@string/log_level_key"
-            android:title="@string/log_level_title"
+            android:defaultValue="@string/forwarder_default_log_level"
+            android:entries="@array/forwarder_log_level"
+            android:entryValues="@array/forwarder_log_level_values"
+            android:key="@string/forwarder_log_level_key"
+            android:title="@string/forwarder_log_level_title"
             app:useSimpleSummaryProvider="true" />
 
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/face_management_preference_category">
+        <DropDownPreference
+            android:defaultValue="@string/facemgr_default_log_level"
+            android:entries="@array/facemgr_log_level"
+            android:entryValues="@array/facemgr_log_level_values"
+            android:key="@string/facemgr_log_level_key"
+            android:title="@string/facemgr_log_level_title"
+            app:useSimpleSummaryProvider="true" />
 
 
         <CheckBoxPreference

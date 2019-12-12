@@ -26,7 +26,7 @@
         <item>charlie</item>
     </string-array>
 
-    <string-array name="log_level">
+    <string-array name="forwarder_log_level">
         <item>Off</item>
         <item>All</item>
         <item>Emergency</item>
@@ -39,7 +39,7 @@
         <item>Debug</item>
     </string-array>
 
-    <string-array name="log_level_values">
+    <string-array name="forwarder_log_level_values">
         <item>0</item>
         <item>1</item>
         <item>2</item>
@@ -50,5 +50,23 @@
         <item>7</item>
         <item>8</item>
         <item>9</item>
+    </string-array>
+
+    <string-array name="facemgr_log_level">
+        <item>Fatal</item>
+        <item>Error</item>
+        <item>Warning</item>
+        <item>Info</item>
+        <item>Debug</item>
+        <item>Trace</item>
+    </string-array>
+
+    <string-array name="facemgr_log_level_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
     </string-array>
 </resources>
