@@ -48,6 +48,15 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
             setPreferencesFromResource(R.xml.root_no_proxy, s);
         }
 
+        getPreferenceScreen().findPreference(getString(R.string.facemgr_log_level_key)).setOnPreferenceChangeListener((preference, newValue) -> {
+            int facemgrLogLevel = Integer.parseInt((String) newValue);
+
+            Facemgr facemgr = Facemgr.getInstance();
+
+            facemgr.setLogLevel(facemgrLogLevel);
+            return true;
+        });
+
         getPreferenceScreen().findPreference(getString(R.string.enable_bonjour_key)).setOnPreferenceChangeListener((preference, newValue) -> {
             boolean enableBonjour = (boolean) newValue;
 
@@ -65,7 +74,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
 
             facemgr.enableIPv4(enableNextHopIPv4 ? 1 : 0);
             return true;
-
         });
 
         getPreferenceScreen().findPreference(getString(R.string.enable_nexthop_ipv6_key)).setOnPreferenceChangeListener((preference, newValue) -> {
@@ -75,7 +83,6 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
 
             facemgr.enableIPv6(enableNextHopIPv6 ? 1 : 0);
             return true;
-
         });
 
     }

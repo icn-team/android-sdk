@@ -58,4 +58,5 @@ public class Facemgr {
 
     public native String getListFacelets();
 
+    public native void setLogLevel(int facemgrLogLevel);
 }

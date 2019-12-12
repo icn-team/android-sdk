@@ -95,12 +95,6 @@ Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_startFacemgr(JNIEnv *env, j
 JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_initConfig(JNIEnv *env, jobject thiz) {
     facemgr_cfg = facemgr_cfg_create();
-
-#ifdef NDEBUG
-    log_conf.log_level = LOG_INFO;
-#else
-    log_conf.log_level = LOG_DEBUG;
-#endif
 }
 
 JNIEXPORT void JNICALL
@@ -233,4 +227,32 @@ Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_getListFacelets(JNIEnv *env
         free(buffer);
     }
     return jstrBuffer;
+}
+
+JNIEXPORT void JNICALL
+Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_setLogLevel(JNIEnv *env, jobject thiz,
+                                                                 jint facemgr_log_level) {
+    switch ((int) facemgr_log_level) {
+        case 0:
+            log_conf.log_level = LOG_FATAL;
+            break;
+        case 1:
+            log_conf.log_level = LOG_ERROR;
+            break;
+        case 2:
+            log_conf.log_level = LOG_WARN;
+            break;
+        case 3:
+            log_conf.log_level = LOG_INFO;
+            break;
+        case 4:
+            log_conf.log_level = LOG_DEBUG;
+            break;
+        case 5:
+            log_conf.log_level = LOG_TRACE;
+            break;
+        default:
+            log_conf.log_level = LOG_INFO;
+    }
+
 }

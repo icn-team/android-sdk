@@ -139,9 +139,15 @@ Java_com_cisco_hicn_forwarder_supportlibrary_Forwarder_startForwarder(JNIEnv *en
                 _setLogLevel(logLevelArray, "all=emergency");
                 break;
             case 3:
-                _setLogLevel(logLevelArray, "all=error");
+                _setLogLevel(logLevelArray, "all=alert");
                 break;
             case 4:
+                _setLogLevel(logLevelArray, "all=critical");
+                break;
+            case 5:
+                _setLogLevel(logLevelArray, "all=error");
+                break;
+            case 6:
                 _setLogLevel(logLevelArray, "all=warning");
                 break;
             case 7:
