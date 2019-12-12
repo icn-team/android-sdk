@@ -128,3 +128,47 @@ Here's a short summary:
 ## Configuration ##
 
 Distillery can be configured in multiple ways.  Please check the config directory (specifically `config/config.mk`) for more information.
+
+## Command line tools ##
+
+The hICN distillery makes also available some commandd line tools which can be very helpful for
+debugging and check the status of the active components.
+
+After you compile the hICN software suite:
+
+```bash
+bash ./compileAll.sh
+```
+
+Copy the output folder (`usr_aarch64` or `usr_i686`, depending on the architecture) in the phone using adb:
+
+```bash
+adb push ./usr_aarch64 /data/local/tmp/
+```
+
+Access the phone with adb shell:
+
+```bash
+adb shell
+```
+
+Go inside the copied folder and run hicn-light-control:
+
+```bash
+cd /data/local/tmp/usr_aarch64/bin
+chmod +x hicn-light-control
+./hicn-light-control
+```
+
+This command line tools allows to check the current status of the local forwarder.
+In particular, you can check the current list of conections running this command:
+
+```bash
+./hicn-light-control list connections
+```
+
+And you can check the current FIB with this command:
+
+```bash
+./hicn-light-control list routes
+```
