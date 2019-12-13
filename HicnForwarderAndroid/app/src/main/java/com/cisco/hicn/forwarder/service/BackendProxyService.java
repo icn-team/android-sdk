@@ -73,17 +73,6 @@ public class BackendProxyService extends VpnService implements Handler.Callback 
             disconnect();
             return START_NOT_STICKY;
         } else {
-            try {
-                getPackageManager().getPackageInfo(HProxy.getProxifiedPackageName(), 0);
-            } catch (PackageManager.NameNotFoundException e) {
-                String stringMessage = HProxy.getProxifiedAppName() + " " + getString(R.string.not_found);
-                Toast.makeText(this, stringMessage, Toast.LENGTH_LONG).show();
-                updateForegroundNotification(stringMessage);
-
-                disconnect();
-                return START_NOT_STICKY;
-            }
-
             connect();
             return START_STICKY;
         }
