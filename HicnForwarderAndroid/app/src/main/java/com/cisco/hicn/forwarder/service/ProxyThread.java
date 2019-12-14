@@ -50,13 +50,13 @@ public class ProxyThread implements Runnable {
     private String mHicnProducerName;
     private BackendProxyService mBackendProxyService;
 
-
-    private HProxy mProxyInstance;
+    private HProxy mProxyInstance = null;
     private ParcelFileDescriptor mInterface;
     private Properties mParameters;
 
     public ProxyThread(final VpnService service, final int connectionId,
                        final String serverName, final int serverPort, final String secret) {
+        mProxyInstance = new HProxy();
         mService = service;
         mConnectionId = connectionId;
         mServerName = serverName;
@@ -107,7 +107,7 @@ public class ProxyThread implements Runnable {
 
         // If we arrived here it means no error occurred during configuration.
         // Now create the instance of the proxy and configure it.
-        mProxyInstance = HProxy.getInstance();
+
 
         // start Service and block
         // Get instance of forwarder
@@ -125,7 +125,13 @@ public class ProxyThread implements Runnable {
 
         Log.i(getTag(), "HProxy stopped.");
 
+        mProxyInstance.destroy();
+
         return true;
+    }
+
+    public void stop() {
+        mProxyInstance.stop();
     }
 
     public int configureTun(Properties parameters) {
@@ -158,12 +164,11 @@ public class ProxyThread implements Runnable {
         }
 
         PackageManager packageManager = mService.getPackageManager();
-        HProxy hproxy = HProxy.getInstance();
         try {
-            packageManager.getPackageInfo(hproxy.getProxifiedPackageName(), 0);
-            builder.addAllowedApplication(hproxy.getProxifiedPackageName());
+            packageManager.getPackageInfo(HProxy.getProxifiedPackageName(), 0);
+            builder.addAllowedApplication(HProxy.getProxifiedPackageName());
         } catch (PackageManager.NameNotFoundException e) {
-            Log.e(getTag(), hproxy.getProxifiedAppName() + " is not installed.");
+            Log.e(getTag(), HProxy.getProxifiedAppName() + " is not installed.");
         }
 
         // Close the old interface since the parameters have been changed.

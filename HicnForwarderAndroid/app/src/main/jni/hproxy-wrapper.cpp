@@ -6,12 +6,29 @@
 
 #include <hicn/hproxy/proxy/proxy.h>
 
+#define HPROXY_ATTRIBUTE "mProxyPtr"
+
 using HicnProxy = hproxy::HicnProxy;
 
-static HicnProxy *proxy = nullptr;
-static JNIEnv *_env;
-static jobject *_instance;
+struct JniContext {
+    JniContext() : env(nullptr), instance(nullptr) {}
+    JNIEnv *env;
+    jobject *instance;
+};
 #endif
+
+// Get pointer field straight from `JavaClass`
+jfieldID getPtrFieldId(JNIEnv * env, jobject obj, std::string attribute_name) {
+    static jfieldID ptrFieldId = 0;
+
+    if (!ptrFieldId) {
+        jclass c = env->GetObjectClass(obj);
+        ptrFieldId = env->GetFieldID(c, attribute_name.c_str(), "J");
+        env->DeleteLocalRef(c);
+    }
+
+    return ptrFieldId;
+}
 
 extern "C" JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_initConfig(JNIEnv *env, jobject this_obj) {
@@ -23,8 +40,9 @@ Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_start(JNIEnv *env, jobject i
                                                           jstring remote_address,
                                                           jint remote_port) {
 #ifdef ENABLE_HPROXY
-    _env = env;
-    _instance = &instance;
+    JniContext *context = new JniContext();
+    context->env = env;
+    context->instance = &instance;
 
     const char *_remote_address = env->GetStringUTFChars(remote_address, 0);
 
@@ -35,14 +53,26 @@ Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_start(JNIEnv *env, jobject i
     uint64_t secret = 12345678910;
     hproxy::config::ClientConfiguration config_automation;
     config_automation.secret = secret;
-    proxy = HicnProxy::createAsClient(config_connector, config_automation).release();
+
+
+    auto proxy = HicnProxy::createAsClient(config_connector, config_automation).release();
+    proxy->setJniContext(context);
+    env->SetLongField(instance, getPtrFieldId(env, instance, "mProxyPtr"), (jlong) proxy);
     proxy->run();
+#endif
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_destroy(JNIEnv *env, jobject instance) {
+#ifdef ENABLE_HPROXY
+    HicnProxy* proxy = (HicnProxy*) env->GetLongField(instance, getPtrFieldId(env, instance, "mProxyPtr"));
 #endif
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_isRunning(JNIEnv *env, jobject instance) {
 #ifdef ENABLE_HPROXY
+    HicnProxy* proxy = (HicnProxy*) env->GetLongField(instance, getPtrFieldId(env, instance, "mProxyPtr"));
     if (proxy) {
         return jboolean(proxy->isRunning());
     }
@@ -56,7 +86,8 @@ createTunDeviceWrap(JNIEnv *env, jobject instance, const char *vpn_address, uint
                     const char *route_address,
                     uint16_t route_prefix_length, const char *dns) {
     jclass clazz = env->GetObjectClass(instance);
-    jmethodID methodID = env->GetMethodID(clazz, "createTunDevice", "(Ljava/lang/String;ILjava/lang/String;ILjava/lang/String;)I");
+    jmethodID methodID = env->GetMethodID(clazz, "createTunDevice",
+                                          "(Ljava/lang/String;ILjava/lang/String;ILjava/lang/String;)I");
 
     int ret = -1;
     if (methodID) {
@@ -86,31 +117,34 @@ closeTunDeviceWrap(JNIEnv *env, jobject instance) {
 }
 
 extern "C" int createTunDevice(const char *vpn_address, uint16_t prefix_length,
-                    const char *route_address,
-                    uint16_t route_prefix_length, const char *dns) {
+                               const char *route_address,
+                               uint16_t route_prefix_length, const char *dns, void *context) {
 #ifdef ENABLE_HPROXY
-    if (!_env || !_instance) {
+    JniContext *jni_context= (JniContext*)(context);
+
+    if (!jni_context->env || !jni_context->instance) {
         __android_log_print(ANDROID_LOG_ERROR, "HProxyWrap",
                             "Call createTunDevice, but _env and _instance variables are not initialized.");
         return -1;
     }
 
-    return createTunDeviceWrap(_env, *_instance, vpn_address, prefix_length, route_address,
+    return createTunDeviceWrap(jni_context->env, *jni_context->instance, vpn_address, prefix_length, route_address,
                                route_prefix_length, dns);
 #else
     return 0;
 #endif
 }
 
-extern "C" int closeTunDevice() {
+extern "C" int closeTunDevice(void *context) {
 #ifdef ENABLE_HPROXY
-    if (!_env || !_instance) {
+    JniContext *jni_context= (JniContext*)(context);
+    if (!jni_context->env || !jni_context->instance) {
         __android_log_print(ANDROID_LOG_ERROR, "HProxyWrap",
                             "Call createTunDevice, but _env and _instance variables are not initialized.");
         return -1;
     }
 
-    return closeTunDeviceWrap(_env, *_instance);
+    return closeTunDeviceWrap(jni_context->env, *jni_context->instance);
 #else
     return 0;
 #endif
@@ -118,7 +152,7 @@ extern "C" int closeTunDevice() {
 
 extern "C" JNIEXPORT jboolean JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_isHProxyEnabled(JNIEnv *env,
-                                                                    jobject instance) {
+                                                                    jclass instance) {
 #ifdef ENABLE_HPROXY
     return JNI_TRUE;
 #else
@@ -129,16 +163,16 @@ Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_isHProxyEnabled(JNIEnv *env,
 extern "C" JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_stop(JNIEnv *env, jobject instance) {
 #ifdef ENABLE_HPROXY
+    HicnProxy* proxy = (HicnProxy*) env->GetLongField(instance, getPtrFieldId(env, instance, "mProxyPtr"));
     if (proxy) {
-      proxy->stop();
+        proxy->stop();
     }
 #endif
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_getProxifiedAppName(JNIEnv *env, jobject thiz) {
+Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_getProxifiedAppName(JNIEnv *env, jclass thiz) {
 #ifdef ENABLE_HPROXY
-
     return env->NewStringUTF(HicnProxy::getProxifiedAppName().c_str());
 #else
     std::string appName = "App";
@@ -148,7 +182,8 @@ Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_getProxifiedAppName(JNIEnv *
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_getProxifiedPackageName(JNIEnv *env, jobject thiz) {
+Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_getProxifiedPackageName(JNIEnv *env,
+                                                                            jclass thiz) {
 #ifdef ENABLE_HPROXY
     return env->NewStringUTF(HicnProxy::getProxifiedPackageName().c_str());
 #else
