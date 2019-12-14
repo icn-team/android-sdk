@@ -12,13 +12,15 @@ using HicnProxy = hproxy::HicnProxy;
 
 struct JniContext {
     JniContext() : env(nullptr), instance(nullptr) {}
+
     JNIEnv *env;
     jobject *instance;
 };
+
 #endif
 
 // Get pointer field straight from `JavaClass`
-jfieldID getPtrFieldId(JNIEnv * env, jobject obj, std::string attribute_name) {
+jfieldID getPtrFieldId(JNIEnv *env, jobject obj, std::string attribute_name) {
     static jfieldID ptrFieldId = 0;
 
     if (!ptrFieldId) {
@@ -57,7 +59,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_start(JNIEnv *env, jobject i
 
     auto proxy = HicnProxy::createAsClient(config_connector, config_automation).release();
     proxy->setJniContext(context);
-    env->SetLongField(instance, getPtrFieldId(env, instance, "mProxyPtr"), (jlong) proxy);
+    env->SetLongField(instance, getPtrFieldId(env, instance, HPROXY_ATTRIBUTE), (jlong) proxy);
     proxy->run();
 #endif
 }
@@ -65,7 +67,8 @@ Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_start(JNIEnv *env, jobject i
 extern "C" JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_destroy(JNIEnv *env, jobject instance) {
 #ifdef ENABLE_HPROXY
-    HicnProxy* proxy = (HicnProxy*) env->GetLongField(instance, getPtrFieldId(env, instance, "mProxyPtr"));
+    HicnProxy *proxy = (HicnProxy *) env->GetLongField(instance, getPtrFieldId(env, instance,
+                                                                               HPROXY_ATTRIBUTE));
     auto jni_context = proxy->getJniContext();
     delete jni_context;
     delete proxy;
@@ -75,7 +78,8 @@ Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_destroy(JNIEnv *env, jobject
 extern "C" JNIEXPORT jboolean JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_isRunning(JNIEnv *env, jobject instance) {
 #ifdef ENABLE_HPROXY
-    HicnProxy* proxy = (HicnProxy*) env->GetLongField(instance, getPtrFieldId(env, instance, "mProxyPtr"));
+    HicnProxy *proxy = (HicnProxy *) env->GetLongField(instance, getPtrFieldId(env, instance,
+                                                                               HPROXY_ATTRIBUTE));
     if (proxy) {
         return jboolean(proxy->isRunning());
     }
@@ -123,7 +127,7 @@ extern "C" int createTunDevice(const char *vpn_address, uint16_t prefix_length,
                                const char *route_address,
                                uint16_t route_prefix_length, const char *dns, void *context) {
 #ifdef ENABLE_HPROXY
-    JniContext *jni_context= (JniContext*)(context);
+    JniContext *jni_context = (JniContext *) (context);
 
     if (!jni_context->env || !jni_context->instance) {
         __android_log_print(ANDROID_LOG_ERROR, "HProxyWrap",
@@ -131,7 +135,8 @@ extern "C" int createTunDevice(const char *vpn_address, uint16_t prefix_length,
         return -1;
     }
 
-    return createTunDeviceWrap(jni_context->env, *jni_context->instance, vpn_address, prefix_length, route_address,
+    return createTunDeviceWrap(jni_context->env, *jni_context->instance, vpn_address, prefix_length,
+                               route_address,
                                route_prefix_length, dns);
 #else
     return 0;
@@ -140,7 +145,7 @@ extern "C" int createTunDevice(const char *vpn_address, uint16_t prefix_length,
 
 extern "C" int closeTunDevice(void *context) {
 #ifdef ENABLE_HPROXY
-    JniContext *jni_context= (JniContext*)(context);
+    JniContext *jni_context = (JniContext *) (context);
     if (!jni_context->env || !jni_context->instance) {
         __android_log_print(ANDROID_LOG_ERROR, "HProxyWrap",
                             "Call createTunDevice, but _env and _instance variables are not initialized.");
@@ -166,11 +171,12 @@ Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_isHProxyEnabled(JNIEnv *env,
 extern "C" JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_stop(JNIEnv *env, jobject instance) {
 #ifdef ENABLE_HPROXY
-    HicnProxy* proxy = (HicnProxy*) env->GetLongField(instance, getPtrFieldId(env, instance, "mProxyPtr"));
+    HicnProxy *proxy = (HicnProxy *) env->GetLongField(instance, getPtrFieldId(env, instance,
+                                                                               HPROXY_ATTRIBUTE));
     if (proxy) {
         proxy->stop();
     }
-#endif
+#endifgit
 }
 
 extern "C" JNIEXPORT jstring JNICALL
