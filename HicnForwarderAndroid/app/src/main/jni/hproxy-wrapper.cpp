@@ -69,7 +69,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_destroy(JNIEnv *env, jobject
 #ifdef ENABLE_HPROXY
     HicnProxy *proxy = (HicnProxy *) env->GetLongField(instance, getPtrFieldId(env, instance,
                                                                                HPROXY_ATTRIBUTE));
-    auto jni_context = proxy->getJniContext();
+    JniContext *jni_context = (JniContext *)proxy->getJniContext();
     delete jni_context;
     delete proxy;
 #endif
@@ -176,7 +176,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_stop(JNIEnv *env, jobject in
     if (proxy) {
         proxy->stop();
     }
-#endifgit
+#endif
 }
 
 extern "C" JNIEXPORT jstring JNICALL
