@@ -52,9 +52,8 @@ public class BackendProxyService extends VpnService implements Handler.Callback 
     private PendingIntent mConfigureIntent;
 
     private final AtomicReference<Thread> mConnectingThread = new AtomicReference<>();
-
-    private HProxy mProxyInstance = null;
     private AtomicInteger mNextConnectionId = new AtomicInteger(1);
+    private ProxyThread mProxyThread = null;
 
     @Override
     public void onCreate() {
@@ -74,11 +73,10 @@ public class BackendProxyService extends VpnService implements Handler.Callback 
             disconnect();
             return START_NOT_STICKY;
         } else {
-            HProxy hproxy = HProxy.getInstance();
             try {
-                getPackageManager().getPackageInfo(hproxy.getProxifiedPackageName(), 0);
+                getPackageManager().getPackageInfo(HProxy.getProxifiedPackageName(), 0);
             } catch (PackageManager.NameNotFoundException e) {
-                String stringMessage = hproxy.getProxifiedAppName() + " " + getString(R.string.not_found);
+                String stringMessage = HProxy.getProxifiedAppName() + " " + getString(R.string.not_found);
                 Toast.makeText(this, stringMessage, Toast.LENGTH_LONG).show();
                 updateForegroundNotification(stringMessage);
 
@@ -101,12 +99,12 @@ public class BackendProxyService extends VpnService implements Handler.Callback 
     }
 
     private void disconnect() {
-        if (mProxyInstance != null) {
-            mHandler.sendEmptyMessage(R.string.hproxy_disconnect);
-            setConnectingThread(null);
-            mProxyInstance.stop();
-            mProxyInstance = null;
+        mHandler.sendEmptyMessage(R.string.hproxy_disconnect);
+        if (mProxyThread != null) {
+          mProxyThread.stop();
         }
+
+        setConnectingThread(null);
 
         stopForeground(true);
         stopSelf();
@@ -130,9 +128,9 @@ public class BackendProxyService extends VpnService implements Handler.Callback 
 
     private void startConnection(final ProxyThread proxy) {
         // Get an instance of the proxy
-        mProxyInstance = HProxy.getInstance();
         // Replace any existing connecting thread with the  new one.
-        final Thread thread = new Thread(proxy, "HProxyBackendThread");
+        mProxyThread = proxy;
+        final Thread thread = new Thread(mProxyThread, "HProxyBackendThread");
         setConnectingThread(thread);
 
         proxy.setConfigureIntent(mConfigureIntent);
@@ -176,7 +174,6 @@ public class BackendProxyService extends VpnService implements Handler.Callback 
                 .setContentIntent(mConfigureIntent)
                 .build());
     }
-
 
 
 }

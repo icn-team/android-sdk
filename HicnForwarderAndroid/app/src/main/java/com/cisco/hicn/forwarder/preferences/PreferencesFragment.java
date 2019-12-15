@@ -40,9 +40,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
 
-        HProxy hProxy = HProxy.getInstance();
-
-        if (hProxy.isHProxyEnabled()) {
+        if (HProxy.isHProxyEnabled()) {
             setPreferencesFromResource(R.xml.root_proxy, s);
         } else {
             setPreferencesFromResource(R.xml.root_no_proxy, s);

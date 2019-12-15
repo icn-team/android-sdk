@@ -21,31 +21,20 @@ import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class HProxy {
-    private static HProxy sInstance = null;
-    private AtomicInteger mNextConnectorId = new AtomicInteger(1);
-
-    private int mVpnConnector = -1;
-    private int mUdpTunnelConnector = -1;
-    private int mIcnConnector = -1;
+//    private static HProxy sInstance = null;
     private ProxyThread mProxyThread;
+
+    // This will sotre the actual pointer to the proxy
+    private long mProxyPtr = 0;
 
     static {
         System.loadLibrary("hproxy-wrapper");
     }
 
-    public static HProxy getInstance() {
-        if (sInstance == null) {
-            sInstance = new HProxy();
-        }
-        return sInstance;
-    }
+    public HProxy() { initConfig(); }
 
     public void setProxyInstance(ProxyThread proxyThread) {
         mProxyThread = proxyThread;
-    }
-
-    private HProxy() {
-        initConfig();
     }
 
     public native void initConfig();
@@ -73,8 +62,10 @@ public class HProxy {
 
     public native void stop();
 
-    public native boolean isHProxyEnabled();
+    public native void destroy();
 
-    public native String getProxifiedAppName();
-    public native String getProxifiedPackageName();
+    public static native boolean isHProxyEnabled();
+
+    public static native String getProxifiedAppName();
+    public static native String getProxifiedPackageName();
 }

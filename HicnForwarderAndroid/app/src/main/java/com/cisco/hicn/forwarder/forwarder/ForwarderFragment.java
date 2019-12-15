@@ -135,11 +135,7 @@ public class ForwarderFragment extends Fragment {
         Intent intent = new Intent(getActivity(), BackendAndroidService.class);
         getActivity().startService(intent);
 
-
-        HProxy hproxy = HProxy.getInstance();
-
-
-        if (hproxy.isHProxyEnabled()) {
+        if (HProxy.isHProxyEnabled()) {
             Intent intentProxy = null;
 
             intentProxy = BackendProxyService.prepare(getActivity());
@@ -155,8 +151,7 @@ public class ForwarderFragment extends Fragment {
     private void stopBackend() {
         Intent intent = new Intent(getActivity(), BackendAndroidService.class);
         getActivity().stopService(intent);
-        HProxy hproxy = HProxy.getInstance();
-        if (hproxy.isHProxyEnabled()) {
+        if (HProxy.isHProxyEnabled()) {
             this.getActivity().startService(getServiceIntent().setAction(BackendProxyService.ACTION_DISCONNECT));
         }
     }
