@@ -138,14 +138,14 @@ public class ForwarderFragment extends Fragment {
         Intent intent = new Intent(getActivity(), BackendAndroidService.class);
         getActivity().startService(intent);
 
-        HProxy hproxy = HProxy.getInstance();
-        if (hproxy.isHProxyEnabled()) {
+        
+        if (HProxy.isHProxyEnabled()) {
             boolean appInstalled = false;
             try {
-                getActivity().getPackageManager().getPackageInfo(hproxy.getProxifiedPackageName(), 0);
+                getActivity().getPackageManager().getPackageInfo(HProxy.getProxifiedPackageName(), 0);
                 appInstalled = true;
             } catch (PackageManager.NameNotFoundException e) {
-                String stringMessage = hproxy.getProxifiedAppName() + " " + getString(R.string.not_found);
+                String stringMessage = HProxy.getProxifiedAppName() + " " + getString(R.string.not_found);
                 Toast.makeText(getActivity(), stringMessage, Toast.LENGTH_LONG).show();
             }
             if (appInstalled) {
@@ -164,8 +164,7 @@ public class ForwarderFragment extends Fragment {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     String packageName = intent.getData().toString().split(":")[1];
-                    HProxy hProxy = HProxy.getInstance();
-                    if (hProxy.getProxifiedPackageName().equals(packageName)) {
+                    if (HProxy.getProxifiedPackageName().equals(packageName)) {
                         switch (intent.getAction()) {
                             case Intent.ACTION_PACKAGE_ADDED:
                                 Intent intentProxy = null;
