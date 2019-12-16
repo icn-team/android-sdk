@@ -137,8 +137,6 @@ public class ForwarderFragment extends Fragment {
     private void startBackend() {
         Intent intent = new Intent(getActivity(), BackendAndroidService.class);
         getActivity().startService(intent);
-
-        
         if (HProxy.isHProxyEnabled()) {
             boolean appInstalled = false;
             try {
@@ -196,11 +194,10 @@ public class ForwarderFragment extends Fragment {
     private void stopBackend() {
         Intent intent = new Intent(getActivity(), BackendAndroidService.class);
         getActivity().stopService(intent);
-        HProxy hproxy = HProxy.getInstance();
-        if (hproxy.isHProxyEnabled()) {
+        if (HProxy.isHProxyEnabled()) {
             boolean appInstalled = false;
             try {
-                getActivity().getPackageManager().getPackageInfo(hproxy.getProxifiedPackageName(), 0);
+                getActivity().getPackageManager().getPackageInfo(HProxy.getProxifiedPackageName(), 0);
                 appInstalled = true;
             } catch (PackageManager.NameNotFoundException e) {
             }
