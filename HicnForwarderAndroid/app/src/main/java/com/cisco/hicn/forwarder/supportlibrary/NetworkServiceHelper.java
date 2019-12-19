@@ -59,7 +59,7 @@ public class NetworkServiceHelper {
 
     private void requestMobileNetwork() {
         final int[] transportTypes = new int[]{NetworkCapabilities.TRANSPORT_CELLULAR};
-        final int[] capabilities = new int[]{NetworkCapabilities.NET_CAPABILITY_INTERNET};
+        final int[] capabilities = new int[]{NetworkCapabilities.NET_CAPABILITY_INTERNET | NetworkCapabilities.NET_CAPABILITY_NOT_VPN};
 
         if (mMobileNetworkCallback != null) {
             Log.d(TAG, "Already mobile network requested");
@@ -78,7 +78,8 @@ public class NetworkServiceHelper {
 
     private void requestWifiNetwork() {
         final int[] transportTypes = new int[]{NetworkCapabilities.TRANSPORT_WIFI};
-        final int[] capabilities = new int[]{NetworkCapabilities.NET_CAPABILITY_INTERNET};
+        final int[] capabilities = new int[]{NetworkCapabilities.NET_CAPABILITY_INTERNET | NetworkCapabilities.NET_CAPABILITY_NOT_VPN};
+
 
         if (mWifiNetworkCallback != null) {
             Log.d(TAG, "Already Wi-Fi network requested");
