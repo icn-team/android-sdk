@@ -25,6 +25,7 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -41,6 +42,10 @@ import com.cisco.hicn.forwarder.preferences.PreferencesFragment;
 import com.cisco.hicn.forwarder.supportlibrary.Facemgr;
 import com.cisco.hicn.forwarder.utility.NetdeviceTypeEnum;
 import com.google.android.material.navigation.NavigationView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity
         implements
@@ -146,6 +151,20 @@ public class MainActivity extends AppCompatActivity
             int wiredNextHopPortIPv6 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wired_nexthop_port_ipv6_key), getString(R.string.default_wired_nexthop_port_ipv6)));
             facemgr.updateInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_WIRED.getValue(), wiredSourcePortIPv6, wiredNextHopIPv6, wiredNextHopPortIPv6);
         }
+        try {
+            String interfacesString = sharedPreferences.getString(getString(R.string.interfaces_list_key), getString(R.string.empty_string));
+            JSONObject jSONObject = new JSONObject(interfacesString);
+            JSONArray jSONArray = jSONObject.getJSONArray(getString(R.string.interfaces_list_tag));
+            if (jSONArray != null) {
+                int len = jSONArray.length();
+                for (int i = 0; i < len; i++) {
+                    facemgr.discardInterface(jSONArray.get(i).toString());
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         fragmentManager.beginTransaction().replace(R.id.viewLayout, home).commit();
 
     }
