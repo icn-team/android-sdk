@@ -398,6 +398,14 @@
     <string name="not_found">not found</string>
     <string name="facemgr_log_level_title">Log Level</string>
     <string name="facemgr_log_level_key">facemgr_log_level_key</string>
+    <string name="discard_interfaces_summary">Discard Interfaces</string>
+    <string name="discard_interfaces_title">Discard Interfaces</string>
+    <string name="interfaces_list_key">interfaces_list_key</string>
+    <string name="input_dialog_title">Add Interface Name</string>
+    <string name="modify_delete_dialog_title">Modify or Delete Interface Name</string>
+    <string name="interfaces_list_tag">InterfacesList</string>
+    <string name="empty_string" />
+    <string name="null_interface_name_message">Interface name cannot be empty</string>
 
 
 </resources>

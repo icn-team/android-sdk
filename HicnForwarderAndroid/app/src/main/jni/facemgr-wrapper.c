@@ -256,3 +256,19 @@ Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_setLogLevel(JNIEnv *env, jo
     }
 
 }
+
+JNIEXPORT void JNICALL
+Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_discardInterface(JNIEnv *env, jobject thiz,
+                                                                      jstring interface_name) {
+    const char *interface_name_string = (*env)->GetStringUTFChars(env, interface_name, 0);
+    __android_log_print(ANDROID_LOG_DEBUG, "HicnFacemgrWrap", "discard interface name: %s", interface_name_string);
+
+}
+
+JNIEXPORT void JNICALL
+Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_removeDiscardInterface(JNIEnv *env,
+                                                                            jobject thiz,
+                                                                            jstring interface_name) {
+    const char *interface_name_string = (*env)->GetStringUTFChars(env, interface_name, 0);
+    __android_log_print(ANDROID_LOG_DEBUG, "HicnFacemgrWrap", "remove discard interface name: %s", interface_name_string);
+}
