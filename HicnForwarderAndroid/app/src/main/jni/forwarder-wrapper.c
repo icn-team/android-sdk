@@ -105,7 +105,7 @@ static void _setLogLevel(int logLevelArray[LoggerFacility_END],
             }
         }
     }
-
+    
     parcMemory_Deallocate((void **) &tofree);
 }
 
