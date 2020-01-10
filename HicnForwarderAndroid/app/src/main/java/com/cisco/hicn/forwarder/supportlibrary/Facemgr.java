@@ -59,4 +59,8 @@ public class Facemgr {
     public native String getListFacelets();
 
     public native void setLogLevel(int facemgrLogLevel);
+
+    public native void discardInterface(String interfaceName);
+
+    public native void removeDiscardInterface(String interfaceName);
 }

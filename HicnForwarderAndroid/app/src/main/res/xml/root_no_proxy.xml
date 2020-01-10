@@ -79,6 +79,12 @@
             app:fragment="com.cisco.hicn.forwarder.preferences.WiredPreferencesFragment"
             app:summary="@string/wired_preference_summary"
             app:title="@string/wired_preference_title" />
+
+        <Preference
+            app:fragment="com.cisco.hicn.forwarder.preferences.DiscardInterfacesPreferenceFragment"
+            app:summary="@string/discard_interfaces_summary"
+            app:title="@string/discard_interfaces_title" />
+
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/hiper_category">

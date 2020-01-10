@@ -16,8 +16,10 @@
 package com.cisco.hicn.forwarder.forwarder;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -29,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -41,7 +44,7 @@ import com.cisco.hicn.forwarder.utility.Constants;
 
 public class ForwarderFragment extends Fragment {
 
-
+    private BroadcastReceiver broadcastReceiver;
     private TextView forwarderStatusTextView = null;
     private Switch forwarderSwitch = null;
     private static int VPN_REQUEST_CODE = 100;
@@ -134,17 +137,57 @@ public class ForwarderFragment extends Fragment {
     private void startBackend() {
         Intent intent = new Intent(getActivity(), BackendAndroidService.class);
         getActivity().startService(intent);
-
         if (HProxy.isHProxyEnabled()) {
-            Intent intentProxy = null;
-
-            intentProxy = BackendProxyService.prepare(getActivity());
-
-            if (intentProxy != null) {
-                startActivityForResult(intentProxy, VPN_REQUEST_CODE);
-            } else {
-                this.getActivity().startService(getServiceIntent().setAction(BackendProxyService.ACTION_CONNECT));
+            boolean appInstalled = false;
+            try {
+                getActivity().getPackageManager().getPackageInfo(HProxy.getProxifiedPackageName(), 0);
+                appInstalled = true;
+            } catch (PackageManager.NameNotFoundException e) {
+                String stringMessage = HProxy.getProxifiedAppName() + " " + getString(R.string.not_found);
+                Toast.makeText(getActivity(), stringMessage, Toast.LENGTH_LONG).show();
             }
+            if (appInstalled) {
+                Intent intentProxy = null;
+
+                intentProxy = BackendProxyService.prepare(getActivity());
+
+                if (intentProxy != null) {
+                    startActivityForResult(intentProxy, VPN_REQUEST_CODE);
+                } else {
+                    this.getActivity().startService(getServiceIntent().setAction(BackendProxyService.ACTION_CONNECT));
+                }
+            }
+
+            broadcastReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    String packageName = intent.getData().toString().split(":")[1];
+                    if (HProxy.getProxifiedPackageName().equals(packageName)) {
+                        switch (intent.getAction()) {
+                            case Intent.ACTION_PACKAGE_ADDED:
+                                Intent intentProxy = null;
+                                intentProxy = BackendProxyService.prepare(getActivity());
+                                if (intentProxy != null) {
+                                    startActivityForResult(intentProxy, VPN_REQUEST_CODE);
+                                } else {
+                                    getActivity().startService(getServiceIntent().setAction(BackendProxyService.ACTION_CONNECT));
+                                }
+                                break;
+                            case Intent.ACTION_PACKAGE_REMOVED:
+                                getActivity().startService(getServiceIntent().setAction(BackendProxyService.ACTION_DISCONNECT));
+                                break;
+                        }
+                    }
+                }
+            };
+
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(Intent.ACTION_PACKAGE_ADDED);
+            filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
+            filter.addDataScheme("package");
+
+            getActivity().registerReceiver(broadcastReceiver, filter);
+
         }
     }
 
@@ -152,7 +195,15 @@ public class ForwarderFragment extends Fragment {
         Intent intent = new Intent(getActivity(), BackendAndroidService.class);
         getActivity().stopService(intent);
         if (HProxy.isHProxyEnabled()) {
-            this.getActivity().startService(getServiceIntent().setAction(BackendProxyService.ACTION_DISCONNECT));
+            boolean appInstalled = false;
+            try {
+                getActivity().getPackageManager().getPackageInfo(HProxy.getProxifiedPackageName(), 0);
+                appInstalled = true;
+            } catch (PackageManager.NameNotFoundException e) {
+            }
+            if (appInstalled)
+                this.getActivity().startService(getServiceIntent().setAction(BackendProxyService.ACTION_DISCONNECT));
+            getActivity().unregisterReceiver(broadcastReceiver);
         }
     }
 
