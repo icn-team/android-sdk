@@ -43,7 +43,7 @@ import org.json.JSONObject;
 public class DiscardInterfacesPreferenceFragment extends Fragment {
 
     private ListView lv;
-    private ArrayAdapter<String> adapter;
+    private ArrayAdapter adapter;
     private CRUD crud = new CRUD();
     private Dialog dialog;
     private JSONArray jSONArray;
@@ -90,7 +90,7 @@ public class DiscardInterfacesPreferenceFragment extends Fragment {
                 int len = jSONArray.length();
                 for (int i = 0; i < len; i++) {
                     crud.save(jSONArray.get(i).toString());
-                    adapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, crud.getInterfacesArrayList());
+                    adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, crud.getInterfacesArrayList());
                     lv.setAdapter(adapter);
                 }
             }
@@ -139,7 +139,7 @@ public class DiscardInterfacesPreferenceFragment extends Fragment {
                     editor.putString(getString(R.string.interfaces_list_key), jSONObject.toString());
                     editor.apply();
                     inptuInterfaceNameEditText.setText(getString(R.string.empty_string));
-                    adapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, crud.getInterfacesArrayList());
+                    adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, crud.getInterfacesArrayList());
                     lv.setAdapter(adapter);
                 }
                 dialog.closeOptionsMenu();
@@ -193,7 +193,7 @@ public class DiscardInterfacesPreferenceFragment extends Fragment {
                         editor.putString(getString(R.string.interfaces_list_key), jSONObject.toString());
                         editor.apply();
 
-                        adapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, crud.getInterfacesArrayList());
+                        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, crud.getInterfacesArrayList());
                         lv.setAdapter(adapter);
 
                     }
@@ -220,7 +220,7 @@ public class DiscardInterfacesPreferenceFragment extends Fragment {
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString(getString(R.string.interfaces_list_key), jSONObject.toString());
                 editor.apply();
-                adapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, crud.getInterfacesArrayList());
+                adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, crud.getInterfacesArrayList());
                 lv.setAdapter(adapter);
                 dialog.dismiss();
             }

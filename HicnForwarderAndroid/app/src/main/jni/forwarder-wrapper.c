@@ -115,7 +115,6 @@ Java_com_cisco_hicn_forwarder_supportlibrary_Forwarder_startForwarder(JNIEnv *en
                                                                       jint capacity,
                                                                       jint logLevel) {
 
-
     if (!_isRunning) {
         __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap", "starting HicnFwd...");
         _env = env;

@@ -39,11 +39,13 @@ import com.cisco.hicn.forwarder.supportlibrary.NetworkServiceHelper;
 import com.cisco.hicn.forwarder.supportlibrary.SocketBinder;
 import com.cisco.hicn.forwarder.utility.Constants;
 
+import java.util.Objects;
+
 public class BackendAndroidService extends Service {
     private final static String TAG = "BackendService";
 
-    private static Thread sForwarderThread = null;
-    private static Thread sFacemgrThread = null;
+    private Thread sForwarderThread = null;
+    private Thread sFacemgrThread = null;
 
     private NetworkServiceHelper mNetService = new NetworkServiceHelper();
     private SocketBinder mSocketBinder = new SocketBinder();
@@ -101,13 +103,11 @@ public class BackendAndroidService extends Service {
 
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case EVENT_START_FORWARDER:
 
-                    getCapacity();
-                    getLogLevel();
-                    startBackend();
-                    break;
+            if (msg.what == EVENT_START_FORWARDER) {
+                getCapacity();
+                getLogLevel();
+                startBackend();
             }
             super.handleMessage(msg);
         }
@@ -115,12 +115,12 @@ public class BackendAndroidService extends Service {
 
     private void getCapacity() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        this.capacity = Integer.parseInt(sharedPreferences.getString(getString(R.string.cache_size_key), getString(R.string.default_cache_size)));
+        this.capacity = Integer.parseInt(Objects.requireNonNull(sharedPreferences.getString(getString(R.string.cache_size_key), getString(R.string.default_cache_size))));
     }
 
     private void getLogLevel() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        this.logLevel = Integer.parseInt(sharedPreferences.getString(getString(R.string.forwarder_log_level_key), getString(R.string.forwarder_default_log_level)));
+        this.logLevel = Integer.parseInt(Objects.requireNonNull(sharedPreferences.getString(getString(R.string.forwarder_log_level_key), getString(R.string.forwarder_default_log_level))));
     }
 
     protected Runnable mForwarderRunner = () -> {
@@ -138,29 +138,19 @@ public class BackendAndroidService extends Service {
 
     private void startBackend() {
         String NOTIFICATION_CHANNEL_ID = "12345";
-        Notification notification = null;
-        if (Build.VERSION.SDK_INT >= 26) {
-            Notification.Builder notificationBuilder = new Notification.Builder(this, NOTIFICATION_CHANNEL_ID);
+        Notification notification;
+        Notification.Builder notificationBuilder = new Notification.Builder(this, NOTIFICATION_CHANNEL_ID);
 
-            Intent notificationIntent = new Intent(this, MainActivity.class);
-            PendingIntent activity = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent activity = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            notificationBuilder.setContentTitle("ForwarderAndroid").setContentText("ForwarderAndroid").setOngoing(true).setContentIntent(activity);
-            notification = notificationBuilder.build();
-        } else {
-            notification = new Notification.Builder(this)
-                    .setContentTitle("ForwarderAndroid")
-                    .setContentText("ForwarderAndroid")
-                    .build();
-        }
+        notificationBuilder.setContentTitle("ForwarderAndroid").setContentText("ForwarderAndroid").setOngoing(true).setContentIntent(activity);
+        notification = notificationBuilder.build();
 
-        if (Build.VERSION.SDK_INT >= 26) {
-            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "ForwarderAndroid", NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setDescription("ForwarderAndroid");
-            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.createNotificationChannel(channel);
-
-        }
+        NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "ForwarderAndroid", NotificationManager.IMPORTANCE_DEFAULT);
+        channel.setDescription("ForwarderAndroid");
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.createNotificationChannel(channel);
 
         startForeground(Constants.FOREGROUND_SERVICE, notification);
 
