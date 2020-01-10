@@ -10,13 +10,13 @@ Install dependencies
 If Ubuntu:
 
 ```
-sudo apt-get git wget python curl automake libconf libtool openjdk-8-jdk coreutils
+sudo apt-get git wget python curl automake libconf libtool openjdk-8-jdk
 ```
 
 If Mac Os X
 
 ```
-brew install git wget automake libconf libtool gnu-sed
+brew install git wget automake libconf libtool gnu-sed coreutils
 ```
 
 
