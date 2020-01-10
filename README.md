@@ -10,7 +10,7 @@ Install dependencies
 If Ubuntu:
 
 ```
-sudo apt-get git wget python curl automake libconf libtool openjdk-8-jdk
+sudo apt-get git wget python curl automake libconf libtool openjdk-8-jdk coreutils
 ```
 
 If Mac Os X
