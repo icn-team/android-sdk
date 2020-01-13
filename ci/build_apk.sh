@@ -87,6 +87,10 @@ PLAYSTORE_TRACK=production
 DRAFT=false
 ANDROID_HOME=/sdk
 
+if [ -z "$1" ]; then
+  bash /hicn/ci/push_playstore.sh $PLAYSTORE_KEY app/build/outputs/apk/release/HicnForwarderAndroid.apk $VERSION_CODE /sdk
+fi
+
 cp app/build/outputs/apk/release/*.apk /hicn
 
 cd /hicn/hICNTools
