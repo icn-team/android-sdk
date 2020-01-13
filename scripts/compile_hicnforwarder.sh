@@ -9,7 +9,7 @@ fi
 if [ "$1" = "DEBUG" ]; then
 	./gradlew assembleDebug
 else
-	./gradlew assembleRelease
+	./gradlew assembleRelease -PVERSION_CODE=6
 fi
 
 echo "Apks are inside HicnForwarderAndroid/app/build/outputs/apk"
