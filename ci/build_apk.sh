@@ -16,7 +16,7 @@
 #!/bin/bash
 
 set -ex
-
+echo $2
 ls /hicn
 wget https://github.com/icn-team/android-sdk/releases/download/release/HicnForwarderAndroid.apk
 AAPT=$(find /sdk -name "aapt" | sort -r | head -1)
