@@ -20,11 +20,11 @@ jobs:
       - name: 'Pull Docker Image'    
         shell: bash
         run: |
-          echo "xxxx" $BUILD_ID ; docker pull icnteam/android-build:hicn
+            docker pull icnteam/android-build:hicn
       - name: 'Build apks'
         shell: bash
         run: |
-          echo "xxxxx"; cat ${{ env.NEXT_VALUE_FILE }} ; docker run -v $PWD:/hicn  icnteam/android-build:hicn bash -c "bash /hicn/ci/build_apk.sh $NEXT_VALUE"; mkdir -p apks; cp *.apk apks/
+          echo "xxxxx" $BUILD_ID ; docker run -v $PWD:/hicn  icnteam/android-build:hicn bash -c "bash /hicn/ci/build_apk.sh $NEXT_VALUE"; mkdir -p apks; cp *.apk apks/
       - name: 'Push Apks artifacts'
         if: github.ref == 'refs/heads/master'
         uses: actions/upload-artifact@v1
