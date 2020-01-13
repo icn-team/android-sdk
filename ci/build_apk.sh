@@ -16,6 +16,8 @@
 #!/bin/bash
 
 set -ex
+
+ls /hicn
 wget https://github.com/icn-team/android-sdk/releases/download/release/HicnForwarderAndroid.apk
 AAPT=$(find /sdk -name "aapt" | sort -r | head -1)
 VERSION_CODE=$($AAPT dump badging HicnForwarderAndroid.apk | grep versionCode | awk '{print $3}' | sed s/versionCode=//g | sed s/\'//g) 
@@ -77,6 +79,13 @@ cd /hicn/HicnForwarderAndroid
 echo sdk.dir=/sdk > local.properties
 echo ndk.dir=/sdk/ndk-bundle >> local.properties
 ./gradlew assembleRelease -PVERSION_CODE=$VERSION_CODE
+
+PLAYSTORE_KEY=$PLAYSTORE_KEY
+APK_PATH=app/build/outputs/apk/release/HicnForwarderAndroid.apk
+BUILD_NO=$VERSION_CODE
+PLAYSTORE_TRACK=production
+DRAFT=false
+ANDROID_HOME=/sdk
 
 cp app/build/outputs/apk/release/*.apk /hicn
 
