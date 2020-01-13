@@ -24,7 +24,7 @@ jobs:
       - name: 'Build apks'
         shell: bash
         run: |
-          echo "xxxxx" $BUILD_ID ; docker run -v $PWD:/hicn  icnteam/android-build:hicn bash -c "bash /hicn/ci/build_apk.sh $NEXT_VALUE"; mkdir -p apks; cp *.apk apks/
+          docker run -v $PWD:/hicn  icnteam/android-build:hicn bash -c "wget https://github.com/icn-team/android-sdk/releases/download/release/HicnForwarderAndroid.apk; AAPT=$(find ${ANDROID_HOME}  -name "aapt" | sort -r | head -1); VERSION_CODE=$($AAPT dump badging /hicn/HicnForwarderAndroid | grep versionCode | awk '{print $3}' | sed s/versionCode=//g | sed s/\'//g) ; bash /hicn/ci/build_apk.sh $VERSION_CODE"; mkdir -p apks; cp *.apk apks/
       - name: 'Push Apks artifacts'
         if: github.ref == 'refs/heads/master'
         uses: actions/upload-artifact@v1
