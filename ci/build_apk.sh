@@ -18,7 +18,7 @@
 set -ex
 
 echo "----->""$1"
-exit 1
+exit 0
 export QT_VERSION=5.13.1
 export QT_HOME=/qt/Qt
 export ANDROID_NDK_HOME=/sdk/ndk-bundle
