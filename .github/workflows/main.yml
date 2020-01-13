@@ -3,60 +3,9 @@ on:
   schedule:
     - cron:  '30 1 * * *'  
   push:
-env:
-  START_VALUE: 8
-  NEXT_VALUE_FILE: version.txt
 jobs:
-  first:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Initialize the variable in a file with start_value == ${{ env.START_VALUE }}
-      run: expr $START_VALUE + 10 | tee ${{ env.NEXT_VALUE_FILE }}
-    - name: Upload artifact
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        name: NEXT_VALUE
-        path: ${{ env.NEXT_VALUE_FILE }}
-  second:
-    runs-on: ubuntu-latest
-    needs: [first]
-    steps:
-    - name: Download artifact
-      uses: actions/download-artifact@v1.0.0
-      with:
-        name: NEXT_VALUE
-    - name: Show the workspace so you can see where the files are
-      run: find .
-    - name: Update the variable in a file
-      run: |
-        variable=$(cat ./NEXT_VALUE/${{ env.NEXT_VALUE_FILE }})
-        expr $variable + 10 | tee ${{ env.NEXT_VALUE_FILE }}
-    - name: Upload artifact
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        name: NEXT_VALUE
-        path: ${{ env.NEXT_VALUE_FILE }}
-  third:
-    runs-on: ubuntu-latest
-    needs: [second]
-    steps:
-    - name: Download artifact
-      uses: actions/download-artifact@v1.0.0
-      with:
-        name: NEXT_VALUE
-    - name: Show the workspace so you can see where the files are
-      run: find .
-    - name: Update the variable in a file
-      run: |
-        variable=$(cat ./NEXT_VALUE/${{ env.NEXT_VALUE_FILE }})
-        expr $variable + 10 | tee ${{ env.NEXT_VALUE_FILE }}
-    - name: Upload artifact
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        name: NEXT_VALUE
-        path: ${{ env.NEXT_VALUE_FILE }}
+
   build-and-deploy:
-    needs: [third]
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout GitHub Action'
@@ -71,7 +20,7 @@ jobs:
       - name: 'Pull Docker Image'    
         shell: bash
         run: |
-          docker pull icnteam/android-build:hicn
+          echo "xxxx" $BUILD_ID ; docker pull icnteam/android-build:hicn
       - name: 'Build apks'
         shell: bash
         run: |
