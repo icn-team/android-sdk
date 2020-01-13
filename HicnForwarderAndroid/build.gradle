@@ -17,6 +17,8 @@ buildscript {
     
     ext {
         ENABLE_HPROXY = 0
+        VERSION = 11111
+        VERSION_CODE = 5
     }
     repositories {
         google()
