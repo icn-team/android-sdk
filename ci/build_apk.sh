@@ -17,7 +17,7 @@
 
 set -ex
 
-echo "----->"$1"
+echo "----->""$1"
 exit 1
 export QT_VERSION=5.13.1
 export QT_HOME=/qt/Qt
