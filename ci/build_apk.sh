@@ -16,8 +16,10 @@
 #!/bin/bash
 
 set -ex
-
-echo "----->""$1"
+wget https://github.com/icn-team/android-sdk/releases/download/release/HicnForwarderAndroid.apk
+AAPT=$(find /sdk -name "aapt" | sort -r | head -1)
+VERSION_CODE=$($AAPT dump badging HicnForwarderAndroid.apk | grep versionCode | awk '{print $3}' | sed s/versionCode=//g | sed s/\'//g) 
+echo $VERSION_CODE
 exit 0
 export QT_VERSION=5.13.1
 export QT_HOME=/qt/Qt
