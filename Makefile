@@ -111,9 +111,9 @@ init_depend:
 init_qt:
 	./scripts/init_qt.sh
 android_hicnforwarder:
-	./scripts/compile_hicnforwarder.sh
+	./scripts/compile_hicnforwarder.sh $(VERSION)
 android_hicnforwarder_debug:
-	./scripts/compile_hicnforwarder.sh DEBUG
+	./scripts/compile_hicnforwarder.sh $(VERSION) DEBUG
 android_hicntools:
 	./scripts/compile_hicntools.sh
 android_hicntools_debug:
