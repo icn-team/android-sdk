@@ -25,6 +25,7 @@ jobs:
         run: |
           docker run -v $PWD:/hicn  icnteam/android-build:hicn bash -c "bash /hicn/ci/build_apk.sh"; mkdir -p apks; cp *.apk apks/
       - name: 'Push Apks artifacts'
+        if: github.ref == 'refs/heads/master'
         uses: actions/upload-artifact@v1
         with:
           name: apks
