@@ -20,7 +20,10 @@ wget https://github.com/icn-team/android-sdk/releases/download/release/HicnForwa
 AAPT=$(find /sdk -name "aapt" | sort -r | head -1)
 VERSION_CODE=$($AAPT dump badging HicnForwarderAndroid.apk | grep versionCode | awk '{print $3}' | sed s/versionCode=//g | sed s/\'//g) 
 echo $VERSION_CODE
-exit 0
+if [ "$VERSION_CODE" -lt "8" ]; then
+       VERSION_CODE=6
+fi
+VERSION_CODE=$((VERSION_CODE+1))
 export QT_VERSION=5.13.1
 export QT_HOME=/qt/Qt
 export ANDROID_NDK_HOME=/sdk/ndk-bundle
@@ -73,7 +76,7 @@ ln -sf /usr_i686 /hicn
 cd /hicn/HicnForwarderAndroid
 echo sdk.dir=/sdk > local.properties
 echo ndk.dir=/sdk/ndk-bundle >> local.properties
-./gradlew assembleRelease -PVERSION_CODE=$1
+./gradlew assembleRelease -PVERSION_CODE=$VERSION_CODE
 
 cp app/build/outputs/apk/release/*.apk /hicn
 
