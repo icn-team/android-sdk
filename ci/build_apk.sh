@@ -16,8 +16,7 @@
 #!/bin/bash
 
 set -ex
-echo "xxxxx"$2
-PLAYSTORE_KEY=$2
+PLAYSTORE_KEY=$1
 ls /hicn
 wget https://github.com/icn-team/android-sdk/releases/download/release/HicnForwarderAndroid.apk
 AAPT=$(find /sdk -name "aapt" | sort -r | head -1)
@@ -88,8 +87,8 @@ PLAYSTORE_TRACK=production
 DRAFT=false
 ANDROID_HOME=/sdk
 
-if [ -z "$1" ]; then
-  bash /hicn/ci/push_playstore.sh $PLAYSTORE_KEY app/build/outputs/apk/release/HicnForwarderAndroid.apk $VERSION_CODE /sdk
+if [ -z "$2"]; then
+  bash /hicn/ci/push_playstore.sh $PLAYSTORE_KEY $APK_PATH $VERSION_CODE /sdk
 fi
 
 cp app/build/outputs/apk/release/*.apk /hicn
@@ -99,5 +98,10 @@ echo sdk.dir=/sdk > local.properties
 echo ndk.dir=/sdk/ndk-bundle >> local.properties
 ./gradlew assembleRelease
 cp app/build/outputs/apk/release/*.apk /hicn
+
+APK_PATH=app/build/outputs/apk/release/hICNTools.apk
+if [ -z "$2"]; then
+  bash /hicn/ci/push_playstore.sh $PLAYSTORE_KEY $APK_PATH $VERSION_CODE /sdk
+fi
 
 rm /hicn/usr_*
