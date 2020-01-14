@@ -21,10 +21,16 @@ jobs:
         shell: bash
         run: |
             docker pull icnteam/android-build:hicn
-      - name: 'Build apks'
+      - name: 'Build apks and publish'
+        if: github.ref == 'refs/heads/master'
         shell: bash
         run: |
-          docker run -v $PWD:/hicn  icnteam/android-build:hicn bash -c "bash /hicn/ci/build_apk.sh 1 ${{ secrets.DOCKER_USERNAME }}"; mkdir -p apks; cp *.apk apks/
+          docker run -v $PWD:/hicn  icnteam/android-build:hicn bash -c "bash /hicn/ci/build_apk.sh ${{ secrets.DOCKER_USERNAME }} 1"; mkdir -p apks; cp *.apk apks/
+      - name: 'Build apks without publishing'
+        if: github.ref != 'refs/heads/master'
+        shell: bash
+        run: |
+          docker run -v $PWD:/hicn  icnteam/android-build:hicn bash -c "bash /hicn/ci/build_apk.sh ${{ secrets.DOCKER_USERNAME }}"; mkdir -p apks; cp *.apk apks/
       - name: 'Push Apks artifacts'
         if: github.ref == 'refs/heads/master'
         uses: actions/upload-artifact@v1
@@ -48,7 +54,7 @@ jobs:
           asset_name: hICN_Tools.apk
           asset_content_type: application/zip
       - name: Upload Release Asset (HicnForwarderAndroid)
-        if: github.ref == 'refs/heads/master'
+        #if: github.ref == 'refs/heads/master'
         id: upload-release-asset-hicnforwarder
         uses: actions/upload-release-asset@v1.0.1
         env:
