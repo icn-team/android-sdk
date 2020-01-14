@@ -87,7 +87,7 @@ PLAYSTORE_TRACK=production
 DRAFT=false
 ANDROID_HOME=/sdk
 
-if [ -z "$2"]; then
+if [ "$2" = "1" ]; then
   bash /hicn/ci/push_playstore.sh $PLAYSTORE_KEY $APK_PATH $VERSION_CODE /sdk
 fi
 
@@ -100,7 +100,7 @@ echo ndk.dir=/sdk/ndk-bundle >> local.properties
 cp app/build/outputs/apk/release/*.apk /hicn
 
 APK_PATH=app/build/outputs/apk/release/hICNTools.apk
-if [ -z "$2"]; then
+if [ "$2" = "1" ]; then
   bash /hicn/ci/push_playstore.sh $PLAYSTORE_KEY $APK_PATH $VERSION_CODE /sdk
 fi
 
