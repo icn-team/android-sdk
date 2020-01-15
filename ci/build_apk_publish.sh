@@ -27,6 +27,33 @@ if [ "$VERSION_CODE" -lt "9" ]; then
        VERSION_CODE=9
 fi
 VERSION_CODE=$((VERSION_CODE+1))
+
+
+ln -sf /usr_aarch64 /hicn
+ln -sf /usr_i686 /hicn
+
+cd /hicn/HicnForwarderAndroid
+echo sdk.dir=/sdk > local.properties
+echo ndk.dir=/sdk/ndk-bundle >> local.properties
+./gradlew assembleRelease -PVERSION_CODE=$VERSION_CODE
+
+APK_PATH=app/build/outputs/apk/release/HicnForwarderAndroid.apk
+ANDROID_HOME=/sdk
+bash /hicn/ci/push_playstore.sh $PLAYSTORE_KEY $APK_PATH $VERSION_CODE /sdk
+
+
+cp app/build/outputs/apk/release/*.apk /hicn
+
+cd /hicn/hICNTools
+echo sdk.dir=/sdk > local.properties
+echo ndk.dir=/sdk/ndk-bundle >> local.properties
+./gradlew assembleRelease -PVERSION_CODE=$VERSION_CODE
+cp app/build/outputs/apk/release/*.apk /hicn
+
+APK_PATH=app/build/outputs/apk/release/hICNTools.apk
+bash /hicn/ci/push_playstore.sh $PLAYSTORE_KEY $APK_PATH $VERSION_CODE /sdk
+
+
 export QT_VERSION=5.13.1
 export QT_HOME=/qt/Qt
 export ANDROID_NDK_HOME=/sdk/ndk-bundle
@@ -83,7 +110,7 @@ echo ndk.dir=/sdk/ndk-bundle >> local.properties
 
 APK_PATH=app/build/outputs/apk/release/HicnForwarderAndroid.apk
 ANDROID_HOME=/sdk
-bash /hicn/ci/push_playstore.sh $APK_PATH $VERSION_CODE /sdk
+bash /hicn/ci/push_playstore.sh $PLAYSTORE_KEY $APK_PATH $VERSION_CODE /sdk
 
 
 cp app/build/outputs/apk/release/*.apk /hicn
@@ -95,7 +122,7 @@ echo ndk.dir=/sdk/ndk-bundle >> local.properties
 cp app/build/outputs/apk/release/*.apk /hicn
 
 APK_PATH=app/build/outputs/apk/release/hICNTools.apk
-bash /hicn/ci/push_playstore.sh $APK_PATH $VERSION_CODE /sdk
+bash /hicn/ci/push_playstore.sh $PLAYSTORE_KEY $APK_PATH $VERSION_CODE /sdk
 
 
 rm /hicn/usr_*
