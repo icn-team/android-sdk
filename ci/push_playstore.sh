@@ -1,12 +1,12 @@
 #!/bin/bash
 set -xe
 # Name variables
-PLAYSTORE_KEY="$1"
-APK_PATH=$2
-BUILD_NO=$3
+PLAYSTORE_KEY=$2
+APK_PATH=$3
+BUILD_NO=$4
 PLAYSTORE_TRACK=production
 DRAFT=false
-ANDROID_HOME=$4
+ANDROID_HOME=$5
 
 # Safety checks
 if [ -z "$PLAYSTORE_KEY" ]; then
