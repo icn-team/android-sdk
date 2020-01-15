@@ -18,6 +18,7 @@
 set -ex
 PLAYSTORE_KEY=$1
 echo "---$PLAYSTORE_KEY"
+exit 1
 ls /hicn
 wget https://github.com/icn-team/android-sdk/releases/download/release/HicnForwarderAndroid.apk
 AAPT=$(find /sdk -name "aapt" | sort -r | head -1)
