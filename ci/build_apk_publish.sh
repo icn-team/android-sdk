@@ -83,7 +83,7 @@ echo ndk.dir=/sdk/ndk-bundle >> local.properties
 
 APK_PATH=app/build/outputs/apk/release/HicnForwarderAndroid.apk
 ANDROID_HOME=/sdk
-bash /hicn/ci/push_playstore.sh $PLAYSTORE_KEY $APK_PATH $VERSION_CODE /sdk
+bash /hicn/ci/push_playstore.sh $APK_PATH $VERSION_CODE /sdk
 
 
 cp app/build/outputs/apk/release/*.apk /hicn
@@ -95,7 +95,7 @@ echo ndk.dir=/sdk/ndk-bundle >> local.properties
 cp app/build/outputs/apk/release/*.apk /hicn
 
 APK_PATH=app/build/outputs/apk/release/hICNTools.apk
-bash /hicn/ci/push_playstore.sh $PLAYSTORE_KEY $APK_PATH $VERSION_CODE /sdk
+bash /hicn/ci/push_playstore.sh $APK_PATH $VERSION_CODE /sdk
 
 
 rm /hicn/usr_*

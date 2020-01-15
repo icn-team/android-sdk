@@ -2,11 +2,11 @@
 set -xe
 # Name variables
 PLAYSTORE_KEY=${{secrets.PLAYSTORE_KEY}}
-APK_PATH=$2
-BUILD_NO=$3
+APK_PATH=$1
+BUILD_NO=$2
 PLAYSTORE_TRACK=production
 DRAFT=false
-ANDROID_HOME=$4
+ANDROID_HOME=$3
 
 # Safety checks
 if [ -z "$PLAYSTORE_KEY" ]; then
