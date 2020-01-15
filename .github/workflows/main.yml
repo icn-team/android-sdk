@@ -17,10 +17,10 @@ jobs:
           login-server: hub.docker.com
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: 'Pull Docker Image'    
-        shell: bash
-        run: |
-            docker pull icnteam/android-build:hicn
+      #- name: 'Pull Docker Image'    
+      #  shell: bash
+      #  run: |
+      #      docker pull icnteam/android-build:hicn
       - name: 'Build apks and publish'
         env:
           PLAYSTORE_KEY: "${{secrets.PLAYSTORE_KEY}}"
@@ -28,7 +28,9 @@ jobs:
         #if: github.ref == 'refs/heads/master'
         shell: bash
         run: |
-          docker run -v $PWD:/hicn  icnteam/android-build:hicn bash -c "echo -e \"$PLAYSTORE_KEY\">/hicn/playstore_key.json; bash /hicn/ci/build_apk_publish.sh \"$PLAYSTORE_PRIVATE_KEY\""; mkdir -p apks; cp *.apk apks/
+           bash ci/build_apk_publish.sh "$PLAYSTORE_PRIVATE_KEY"
+        #run: |
+          #docker run -v $PWD:/hicn  icnteam/android-build:hicn bash -c "echo -e \"$PLAYSTORE_KEY\">/hicn/playstore_key.json; bash /hicn/ci/build_apk_publish.sh \"$PLAYSTORE_PRIVATE_KEY\""; mkdir -p apks; cp *.apk apks/
       #- name: 'Build apks without publishing'
        # if: github.ref != 'refs/heads/master'
         #shell: bash
