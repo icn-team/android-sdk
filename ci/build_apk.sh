@@ -96,7 +96,7 @@ cp app/build/outputs/apk/release/*.apk /hicn
 cd /hicn/hICNTools
 echo sdk.dir=/sdk > local.properties
 echo ndk.dir=/sdk/ndk-bundle >> local.properties
-./gradlew assembleRelease
+./gradlew assembleRelease -PVERSION_CODE=$VERSION_CODE
 cp app/build/outputs/apk/release/*.apk /hicn
 
 APK_PATH=app/build/outputs/apk/release/hICNTools.apk

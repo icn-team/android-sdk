@@ -262,6 +262,8 @@ Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_discardInterface(JNIEnv *en
                                                                       jstring interface_name) {
     const char *interface_name_string = (*env)->GetStringUTFChars(env, interface_name, 0);
     __android_log_print(ANDROID_LOG_DEBUG, "HicnFacemgrWrap", "discard interface name: %s", interface_name_string);
+    //int facemgr_cfg_rule_set_ignore(facemgr_cfg_rule_t * cfg_rule, bool status);
+    //int facemgr_cfg_rule_unset_ignore(facemgr_cfg_rule_t * cfg_rule);
 
 }
 
