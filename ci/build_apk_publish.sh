@@ -17,10 +17,6 @@
 
 set -ex
 
-wc -l /hicn/playstore_key.json
-AUTH_TOKEN=$(cat /hicn/playstore_key.json | jq -r '.private_key')
-echo $AUTH_TOKEN
-exit 0
 wget https://github.com/icn-team/android-sdk/releases/download/release/HicnForwarderAndroid.apk
 AAPT=$(find /sdk -name "aapt" | sort -r | head -1)
 VERSION_CODE=$($AAPT dump badging HicnForwarderAndroid.apk | grep versionCode | awk '{print $3}' | sed s/versionCode=//g | sed s/\'//g) 
