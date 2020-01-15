@@ -68,7 +68,7 @@ export ANDROID_SDK_ROOT=/sdk
 export ANDROID_API_VERSION=android-28
 export PATH=$PATH:${ANDROID_HOME}/tools:${JAVA_HOME}/bin
 
-sed -i -e "s/android:versionCode=\"9\"/android:versionCode=\"$VERSION\"/g" /src/viper/android/AndroidManifest.xml
+sed -i -e "s/android:versionCode=\"9\"/android:versionCode=\"$VERSION_CODE\"/g" /src/viper/android/AndroidManifest.xml
 export ANDROID_ARCH=arm64_v8a
 export DISTILLARY_INSTALLATION_PATH=/usr_aarch64/
 export QT_HOST_PREFIX=/qt/Qt/$QT_VERSION/android_${ANDROID_ARCH}
