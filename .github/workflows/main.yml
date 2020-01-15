@@ -25,29 +25,29 @@ jobs:
         env:
           PLAYSTORE_KEY: "${{ secrets.PLAYSTORE_KEY }}"
           PLAYSTORE_PRIVATE_KEY: "${{secrets.PLAYSTORE_PRIVATE_KEY}}"
-        #if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master'
         shell: bash
         run: |
           echo -e '${{ secrets.PLAYSTORE_KEY }}' > playstore_key.json
           docker run -v $PWD:/hicn icnteam/android-build:hicn bash -c "bash /hicn/ci/build_apk_publish.sh"; mkdir -p apks; cp *.apk apks/
-      #- name: 'Build apks without publishing'
-       # if: github.ref != 'refs/heads/master'
-        #shell: bash
-        #run: |
-        #  docker run -v $PWD:/hicn  icnteam/android-build:hicn bash -cx`x`xa "bash /hicn/ci/build_apk_no_publish.sh 0"; mkdir -p apks; cp *.apk apks/
+      - name: 'Build apks without publishing'
+        if: github.ref != 'refs/heads/master'
+        shell: bash
+        run: |
+          docker run -v $PWD:/hicn  icnteam/android-build:hicn bash -cx`x`xa "bash /hicn/ci/build_apk_no_publish.sh"; mkdir -p apks; cp *.apk apks/
       - name: 'Push Apks artifacts'
-        #if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master'
         uses: actions/upload-artifact@v1
         with:
           name: apks
           path: apks
       - name: 'Remove old assets'
-        #if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master'
         shell: bash
         run: |
           ASSETS_IDS=$(curl --silent -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/icn-team/android-sdk/releases/tags/release" | jq -r '.assets[]' | jq -r '.id');for ASSET_ID in $ASSETS_IDS ; do curl -X DELETE --silent -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/icn-team/android-sdk/releases/assets/$ASSET_ID"; done;
       - name: Upload Release Asset (hICN_Tools)
-        #if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master'
         id: upload-release-asset 
         uses: actions/upload-release-asset@v1.0.1
         env:
@@ -58,7 +58,7 @@ jobs:
           asset_name: hICN_Tools.apk
           asset_content_type: application/zip
       - name: Upload Release Asset (HicnForwarderAndroid)
-        #if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master'
         id: upload-release-asset-hicnforwarder
         uses: actions/upload-release-asset@v1.0.1
         env:
@@ -69,7 +69,7 @@ jobs:
           asset_name: HicnForwarderAndroid.apk
           asset_content_type: application/zip
       - name: Upload Release Asset (Viper arm64)
-        #if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master'
         id: upload-release-asset-viper-arm64
         uses: actions/upload-release-asset@v1.0.1
         env:
@@ -80,7 +80,7 @@ jobs:
           asset_name: viper-arm64.apk
           asset_content_type: application/zip
       - name: Upload Release Asset (Viper x86)
-        #if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master'
         id: upload-release-asset-viper-x86
         uses: actions/upload-release-asset@v1.0.1
         env:
