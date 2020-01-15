@@ -21,8 +21,8 @@ wget https://github.com/icn-team/android-sdk/releases/download/release/HicnForwa
 AAPT=$(find /sdk -name "aapt" | sort -r | head -1)
 VERSION_CODE=$($AAPT dump badging HicnForwarderAndroid.apk | grep versionCode | awk '{print $3}' | sed s/versionCode=//g | sed s/\'//g) 
 echo $VERSION_CODE
-if [ "$VERSION_CODE" -lt "12" ]; then
-       VERSION_CODE=12
+if [ "$VERSION_CODE" -lt "13" ]; then
+       VERSION_CODE=13
 fi
 VERSION_CODE=$((VERSION_CODE+1))
 
@@ -68,13 +68,12 @@ export ANDROID_SDK_ROOT=/sdk
 export ANDROID_API_VERSION=android-28
 export PATH=$PATH:${ANDROID_HOME}/tools:${JAVA_HOME}/bin
 
-
+sed -i -e "s/android:versionCode=\"9\"/android:versionCode=\"$VERSION\"/g" /src/viper/android/AndroidManifest.xml
 export ANDROID_ARCH=arm64_v8a
 export DISTILLARY_INSTALLATION_PATH=/usr_aarch64/
 export QT_HOST_PREFIX=/qt/Qt/$QT_VERSION/android_${ANDROID_ARCH}
 mkdir -p /build_aarch64/viper
 cd /build_aarch64/viper
-sed -i -e 's/android:versionCode=\"9\"/android:versionCode=\"$VERSION\"/g' /src/viper/android/AndroidManifest.xml
 /qt/Qt/$QT_VERSION/android_${ANDROID_ARCH}/bin/qmake -r -spec android-clang /src/viper/viper.pro  "TRANSPORT_LIBRARY = HICNET"
 make
 make install INSTALL_ROOT=hicn-viper-${ANDROID_ARCH}
