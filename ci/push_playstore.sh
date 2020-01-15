@@ -8,6 +8,7 @@ PLAYSTORE_TRACK=production
 DRAFT=false
 ANDROID_HOME=$4
 
+echo "---$PLAYSTORE_KEY"
 # Safety checks
 if [ -z "$PLAYSTORE_KEY" ]; then
   echo "PLAYSTORE_KEY variable not supplied. Exiting."

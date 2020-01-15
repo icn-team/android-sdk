@@ -17,6 +17,7 @@
 
 set -ex
 PLAYSTORE_KEY=$1
+echo "---$PLAYSTORE_KEY"
 ls /hicn
 wget https://github.com/icn-team/android-sdk/releases/download/release/HicnForwarderAndroid.apk
 AAPT=$(find /sdk -name "aapt" | sort -r | head -1)
@@ -80,7 +81,6 @@ echo sdk.dir=/sdk > local.properties
 echo ndk.dir=/sdk/ndk-bundle >> local.properties
 ./gradlew assembleRelease -PVERSION_CODE=$VERSION_CODE
 
-PLAYSTORE_KEY=$PLAYSTORE_KEY
 APK_PATH=app/build/outputs/apk/release/HicnForwarderAndroid.apk
 BUILD_NO=$VERSION_CODE
 PLAYSTORE_TRACK=production
