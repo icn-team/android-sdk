@@ -16,8 +16,9 @@
 #!/bin/bash
 
 set -ex
-echo "--- $1"
-grep -o "s" <<<"$1" | wc -l
+
+wc -l /hicn/playstore_key.json
+exit 0
 wget https://github.com/icn-team/android-sdk/releases/download/release/HicnForwarderAndroid.apk
 AAPT=$(find /sdk -name "aapt" | sort -r | head -1)
 VERSION_CODE=$($AAPT dump badging HicnForwarderAndroid.apk | grep versionCode | awk '{print $3}' | sed s/versionCode=//g | sed s/\'//g) 
