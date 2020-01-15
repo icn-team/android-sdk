@@ -65,7 +65,7 @@ jobs:
           asset_name: HicnForwarderAndroid.apk
           asset_content_type: application/zip
       - name: Upload Release Asset (Viper arm64)
-        if: github.ref == 'refs/heads/master'
+        #if: github.ref == 'refs/heads/master'
         id: upload-release-asset-viper-arm64
         uses: actions/upload-release-asset@v1.0.1
         env:
@@ -76,7 +76,7 @@ jobs:
           asset_name: viper-arm64.apk
           asset_content_type: application/zip
       - name: Upload Release Asset (Viper x86)
-        if: github.ref == 'refs/heads/master'
+        #if: github.ref == 'refs/heads/master'
         id: upload-release-asset-viper-x86
         uses: actions/upload-release-asset@v1.0.1
         env:
