@@ -2,7 +2,7 @@
 set -xe
 # Name variables
 AUTH_TOKEN=$1
-$AUTH_ISS=$2
+AUTH_ISS=$2
 AUTH_AUD=$3
 APK_PATH=$4
 BUILD_NO=$5
@@ -11,10 +11,10 @@ DRAFT=false
 ANDROID_HOME=$6
 
 # Safety checks
-if [ -z "$PLAYSTORE_KEY" ]; then
-  echo "PLAYSTORE_KEY variable not supplied. Exiting."
-  exit 1
-fi
+#if [ -z "$PLAYSTORE_KEY" ]; then
+#  echo "PLAYSTORE_KEY variable not supplied. Exiting."
+#  exit 1
+#fi
 if [ -z "$APK_PATH" ]; then
   echo "APK_PATH variable not supplied. Exiting."
   exit 1
@@ -32,7 +32,7 @@ if [ -z "$DRAFT" ]; then
   exit 1
 fi
 
-#AUTH_TOKEN=$(echo $PLAYSTORE_KEY | jq -r '.private_key')
+AUTH_TOKEN=$(echo $AUTH_TOKEN) # | jq -r '.private_key')
 #AUTH_ISS=$(echo $PLAYSTORE_KEY | jq -r '.client_email')
 #AUTH_AUD=$(echo $PLAYSTORE_KEY | jq -r '.token_uri')
 
