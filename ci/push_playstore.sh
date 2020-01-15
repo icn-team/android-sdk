@@ -30,9 +30,9 @@ if [ -z "$DRAFT" ]; then
   exit 1
 fi
 
-AUTH_TOKEN=$(echo $PLAYSTORE_KEY | jq -r '.private_key')
-AUTH_ISS=$(echo $PLAYSTORE_KEY | jq -r '.client_email')
-AUTH_AUD=$(echo $PLAYSTORE_KEY | jq -r '.token_uri')
+AUTH_TOKEN=$(cat $PLAYSTORE_KEY | jq -r '.private_key')
+AUTH_ISS=$(cat $PLAYSTORE_KEY | jq -r '.client_email')
+AUTH_AUD=$(cat $PLAYSTORE_KEY | jq -r '.token_uri')
 
 if [ -z "$AUTH_TOKEN" ] || [ -z "$AUTH_ISS" ] || [ -z "$AUTH_AUD" ]; then
   echo "PLAYSTORE_SERVICE_KEY not as expected. Exiting."
