@@ -1,12 +1,14 @@
 #!/bin/bash
 set -xe
 # Name variables
-PLAYSTORE_KEY=$1
-APK_PATH=$2
-BUILD_NO=$3
+AUTH_TOKEN=$1
+$AUTH_ISS=$2
+AUTH_AUD=$3
+APK_PATH=$4
+BUILD_NO=$5
 PLAYSTORE_TRACK=production
 DRAFT=false
-ANDROID_HOME=$4
+ANDROID_HOME=$6
 
 # Safety checks
 if [ -z "$PLAYSTORE_KEY" ]; then
@@ -30,9 +32,9 @@ if [ -z "$DRAFT" ]; then
   exit 1
 fi
 
-AUTH_TOKEN=$(echo $PLAYSTORE_KEY | jq -r '.private_key')
-AUTH_ISS=$(echo $PLAYSTORE_KEY | jq -r '.client_email')
-AUTH_AUD=$(echo $PLAYSTORE_KEY | jq -r '.token_uri')
+#AUTH_TOKEN=$(echo $PLAYSTORE_KEY | jq -r '.private_key')
+#AUTH_ISS=$(echo $PLAYSTORE_KEY | jq -r '.client_email')
+#AUTH_AUD=$(echo $PLAYSTORE_KEY | jq -r '.token_uri')
 
 if [ -z "$AUTH_TOKEN" ] || [ -z "$AUTH_ISS" ] || [ -z "$AUTH_AUD" ]; then
   echo "PLAYSTORE_SERVICE_KEY not as expected. Exiting."
