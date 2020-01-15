@@ -1,7 +1,7 @@
 #!/bin/bash
 set -xe
 # Name variables
-PLAYSTORE_KEY=$1
+PLAYSTORE_KEY=${{secrets.PLAYSTORE_KEY}}
 APK_PATH=$2
 BUILD_NO=$3
 PLAYSTORE_TRACK=production
