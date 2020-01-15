@@ -25,12 +25,12 @@ jobs:
         #if: github.ref == 'refs/heads/master'
         shell: bash
         run: |
-          docker run -v $PWD:/hicn  icnteam/android-build:hicn bash -c "echo -e \"${{secrets.PLAYSTORE_KEY}}\"">/hicn/playstore_key.json; bash /hicn/ci/build_apk_publish.sh"; mkdir -p apks; cp *.apk apks/
+          docker run -v $PWD:/hicn  icnteam/android-build:hicn bash -c "echo -e \"${{secrets.PLAYSTORE_KEY}}\">/hicn/playstore_key.json; bash /hicn/ci/build_apk_publish.sh"; mkdir -p apks; cp *.apk apks/
       #- name: 'Build apks without publishing'
        # if: github.ref != 'refs/heads/master'
         #shell: bash
         #run: |
-        #  docker run -v $PWD:/hicn  icnteam/android-build:hicn bash -c "bash /hicn/ci/build_apk_no_publish.sh 0"; mkdir -p apks; cp *.apk apks/
+        #  docker run -v $PWD:/hicn  icnteam/android-build:hicn bash -cx`x`xa "bash /hicn/ci/build_apk_no_publish.sh 0"; mkdir -p apks; cp *.apk apks/
       - name: 'Push Apks artifacts'
         #if: github.ref == 'refs/heads/master'
         uses: actions/upload-artifact@v1
