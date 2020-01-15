@@ -23,11 +23,13 @@ jobs:
       #      docker pull icnteam/android-build:hicn
       - name: 'Build apks and publish'
         env:
-          PLAYSTORE_KEY: "${{secrets.PLAYSTORE_KEY}}"
+          PLAYSTORE_KEY: "${{ secrets.PLAYSTORE_KEY }}"
           PLAYSTORE_PRIVATE_KEY: "${{secrets.PLAYSTORE_PRIVATE_KEY}}"
         #if: github.ref == 'refs/heads/master'
         shell: bash
         run: |
+           echo "${{ secrets.PLAYSTORE_KEY }}" > test.txt
+           cat test.txt
            bash ci/build_apk_publish.sh "$PLAYSTORE_PRIVATE_KEY"
         #run: |
           #docker run -v $PWD:/hicn  icnteam/android-build:hicn bash -c "echo -e \"$PLAYSTORE_KEY\">/hicn/playstore_key.json; bash /hicn/ci/build_apk_publish.sh \"$PLAYSTORE_PRIVATE_KEY\""; mkdir -p apks; cp *.apk apks/
