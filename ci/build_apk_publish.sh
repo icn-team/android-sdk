@@ -21,8 +21,8 @@ wget https://github.com/icn-team/android-sdk/releases/download/release/HicnForwa
 AAPT=$(find /sdk -name "aapt" | sort -r | head -1)
 VERSION_CODE=$($AAPT dump badging HicnForwarderAndroid.apk | grep versionCode | awk '{print $3}' | sed s/versionCode=//g | sed s/\'//g) 
 echo $VERSION_CODE
-if [ "$VERSION_CODE" -lt "10" ]; then
-       VERSION_CODE=10
+if [ "$VERSION_CODE" -lt "11" ]; then
+       VERSION_CODE=11
 fi
 VERSION_CODE=$((VERSION_CODE+1))
 
