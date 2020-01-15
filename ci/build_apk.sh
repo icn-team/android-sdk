@@ -16,7 +16,7 @@
 #!/bin/bash
 
 set -ex
-PLAYSTORE_KEY=$1
+PLAYSTORE_KEY=${{ secrets.PLAYSTORE_KEY }}
 
 wget https://github.com/icn-team/android-sdk/releases/download/release/HicnForwarderAndroid.apk
 AAPT=$(find /sdk -name "aapt" | sort -r | head -1)
