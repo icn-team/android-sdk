@@ -21,8 +21,8 @@ wget https://github.com/icn-team/android-sdk/releases/download/release/HicnForwa
 AAPT=$(find /sdk -name "aapt" | sort -r | head -1)
 VERSION_CODE=$($AAPT dump badging HicnForwarderAndroid.apk | grep versionCode | awk '{print $3}' | sed s/versionCode=//g | sed s/\'//g) 
 echo $VERSION_CODE
-if [ "$VERSION_CODE" -lt "9" ]; then
-       VERSION_CODE=9
+if [ "$VERSION_CODE" -lt "10" ]; then
+       VERSION_CODE=10
 fi
 VERSION_CODE=$((VERSION_CODE+1))
 
@@ -48,7 +48,7 @@ echo ndk.dir=/sdk/ndk-bundle >> local.properties
 ./gradlew assembleRelease -PVERSION_CODE=$VERSION_CODE
 cp app/build/outputs/apk/release/*.apk /hicn
 
-APK_PATH=app/build/outputs/apk/release/hICNTools.apk
+APK_PATH=app/build/outputs/apk/release/hICN_Tools.apk
 bash /hicn/ci/push_playstore.sh /hicn/playstore_key.json $APK_PATH $VERSION_CODE /sdk
 
 
