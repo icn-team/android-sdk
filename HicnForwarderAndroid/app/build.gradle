@@ -108,7 +108,7 @@ def getVersion() {
 
 def String getProjectProperty(String propertyName)
 {
-    String value = "0"
+    String value = "1"
     if (hasProperty(propertyName))
     {
         value = this.properties[propertyName]

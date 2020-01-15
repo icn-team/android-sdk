@@ -115,9 +115,9 @@ android_hicnforwarder:
 android_hicnforwarder_debug:
 	./scripts/compile_hicnforwarder.sh $(VERSION) DEBUG
 android_hicntools:
-	./scripts/compile_hicntools.sh
+	./scripts/compile_hicntools.sh $(VERSION)
 android_hicntools_debug:
-	./scripts/compile_hicntools.sh DEBUG
+	./scripts/compile_hicntools.sh $(VERSION) DEBUG
 android_viper:
 	./scripts/compile_androidviper.sh
 android_viper_debug:
