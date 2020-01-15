@@ -25,7 +25,7 @@ jobs:
         #if: github.ref == 'refs/heads/master'
         shell: bash
         run: |
-          docker run -v $PWD:/hicn  icnteam/android-build:hicn bash -c "bash /hicn/ci/build_apk_publish.sh ${{secrets.PLAYSTORE_KEY}}"; mkdir -p apks; cp *.apk apks/
+          docker run -v $PWD:/hicn  icnteam/android-build:hicn bash -c "bash /hicn/ci/build_apk_publish.sh \"${{secrets.PLAYSTORE_KEY}}\""; mkdir -p apks; cp *.apk apks/
       #- name: 'Build apks without publishing'
        # if: github.ref != 'refs/heads/master'
         #shell: bash
