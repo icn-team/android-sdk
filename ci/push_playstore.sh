@@ -1,5 +1,5 @@
 #!/bin/bash
-set -xe
+set -e
 # Name variables
 PLAYSTORE_KEY=$1
 APK_PATH=$2
