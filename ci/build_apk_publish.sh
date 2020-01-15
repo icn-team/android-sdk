@@ -17,9 +17,7 @@
 
 set -ex
 
-PLAYSTORE_PRIVATE_KEY=$1
-PLAYSTORE_CLIENT_EMAIL=$2
-PLAYSTORE_TOKEN_URI=$3
+PLAYSTORE_KEY=$1
 
 wget https://github.com/icn-team/android-sdk/releases/download/release/HicnForwarderAndroid.apk
 AAPT=$(find /sdk -name "aapt" | sort -r | head -1)
@@ -41,7 +39,7 @@ echo ndk.dir=/sdk/ndk-bundle >> local.properties
 
 APK_PATH=app/build/outputs/apk/release/HicnForwarderAndroid.apk
 ANDROID_HOME=/sdk
-bash /hicn/ci/push_playstore.sh "$PLAYSTORE_PRIVATE_KEY" "$PLAYSTORE_CLIENT_EMAIL" "$PLAYSTORE_TOKEN_URI" $APK_PATH $VERSION_CODE /sdk
+bash /hicn/ci/push_playstore.sh "$PLAYSTORE_KEY" $APK_PATH $VERSION_CODE /sdk
 
 
 cp app/build/outputs/apk/release/*.apk /hicn
@@ -53,7 +51,7 @@ echo ndk.dir=/sdk/ndk-bundle >> local.properties
 cp app/build/outputs/apk/release/*.apk /hicn
 
 APK_PATH=app/build/outputs/apk/release/hICNTools.apk
-bash /hicn/ci/push_playstore.sh "$PLAYSTORE_PRIVATE_KEY" "$PLAYSTORE_CLIENT_EMAIL" "$PLAYSTORE_TOKEN_URI" $APK_PATH $VERSION_CODE /sdk
+bash /hicn/ci/push_playstore.sh "$PLAYSTORE_KEY" $APK_PATH $VERSION_CODE /sdk
 
 
 export QT_VERSION=5.13.1
