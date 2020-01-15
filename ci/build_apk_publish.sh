@@ -21,8 +21,8 @@ wget https://github.com/icn-team/android-sdk/releases/download/release/HicnForwa
 AAPT=$(find /sdk -name "aapt" | sort -r | head -1)
 VERSION_CODE=$($AAPT dump badging HicnForwarderAndroid.apk | grep versionCode | awk '{print $3}' | sed s/versionCode=//g | sed s/\'//g) 
 echo $VERSION_CODE
-if [ "$VERSION_CODE" -lt "11" ]; then
-       VERSION_CODE=11
+if [ "$VERSION_CODE" -lt "12" ]; then
+       VERSION_CODE=12
 fi
 VERSION_CODE=$((VERSION_CODE+1))
 
@@ -74,6 +74,7 @@ export DISTILLARY_INSTALLATION_PATH=/usr_aarch64/
 export QT_HOST_PREFIX=/qt/Qt/$QT_VERSION/android_${ANDROID_ARCH}
 mkdir -p /build_aarch64/viper
 cd /build_aarch64/viper
+sed -i -e 's/android:versionCode=\"9\"/android:versionCode=\"$VERSION\"/g' /src/viper/android/AndroidManifest.xml
 /qt/Qt/$QT_VERSION/android_${ANDROID_ARCH}/bin/qmake -r -spec android-clang /src/viper/viper.pro  "TRANSPORT_LIBRARY = HICNET"
 make
 make install INSTALL_ROOT=hicn-viper-${ANDROID_ARCH}
@@ -81,6 +82,9 @@ make install INSTALL_ROOT=hicn-viper-${ANDROID_ARCH}
 --sign /src/viper/android/viper.keystore viper --storepass icn_viper
 
 cp /build_aarch64/viper/hicn-viper-arm64_v8a//build/outputs/apk/hicn-viper-arm64_v8a-release-signed.apk /hicn
+APK_PATH=/build_aarch64/viper/hicn-viper-arm64_v8a//build/outputs/apk/hicn-viper-arm64_v8a-release-signed.apk
+bash /hicn/ci/push_playstore.sh /hicn/playstore_key.json $APK_PATH $VERSION_CODE /sdk
+
 mv /hicn/hicn-viper-arm64_v8a-release-signed.apk /hicn/viper-arm64.apk
 
 export DISTILLARY_INSTALLATION_PATH=/usr_i686/
@@ -95,32 +99,7 @@ make install INSTALL_ROOT=hicn-viper-${ANDROID_ARCH}
 --sign /src/viper/android/viper.keystore viper --storepass icn_viper
 
 cp /build_i686/viper/hicn-viper-x86//build/outputs/apk/hicn-viper-x86-release-signed.apk /hicn
+
 mv /hicn/hicn-viper-x86-release-signed.apk /hicn/viper-x86.apk
-
-
-ln -sf /usr_aarch64 /hicn
-ln -sf /usr_i686 /hicn
-
-cd /hicn/HicnForwarderAndroid
-echo sdk.dir=/sdk > local.properties
-echo ndk.dir=/sdk/ndk-bundle >> local.properties
-./gradlew assembleRelease -PVERSION_CODE=$VERSION_CODE
-
-APK_PATH=app/build/outputs/apk/release/HicnForwarderAndroid.apk
-ANDROID_HOME=/sdk
-bash /hicn/ci/push_playstore.sh $PLAYSTORE_KEY $APK_PATH $VERSION_CODE /sdk
-
-
-cp app/build/outputs/apk/release/*.apk /hicn
-
-cd /hicn/hICNTools
-echo sdk.dir=/sdk > local.properties
-echo ndk.dir=/sdk/ndk-bundle >> local.properties
-./gradlew assembleRelease -PVERSION_CODE=$VERSION_CODE
-cp app/build/outputs/apk/release/*.apk /hicn
-
-APK_PATH=app/build/outputs/apk/release/hICNTools.apk
-bash /hicn/ci/push_playstore.sh $PLAYSTORE_KEY $APK_PATH $VERSION_CODE /sdk
-
 
 rm /hicn/usr_*
