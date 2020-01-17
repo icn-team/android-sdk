@@ -22,8 +22,8 @@ android {
         applicationId "io.fd.hicn.hicntools"
         minSdkVersion 24
         targetSdkVersion 28
-        versionCode 6
-        versionName "1.0"
+        versionCode getVersionCode_()
+        versionName getVersion()
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
@@ -72,6 +72,34 @@ repositories {
     maven { url 'https://jitpack.io' }
 }
 
+def getVersionCode_() {
+
+    if ("${getProjectProperty('VERSION_CODE')}".isEmpty())
+        return 5
+    else {
+        return "${getProjectProperty('VERSION_CODE')}".toInteger()
+    }
+}
+
+
+def getVersion() {
+
+    if ("${getProjectProperty('VERSION')}".isEmpty())
+        return "1.0"
+    else {
+        return "1." + "${getProjectProperty('VERSION')}"
+    }
+}
+
+def String getProjectProperty(String propertyName)
+{
+    String value = "1"
+    if (hasProperty(propertyName))
+    {
+        value = this.properties[propertyName]
+    }
+    return value
+}
 
 dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
