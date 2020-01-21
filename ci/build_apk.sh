@@ -32,12 +32,7 @@ cd /hicn/HicnForwarderAndroid
 echo sdk.dir=/sdk > local.properties
 echo ndk.dir=/sdk/ndk-bundle >> local.properties
 ./gradlew assembleRelease -PVERSION_CODE=$VERSION_CODE
-
-APK_PATH=app/build/outputs/apk/release/HicnForwarderAndroid.apk
 ANDROID_HOME=/sdk
-if [ "$1" = "1" ]; then
-  bash /hicn/ci/push_playstore.sh /hicn/playstore_key.json $APK_PATH $VERSION_CODE /sdk
-fi
 
 cp app/build/outputs/apk/release/*.apk /hicn
 
@@ -47,11 +42,7 @@ echo ndk.dir=/sdk/ndk-bundle >> local.properties
 ./gradlew assembleRelease -PVERSION_CODE=$VERSION_CODE
 cp app/build/outputs/apk/release/*.apk /hicn
 
-APK_PATH=app/build/outputs/apk/release/hICN_Tools.apk
 
-if [ "$1" = "1" ]; then
-  bash /hicn/ci/push_playstore.sh /hicn/playstore_key.json $APK_PATH $VERSION_CODE /sdk
-fi
 
 
 export QT_VERSION=5.13.1
@@ -106,5 +97,14 @@ make install INSTALL_ROOT=hicn-viper-${ANDROID_ARCH}
 cp /build_i686/viper/hicn-viper-x86//build/outputs/apk/hicn-viper-x86-release-signed.apk /hicn
 
 mv /hicn/hicn-viper-x86-release-signed.apk /hicn/viper-x86.apk
+
+if [ "$1" = "1" ]; then
+  APK_PATH=/hicn/HicnForwarderAndroid.apk
+  bash /hicn/ci/push_playstore.sh /hicn/playstore_key.json $APK_PATH $VERSION_CODE /sdk
+  APK_PATH=/hicn/hICN_Tools.apk
+  bash /hicn/ci/push_playstore.sh /hicn/playstore_key.json $APK_PATH $VERSION_CODE /sdk
+  APK_PATH=/hicn/viper-arm64.apk
+  bash /hicn/ci/push_playstore.sh /hicn/playstore_key.json $APK_PATH $VERSION_CODE /sdk
+fi
 
 rm /hicn/usr_*
