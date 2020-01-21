@@ -17,8 +17,11 @@ DISTILLERY_VERSION=2.0
 
 default.target: help
 
-all: init_depend install-all
-#init_qt
+all: init init_sdk download-dep compile-openssl compile-dep download-hicn compile-hicn
+
+all-withqt: all init_qt download-qtdep compile-qtdep
+
+#all-withqt: 
 
 ##############################################################
 # Variables
@@ -144,10 +147,6 @@ install-ffmpeg:
 install-qtav:
 	./scripts/install_qtav.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
 
-init_depend:
-	./scripts/init.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
-init_qt:
-	./scripts/init_qt.sh
 android_hicnforwarder:
 	./scripts/compile_hicnforwarder.sh $(VERSION)
 android_hicnforwarder_debug:
@@ -253,34 +252,33 @@ help:
 	@echo "make compile-qtdep			- Compile and install ffmpeg, libdash, libcurl, qtAv and libxml2"
 	@echo "make install-ffmpeg			- Install ffmpeg"
 	@echo "make install-qtav			- Compile and install qtAV"
-
-	@echo "make update				- update hicn to the right commit"
-	@echo "make all					- Download sdk, ndk and dependencies, configure, compile and install all software in DISTILLERY_INSTALL_DIR"
-	@echo "make init_depend 		- Download sdk, ndk and dependencies, compile and install all dependencies in DISTILLERY_INSTALL"
-	@echo "make install-all 		- Configure, compile and install all software in DISTILLERY_INSTALL_DIR"
-	@echo "make curl-clean			- Clean curl files and libs"
-	@echo "make openssl-clean		- Clean opennssl files and libs"
-	@echo "make asio-clean			- Clean asio files"
-	@echo "make event-clean			- Clean libevent files and libs"
+	@echo "make update					- update hicn to the right commit"
+	@echo "make all						- Download sdk, ndk and dependencies, configure, compile and install all hicn software in DISTILLERY_INSTALL_DIR"
+	@echo "make all-withqt				- Download sdk, ndk, qt and dependencies, configure, compile and install all hicn and qt software in DISTILLERY_INSTALL_DIR"
+	@echo "make install-all 			- Configure, compile and install all software in DISTILLERY_INSTALL_DIR"
+	@echo "make curl-clean				- Clean curl files and libs"
+	@echo "make openssl-clean			- Clean opennssl files and libs"
+	@echo "make asio-clean				- Clean asio files"
+	@echo "make event-clean				- Clean libevent files and libs"
 	@echo "make ffmpeg-clean			- Clean ffmpeg files and libs"
-	@echo "make libconfig-clean		- Clean libconfig files and libs"
-	@echo "make xml2-clean			- Clean libxml2 files and libs"
-	@echo "make libdash-clean		- Clean libdash files and libs"
-	@echo "make viper-clean			- Clean viper files"
+	@echo "make libconfig-clean			- Clean libconfig files and libs"
+	@echo "make xml2-clean				- Clean libxml2 files and libs"
+	@echo "make libdash-clean			- Clean libdash files and libs"
+	@echo "make viper-clean				- Clean viper files"
 	@echo "make dependencies-clean 		- Clean all dependencies files and libs"
-	@echo "make sdk-clean			- Clean sdk files"
-	@echo "make qt-clean			- Clean qt files"
-	@echo "make env-clean			- Clean android sdk and qt files"
-	@echo "make libparc-clean		- Clean libparc files and libs"
-	@echo "make hicn-clean			- Clean hicn files and libs"
-	@echo "make all-clean			- Clean	all files and libs"
+	@echo "make sdk-clean				- Clean sdk files"
+	@echo "make qt-clean				- Clean qt files"
+	@echo "make env-clean				- Clean android sdk and qt files"
+	@echo "make libparc-clean			- Clean libparc files and libs"
+	@echo "make hicn-clean				- Clean hicn files and libs"
+	@echo "make all-clean				- Clean	all files and libs"
 	@echo "make android_hicnforwarder	- Build HicnForwader apk for android"
 	@echo "make android_hicnforwarder_debug	- Build HicnForwader apk for android in debug mode"
 	@echo "make android_hicntools		- Build HicnTools apk for android"
 	@echo "make android_hicntools_debug	- Build HicnTools apk for android in debug mode"
-	@echo "make android_viper		- Build Viper apk for android apk in debug mode (only arm64)" 
+	@echo "make android_viper			- Build Viper apk for android apk in debug mode (only arm64)" 
 	@echo "make android_viper_debug		- Build Viper apk for android apk (only arm64)"
-	@echo "make version"			- Print the version of installed modules
+	@echo "make version"				- Print the version of installed modules
 	
 ${DISTILLERY_STAMP}: ${REBUILD_DEPENDS}
 	touch $@
