@@ -16,8 +16,8 @@
 #!/bin/bash
 
 set -ex
-QT_VERSION=5.13.1
-QT_VERSION_INSTALL=5131
+QT_VERSION=5.14.0
+QT_VERSION_INSTALL=5140
 
 
 mkdir -p qt
