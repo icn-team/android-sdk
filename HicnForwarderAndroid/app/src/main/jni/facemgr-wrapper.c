@@ -56,7 +56,7 @@ facemgr_t *facemgr;
 
 JNIEXPORT jboolean JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_isRunningFacemgr(JNIEnv *env,
-                                                                           jobject thiz) {
+                                                                      jobject thiz) {
     return _isRunningFacemgr;
 }
 
@@ -99,11 +99,11 @@ Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_initConfig(JNIEnv *env, job
 
 JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_updateInterfaceIPv4(JNIEnv *env,
-                                                                              jobject thiz,
-                                                                              jint interface_type,
-                                                                              jint source_port,
-                                                                              jstring next_hop_ip,
-                                                                              jint next_hop_port) {
+                                                                         jobject thiz,
+                                                                         jint interface_type,
+                                                                         jint source_port,
+                                                                         jstring next_hop_ip,
+                                                                         jint next_hop_port) {
 
     netdevice_type_t netdevice_interface_type = (netdevice_type_t) interface_type;
 
@@ -133,11 +133,11 @@ Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_updateInterfaceIPv4(JNIEnv 
 
 JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_updateInterfaceIPv6(JNIEnv *env,
-                                                                              jobject thiz,
-                                                                              jint interface_type,
-                                                                              jint source_port,
-                                                                              jstring next_hop_ip,
-                                                                              jint next_hop_port) {
+                                                                         jobject thiz,
+                                                                         jint interface_type,
+                                                                         jint source_port,
+                                                                         jstring next_hop_ip,
+                                                                         jint next_hop_port) {
 
 
     netdevice_type_t netdevice_interface_type = (netdevice_type_t) interface_type;
@@ -169,8 +169,8 @@ Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_updateInterfaceIPv6(JNIEnv 
 
 JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_unsetInterfaceIPv4(JNIEnv *env,
-                                                                             jobject thiz,
-                                                                             jint interface_type) {
+                                                                        jobject thiz,
+                                                                        jint interface_type) {
     netdevice_type_t netdevice_interface_type = (netdevice_type_t) interface_type;
     facemgr_cfg_rule_t *rule;
     facemgr_cfg_get_rule(facemgr_cfg, NULL, netdevice_interface_type, &rule);
@@ -181,8 +181,8 @@ Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_unsetInterfaceIPv4(JNIEnv *
 
 JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_unsetInterfaceIPv6(JNIEnv *env,
-                                                                             jobject thiz,
-                                                                             jint interface_type) {
+                                                                        jobject thiz,
+                                                                        jint interface_type) {
     netdevice_type_t netdevice_interface_type = (netdevice_type_t) interface_type;
     facemgr_cfg_rule_t *rule;
     facemgr_cfg_get_rule(facemgr_cfg, NULL, netdevice_interface_type, &rule);
@@ -193,14 +193,14 @@ Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_unsetInterfaceIPv6(JNIEnv *
 
 JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_enableDiscovery(JNIEnv *env,
-                                                                          jobject thiz,
-                                                                          jboolean enable_discovery) {
+                                                                     jobject thiz,
+                                                                     jboolean enable_discovery) {
     facemgr_cfg_set_discovery(facemgr_cfg, enable_discovery);
 }
 
 JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_enableIPv6(JNIEnv *env, jobject thiz,
-                                                                     jint enable_ipv6) {
+                                                                jint enable_ipv6) {
     int enableIPv6 = enable_ipv6;
     __android_log_print(ANDROID_LOG_DEBUG, "HicnFacemgrWrap", "enableIPv6: %d", enableIPv6);
     facemgr_cfg_set_ipv6(facemgr_cfg, enableIPv6);
@@ -208,7 +208,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_enableIPv6(JNIEnv *env, job
 
 JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_enableIPv4(JNIEnv *env, jobject thiz,
-                                                                     jint enable_ipv4) {
+                                                                jint enable_ipv4) {
     int enableIPv4 = enable_ipv4;
 
     __android_log_print(ANDROID_LOG_DEBUG, "HicnFacemgrWrap", "enableIPv4: %d", enableIPv4);
@@ -261,9 +261,22 @@ JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_discardInterface(JNIEnv *env, jobject thiz,
                                                                       jstring interface_name) {
     const char *interface_name_string = (*env)->GetStringUTFChars(env, interface_name, 0);
-    __android_log_print(ANDROID_LOG_DEBUG, "HicnFacemgrWrap", "discard interface name: %s", interface_name_string);
-    //int facemgr_cfg_rule_set_ignore(facemgr_cfg_rule_t * cfg_rule, bool status);
-    //int facemgr_cfg_rule_unset_ignore(facemgr_cfg_rule_t * cfg_rule);
+
+    facemgr_cfg_rule_t *rule;
+    const netdevice_t netdevice;
+    strcpy(netdevice.name, interface_name_string);
+    facemgr_cfg_rule_get(facemgr_cfg, netdevice, NULL, &rule);
+    __android_log_print(ANDROID_LOG_DEBUG, "HicnFacemgrWrap","1");
+    if (!rule) {
+
+        __android_log_print(ANDROID_LOG_DEBUG, "HicnFacemgrWrap"," NULL 2");
+        rule = facemgr_cfg_rule_create();
+        facemgr_cfg_add_rule(facemgr_cfg, rule);
+    }
+
+    __android_log_print(ANDROID_LOG_DEBUG, "HicnFacemgrWrap","3");
+    facemgr_cfg_rule_set_ignore(rule, true);
+
 
 }
 
@@ -272,5 +285,6 @@ Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_removeDiscardInterface(JNIE
                                                                             jobject thiz,
                                                                             jstring interface_name) {
     const char *interface_name_string = (*env)->GetStringUTFChars(env, interface_name, 0);
-    __android_log_print(ANDROID_LOG_DEBUG, "HicnFacemgrWrap", "remove discard interface name: %s", interface_name_string);
+    __android_log_print(ANDROID_LOG_DEBUG, "HicnFacemgrWrap", "remove discard interface name: %s",
+                        interface_name_string);
 }

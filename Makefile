@@ -106,6 +106,14 @@ endif
 
 install-all: install-directories ${modules}
 
+install-env: init_sdk init_qt
+
+init_sdk:
+	./scripts/init_sdk.sh
+init_qt:
+	./scripts/init_qt.sh
+
+
 init_depend:
 	./scripts/init.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
 init_qt:
@@ -171,20 +179,7 @@ libdash-clean:
 dependencies-clean: event-clean openssl-clean curl-clean xml2-clean libconfig-clean libparc-clean asio-clean ffmpeg-clean libdash-clean
 	
 sdk-clean:
-	@rm -rf sdk/build-tools
-	@rm -rf sdk/extras
-	@rm -rf sdk/licenses
-	@rm -rf sdk/patcher
-	@rm -rf sdk/platform-tools
-	@rm -rf sdk/platforms
-	@rm sdk/sdk-tools-lin
-	
-ndk-clean:
-	@rm -rf sdk/ndk-bundle
-	@rm -rf sdk/cmake
-
-	
-androidsdk-clean: ndk-clean sdk-clean
+	@rm -rf sdk
 
 hicn-clean:
 	@rm -rf ${DISTILLERY_BUILD_DIR_PREFIX}_*/hicn
@@ -196,7 +191,9 @@ viper-clean:
 	@rm -rf ${DISTILLERY_BUILD_DIR_PREFIX}_*/viper
 	
 qt-clean:
-	@rm -rf qt/Qt_*
+	@rm -rf qt
+
+env-clean: sdk-clean qt-clean
 
 qtav-clean:
 	@echo ${DISTILLERY_BUILD_DIR_PREFIX}
@@ -213,9 +210,10 @@ update:
 
 help:
 	@echo "---- Basic build targets ----"
-	@echo "make help			- This help message"
-	@echo "make update			- update hicn to the right commit"
-	@echo "make all				- Download sdk, ndk and dependencies, configure, compile and install all software in DISTILLERY_INSTALL_DIR"
+	@echo "make help				- This help message"
+	@echo "make init				- Create the installation directories
+	@echo "make update				- update hicn to the right commit"
+	@echo "make all					- Download sdk, ndk and dependencies, configure, compile and install all software in DISTILLERY_INSTALL_DIR"
 	@echo "make init_depend 		- Download sdk, ndk and dependencies, compile and install all dependencies in DISTILLERY_INSTALL"
 	@echo "make install-all 		- Configure, compile and install all software in DISTILLERY_INSTALL_DIR"
 	@echo "make curl-clean			- Clean curl files and libs"
@@ -229,8 +227,7 @@ help:
 	@echo "make viper-clean			- Clean viper files"
 	@echo "make dependencies-clean 		- Clean all dependencies files and libs"
 	@echo "make sdk-clean			- Clean sdk files"
-	@echo "make ndk-clean			- Clean ndk files"
-	@echo "make androidsdk-clean		- Clean sdk, ndk and cmake files"
+	@echo "make qt-clean			- Clean qt files"
 	@echo "make libparc-clean		- Clean libparc files and libs"
 	@echo "make hicn-clean			- Clean hicn files and libs"
 	@echo "make all-clean			- Clean	all files and libs"
