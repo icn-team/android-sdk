@@ -18,8 +18,6 @@
 set -ex
 
 INSTALLATION_DIR=$1
-OS=`echo $OS | tr '[:upper:]' '[:lower:]'`
-export BASE_DIR=`pwd`
 mkdir -p ${INSTALLATION_DIR}
 mkdir -p ${INSTALLATION_DIR}/include
 mkdir -p ${INSTALLATION_DIR}/lib

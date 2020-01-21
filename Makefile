@@ -123,6 +123,27 @@ download-dep:
 compile-openssl: init
 	./scripts/compile_openssl.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
 
+install-asio: init
+	./scripts/install_asio.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
+
+compile-dep: init compile-openssl install-asio libconfig libevent
+
+download-hicn:
+	./scripts/download_hicn.sh;
+
+compile-hicn: init cframework/libparc hicn
+
+download-qtdep:
+	./scripts/download_qtdep.sh;
+
+compile-qtdep: init libxml2 curl viper/libdash install-ffmpeg install-qtav
+
+install-ffmpeg:
+	./scripts/install_ffmpeg.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
+
+install-qtav:
+	./scripts/install_qtav.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
+
 init_depend:
 	./scripts/init.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
 init_qt:
@@ -219,8 +240,20 @@ update:
 
 help:
 	@echo "---- Basic build targets ----"
-	@echo "make help				- This help message"
-	@echo "make init				- Create the installation directories
+	@echo "make help					- This help message"
+	@echo "make init					- Create the installation directories"
+	@echo "make install-env				- Install android sdk and qt"
+	@echo "make download-dep			- Download libevent, libconfig and asio" 
+	@echo "make compile-openssl			- Download and compile openssl"
+	@echo "make install-asio			- Install Asio"
+	@echo "make compile-dep				- Compile and install openssl, libconfig and libevent"
+	@echo "make download-hicn			- Download libparc and hicn stack"
+	@echo "make compile-hicn			- Compile and install libparc and hicn stack"
+	@echo "make download-qtdep			- Download viper files and the qt depends"
+	@echo "make compile-qtdep			- Compile and install ffmpeg, libdash, libcurl, qtAv and libxml2"
+	@echo "make install-ffmpeg			- Install ffmpeg"
+	@echo "make install-qtav			- Compile and install qtAV"
+
 	@echo "make update				- update hicn to the right commit"
 	@echo "make all					- Download sdk, ndk and dependencies, configure, compile and install all software in DISTILLERY_INSTALL_DIR"
 	@echo "make init_depend 		- Download sdk, ndk and dependencies, compile and install all dependencies in DISTILLERY_INSTALL"
@@ -237,6 +270,7 @@ help:
 	@echo "make dependencies-clean 		- Clean all dependencies files and libs"
 	@echo "make sdk-clean			- Clean sdk files"
 	@echo "make qt-clean			- Clean qt files"
+	@echo "make env-clean			- Clean android sdk and qt files"
 	@echo "make libparc-clean		- Clean libparc files and libs"
 	@echo "make hicn-clean			- Clean hicn files and libs"
 	@echo "make all-clean			- Clean	all files and libs"
