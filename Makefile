@@ -108,11 +108,20 @@ install-all: install-directories ${modules}
 
 install-env: init_sdk init_qt
 
+init:
+	./scripts/init.sh ${DISTILLERY_INSTALL_DIR};
+
 init_sdk:
 	./scripts/init_sdk.sh
+
 init_qt:
 	./scripts/init_qt.sh
 
+download-dep:
+	./scripts/download_dep.sh;
+
+compile-openssl: init
+	./scripts/compile_openssl.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
 
 init_depend:
 	./scripts/init.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
