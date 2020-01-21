@@ -21,8 +21,6 @@ all: init init_sdk download-dep compile-openssl compile-dep download-hicn compil
 
 all-withqt: all init_qt download-qtdep compile-qtdep
 
-#all-withqt: 
-
 ##############################################################
 # Variables
 #
