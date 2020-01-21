@@ -17,8 +17,33 @@
 
 set -ex
 
-INSTALLATION_DIR=$1
-mkdir -p ${INSTALLATION_DIR}
-mkdir -p ${INSTALLATION_DIR}/include
-mkdir -p ${INSTALLATION_DIR}/lib
+OS=`echo $OS | tr '[:upper:]' '[:lower:]'`
+export BASE_DIR=`pwd`
 
+mkdir -p src
+cd src
+
+if [ ! -d libevent ]; then
+    echo "libevent not found"
+	git clone https://github.com/libevent/libevent.git
+	cd libevent
+	git checkout tags/release-2.1.11-stable
+	cd ..
+fi
+
+if [ ! -d asio ]; then
+	echo "Asio directory not found"
+	git clone https://github.com/chriskohlhoff/asio.git
+	cd asio
+	git checkout tags/asio-1-12-2
+	cd ..
+fi
+
+if [ ! -d libconfig ]; then
+	echo "libconfig not found"
+	git clone https://github.com/hyperrealm/libconfig.git
+	cd libconfig
+	git checkout a6b370e78578f5bf594f8efe0802cdc9b9d18f1a
+	cd ..
+	${SED} -i -- '2s/$/include(CheckSymbolExists)/' libconfig/CMakeLists.txt 
+fi

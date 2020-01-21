@@ -16,9 +16,22 @@
 #!/bin/bash
 
 set -ex
-
-INSTALLATION_DIR=$1
+ABI=$1
+INSTALLATION_DIR=$2
+OS=`echo $OS | tr '[:upper:]' '[:lower:]'`
+export BASE_DIR=`pwd`
 mkdir -p ${INSTALLATION_DIR}
 mkdir -p ${INSTALLATION_DIR}/include
-mkdir -p ${INSTALLATION_DIR}/lib
+
+if [ ! -d ${INSTALLATION_DIR}/include/openssl ]; then
+	echo "OpenSSL Libs not found!"
+	echo "Compile OpenSSL"
+	export ANDROID_NDK_ROOT=${BASE_DIR}/sdk/ndk-bundle
+    bash ${BASE_DIR}/scripts/build-openssl.sh android-$ABI $ANDROID_NDK_ROOT $BASE_DIR/external
+	cp $BASE_DIR/external/openssl-android-$ABI/*.a ${INSTALLATION_DIR}/lib/
+	cp -r $BASE_DIR/external/openssl-android-$ABI/include/openssl ${INSTALLATION_DIR}/include/
+	rm -rf $BASE_DIR/external/openssl-android-$ABI
+	${SED} -i "/${ABI}_openssl/d" ${VERSIONS_FILE}
+	echo ${ABI}_openssl=1.1.1d >> ${VERSIONS_FILE}
+fi
 

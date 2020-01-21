@@ -16,9 +16,27 @@
 #!/bin/bash
 
 set -ex
-
-INSTALLATION_DIR=$1
+ABI=$1
+INSTALLATION_DIR=$2
+OS=`echo $OS | tr '[:upper:]' '[:lower:]'`
+export BASE_DIR=`pwd`
 mkdir -p ${INSTALLATION_DIR}
 mkdir -p ${INSTALLATION_DIR}/include
-mkdir -p ${INSTALLATION_DIR}/lib
 
+
+if [ ! -d ${INSTALLATION_DIR}/include/asio ]; then
+    cd src
+    echo "Asio not found"
+    if [ ! -d asio ]; then
+        echo "Asio directory not found"
+        git clone https://github.com/chriskohlhoff/asio.git
+        cd asio
+        git checkout tags/asio-1-12-2
+    fi
+    cp -r asio/asio/include/asio.hpp ${INSTALLATION_DIR}/include/
+    cp -r asio/asio/include/asio ${INSTALLATION_DIR}/include/
+    ASIO_VERSION=$(git log -1 --format="%H")
+    ${SED} -i "/${ABI}_asio/d" ${VERSIONS_FILE}
+	echo ${ABI}_asio=$ASIO_VERSION >> ${VERSIONS_FILE}
+    cd ..
+fi
