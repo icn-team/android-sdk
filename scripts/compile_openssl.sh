@@ -31,6 +31,7 @@ if [ ! -d ${INSTALLATION_DIR}/include/openssl ]; then
 	cp $BASE_DIR/external/openssl-android-$ABI/*.a ${INSTALLATION_DIR}/lib/
 	cp -r $BASE_DIR/external/openssl-android-$ABI/include/openssl ${INSTALLATION_DIR}/include/
 	rm -rf $BASE_DIR/external/openssl-android-$ABI
+    touch ${VERSIONS_FILE}
 	${SED} -i "/${ABI}_openssl/d" ${VERSIONS_FILE}
 	echo ${ABI}_openssl=1.1.1d >> ${VERSIONS_FILE}
 fi
