@@ -21,9 +21,6 @@ wget https://github.com/icn-team/android-sdk/releases/download/release/HicnForwa
 AAPT=$(find /sdk -name "aapt" | sort -r | head -1)
 VERSION_CODE=$($AAPT dump badging HicnForwarderAndroid.apk | grep versionCode | awk '{print $3}' | sed s/versionCode=//g | sed s/\'//g) 
 echo $VERSION_CODE
-if [ "$VERSION_CODE" -lt "28" ]; then
-  VERSION_CODE=28
-fi
 VERSION_CODE=$((VERSION_CODE+1))
 
 
@@ -77,11 +74,6 @@ make install INSTALL_ROOT=hicn-viper-${ANDROID_ARCH}
 --sign /src/viper/android/viper.keystore viper --storepass icn_viper
 
 cp /build_aarch64/viper/hicn-viper-arm64_v8a//build/outputs/apk/hicn-viper-arm64_v8a-release-signed.apk /hicn
-APK_PATH=/build_aarch64/viper/hicn-viper-arm64_v8a//build/outputs/apk/hicn-viper-arm64_v8a-release-signed.apk
-
-if [ "$1" = "1" ]; then
-  bash /hicn/ci/push_playstore.sh /hicn/playstore_key.json $APK_PATH $VERSION_CODE /sdk
-fi
 
 mv /hicn/hicn-viper-arm64_v8a-release-signed.apk /hicn/viper-arm64.apk
 
