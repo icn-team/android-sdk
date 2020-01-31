@@ -120,8 +120,8 @@ Here's a short summary:
 - `make android_hicnforwarder_debug`	- Build HicnForwader apk for android in debug mode
 - `make android_hicntools`		- Build HicnForwader apk for android
 - `make android_hicntools_debug`	- Build HicnForwader apk for android in debug mode
-- `make android_viper`			- Build Viper apk for android apk in debug mode (only arm64)
-- `make android_viper_debug`		- Build Viper apk for android apk (only arm64)
+- `make android_viper`			- Build Viper apk for android apk in debug mode
+- `make android_viper_debug`		- Build Viper apk for android apk
 - `make version`		- Print the version of installed modules
 
 
