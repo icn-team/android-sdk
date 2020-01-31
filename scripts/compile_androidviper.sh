@@ -18,6 +18,7 @@
 
 #!/bin/bash
 set -e
+BASE_DIR=`pwd`
 BASIC_HOME=${QT_HOME}
 export ANDROID_ARCH=arm64_v8a
 export ANDROID_HOME=${SDK}
@@ -47,7 +48,7 @@ else
 	--gradle --android-platform ${ANDROID_NDK_PLATFORM} --stacktrace --release --target ${ANDROID_NDK_PLATFORM} --release --sign ${DISTILLERY_ROOT_DIR}/src/viper/android/viper.keystore viper --storepass icn_viper
 fi
 cd ..
-cd ${BASIC_HOME}
+cd ${BASE_DIR}
 export ANDROID_ARCH=x86
 export DISTILLARY_INSTALLATION_PATH=${DISTILLERY_ROOT_DIR}/usr_i686/
 export QT_VERSION=5.13.1
