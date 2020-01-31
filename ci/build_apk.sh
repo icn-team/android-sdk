@@ -29,6 +29,9 @@ VERSION_CODE=$((VERSION_CODE+1))
 
 ln -sf /usr_aarch64 /hicn
 ln -sf /usr_i686 /hicn
+ln -s /.versions /hicn
+cd /hicn
+make version
 
 cd /hicn/HicnForwarderAndroid
 echo sdk.dir=/sdk > local.properties
