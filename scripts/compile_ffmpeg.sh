@@ -32,19 +32,11 @@ if [ ! -d ${INSTALLATION_DIR}/include/libavcodec ] \
 		|| [ ! -d ${INSTALLATION_DIR}/include/libavformat ] \
 		|| [ ! -d ${INSTALLATION_DIR}/include/libavutil ] \
 		|| [ ! -d ${INSTALLATION_DIR}/include/libswscale ]; then
-	cd src
-    if [ ! -d ffmpeg ]; then
-        if [ ! -f ffmpeg-4.2-android-clang.tar.xz ]; then
-		    wget https://iweb.dl.sourceforge.net/project/avbuild/android/ffmpeg-4.2-android-clang.tar.xz
-	    fi
-	    tar xf ffmpeg-4.2-android-clang.tar.xz
-	    mv ffmpeg-4.2-android-clang ffmpeg
-        rm -rf ffmpeg-4.2-android-clang.tar.xz
-    fi
-    cp -r ffmpeg/include/* ${INSTALLATION_DIR}/include/
+
+    
     if [ "${ABI}" = "arm64" ]; then
 	    cp ffmpeg/lib/arm64-v8a/lib* ${INSTALLATION_DIR}/lib/
-	elif [ "${ABI}" = "x86" ]; then
+	elif [ "${ABI}" = "x86_64" ]; then
         cp ffmpeg/lib/x86/lib* ${INSTALLATION_DIR}/lib/
     fi
     touch ${VERSIONS_FILE}
