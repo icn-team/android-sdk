@@ -49,14 +49,18 @@ if [ ! -d libxml2 ]; then
 fi
 
 if [ ! -d ffmpeg ]; then
-	if [ ! -f ffmpeg-4.2-android-clang.tar.xz ]; then
-		wget https://iweb.dl.sourceforge.net/project/avbuild/android/ffmpeg-4.2-android-clang.tar.xz
+	if [ ! -f ffmpeg.tar.xz ]; then
+		wget -O ffmpeg.tar.xz https://www.ffmpeg.org/releases/ffmpeg-4.2.2.tar.xz
 	fi
-	tar xf ffmpeg-4.2-android-clang.tar.xz
+	tar xf ffmpeg.tar.xz
 	pwd
 	ls
-	mv ffmpeg-4.2-android-clang ffmpeg
-	rm -rf ffmpeg-4.2-android-clang.tar.xz
+	mv ffmpeg-4.2.2 ffmpeg
+	rm -rf ffmpeg.tar.xz
+fi
+
+if [ ! -d avbuild ]; then
+	git clone https://github.com/wang-bin/avbuild.git
 fi
 
 if [ ! -d QtAV ]; then
