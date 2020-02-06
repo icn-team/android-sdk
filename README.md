@@ -1,7 +1,7 @@
 ## Android SDK ##
 
 This is the hICN Distillery software distribution for Android. It is in charge of pulling
-together all the necessary modules to build a full hICN software suite for arm64 and x86 Android arch.
+together all the necessary modules to build a full hICN software suite for arm64 and x86_64 Android arch.
 
 ## Dependencies ##
 
@@ -35,11 +35,11 @@ Compile everything (dependencies and hICN modules)
 make update
 export ANDROID_ARCH="arm64"
 make all
-export ANDROID_ARCH="x86"
+export ANDROID_ARCH="x86_64"
 make all
 ```
 
-The hICN Distillery software will be installed in android-sdk/usr_aarch64 and android-sdk/usr_i686
+The hICN Distillery software will be installed in android-sdk/usr_aarch64 and android-sdk/usr_x86_64
 
 
 To compile Hybrid ICN Network Service for android app
@@ -120,8 +120,8 @@ Here's a short summary:
 - `make android_hicnforwarder_debug`	- Build HicnForwader apk for android in debug mode
 - `make android_hicntools`		- Build HicnForwader apk for android
 - `make android_hicntools_debug`	- Build HicnForwader apk for android in debug mode
-- `make android_viper`			- Build Viper apk for android apk in debug mode (only arm64)
-- `make android_viper_debug`		- Build Viper apk for android apk (only arm64)
+- `make android_viper`			- Build Viper apk for android apk in debug mode
+- `make android_viper_debug`		- Build Viper apk for android apk
 - `make version`		- Print the version of installed modules
 
 
@@ -140,7 +140,7 @@ After you compile the hICN software suite:
 bash ./compileAll.sh
 ```
 
-Copy the output folder (`usr_aarch64` or `usr_i686`, depending on the architecture) in the phone using adb:
+Copy the output folder (`usr_aarch64` or `usr_x86_64`, depending on the architecture) in the phone using adb:
 
 ```bash
 adb push ./usr_aarch64 /data/local/tmp/
