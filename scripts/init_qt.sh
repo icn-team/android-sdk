@@ -33,7 +33,9 @@ if [ "$ABI" = "arm64" ]; then
 		export QT_CI_PACKAGES=qt.qt5.${QT_VERSION_INSTALL}.android_arm64_v8a,qt.qt5.${QT_VERSION_INSTALL}.qtcharts.android_arm64_v8a,qt.qt5.${QT_VERSION_INSTALL}.qtcharts
 		install-qt ${QT_VERSION}
 		mv `pwd`/Qt ${QT_HOME}
-		rm -rf ${QT_HOME}/Tools
+        rm -rf ${QT_HOME}/Tools
+		rm -rf ${QT_HOME}/Examples
+		rm -rf ${QT_HOME}/Docs
 		rm -rf ${QT_HOME}/MaintenanceTool*
 		rm -rf ${QT_HOME}/Qt\ Creator*
 	fi
@@ -113,6 +115,8 @@ elif [ "$ABI" = "x86_64" ]; then
 		mv `pwd`/Qt ${QT_HOME}
 		rm -rf ${QT_HOME}/MaintenanceTool*
 		rm -rf ${QT_HOME}/Tools
+		rm -rf ${QT_HOME}/Examples
+		rm -rf ${QT_HOME}/Docs
 		rm -rf ${QT_HOME}/Qt\ Creator*
 	fi
 	if [ ! -d avbuild ]; then
@@ -151,12 +155,12 @@ elif [ "$ABI" = "x86_64" ]; then
 	export ANDROID_NDK_ROOT=${NDK}
 	export PATH=$PATH:${ANDROID_HOME}/tools:${JAVA_HOME}/bin
 	if [ ! -d ${QT_HOME}/${QT_VERSION}/android_x86/include/QtAV ]; then
-    	if [ ! -d QtAV ]; then
-       		git clone https://github.com/wang-bin/QtAV.git
-       		cd QtAV
+		if [ ! -d QtAV ]; then
+			git clone https://github.com/wang-bin/QtAV.git
+			cd QtAV
 			git checkout tags/v1.13.0
 			cd ..
-    	fi
+		fi
 		cd QtAV
 		git submodule update --init
 		echo "INCLUDEPATH = ${BASE_PATH}/usr_x86_64/include/" > .qmake.conf
