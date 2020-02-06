@@ -29,7 +29,7 @@ export ANDROID_API_VERSION=android-28
 export PATH=$PATH:${ANDROID_HOME}/tools:${JAVA_HOME}/bin
 export DISTILLARY_INSTALLATION_PATH=${DISTILLERY_ROOT_DIR}/usr_aarch64/
 export QT_VERSION=5.13.2
-export QT_HOME=${BASIC_HOME}_arm64
+export QT_HOME=${BASIC_HOME}
 if [ "$1" = "DEBUG" ]; then
 	mkdir -p build_aarch64/viper_debug
 	cd build_aarch64/viper_debug
@@ -51,7 +51,7 @@ cd ..
 export ANDROID_ARCH=x86_64
 export DISTILLARY_INSTALLATION_PATH=${DISTILLERY_ROOT_DIR}/usr_x86_64/
 export QT_VERSION=5.13.1
-export QT_HOME=${BASIC_HOME}_x86_64
+export QT_HOME=${BASIC_HOME}
 if [ "$1" = "DEBUG" ]; then
 	mkdir -p build_x86_64/viper_debug
 	cd build_x86_64/viper_debug
