@@ -24,10 +24,6 @@ echo $VERSION_CODE
 if [ "$VERSION_CODE" -lt "29" ]; then
   VERSION_CODE=29
 fi
-if [ ${VERSION_CODE} -lt "51" ]; then
-  VERSION_CODE=51
-fi
-
 VERSION_CODE=$((VERSION_CODE+1))
 
 
