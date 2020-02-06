@@ -25,7 +25,7 @@ VERSION_CODE=$((VERSION_CODE+1))
 
 
 ln -sf /usr_aarch64 /hicn
-ln -sf /usr_i686 /hicn
+ln -sf /usr_x86_64 /hicn
 
 cd /hicn/HicnForwarderAndroid
 echo sdk.dir=/sdk > local.properties
@@ -53,7 +53,7 @@ if [ "$1" = "1" ]; then
 fi
 
 
-export QT_VERSION=5.13.1
+export QT_VERSION=5.13.2
 export QT_HOME=/qt/Qt
 export ANDROID_NDK_HOME=/sdk/ndk-bundle
 if [ ! -d /src/viper ]; then
