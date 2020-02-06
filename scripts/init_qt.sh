@@ -72,7 +72,7 @@ if [ "$ABI" = "arm64" ]; then
 	export ANDROID_SDK_ROOT=${SDK}
 	export ANDROID_NDK_ROOT=${NDK}
 	export PATH=$PATH:${ANDROID_HOME}/tools:${JAVA_HOME}/bin
-	QT_HOME=~/Qt_${ABI}
+
 	if [ ! -d ${QT_HOME}/${QT_VERSION}/android_arm64_v8a/include/QtAV ]; then
     	if [ ! -d QtAV ]; then
        		git clone https://github.com/wang-bin/QtAV.git
