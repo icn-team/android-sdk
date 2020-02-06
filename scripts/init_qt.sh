@@ -16,8 +16,9 @@
 #!/bin/bash
 
 set -ex
-QT_VERSION=5.13.1
-QT_VERSION_INSTALL=5131
+QT_VERSION=5.13.2
+QT_VERSION_INSTALL=5132
+export BASE_DIR=`pwd`
 if [ "$ABI" = "arm64" ]; then
 	BASE_PATH=`pwd`
 	mkdir -p qt
@@ -35,35 +36,45 @@ if [ "$ABI" = "arm64" ]; then
 		rm -rf ${QT_HOME}/MaintenanceTool.*
 		rm -rf ${QT_HOME}/Qt\ Creator.app
 	fi
+	if [ ! -d avbuild ]; then
+		https://github.com/wang-bin/avbuild.git
+	fi
 	if [ ! -d ${BASE_PATH}/usr_aarch64/include/libavcodec ] \
-		|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libavfilter ] \
-		|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libavresample ] \
-		|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libswresample ] \
-		|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libavdevice ] \
-		|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libavformat ] \
-		|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libavutil ] \
-		|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libswscale ]; then
-		if [ ! -d ffmpeg ]; then
-			if [ ! -f ffmpeg-4.2-android-clang.tar.xz ]; then
-				wget https://iweb.dl.sourceforge.net/project/avbuild/android/ffmpeg-4.2-android-clang.tar.xz
+	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libavfilter ] \
+	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libavresample ] \
+	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libswresample ] \
+	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libavdevice ] \
+	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libavformat ] \
+	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libavutil ] \
+	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libswscale ]; then
+	 	if [ ! -d ffmpeg ]; then
+			if [ ! -f ffmpeg.tar.xz ]; then
+				wget -O ffmpeg.tar.xz https://www.ffmpeg.org/releases/ffmpeg-4.2.2.tar.xz
 			fi
-			tar xf ffmpeg-4.2-android-clang.tar.xz
-			mv ffmpeg-4.2-android-clang ffmpeg
+			tar xf ffmpeg.tar.xz
+			mv ffmpeg-4.2.2 ffmpeg
 		fi
-		cp -r ffmpeg/include/* ${BASE_PATH}/usr_aarch64/include/
-		cp ffmpeg/lib/arm64-v8a/lib* ${BASE_PATH}/usr_aarch64/lib/
-		touch ${VERSIONS_FILE}
-		echo ${ABI}_ffmpeg
-		echo ${VERSIONS_FILE}
-		${SED} -i "/arm64_ffmpeg/d" ${VERSIONS_FILE}
-		echo ${ABI}_ffmpeg=4.2 >> ${VERSIONS_FILE}
+		export FFSRC=$BASE_DIR/qt/ffmpeg
+		export NDK_ROOT=$BASE_DIR/sdk/ndk-bundle
+		export ANDROID_NDK=$BASE_DIR/sdk/ndk-bundle
+		mkdir -p ${DISTILLERY_BUILD_DIR}/ffmpeg
+		cd ${DISTILLERY_BUILD_DIR}/ffmpeg
+		bash $BASE_DIR/qt/avbuild/avbuild.sh android24 "arm64-clang"
+		cp -rf sdk-android-${ABI}-clang/include/* ${INSTALLATION_DIR}/include/
+		cp -f sdk-android-${ABI}-clang/lib/lib* ${INSTALLATION_DIR}/lib/
+	 	touch ${VERSIONS_FILE}
+	 	echo ${ABI}_ffmpeg
+	 	echo ${VERSIONS_FILE}
+	 	${SED} -i "/arm64_ffmpeg/d" ${VERSIONS_FILE}
+	 	echo ${ABI}_ffmpeg=4.2 >> ${VERSIONS_FILE}
+		cd $BASE_DIR/qt
 	fi
 
 
 	export ANDROID_SDK_ROOT=${SDK}
 	export ANDROID_NDK_ROOT=${NDK}
 	export PATH=$PATH:${ANDROID_HOME}/tools:${JAVA_HOME}/bin
-
+	QT_HOME=~/Qt_${ABI}
 	if [ ! -d ${QT_HOME}/${QT_VERSION}/android_arm64_v8a/include/QtAV ]; then
     	if [ ! -d QtAV ]; then
        		git clone https://github.com/wang-bin/QtAV.git
@@ -88,44 +99,55 @@ if [ "$ABI" = "arm64" ]; then
 		echo ${ABI}_QtAV=${QTAV_VERSION} >> ${VERSIONS_FILE}
 		 
 	fi
-elif [ "$ABI" = "x86" ]; then
+elif [ "$ABI" = "x86_64" ]; then
 	BASE_PATH=`pwd`
 	mkdir -p qt
 	cd qt
-	rm -rf Qt
 	export QT_HOME=`pwd`/Qt_${ABI}
 	if [ ! -d qtci ]; then
 		git clone https://github.com/benlau/qtci.git
 	fi
-	echo "${QT_HOME}/${QT_VERSION}/android_x86"
-	if [ ! -d ${QT_HOME}/${QT_VERSION}/android_x86 ]; then
+	echo "${QT_HOME}/${QT_VERSION}/android_x86_64"
+	if [ ! -d ${QT_HOME}/${QT_VERSION}/android_x86_64 ]; then
 		export PATH=$PATH:`pwd`/qtci/bin:`pwd`/qtci/recipes
-		export QT_CI_PACKAGES=qt.qt5.${QT_VERSION_INSTALL}.android_x86,qt.qt5.${QT_VERSION_INSTALL}.qtcharts.android_x86,qt.qt5.${QT_VERSION_INSTALL}.qtcharts
+		export QT_CI_PACKAGES=qt.qt5.${QT_VERSION_INSTALL}.android_x86_64,qt.qt5.${QT_VERSION_INSTALL}.qtcharts.android_x86_64,qt.qt5.${QT_VERSION_INSTALL}.qtcharts
 		install-qt ${QT_VERSION}
-		mv `pwd`/Qt $QT_HOME
+		mv `pwd`/Qt $x`x`
 		rm -rf ${QT_HOME}/MaintenanceTool.*
 		rm -rf ${QT_HOME}/Qt\ Creator.app
 	fi
-	if [ ! -d ${BASE_PATH}/usr_i686/include/libavcodec ] \
-		|| [ ! -d ${BASE_PATH}/usr_i686/include/libavfilter ] \
-		|| [ ! -d ${BASE_PATH}/usr_i686/include/libavresample ] \
-		|| [ ! -d ${BASE_PATH}/usr_i686/include/libswresample ] \
-		|| [ ! -d ${BASE_PATH}/usr_i686/include/libavdevice ] \
-		|| [ ! -d ${BASE_PATH}/usr_i686/include/libavformat ] \
-		|| [ ! -d ${BASE_PATH}/usr_i686/include/libavutil ] \
-		|| [ ! -d ${BASE_PATH}/usr_i686/include/libswscale ]; then
-		if [ ! -d ffmpeg ]; then
-			if [ ! -f ffmpeg-4.2-android-clang.tar.xz ]; then
-				wget https://iweb.dl.sourceforge.net/project/avbuild/android/ffmpeg-4.2-android-clang.tar.xz
+	if [ ! -d avbuild ]; then
+		https://github.com/wang-bin/avbuild.git
+	fi
+	if [ ! -d ${BASE_PATH}/usr_aarch64/include/libavcodec ] \
+	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libavfilter ] \
+	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libavresample ] \
+	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libswresample ] \
+	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libavdevice ] \
+	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libavformat ] \
+	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libavutil ] \
+	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libswscale ]; then
+	 	if [ ! -d ffmpeg ]; then
+			if [ ! -f ffmpeg.tar.xz ]; then
+				wget -O ffmpeg.tar.xz https://www.ffmpeg.org/releases/ffmpeg-4.2.2.tar.xz
 			fi
-			tar xf ffmpeg-4.2-android-clang.tar.xz
-			mv ffmpeg-4.2-android-clang ffmpeg
+			tar xf ffmpeg.tar.xz
+			mv ffmpeg-4.2.2 ffmpeg
 		fi
-		cp -r ffmpeg/include/* ${BASE_PATH}/usr_i686/include/
-		cp ffmpeg/lib/x86/lib* ${BASE_PATH}/usr_i686/lib/
-		touch ${VERSIONS_FILE}
-		${SED} -i "/x86_ffmpeg/d" ${VERSIONS_FILE}
-		echo ${ABI}_ffmpeg=4.2 >> ${VERSIONS_FILE}
+		export FFSRC=$BASE_DIR/qt/ffmpeg
+		export NDK_ROOT=$BASE_DIR/sdk/ndk-bundle
+		export ANDROID_NDK=$BASE_DIR/sdk/ndk-bundle
+		mkdir -p ${DISTILLERY_BUILD_DIR}/ffmpeg
+		cd ${DISTILLERY_BUILD_DIR}/ffmpeg
+		bash $BASE_DIR/qt/avbuild/avbuild.sh android24 "x86_64-clang"
+		cp -rf sdk-android-${ABI}-clang/include/* ${INSTALLATION_DIR}/include/
+		cp -f sdk-android-${ABI}-clang/lib/lib* ${INSTALLATION_DIR}/lib/
+	 	touch ${VERSIONS_FILE}
+	 	echo ${ABI}_ffmpeg
+	 	echo ${VERSIONS_FILE}
+	 	${SED} -i "/x86_64_ffmpeg/d" ${VERSIONS_FILE}
+	 	echo ${ABI}_ffmpeg=4.2 >> ${VERSIONS_FILE}
+		cd $BASE_DIR/qt
 	fi
 	export ANDROID_SDK_ROOT=${SDK}
 	export ANDROID_NDK_ROOT=${NDK}
@@ -139,13 +161,13 @@ elif [ "$ABI" = "x86" ]; then
     	fi
 		cd QtAV
 		git submodule update --init
-		echo "INCLUDEPATH = ${BASE_PATH}/usr_i686/include/" > .qmake.conf
-		echo "LIBS = -L${BASE_PATH}/usr_i686/lib/" >> .qmake.conf
+		echo "INCLUDEPATH = ${BASE_PATH}/usr_x86_64/include/" > .qmake.conf
+		echo "LIBS = -L${BASE_PATH}/usr_x86_64/lib/" >> .qmake.conf
 		mkdir -p ${DISTILLERY_BUILD_DIR}/qtav
 		cd ${DISTILLERY_BUILD_DIR}/qtav
-		${QT_HOME}/${QT_VERSION}/android_x86/bin/qmake $BASE_PATH/qt/QtAV/QtAV.pro -spec android-clang 
+		${QT_HOME}/${QT_VERSION}/android_x86_64/bin/qmake $BASE_PATH/qt/QtAV/QtAV.pro -spec android-clang 
 		make
-		make install INSTALL_ROOT=android_x86
+		make install INSTALL_ROOT=android_x86_64
 		sh sdk_install.sh
 		QTAV_VERSION=$(git --git-dir=$BASE_PATH/qt/QtAV/.git --work-tree=$BASE_PATH/qt/QtAV/ log -1 --format="%H")
 		touch ${VERSIONS_FILE}
