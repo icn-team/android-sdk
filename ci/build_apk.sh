@@ -25,7 +25,7 @@ VERSION_CODE=$((VERSION_CODE+1))
 
 
 ln -sf /usr_aarch64 /hicn
-ln -sf /usr_i686 /hicn
+ln -sf /usr_x86_64 /hicn
 
 cd /hicn/HicnForwarderAndroid
 echo sdk.dir=/sdk > local.properties
@@ -53,7 +53,7 @@ if [ "$1" = "1" ]; then
 fi
 
 
-export QT_VERSION=5.13.1
+export QT_VERSION=5.13.2
 export QT_HOME=/qt/Qt
 export ANDROID_NDK_HOME=/sdk/ndk-bundle
 if [ ! -d /src/viper ]; then
@@ -91,19 +91,19 @@ fi
 
 mv /hicn/hicn-viper-arm64_v8a-release-signed.apk /hicn/viper-arm64.apk
 
-export DISTILLARY_INSTALLATION_PATH=/usr_i686/
+export DISTILLARY_INSTALLATION_PATH=/usr_x86_64/
 export QT_HOST_PREFIX=/qt/Qt/$QT_VERSION/android_${ANDROID_ARCH}
-export ANDROID_ARCH=x86
-mkdir -p /build_i686/viper
-cd /build_i686/viper
+export ANDROID_ARCH=x86_64
+mkdir -p /build_x86_64/viper
+cd /build_x86_64/viper
 /qt/Qt/$QT_VERSION/android_${ANDROID_ARCH}/bin/qmake -r -spec android-clang /src/viper/viper.pro  "TRANSPORT_LIBRARY = HICNET"
 make
 make install INSTALL_ROOT=hicn-viper-${ANDROID_ARCH}
 /qt/Qt/$QT_VERSION/android_${ANDROID_ARCH}/bin/androiddeployqt --output hicn-viper-${ANDROID_ARCH} --verbose --input android-libviper.so-deployment-settings.json --gradle --android-platform ${ANDROID_NDK_PLATFORM} --stacktrace --release --target ${ANDROID_NDK_PLATFORM} --release \
 --sign /src/viper/android/viper.keystore viper --storepass icn_viper
 
-cp /build_i686/viper/hicn-viper-x86//build/outputs/apk/hicn-viper-x86-release-signed.apk /hicn
+cp /build_x86_64/viper/hicn-viper-x86_64//build/outputs/apk/hicn-viper-x86_64-release-signed.apk /hicn
 
-mv /hicn/hicn-viper-x86-release-signed.apk /hicn/viper-x86.apk
+mv /hicn/hicn-viper-x86_64-release-signed.apk /hicn/viper-x86_64.apk
 
 rm /hicn/usr_*
