@@ -59,14 +59,15 @@ if [ ! -d ffmpeg ]; then
 	rm -rf ffmpeg.tar.xz
 fi
 
-if [ ! -d avbuild ]; then
-	git clone https://github.com/wang-bin/avbuild.git
-fi
-
 if [ ! -d QtAV ]; then
 	git clone https://github.com/wang-bin/QtAV.git
 	cd QtAV
 	git checkout tags/v1.13.0
 	git submodule update --init
 	cd ..
+fi
+
+cd $BASE_DIR/qt
+if [ ! -d avbuild ]; then
+	git clone https://github.com/wang-bin/avbuild.git
 fi

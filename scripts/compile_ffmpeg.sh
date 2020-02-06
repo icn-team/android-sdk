@@ -23,7 +23,6 @@ export BASE_DIR=`pwd`
 mkdir -p ${INSTALLATION_DIR}
 mkdir -p ${INSTALLATION_DIR}/include
 
-
 if [ ! -d ${INSTALLATION_DIR}/include/libavcodec ] \
 		|| [ ! -d ${INSTALLATION_DIR}/include/libavfilter ] \
 		|| [ ! -d ${INSTALLATION_DIR}/include/libavresample ] \
@@ -33,12 +32,14 @@ if [ ! -d ${INSTALLATION_DIR}/include/libavcodec ] \
 		|| [ ! -d ${INSTALLATION_DIR}/include/libavutil ] \
 		|| [ ! -d ${INSTALLATION_DIR}/include/libswscale ]; then
 
-    
-    if [ "${ABI}" = "arm64" ]; then
-	    cp ffmpeg/lib/arm64-v8a/lib* ${INSTALLATION_DIR}/lib/
-	elif [ "${ABI}" = "x86_64" ]; then
-        cp ffmpeg/lib/x86/lib* ${INSTALLATION_DIR}/lib/
-    fi
+    export FFSRC=$BASE_DIR/src/ffmpeg
+	export NDK_ROOT=$BASE_DIR/sdk/ndk-bundle
+	export ANDROID_NDK=$BASE_DIR/sdk/ndk-bundle
+	mkdir -p ${DISTILLERY_BUILD_DIR}/ffmpeg
+	cd ${DISTILLERY_BUILD_DIR}/ffmpeg
+	bash $BASE_DIR/qt/avbuild/avbuild.sh android24 "${ABI}-clang"
+	cp -rf sdk-android-${ABI}-clang/include/* ${INSTALLATION_DIR}/include/
+	cp -f sdk-android-${ABI}-clang/lib/lib* ${INSTALLATION_DIR}/lib/
     touch ${VERSIONS_FILE}
 	${SED} -i "/${ABI}_ffmpeg/d" ${VERSIONS_FILE}
 	echo ${ABI}_ffmpeg=4.2 >> ${VERSIONS_FILE}
