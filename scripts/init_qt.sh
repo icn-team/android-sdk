@@ -37,7 +37,7 @@ if [ "$ABI" = "arm64" ]; then
 		rm -rf ${QT_HOME}/Qt\ Creator.app
 	fi
 	if [ ! -d avbuild ]; then
-		https://github.com/wang-bin/avbuild.git
+		git clone https://github.com/wang-bin/avbuild.git
 	fi
 	if [ ! -d ${BASE_PATH}/usr_aarch64/include/libavcodec ] \
 	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libavfilter ] \
@@ -117,7 +117,7 @@ elif [ "$ABI" = "x86_64" ]; then
 		rm -rf ${QT_HOME}/Qt\ Creator.app
 	fi
 	if [ ! -d avbuild ]; then
-		https://github.com/wang-bin/avbuild.git
+		git clone https://github.com/wang-bin/avbuild.git
 	fi
 	if [ ! -d ${BASE_PATH}/usr_aarch64/include/libavcodec ] \
 	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libavfilter ] \
