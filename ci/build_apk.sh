@@ -89,7 +89,7 @@ mv /hicn/hicn-viper-arm64_v8a-release-signed.apk /hicn/viper-arm64.apk
 
 export DISTILLARY_INSTALLATION_PATH=/usr_x86_64/
 export QT_HOST_PREFIX=/qt/Qt/$QT_VERSION/android_${ANDROID_ARCH}
-export ANDROID_ARCH=usr_x86_64
+export ANDROID_ARCH=x86_64
 mkdir -p /build_x86_64/viper
 cd /build_x86_64/viper
 /qt/Qt/$QT_VERSION/android_${ANDROID_ARCH}/bin/qmake -r -spec android-clang /src/viper/viper.pro  "TRANSPORT_LIBRARY = HICNET"
