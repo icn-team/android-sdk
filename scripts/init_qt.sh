@@ -33,8 +33,9 @@ if [ "$ABI" = "arm64" ]; then
 		export QT_CI_PACKAGES=qt.qt5.${QT_VERSION_INSTALL}.android_arm64_v8a,qt.qt5.${QT_VERSION_INSTALL}.qtcharts.android_arm64_v8a,qt.qt5.${QT_VERSION_INSTALL}.qtcharts
 		install-qt ${QT_VERSION}
 		mv `pwd`/Qt ${QT_HOME}
-		rm -rf ${QT_HOME}/MaintenanceTool.*
-		rm -rf ${QT_HOME}/Qt\ Creator.app
+		rm -rf ${QT_HOME}/Tools
+		rm -rf ${QT_HOME}/MaintenanceTool*
+		rm -rf ${QT_HOME}/Qt\ Creator*
 	fi
 	if [ ! -d avbuild ]; then
 		git clone https://github.com/wang-bin/avbuild.git
@@ -87,7 +88,7 @@ if [ "$ABI" = "arm64" ]; then
 		echo "LIBS = -L${BASE_PATH}/usr_aarch64/lib/" >> .qmake.conf
 		mkdir -p ${DISTILLERY_BUILD_DIR}/qtav
 		cd ${DISTILLERY_BUILD_DIR}/qtav
-		${QT_HOME}/${QT_VERSION}/android_arm64_v8a/bin/qmake $BASE_PATH/qt/QtAV/QtAV.pro -spec android-clang 
+		${QT_HOME}/${QT_VERSION}/android_arm64_v8a/bin/qmake $BASE_PATH/qt/QtAV/QtAV.pro -spec android-clang
 		make
 		make install INSTALL_ROOT=android_arm64_v8a
 		sh sdk_install.sh
@@ -95,7 +96,6 @@ if [ "$ABI" = "arm64" ]; then
 		touch ${VERSIONS_FILE}
 		${SED} -i "/${ABI}_QtAV/d" ${VERSIONS_FILE}
 		echo ${ABI}_QtAV=${QTAV_VERSION} >> ${VERSIONS_FILE}
-		 
 	fi
 elif [ "$ABI" = "x86_64" ]; then
 	BASE_PATH=`pwd`
@@ -110,9 +110,10 @@ elif [ "$ABI" = "x86_64" ]; then
 		export PATH=$PATH:`pwd`/qtci/bin:`pwd`/qtci/recipes
 		export QT_CI_PACKAGES=qt.qt5.${QT_VERSION_INSTALL}.android_x86_64,qt.qt5.${QT_VERSION_INSTALL}.qtcharts.android_x86_64,qt.qt5.${QT_VERSION_INSTALL}.qtcharts
 		install-qt ${QT_VERSION}
-		mv `pwd`/Qt $x`x`
-		rm -rf ${QT_HOME}/MaintenanceTool.*
-		rm -rf ${QT_HOME}/Qt\ Creator.app
+		mv `pwd`/Qt ${QT_HOME}
+		rm -rf ${QT_HOME}/MaintenanceTool*
+		rm -rf ${QT_HOME}/Tools
+		rm -rf ${QT_HOME}/Qt\ Creator*
 	fi
 	if [ ! -d avbuild ]; then
 		git clone https://github.com/wang-bin/avbuild.git
@@ -162,7 +163,7 @@ elif [ "$ABI" = "x86_64" ]; then
 		echo "LIBS = -L${BASE_PATH}/usr_x86_64/lib/" >> .qmake.conf
 		mkdir -p ${DISTILLERY_BUILD_DIR}/qtav
 		cd ${DISTILLERY_BUILD_DIR}/qtav
-		${QT_HOME}/${QT_VERSION}/android_x86_64/bin/qmake $BASE_PATH/qt/QtAV/QtAV.pro -spec android-clang 
+		${QT_HOME}/${QT_VERSION}/android_x86_64/bin/qmake $BASE_PATH/qt/QtAV/QtAV.pro -spec android-clang
 		make
 		make install INSTALL_ROOT=android_x86_64
 		sh sdk_install.sh
