@@ -53,8 +53,6 @@ if [ ! -d ffmpeg ]; then
 		wget -O ffmpeg.tar.xz https://www.ffmpeg.org/releases/ffmpeg-4.2.2.tar.xz
 	fi
 	tar xf ffmpeg.tar.xz
-	pwd
-	ls
 	mv ffmpeg-4.2.2 ffmpeg
 	rm -rf ffmpeg.tar.xz
 fi
