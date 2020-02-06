@@ -140,7 +140,7 @@ After you compile the hICN software suite:
 bash ./compileAll.sh
 ```
 
-Copy the output folder (`usr_aarch64` or `usr_i686`, depending on the architecture) in the phone using adb:
+Copy the output folder (`usr_aarch64` or `usr_x86_64`, depending on the architecture) in the phone using adb:
 
 ```bash
 adb push ./usr_aarch64 /data/local/tmp/
