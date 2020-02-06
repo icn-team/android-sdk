@@ -78,73 +78,73 @@ else
 	QT_VERSION_ARM64="not installed"
 fi
 
-if [ -f "qt/Qt_x86/components.xml" ]; then
-	getVersionFromQt x86 QT_VERSION_X86
+if [ -f "qt/Qt_x86_64/components.xml" ]; then
+	getVersionFromQt x86_64 QT_VERSION_X86_64
 else
-	QT_VERSION_X86="not installed"
+	QT_VERSION_X86_64="not installed"
 fi
 
 if [ -f "${VERSIONS_FILE}" ]; then
 
 	getVersionFromVersionsFile "QtAV" "arm64" QTAV_VERSION_ARM64
-	getVersionFromVersionsFile "QtAV" "x86" QTAV_VERSION_X86
+	getVersionFromVersionsFile "QtAV" "x86_64" QTAV_VERSION_X86_64
 
 	getVersionFromVersionsFile "ffmpeg" "arm64" FFMPEG_VERSION_ARM64
-	getVersionFromVersionsFile "ffmpeg" "x86" FFMPEG_VERSION_X86
+	getVersionFromVersionsFile "ffmpeg" "x86_64" FFMPEG_VERSION_X86_64
 
 	getVersionFromVersionsFile "openssl" "arm64" OPENSSL_VERSION_ARM64
-	getVersionFromVersionsFile "openssl" "x86" OPENSSL_VERSION_X86
+	getVersionFromVersionsFile "openssl" "x86_64" OPENSSL_VERSION_X86_64
 
 	getVersionFromVersionsFile "libconfig" "arm64" LIBCONFIG_VERSION_ARM64
-	getVersionFromVersionsFile "libconfig" "x86" LIBCONFIG_VERSION_X86
+	getVersionFromVersionsFile "libconfig" "x86_64" LIBCONFIG_VERSION_X86_64
 
 	getVersionFromVersionsFile "libevent" "arm64" LIBEVENT_VERSION_ARM64
-	getVersionFromVersionsFile "libevent" "x86" LIBEVENT_VERSION_X86
+	getVersionFromVersionsFile "libevent" "x86_64" LIBEVENT_VERSION_X86_64
 
 	getVersionFromVersionsFile "libxml" "arm64" LIBXML_VERSION_ARM64
-	getVersionFromVersionsFile "libxml" "x86" LIBXML_VERSION_X86
+	getVersionFromVersionsFile "libxml" "x86_64" LIBXML_VERSION_X86_64
 
 	getVersionFromVersionsFile "curl" "arm64" CURL_VERSION_ARM64
-	getVersionFromVersionsFile "curl" "x86" CURL_VERSION_X86
+	getVersionFromVersionsFile "curl" "x86_64" CURL_VERSION_X86_64
 
 	getVersionFromVersionsFile "libparc" "arm64" LIBPARC_VERSION_ARM64
-	getVersionFromVersionsFile "libparc" "x86" LIBPARC_VERSION_X86
+	getVersionFromVersionsFile "libparc" "x86_64" LIBPARC_VERSION_X86_64
 
 	getVersionFromVersionsFile "hicn" "arm64" HICN_VERSION_ARM64
-	getVersionFromVersionsFile "hicn" "x86" HICN_VERSION_X86
+	getVersionFromVersionsFile "hicn" "x86_64" HICN_VERSION_X86_64
 
 	getVersionFromVersionsFile "libdash" "arm64" LIBDASH_VERSION_ARM64
-	getVersionFromVersionsFile "libdash" "x86" LIBDASH_VERSION_X86
+	getVersionFromVersionsFile "libdash" "x86_64" LIBDASH_VERSION_X86_64
 else
 	QTAV_VERSION_ARM64="not installed"
-	QTAV_VERSION_X86="not installed"
+	QTAV_VERSION_X86_64="not installed"
 
 	FFMPEG_VERSION_ARM64="not installed"
-	FFMPEG_VERSION_X86="not installed"
+	FFMPEG_VERSION_X86_64="not installed"
 
 	OPENSSL_VERSION_ARM64="not installed"
-	OPENSSL_VERSION_X86="not installed"
+	OPENSSL_VERSION_X86_64="not installed"
 
 	LIBCONFIG_VERSION_ARM64="not installed"
-	LIBCONFIG_VERSION_X86="not installed"
+	LIBCONFIG_VERSION_X86_64="not installed"
 
 	LIBEVENT_VERSION_ARM64="not installed"
-	LIBEVENT_VERSION_X86="not installed"
+	LIBEVENT_VERSION_X86_64="not installed"
 
 	LIBXML_VERSION_ARM64="not installed"
-	LIBXML_VERSION_X86="not installed"
+	LIBXML_VERSION_X86_64="not installed"
 
 	CURL_VERSION_ARM64="not installed"
-	CURL_VERSION_X86="not installed"
+	CURL_VERSION_X86_64="not installed"
 
 	LIBPARC_VERSION_ARM64="not installed"
-	LIBPARC_VERSION_X86="not installed"
+	LIBPARC_VERSION_X86_64="not installed"
 
 	HICN_VERSION_ARM64="not installed"
-	HICN_VERSION_X86="not installed"
+	HICN_VERSION_X86_64="not installed"
 
 	LIBDASH_VERSION_ARM64="not installed"
-	LIBDASH_VERSION_X86="not installed"
+	LIBDASH_VERSION_X86_64="not installed"
 fi
 echo "\n"
 echo "#############################################################################"
@@ -159,27 +159,27 @@ echo "cmake 3.10 = ${CMAKE_3_10}"
 echo "#############################################################################"
 echo "QT ENVIRONMENT"
 echo "arm64 version = ${QT_VERSION_ARM64}"
-echo "x86 version = ${QT_VERSION_X86}"
+echo "x86_64 version = ${QT_VERSION_X86_64}"
 echo "#############################################################################"
 echo "LIBRARIES INSTALLED"
 echo "openssl arm64 version = ${OPENSSL_VERSION_ARM64}" 
-echo "openssl x86 version = ${OPENSSL_VERSION_X86}"
+echo "openssl x86_64 version = ${OPENSSL_VERSION_X86_64}"
 echo "libconfig arm64 version = ${LIBCONFIG_VERSION_ARM64}"
-echo "libconfig x86 version = ${LIBCONFIG_VERSION_X86}"
+echo "libconfig x86_64 version = ${LIBCONFIG_VERSION_X86_64}"
 echo "libevent arm64 version = ${LIBEVENT_VERSION_ARM64}"
-echo "libevent x86 version = ${LIBEVENT_VERSION_X86}"
+echo "libevent x86_64 version = ${LIBEVENT_VERSION_X86_64}"
 echo "libxml arm64 version = ${LIBXML_VERSION_ARM64}"
-echo "libxml x86 version = ${LIBXML_VERSION_X86}"
+echo "libxml x86_64 version = ${LIBXML_VERSION_X86_64}"
 echo "curl arm64 version = ${CURL_VERSION_ARM64}"
-echo "curl x86 version = ${CURL_VERSION_X86}"
+echo "curl x86_64 version = ${CURL_VERSION_X86_64}"
 echo "libparc arm64 version = ${LIBPARC_VERSION_ARM64}"
-echo "libparc x86 version = ${LIBPARC_VERSION_X86}"
+echo "libparc x86_64 version = ${LIBPARC_VERSION_X86_64}"
 echo "hicn arm64 version = ${HICN_VERSION_ARM64}"
-echo "hicn x86 version = ${HICN_VERSION_X86}"
+echo "hicn x86_64 version = ${HICN_VERSION_X86_64}"
 echo "libdash arm64 version = ${LIBDASH_VERSION_ARM64}"
-echo "libdash x86 version = ${LIBDASH_VERSION_X86}"
+echo "libdash x86_64 version = ${LIBDASH_VERSION_X86_64}"
 echo "QtAV arm64 version = ${QTAV_VERSION_ARM64}"
-echo "QtAV x86 version = ${QTAV_VERSION_X86}"
+echo "QtAV x86_64 version = ${QTAV_VERSION_X86_64}"
 echo "ffmpeg arm64 version = ${FFMPEG_VERSION_ARM64}"
-echo "ffmpeg x86 version = ${FFMPEG_VERSION_X86}"
+echo "ffmpeg x86_64 version = ${FFMPEG_VERSION_X86_64}"
 echo "#############################################################################"
