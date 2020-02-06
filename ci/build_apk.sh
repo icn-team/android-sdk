@@ -54,7 +54,7 @@ cp app/build/outputs/apk/release/*.apk /hicn
 
 
 
-export QT_VERSION=5.13.1
+export QT_VERSION=5.13.2
 export QT_HOME=/qt/Qt
 export ANDROID_NDK_HOME=/sdk/ndk-bundle
 if [ ! -d /src/viper ]; then
