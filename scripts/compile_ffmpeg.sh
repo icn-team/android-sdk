@@ -35,9 +35,8 @@ if [ ! -d ${INSTALLATION_DIR}/include/libavcodec ] \
     export FFSRC=$BASE_DIR/src/ffmpeg
 	export NDK_ROOT=$BASE_DIR/sdk/ndk-bundle
 	export ANDROID_NDK=$BASE_DIR/sdk/ndk-bundle
-	mkdir -p ${DISTILLERY_BUILD_DIR}/ffmpeg
-	cd ${DISTILLERY_BUILD_DIR}/ffmpeg
-	bash $BASE_DIR/qt/avbuild/avbuild.sh android24 "${ABI}-clang"
+	cd $BASE_DIR/qt/avbuild/
+	bash avbuild.sh android24 "${ABI}-clang"
 	cp -rf sdk-android-${ABI}-clang/include/* ${INSTALLATION_DIR}/include/
 	cp -f sdk-android-${ABI}-clang/lib/lib* ${INSTALLATION_DIR}/lib/
     touch ${VERSIONS_FILE}
