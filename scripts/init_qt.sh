@@ -110,7 +110,7 @@ elif [ "$ABI" = "x86_64" ]; then
 		export PATH=$PATH:`pwd`/qtci/bin:`pwd`/qtci/recipes
 		export QT_CI_PACKAGES=qt.qt5.${QT_VERSION_INSTALL}.android_x86_64,qt.qt5.${QT_VERSION_INSTALL}.qtcharts.android_x86_64,qt.qt5.${QT_VERSION_INSTALL}.qtcharts
 		install-qt ${QT_VERSION}
-		mv `pwd`/Qt $x`x`
+		mv `pwd`/Qt ${QT_HOME}
 		rm -rf ${QT_HOME}/MaintenanceTool.*
 		rm -rf ${QT_HOME}/Qt\ Creator.app
 	fi
