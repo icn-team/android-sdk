@@ -57,11 +57,10 @@ if [ "$ABI" = "arm64" ]; then
 		export FFSRC=$BASE_DIR/qt/ffmpeg
 		export NDK_ROOT=$BASE_DIR/sdk/ndk-bundle
 		export ANDROID_NDK=$BASE_DIR/sdk/ndk-bundle
-		mkdir -p ${DISTILLERY_BUILD_DIR}/ffmpeg
-		cd ${DISTILLERY_BUILD_DIR}/ffmpeg
-		bash $BASE_DIR/qt/avbuild/avbuild.sh android24 "arm64-clang"
-		cp -rf sdk-android-${ABI}-clang/include/* ${INSTALLATION_DIR}/include/
-		cp -f sdk-android-${ABI}-clang/lib/lib* ${INSTALLATION_DIR}/lib/
+		cd $BASE_DIR/qt/avbuild/
+		bash avbuild.sh android24 "arm64-clang"
+		cp -rf sdk-android-${ABI}-clang/include/* ${BASE_PATH}/usr_aarch64/include/
+		cp -f sdk-android-${ABI}-clang/lib/lib* ${BASE_PATH}/usr_aarch64/lib/
 	 	touch ${VERSIONS_FILE}
 	 	echo ${ABI}_ffmpeg
 	 	echo ${VERSIONS_FILE}
@@ -69,7 +68,6 @@ if [ "$ABI" = "arm64" ]; then
 	 	echo ${ABI}_ffmpeg=4.2 >> ${VERSIONS_FILE}
 		cd $BASE_DIR/qt
 	fi
-
 
 	export ANDROID_SDK_ROOT=${SDK}
 	export ANDROID_NDK_ROOT=${NDK}
@@ -119,14 +117,14 @@ elif [ "$ABI" = "x86_64" ]; then
 	if [ ! -d avbuild ]; then
 		git clone https://github.com/wang-bin/avbuild.git
 	fi
-	if [ ! -d ${BASE_PATH}/usr_aarch64/include/libavcodec ] \
-	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libavfilter ] \
-	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libavresample ] \
-	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libswresample ] \
-	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libavdevice ] \
-	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libavformat ] \
-	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libavutil ] \
-	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libswscale ]; then
+	if [ ! -d ${BASE_PATH}/usr_x86_64/include/libavcodec ] \
+	 	|| [ ! -d ${BASE_PATH}/usr_x86_64/include/libavfilter ] \
+	 	|| [ ! -d ${BASE_PATH}/usr_x86_64/include/libavresample ] \
+	 	|| [ ! -d ${BASE_PATH}/usr_x86_64/include/libswresample ] \
+	 	|| [ ! -d ${BASE_PATH}/usr_x86_64/include/libavdevice ] \
+	 	|| [ ! -d ${BASE_PATH}/usr_x86_64/include/libavformat ] \
+	 	|| [ ! -d ${BASE_PATH}/usr_x86_64/include/libavutil ] \
+	 	|| [ ! -d ${BASE_PATH}/usr_x86_64/include/libswscale ]; then
 	 	if [ ! -d ffmpeg ]; then
 			if [ ! -f ffmpeg.tar.xz ]; then
 				wget -O ffmpeg.tar.xz https://www.ffmpeg.org/releases/ffmpeg-4.2.2.tar.xz
@@ -137,11 +135,10 @@ elif [ "$ABI" = "x86_64" ]; then
 		export FFSRC=$BASE_DIR/qt/ffmpeg
 		export NDK_ROOT=$BASE_DIR/sdk/ndk-bundle
 		export ANDROID_NDK=$BASE_DIR/sdk/ndk-bundle
-		mkdir -p ${DISTILLERY_BUILD_DIR}/ffmpeg
-		cd ${DISTILLERY_BUILD_DIR}/ffmpeg
-		bash $BASE_DIR/qt/avbuild/avbuild.sh android24 "x86_64-clang"
-		cp -rf sdk-android-${ABI}-clang/include/* ${INSTALLATION_DIR}/include/
-		cp -f sdk-android-${ABI}-clang/lib/lib* ${INSTALLATION_DIR}/lib/
+		cd $BASE_DIR/qt/avbuild/
+		bash avbuild.sh android24 "x86_64-clang"
+		cp -rf sdk-android-${ABI}-clang/include/* ${BASE_PATH}/usr_x86_64/include/
+		cp -f sdk-android-${ABI}-clang/lib/lib* ${BASE_PATH}/usr_x86_64/lib/
 	 	touch ${VERSIONS_FILE}
 	 	echo ${ABI}_ffmpeg
 	 	echo ${VERSIONS_FILE}
