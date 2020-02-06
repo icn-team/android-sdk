@@ -43,7 +43,7 @@ getVersionFromSdkManager () {
 getVersionFromQt () {
 	local abi=$1
 	local result=$2
-	local version=$(cat qt/Qt_$abi/components.xml | grep ApplicationName | awk '{print $2}' | awk -F "<" '{print $1}')
+	local version=$(cat qt/Qt/components.xml | grep ApplicationName | awk '{print $2}' | awk -F "<" '{print $1}')
 	if [ "${version}" = "" ]; then
     	eval $result="'not installed'"
     else
@@ -72,17 +72,8 @@ fi
 
 rm ${TEMP_FILE}
 
-if [ -f "qt/Qt_arm64/components.xml" ]; then
-	getVersionFromQt arm64 QT_VERSION_ARM64
-else
-	QT_VERSION_ARM64="not installed"
-fi
-
-if [ -f "qt/Qt_x86_64/components.xml" ]; then
-	getVersionFromQt x86_64 QT_VERSION_X86_64
-else
-	QT_VERSION_X86_64="not installed"
-fi
+getVersionFromQt arm64 QT_VERSION_ARM64
+getVersionFromQt x86_64 QT_VERSION_X86_64
 
 if [ -f "${VERSIONS_FILE}" ]; then
 
