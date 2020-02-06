@@ -48,13 +48,13 @@ else
 fi
 cd ..
 
-export ANDROID_ARCH=x86
-export DISTILLARY_INSTALLATION_PATH=${DISTILLERY_ROOT_DIR}/usr_i686/
+export ANDROID_ARCH=x86_64
+export DISTILLARY_INSTALLATION_PATH=${DISTILLERY_ROOT_DIR}/usr_x86_64/
 export QT_VERSION=5.13.1
-export QT_HOME=${BASIC_HOME}_x86
+export QT_HOME=${BASIC_HOME}_x86_64
 if [ "$1" = "DEBUG" ]; then
-	mkdir -p build_i686/viper_debug
-	cd build_i686/viper_debug
+	mkdir -p build_x86_64/viper_debug
+	cd build_x86_64/viper_debug
 	${QT_HOME}/${QT_VERSION}/android_${ANDROID_ARCH}/bin/qmake -r -spec android-clang ${DISTILLERY_ROOT_DIR}/src/viper/viper.pro  "TRANSPORT_LIBRARY = HICNET" CONFIG+=debug CONFIG+=qml_debug
 	make
 	make install INSTALL_ROOT=hicn-viper-${ANDROID_ARCH}

@@ -21,12 +21,12 @@ INSTALLATION_DIR=$2
 OS=`echo $OS | tr '[:upper:]' '[:lower:]'`
 export BASE_DIR=`pwd`
 
-QT_VERSION=5.13.1
-QT_VERSION_INSTALL=5131
+QT_VERSION=5.13.2
+QT_VERSION_INSTALL=5132
 if [ "${ABI}" = "arm64" ]; then
     QT_ANDROID=android_arm64_v8a
-elif [ "${ABI}" = "x86" ]; then
-    QT_ANDROID=android_x86
+elif [ "${ABI}" = "x86_64" ]; then
+    QT_ANDROID=android_x86_64
 fi
 if [ ! -d ${QT_HOME}/${QT_VERSION}/${QT_ANDROID}/include/QtAV ]; then
 	export ANDROID_SDK_ROOT=${SDK}

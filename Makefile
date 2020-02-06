@@ -137,10 +137,10 @@ compile-hicn: init cframework/libparc hicn
 download-qtdep:
 	./scripts/download_qtdep.sh;
 
-compile-qtdep: init libxml2 curl viper/libdash install-ffmpeg install-qtav
+compile-qtdep: init libxml2 curl viper/libdash compile-ffmpeg install-qtav
 
-install-ffmpeg:
-	./scripts/install_ffmpeg.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
+compile-ffmpeg:
+	./scripts/compile_ffmpeg.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
 
 install-qtav:
 	./scripts/install_qtav.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
@@ -197,6 +197,9 @@ ffmpeg-clean:
 	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/lib/libav.*
 	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/include/libav*
 	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/include/libsw*
+	@rm -rf ${DISTILLERY_BUILD_DIR_PREFIX}_*/ffmpeg
+	@rm -rf qt/avbuild
+	@rm -rf ffmpeg
 
 libdash-clean:
 	@rm -rf ${DISTILLERY_BUILD_DIR_PREFIX}_*/viper/libdash
@@ -248,7 +251,7 @@ help:
 	@echo "make compile-hicn			- Compile and install libparc and hicn stack"
 	@echo "make download-qtdep			- Download viper files and the qt depends"
 	@echo "make compile-qtdep			- Compile and install ffmpeg, libdash, libcurl, qtAv and libxml2"
-	@echo "make install-ffmpeg			- Install ffmpeg"
+	@echo "make compile-ffmpeg			- compile ffmpeg"
 	@echo "make install-qtav			- Compile and install qtAV"
 	@echo "make update					- update hicn to the right commit"
 	@echo "make all						- Download sdk, ndk and dependencies, configure, compile and install all hicn software in DISTILLERY_INSTALL_DIR"
