@@ -33,4 +33,6 @@ if [ ! -d ${QT_HOME} ]; then
 	rm -rf ${QT_HOME}/MaintenanceTool*
 	rm -rf ${QT_HOME}/Qt\ Creator*
 	rm -rf ${QT_HOME}/Tools
+	rm -rf ${QT_HOME}/Examples
+	rm -rf ${QT_HOME}/Docs
 fi
