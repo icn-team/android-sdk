@@ -198,8 +198,7 @@ ffmpeg-clean:
 	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/include/libav*
 	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/include/libsw*
 	@rm -rf ${DISTILLERY_BUILD_DIR_PREFIX}_*/ffmpeg
-	@rm -rf qt/avbuild
-	@rm -rf ffmpeg
+	@rm -rf src/ffmpeg
 
 libdash-clean:
 	@rm -rf ${DISTILLERY_BUILD_DIR_PREFIX}_*/viper/libdash
