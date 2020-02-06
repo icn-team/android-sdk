@@ -1,7 +1,7 @@
 ## Android SDK ##
 
 This is the hICN Distillery software distribution for Android. It is in charge of pulling
-together all the necessary modules to build a full hICN software suite for arm64 and x86 Android arch.
+together all the necessary modules to build a full hICN software suite for arm64 and x86_64 Android arch.
 
 ## Dependencies ##
 
@@ -35,11 +35,11 @@ Compile everything (dependencies and hICN modules)
 make update
 export ANDROID_ARCH="arm64"
 make all
-export ANDROID_ARCH="x86"
+export ANDROID_ARCH="x86_64"
 make all
 ```
 
-The hICN Distillery software will be installed in android-sdk/usr_aarch64 and android-sdk/usr_i686
+The hICN Distillery software will be installed in android-sdk/usr_aarch64 and android-sdk/usr_x86_64
 
 
 To compile Hybrid ICN Network Service for android app
