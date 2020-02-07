@@ -261,21 +261,19 @@ JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_discardInterface(JNIEnv *env, jobject thiz,
                                                                       jstring interface_name) {
     const char *interface_name_string = (*env)->GetStringUTFChars(env, interface_name, 0);
-
+    __android_log_print(ANDROID_LOG_DEBUG, "HicnFacemgrWrap", "discard interface name: %s",
+                        interface_name_string);
+    /*
     facemgr_cfg_rule_t *rule;
     const netdevice_t netdevice;
     strcpy(netdevice.name, interface_name_string);
     facemgr_cfg_rule_get(facemgr_cfg, netdevice, NULL, &rule);
-    __android_log_print(ANDROID_LOG_DEBUG, "HicnFacemgrWrap","1");
     if (!rule) {
-
-        __android_log_print(ANDROID_LOG_DEBUG, "HicnFacemgrWrap"," NULL 2");
         rule = facemgr_cfg_rule_create();
         facemgr_cfg_add_rule(facemgr_cfg, rule);
     }
 
-    __android_log_print(ANDROID_LOG_DEBUG, "HicnFacemgrWrap","3");
-    facemgr_cfg_rule_set_ignore(rule, true);
+    facemgr_cfg_rule_set_ignore(rule, true);*/
 
 
 }

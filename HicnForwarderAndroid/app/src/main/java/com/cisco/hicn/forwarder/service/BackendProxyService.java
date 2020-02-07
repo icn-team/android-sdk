@@ -110,9 +110,11 @@ public class BackendProxyService extends VpnService implements Handler.Callback 
         final String serverPortString = prefs.getString(getString(R.string.hproxy_server_port_key), getString(R.string.default_hproxy_server_port));
         final int serverPort = Integer.parseInt(serverPortString);
         final String secret = prefs.getString(getString(R.string.hproxy_secret_key), getString(R.string.default_hproxy_secret));
+        int forwardingStrategy = Integer.parseInt(prefs.getString(getString(R.string.forwarding_strategy_key), getString(R.string.default_forwarding_strtegy)));
+
 
         this.startConnection(new ProxyThread(this, mNextConnectionId.getAndIncrement(),
-                serverAddress, serverPort, secret));
+                serverAddress, serverPort, secret, forwardingStrategy));
     }
 
     private void startConnection(final ProxyThread proxy) {
