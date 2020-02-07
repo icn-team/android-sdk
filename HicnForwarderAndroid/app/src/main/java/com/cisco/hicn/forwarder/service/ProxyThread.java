@@ -44,6 +44,7 @@ public class ProxyThread implements Runnable {
     private final String mServerName;
     private final int mServerPort;
     private final String mSharedSecret;
+    private final int mForwardingStrategy;
     private PendingIntent mConfigureIntent;
     private OnEstablishListener mOnEstablishListener;
     private String mHicnConsumerName;
@@ -55,13 +56,14 @@ public class ProxyThread implements Runnable {
     private Properties mParameters;
 
     public ProxyThread(final VpnService service, final int connectionId,
-                       final String serverName, final int serverPort, final String secret) {
+                       final String serverName, final int serverPort, final String secret, final int forwardingStrategy) {
         mProxyInstance = new HProxy();
         mService = service;
         mConnectionId = connectionId;
         mServerName = serverName;
         mServerPort = serverPort;
         mSharedSecret = secret;
+        mForwardingStrategy = forwardingStrategy;
     }
 
     /**
@@ -121,7 +123,7 @@ public class ProxyThread implements Runnable {
         }
 
         mProxyInstance.setProxyInstance(this);
-        mProxyInstance.start(mServerName, mServerPort);
+        mProxyInstance.start(mServerName, mServerPort, mForwardingStrategy);
 
         Log.i(getTag(), "HProxy stopped.");
 

@@ -406,6 +406,9 @@
     <string name="interfaces_list_tag">InterfacesList</string>
     <string name="empty_string" />
     <string name="null_interface_name_message">Interface name cannot be empty</string>
+    <string name="default_forwarding_strtegy">0</string>
+    <string name="forwarding_strategy_key">forwarding_strategy_key</string>
+    <string name="forwarding_strategy_titile">Forwarding Strategy</string>
 
 
 </resources>

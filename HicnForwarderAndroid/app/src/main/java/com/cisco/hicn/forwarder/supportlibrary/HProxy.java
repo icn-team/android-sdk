@@ -58,7 +58,7 @@ public class HProxy {
 
     public native boolean isRunning();
 
-    public native void start(String remote_address, int remote_port);
+    public native void start(String remote_address, int remote_port, int forwarding_strategy);
 
     public native void stop();
 
@@ -67,5 +67,6 @@ public class HProxy {
     public static native boolean isHProxyEnabled();
 
     public static native String getProxifiedAppName();
+
     public static native String getProxifiedPackageName();
 }

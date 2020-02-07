@@ -40,7 +40,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_initConfig(JNIEnv *env, jobj
 extern "C" JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_start(JNIEnv *env, jobject instance,
                                                           jstring remote_address,
-                                                          jint remote_port) {
+                                                          jint remote_port, jint forwarwding_strategy) {
 #ifdef ENABLE_HPROXY
     JniContext *context = new JniContext();
     context->env = env;

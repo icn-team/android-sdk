@@ -32,10 +32,19 @@
         app:useSimpleSummaryProvider="true" />
 
     <EditTextPreference
-        android:inputType="text"
+        android:inputType="textPassword"
         app:defaultValue="@string/default_hproxy_secret"
         app:key="@string/hproxy_secret_key"
         app:summary="@string/hproxy_secret_summary"
         app:title="@string/hproxy_secret_title"
         app:useSimpleSummaryProvider="true" />
+
+    <DropDownPreference
+        android:defaultValue="@string/default_forwarding_strtegy"
+        android:entries="@array/forwarding_strategies"
+        android:entryValues="@array/forwarding_strategy_values"
+        android:key="@string/forwarding_strategy_key"
+        android:title="@string/forwarding_strategy_titile"
+        app:useSimpleSummaryProvider="true" />
+
 </PreferenceScreen>
