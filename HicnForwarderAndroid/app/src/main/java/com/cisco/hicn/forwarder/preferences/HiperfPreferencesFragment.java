@@ -59,7 +59,7 @@ public class HiperfPreferencesFragment extends PreferenceFragmentCompat {
 
         getPreferenceScreen().findPreference(getString(R.string.hiperf_raaqm_drop_factor_key)).setOnPreferenceChangeListener((preference, newValue) -> {
 
-            int hiperfRaaqmDropFactor = Integer.parseInt((String) newValue);
+            double hiperfRaaqmDropFactor = Double.parseDouble((String) newValue);
 
             if (hiperfRaaqmDropFactor < 0 || hiperfRaaqmDropFactor > 100)
                 return false;

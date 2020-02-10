@@ -42,7 +42,7 @@ if [ "$ABI" = "arm64" ]; then
 	if [ ! -d avbuild ]; then
 		git clone https://github.com/wang-bin/avbuild.git
 	fi
-	if [ ! -d ${BASE_PATH}/usr_aarch64/include/libavcodec ] \
+		if [ ! -d ${BASE_PATH}/usr_aarch64/include/libavcodec ] \
 	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libavfilter ] \
 	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libavresample ] \
 	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libswresample ] \
@@ -50,20 +50,22 @@ if [ "$ABI" = "arm64" ]; then
 	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libavformat ] \
 	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libavutil ] \
 	 	|| [ ! -d ${BASE_PATH}/usr_aarch64/include/libswscale ]; then
-	 	if [ ! -d ffmpeg ]; then
-			if [ ! -f ffmpeg.tar.xz ]; then
-				wget -O ffmpeg.tar.xz https://www.ffmpeg.org/releases/ffmpeg-4.2.2.tar.xz
+	 	if [ ! -d ffmpeg-prebuilt ]; then
+			if [ ! -f ffmpeg-prebuilt.tar.xz ]; then
+				wget -O ffmpeg-prebuilt.tar.xz https://iweb.dl.sourceforge.net/project/avbuild/android/ffmpeg-4.2-android-clang.tar.xz
 			fi
-			tar xf ffmpeg.tar.xz
-			mv ffmpeg-4.2.2 ffmpeg
+			tar xf ffmpeg-prebuilt.tar.xz
+			mv ffmpeg-4.2-android-clang ffmpeg-prebuilt
 		fi
-		export FFSRC=$BASE_DIR/qt/ffmpeg
-		export NDK_ROOT=$BASE_DIR/sdk/ndk-bundle
-		export ANDROID_NDK=$BASE_DIR/sdk/ndk-bundle
-		cd $BASE_DIR/qt/avbuild/
-		bash avbuild.sh android24 "arm64-clang"
-		cp -rf sdk-android-${ABI}-clang/include/* ${BASE_PATH}/usr_aarch64/include/
-		cp -f sdk-android-${ABI}-clang/lib/lib* ${BASE_PATH}/usr_aarch64/lib/
+		cp -r ffmpeg-prebuilt/include/* ${BASE_PATH}/usr_aarch64/include/
+		cp ffmpeg-prebuilt/lib/arm64-v8a/lib* ${BASE_PATH}/usr_aarch64/lib/
+		#export FFSRC=$BASE_DIR/qt/ffmpeg
+		#export NDK_ROOT=$BASE_DIR/sdk/ndk-bundle
+		#export ANDROID_NDK=$BASE_DIR/sdk/ndk-bundle
+		#cd $BASE_DIR/qt/avbuild/
+		#bash avbuild.sh android24 "arm64-clang"
+		#cp -rf sdk-android-${ABI}-clang/include/* ${BASE_PATH}/usr_aarch64/include/
+		#cp -f sdk-android-${ABI}-clang/lib/lib* ${BASE_PATH}/usr_aarch64/lib/
 	 	touch ${VERSIONS_FILE}
 	 	echo ${ABI}_ffmpeg
 	 	echo ${VERSIONS_FILE}
