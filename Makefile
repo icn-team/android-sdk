@@ -105,58 +105,65 @@ else
     DISTILLERY_LOCAL_MODULES_DIR="[Undefined]"
 endif
 
+build-qtdep: init_qt download-qtdep compile-qtdep
+
 install-all: install-directories ${modules}
 
 install-env: init_sdk init_qt
 
 init:
-	./scripts/init.sh ${DISTILLERY_INSTALL_DIR};
+	@bash scripts/init.sh ${DISTILLERY_INSTALL_DIR};
 
 init_sdk:
-	./scripts/init_sdk.sh
+	@bash scripts/init_sdk.sh
 
 init_qt:
-	./scripts/init_qt.sh
+	@bash scripts/init_qt.sh
 
 download-dep:
-	./scripts/download_dep.sh;
+	@bash scripts/download_dep.sh;
 
 compile-openssl: init
-	./scripts/compile_openssl.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
+	@bash  scripts/compile_openssl.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
 
 install-asio: init
-	./scripts/install_asio.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
+	@bash scripts/install_asio.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
 
 compile-dep: init compile-openssl install-asio libconfig libevent
 
 download-hicn:
-	./scripts/download_hicn.sh;
+	@bash scripts/download_hicn.sh;
 
 compile-hicn: init cframework/libparc hicn
 
 download-qtdep:
-	./scripts/download_qtdep.sh;
+	@bash  scripts/download_qtdep.sh;
 
 compile-qtdep: init libxml2 curl viper/libdash compile-ffmpeg install-qtav
 
 compile-ffmpeg:
-	./scripts/compile_ffmpeg.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
+	@bash scripts/compile_ffmpeg.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
 
 install-qtav:
-	./scripts/install_qtav.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
+	@bash scripts/install_qtav.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
 
 android_hicnforwarder:
-	./scripts/compile_hicnforwarder.sh $(VERSION)
+	@bash scripts/compile_hicnforwarder.sh $(VERSION)
+
 android_hicnforwarder_debug:
-	./scripts/compile_hicnforwarder.sh $(VERSION) DEBUG
+	@bash scripts/compile_hicnforwarder.sh $(VERSION) DEBUG
+
 android_hicntools:
-	./scripts/compile_hicntools.sh $(VERSION)
+	@bash scripts/compile_hicntools.sh $(VERSION)
+
 android_hicntools_debug:
-	./scripts/compile_hicntools.sh $(VERSION) DEBUG
+	@bash scripts/compile_hicntools.sh $(VERSION) DEBUG
+
 android_viper:
-	./scripts/compile_androidviper.sh
+	@bash scripts/compile_androidviper.sh
+
 android_viper_debug:
-	./scripts/compile_androidviper.sh DEBUG
+	@bash scripts/compile_androidviper.sh DEBUG
 
 curl-clean:
 	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/lib/libcurl.*
@@ -230,7 +237,7 @@ qtav-clean:
 	@rm -rf ${DISTILLERY_BUILD_DIR_PREFIX}_*/qtav
 
 version:
-	./scripts/print_env_version.sh
+	@bash scripts/print_env_version.sh
 
 all-clean: dependencies-clean hicn-clean qt-clean qtav-clean viper-clean
 
@@ -255,6 +262,7 @@ help:
 	@echo "make update					- update hicn to the right commit"
 	@echo "make all						- Download sdk, ndk and dependencies, configure, compile and install all hicn software in DISTILLERY_INSTALL_DIR"
 	@echo "make all-withqt				- Download sdk, ndk, qt and dependencies, configure, compile and install all hicn and qt software in DISTILLERY_INSTALL_DIR"
+	@echo "make build-qtdep				- Downlaod the qt environment and install the qt/viper dependencies"
 	@echo "make install-all 			- Configure, compile and install all software in DISTILLERY_INSTALL_DIR"
 	@echo "make curl-clean				- Clean curl files and libs"
 	@echo "make openssl-clean			- Clean opennssl files and libs"
