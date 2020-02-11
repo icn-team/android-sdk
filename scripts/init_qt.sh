@@ -27,8 +27,6 @@ if [ ! -d ${QT_HOME} ]; then
 	if [ ! -d qtci ]; then
 		git clone https://github.com/benlau/qtci.git
 	fi
-	export QT_CI_LOGIN="icn.cisco@gmail.com"
-	export QT_CI_PASSWORD="QtInstallerHicn!"
 	export PATH=$PATH:`pwd`/qtci/bin:`pwd`/qtci/recipes
 	export QT_CI_PACKAGES=qt.qt5.${QT_VERSION_INSTALL}.android_arm64_v8a,qt.qt5.${QT_VERSION_INSTALL}.qtcharts.android_arm64_v8a,qt.qt5.${QT_VERSION_INSTALL}.qtcharts,qt.qt5.${QT_VERSION_INSTALL}.android_x86_64,qt.qt5.${QT_VERSION_INSTALL}.qtcharts.android_x86_64
 	install-qt ${QT_VERSION}
