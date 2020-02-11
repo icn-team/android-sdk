@@ -39,6 +39,18 @@ export ANDROID_ARCH="x86_64"
 make all
 ```
 
+Compile viper dependencies
+
+```
+echo "export QT_CI_LOGIN=<qt username>"
+echo "export QT_CI_PASSWORD=<qt password>"
+
+export ANDROID_ARCH="arm64"
+make build-qtdep
+export ANDROID_ARCH="x86_64"
+make build-qtdep
+```
+
 The hICN Distillery software will be installed in android-sdk/usr_aarch64 and android-sdk/usr_x86_64
 
 

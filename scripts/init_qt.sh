@@ -24,6 +24,14 @@ mkdir -p qt
 cd qt
 export QT_HOME=`pwd`/Qt
 if [ ! -d ${QT_HOME} ]; then
+	if [ -z ${QT_CI_LOGIN} ] || [ -z ${QT_CI_PASSWORD} ]; then
+		echo "QT_CI_LOGIN and/or QT_CI_PASSWORD not set."
+		echo "export QT_CI_LOGIN=<qt username>"
+		echo "export QT_CI_PASSWORD=<qt password>"
+		echo "If you don't have a qt account, please create a new one on:"
+		echo "https://login.qt.io/register"
+		exit 1;
+	fi
 	if [ ! -d qtci ]; then
 		git clone https://github.com/benlau/qtci.git
 	fi
