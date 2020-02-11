@@ -30,8 +30,6 @@ if [ "$ABI" = "arm64" ]; then
 	fi
 	if [ ! -d ${QT_HOME}/${QT_VERSION}/android_arm64_v8a ]; then
 		export PATH=$PATH:`pwd`/qtci/bin:`pwd`/qtci/recipes
-		export QT_CI_LOGIN="icn.cisco@gmail.com"
-		export QT_CI_PASSWORD="QtInstallerHicn!"
 		export QT_CI_PACKAGES=qt.qt5.${QT_VERSION_INSTALL}.android_arm64_v8a,qt.qt5.${QT_VERSION_INSTALL}.qtcharts.android_arm64_v8a,qt.qt5.${QT_VERSION_INSTALL}.qtcharts
 		install-qt ${QT_VERSION}
 		mv `pwd`/Qt ${QT_HOME}
@@ -113,8 +111,6 @@ elif [ "$ABI" = "x86_64" ]; then
 	fi
 	echo "${QT_HOME}/${QT_VERSION}/android_x86_64"
 	if [ ! -d ${QT_HOME}/${QT_VERSION}/android_x86_64 ]; then
-		export QT_CI_LOGIN="icn.cisco@gmail.com"
-		export QT_CI_PASSWORD="QtInstallerHicn!"
 		export PATH=$PATH:`pwd`/qtci/bin:`pwd`/qtci/recipes
 		export QT_CI_PACKAGES=qt.qt5.${QT_VERSION_INSTALL}.android_x86_64,qt.qt5.${QT_VERSION_INSTALL}.qtcharts.android_x86_64,qt.qt5.${QT_VERSION_INSTALL}.qtcharts
 		install-qt ${QT_VERSION}
