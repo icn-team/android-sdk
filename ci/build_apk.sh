@@ -30,7 +30,7 @@ ln -s /sdk /hicn/
 cd /hicn
 make version
 
-make android_hicnforwarder VERSION=VERSION_CODE
+make android_hicnforwarder VERSION=$VERSION_CODE
 cp HicnForwarderAndroid/app/build/outputs/apk/release/*.apk /hicn
 #cd /hicn/HicnForwarderAndroid
 #echo sdk.dir=/sdk > local.properties
@@ -40,7 +40,7 @@ cp HicnForwarderAndroid/app/build/outputs/apk/release/*.apk /hicn
 
 #cp app/build/outputs/apk/release/*.apk /hicn
 
-make android_hicntools VERSION=VERSION_CODE
+make android_hicntools VERSION=$VERSION_CODE
 cp hICNTools/app/build/outputs/apk/release/*.apk /hicn
 
 #cd /hicn/hICNTools
