@@ -23,9 +23,9 @@ VERSION_CODE=$($AAPT dump badging HicnForwarderAndroid.apk | grep versionCode | 
 
 VERSION_CODE=$((VERSION_CODE+1))
 
-ln -sf /usr_aarch64 /hicn
-ln -sf /usr_x86_64 /hicn
-ln -s /.versions /hicn
+ln -sf /usr_aarch64 /hicn/
+ln -sf /usr_x86_64 /hicn/
+ln -s /.versions /hicn/
 cd /hicn
 make version
 
@@ -44,7 +44,15 @@ echo ndk.dir=/sdk/ndk-bundle >> local.properties
 cp app/build/outputs/apk/release/*.apk /hicn
 
 
-
+pwd
+cd /hicn
+ln -sf /qt /hicn/
+mkdir -p /hicn/src
+if [ ! -d /hicn/src/viper ]; then
+	git clone -b viper/master https://gerrit.fd.io/r/cicn /hicn/src/viper
+fi
+make android_viper
+exit 1
 
 export QT_VERSION=5.13.2
 export QT_HOME=/qt/Qt
