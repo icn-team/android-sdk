@@ -26,6 +26,7 @@ VERSION_CODE=$((VERSION_CODE+1))
 ln -sf /usr_aarch64 /hicn/
 ln -sf /usr_x86_64 /hicn/
 ln -s /.versions /hicn/
+ln -s /sdk /hicn/
 cd /hicn
 make version
 
