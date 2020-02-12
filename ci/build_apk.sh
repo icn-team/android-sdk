@@ -27,90 +27,27 @@ ln -sf /usr_aarch64 /hicn/
 ln -sf /usr_x86_64 /hicn/
 ln -s /.versions /hicn/
 ln -s /sdk /hicn/
+ln -sf /qt /hicn/
+
 cd /hicn
 make version
 
 make android_hicnforwarder VERSION=$VERSION_CODE
 cp HicnForwarderAndroid/app/build/outputs/apk/release/*.apk /hicn
-#cd /hicn/HicnForwarderAndroid
-#echo sdk.dir=/sdk > local.properties
-#echo ndk.dir=/sdk/ndk-bundle >> local.properties
-#./gradlew assembleRelease -PVERSION_CODE=$VERSION_CODE
-#ANDROID_HOME=/sdk
-
-#cp app/build/outputs/apk/release/*.apk /hicn
 
 make android_hicntools VERSION=$VERSION_CODE
 cp hICNTools/app/build/outputs/apk/release/*.apk /hicn
 
-#cd /hicn/hICNTools
-#echo sdk.dir=/sdk > local.properties
-#echo ndk.dir=/sdk/ndk-bundle >> local.properties
-#./gradlew assembleRelease -PVERSION_CODE=$VERSION_CODE
-#cp app/build/outputs/apk/release/*.apk /hicn
-
-
 pwd
 cd /hicn
-ln -sf /qt /hicn/
 mkdir -p /hicn/src
 if [ ! -d /hicn/src/viper ]; then
 	git clone -b viper/master https://gerrit.fd.io/r/cicn /hicn/src/viper
-	sed -i -e "s/android:versionCode=\"9\"/android:versionCode=\"$VERSION_CODE\"/g" /hicn/src/viper/android/AndroidManifest.xml
-	sed -i -e "s/android:targetSdkVersion=\"26\"/android:targetSdkVersion=\"28\"/g" /hicn/src/viper/android/AndroidManifest.xml
 fi
-make android_viper
+make android_viper VERSION=$VERSION_CODE
 cp /hicn/build_aarch64/viper/hicn-viper-arm64_v8a//build/outputs/apk/hicn-viper-arm64_v8a-release-signed.apk /hicn/viper-arm64.apk
 cp /hicn/build_x86_64/viper/hicn-viper-x86_64//build/outputs/apk/hicn-viper-x86_64-release-signed.apk /hicn/viper-x86_64.apk
-#exit 1
 
-#export QT_VERSION=5.13.2
-#export QT_HOME=/qt/Qt
-#export ANDROID_NDK_HOME=/sdk/ndk-bundle
-#if [ ! -d /src/viper ]; then
-#	git clone -b viper/master https://gerrit.fd.io/r/cicn /src/viper
-#fi
-#export OS=$(uname | tr '[:upper:]' '[:lower:]')
-#export ARCH=$(uname -m)
-#export ANDROID_HOME=${ANDROID_HOME} 
-#export ANDROID_NDK_HOST=${OS}-${ARCH}
-#export ANDROID_NDK_PLATFORM=android-28
-#export ANDROID_NDK_ROOT=/sdk/ndk-bundle
-#export ANDROID_SDK_ROOT=/sdk
-#export ANDROID_API_VERSION=android-28
-#export PATH=$PATH:${ANDROID_HOME}/tools:${JAVA_HOME}/bin
-
-#sed -i -e "s/android:versionCode=\"9\"/android:versionCode=\"$VERSION_CODE\"/g" /src/viper/android/AndroidManifest.xml
-#sed -i -e "s/android:targetSdkVersion=\"26\"/android:targetSdkVersion=\"28\"/g" /src/viper/android/AndroidManifest.xml
-#export ANDROID_ARCH=arm64_v8a
-#export DISTILLARY_INSTALLATION_PATH=/usr_aarch64/
-#export QT_HOST_PREFIX=/qt/Qt/$QT_VERSION/android_${ANDROID_ARCH}
-#mkdir -p /build_aarch64/viper
-#cd /build_aarch64/viper
-#/qt/Qt/$QT_VERSION/android_${ANDROID_ARCH}/bin/qmake -r -spec android-clang /src/viper/viper.pro  "TRANSPORT_LIBRARY = HICNET"
-#make
-#make install INSTALL_ROOT=hicn-viper-${ANDROID_ARCH}
-#/qt/Qt/$QT_VERSION/android_${ANDROID_ARCH}/bin/androiddeployqt --output hicn-viper-${ANDROID_ARCH} --verbose --input android-libviper.so-deployment-settings.json --gradle --android-platform ${ANDROID_NDK_PLATFORM} --stacktrace --release --target ${ANDROID_NDK_PLATFORM} --release \
-#--sign /src/viper/android/viper.keystore viper --storepass icn_viper
-
-#cp /build_aarch64/viper/hicn-viper-arm64_v8a//build/outputs/apk/hicn-viper-arm64_v8a-release-signed.apk /hicn
-
-#mv /hicn/hicn-viper-arm64_v8a-release-signed.apk /hicn/viper-arm64.apk
-
-#export DISTILLARY_INSTALLATION_PATH=/usr_x86_64/
-#export QT_HOST_PREFIX=/qt/Qt/$QT_VERSION/android_${ANDROID_ARCH}
-#export ANDROID_ARCH=x86_64
-#mkdir -p /build_x86_64/viper
-#cd /build_x86_64/viper
-#/qt/Qt/$QT_VERSION/android_${ANDROID_ARCH}/bin/qmake -r -spec android-clang /src/viper/viper.pro  "TRANSPORT_LIBRARY = HICNET"
-#make
-#make install INSTALL_ROOT=hicn-viper-${ANDROID_ARCH}
-#/qt/Qt/$QT_VERSION/android_${ANDROID_ARCH}/bin/androiddeployqt --output hicn-viper-${ANDROID_ARCH} --verbose --input android-libviper.so-deployment-settings.json --gradle --android-platform ${ANDROID_NDK_PLATFORM} --stacktrace --release --target ${ANDROID_NDK_PLATFORM} --release \
-#--sign /src/viper/android/viper.keystore viper --storepass icn_viper
-
-#cp /build_x86_64/viper/hicn-viper-x86_64//build/outputs/apk/hicn-viper-x86_64-release-signed.apk /hicn
-
-#mv /hicn/hicn-viper-x86_64-release-signed.apk /hicn/viper-x86_64.apk
 
 if [ "$1" = "1" ]; then
   APK_PATH=/hicn/HicnForwarderAndroid.apk
@@ -120,5 +57,3 @@ if [ "$1" = "1" ]; then
   APK_PATH=/hicn/viper-arm64.apk
   bash /hicn/ci/push_playstore.sh /hicn/playstore_key.json $APK_PATH $VERSION_CODE /sdk
 fi
-
-rm /hicn/usr_*
