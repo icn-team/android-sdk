@@ -43,7 +43,7 @@ getVersionFromSdkManager () {
 getVersionFromQt () {
 	local abi=$1
 	local result=$2
-	local version=$(cat qt/Qt_$abi/components.xml | grep ApplicationName | awk '{print $2}' | awk -F "<" '{print $1}')
+	local version=$(cat qt/Qt/components.xml | grep ApplicationName | awk '{print $2}' | awk -F "<" '{print $1}')
 	if [ "${version}" = "" ]; then
     	eval $result="'not installed'"
     else
