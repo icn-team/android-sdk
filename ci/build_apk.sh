@@ -30,19 +30,24 @@ ln -s /sdk /hicn/
 cd /hicn
 make version
 
-cd /hicn/HicnForwarderAndroid
-echo sdk.dir=/sdk > local.properties
-echo ndk.dir=/sdk/ndk-bundle >> local.properties
-./gradlew assembleRelease -PVERSION_CODE=$VERSION_CODE
-ANDROID_HOME=/sdk
+make android_hicnforwarder VERSION=VERSION_CODE
+cp HicnForwarderAndroid/app/build/outputs/apk/release/*.apk /hicn
+#cd /hicn/HicnForwarderAndroid
+#echo sdk.dir=/sdk > local.properties
+#echo ndk.dir=/sdk/ndk-bundle >> local.properties
+#./gradlew assembleRelease -PVERSION_CODE=$VERSION_CODE
+#ANDROID_HOME=/sdk
 
-cp app/build/outputs/apk/release/*.apk /hicn
+#cp app/build/outputs/apk/release/*.apk /hicn
 
-cd /hicn/hICNTools
-echo sdk.dir=/sdk > local.properties
-echo ndk.dir=/sdk/ndk-bundle >> local.properties
-./gradlew assembleRelease -PVERSION_CODE=$VERSION_CODE
-cp app/build/outputs/apk/release/*.apk /hicn
+make android_hicntools VERSION=VERSION_CODE
+cp hICNTools/app/build/outputs/apk/release/*.apk /hicn
+
+#cd /hicn/hICNTools
+#echo sdk.dir=/sdk > local.properties
+#echo ndk.dir=/sdk/ndk-bundle >> local.properties
+#./gradlew assembleRelease -PVERSION_CODE=$VERSION_CODE
+#cp app/build/outputs/apk/release/*.apk /hicn
 
 
 pwd
