@@ -17,8 +17,9 @@ DISTILLERY_VERSION=2.0
 
 default.target: help
 
-all: init_depend install-all
-#init_qt
+all: init_depend init_depend install-all
+
+all-withqt: all init_qt init_depqt
 
 ##############################################################
 # Variables
@@ -106,10 +107,20 @@ endif
 
 install-all: install-directories ${modules}
 
-init_depend:
-	./scripts/init.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
+install-env: init_sdk init_qt
+
+init_sdk:
+	@bash scripts/init_sdk.sh
+
 init_qt:
-	./scripts/init_qt.sh
+	@bash scripts/init_qt.sh
+
+init_depend:
+	@bash scripts/init.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
+
+init_depqt: init_sdk init_qt
+	@bash scripts/init_depqt.sh
+
 android_hicnforwarder:
 	./scripts/compile_hicnforwarder.sh
 android_hicnforwarder_debug:
@@ -196,7 +207,7 @@ viper-clean:
 	@rm -rf ${DISTILLERY_BUILD_DIR_PREFIX}_*/viper
 	
 qt-clean:
-	@rm -rf qt/Qt_*
+	@rm -rf qt/Qt*
 
 qtav-clean:
 	@echo ${DISTILLERY_BUILD_DIR_PREFIX}
@@ -204,19 +215,23 @@ qtav-clean:
 	@rm -rf ${DISTILLERY_BUILD_DIR_PREFIX}_*/qtav
 
 version:
-	./scripts/print_env_version.sh
+	@bash scripts/print_env_version.sh
 
 all-clean: dependencies-clean hicn-clean qt-clean qtav-clean viper-clean
 
 update:
-	./scripts/update.sh ${COMMIT}
+	@bash scripts/update.sh ${COMMIT}
 
 help:
 	@echo "---- Basic build targets ----"
-	@echo "make help			- This help message"
-	@echo "make update			- update hicn to the right commit"
-	@echo "make all				- Download sdk, ndk and dependencies, configure, compile and install all software in DISTILLERY_INSTALL_DIR"
+	@echo "make help				- This help message"
+	@echo "make update				- update hicn to the right commit"
+	@echo "make all					- Download sdk, ndk and dependencies, configure, compile and install all software in DISTILLERY_INSTALL_DIR"
+	@echo "make all-withqt			- Download sdk, ndk, qt and dependencies, configure, compile and install all software in DISTILLERY_INSTALL_DIR"
+	@echo "make init_sdk			- Download sdk and ndk"
+	@echo "make init_qt				- Download the qt framework"
 	@echo "make init_depend 		- Download sdk, ndk and dependencies, compile and install all dependencies in DISTILLERY_INSTALL"
+	@echo "make init_depqt			- Download qt and the qt/viper dependencies, compile and install them in DISTILLERY_INSTALL"
 	@echo "make install-all 		- Configure, compile and install all software in DISTILLERY_INSTALL_DIR"
 	@echo "make curl-clean			- Clean curl files and libs"
 	@echo "make openssl-clean		- Clean opennssl files and libs"
