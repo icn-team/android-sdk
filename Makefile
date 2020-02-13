@@ -286,7 +286,7 @@ help:
 	@echo "make android_hicntools_debug	- Build HicnTools apk for android in debug mode"
 	@echo "make android_viper			- Build Viper apk for android apk in debug mode (only arm64)" 
 	@echo "make android_viper_debug		- Build Viper apk for android apk (only arm64)"
-	@echo "make version"				- Print the version of installed modules
+	@echo "make version				- Print the version of installed modules"
 	
 ${DISTILLERY_STAMP}: ${REBUILD_DEPENDS}
 	touch $@

@@ -1,4 +1,4 @@
- #############################################################################
+s #############################################################################
  # Copyright (c) 2017 Cisco and/or its affiliates.
  # Licensed under the Apache License, Version 2.0 (the "License");
  # you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ fi
 if [ ! -d QtAV ]; then
 	git clone https://github.com/wang-bin/QtAV.git
 	cd QtAV
-	git checkout tags/v1.13.0
+	git checkout 0307c174a4197fd33b1c1e7d37406d1ee5df6c82
 	git submodule update --init
 	cd ..
 fi

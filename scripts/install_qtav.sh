@@ -23,11 +23,10 @@ export BASE_DIR=`pwd`
 
 QT_VERSION=5.13.2
 QT_VERSION_INSTALL=5132
-if [ "${ABI}" = "arm64" ]; then
-    QT_ANDROID=android_arm64_v8a
-elif [ "${ABI}" = "x86_64" ]; then
-    QT_ANDROID=android_x86_64
-fi
+
+QT_ABI=`echo "${ANDROID_ABI}" | tr '[:upper:]' '[:lower:]' | tr '-' '_'`
+QT_ANDROID=android_${QT_ABI}
+
 if [ ! -d ${QT_HOME}/${QT_VERSION}/${QT_ANDROID}/include/QtAV ]; then
 	export ANDROID_SDK_ROOT=${SDK}
 	export ANDROID_NDK_ROOT=${NDK}
