@@ -4,19 +4,11 @@ cd HicnForwarderAndroid
 if [ ! -f local.properties ]; then
 	echo sdk.dir=${SDK} > local.properties
 fi
-
-if [ "$2" = "DEBUG" ]; then
-	if [ -z "$1" ]; then
-	    ./gradlew assembleDebug
-	else
-	    ./gradlew assembleDebug -PVERSION_CODE=$1
-	fi
+VERSION_CODE="${2:-1}"
+if [ "$1" = "DEBUG" ]; then
+	./gradlew assembleDebug -PVERSION_CODE=$VERSION_CODE
 else
-    if [ -z "$1" ]; then
-	    ./gradlew assembleRelease
-	else
-	    ./gradlew assembleRelease -PVERSION_CODE=$1 
-	fi
+	./gradlew assembleRelease -PVERSION_CODE=$VERSION_CODE
 fi
 
 echo "Apks are inside HicnForwarderAndroid/app/build/outputs/apk"

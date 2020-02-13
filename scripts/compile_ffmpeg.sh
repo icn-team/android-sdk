@@ -16,19 +16,19 @@
 #!/bin/bash
 
 set -ex
-ABI=$1
-INSTALLATION_DIR=$2
+ABI=$1s
 OS=`echo $OS | tr '[:upper:]' '[:lower:]'`
 export BASE_DIR=`pwd`
-mkdir -p ${INSTALLATION_DIR}
-mkdir -p ${INSTALLATION_DIR}/include
+mkdir -p ${DISTILLERY_INSTALL_DIR}
+mkdir -p ${DISTILLERY_INSTALL_DIR}/include
 
-if [ ! -d ${INSTALLATION_DIR}/include/libavcodec ] \
-	|| [ ! -d ${INSTALLATION_DIR}/include/libavfilter ] \
-	|| [ ! -d ${INSTALLATION_DIR}/include/libswresample ] \
-	|| [ ! -d ${INSTALLATION_DIR}/include/libavformat ] \
-	|| [ ! -d ${INSTALLATION_DIR}/include/libavutil ] \
-	|| [ ! -d ${INSTALLATION_DIR}/include/libswscale ]; then
+if [ ! -d ${DISTILLERY_INSTALL_DIR}/include/libavcodec ] \
+	|| [ ! -d ${DISTILLERY_INSTALL_DIR}/include/libavfilter ] \
+	|| [ ! -d ${DISTILLERY_INSTALL_DIR}/include/libswresample ] \
+	|| [ ! -d ${DISTILLERY_INSTALL_DIR}/include/libavformat ] \
+	|| [ ! -d ${DISTILLERY_INSTALL_DIR}/include/libavutil ] \
+	|| [ ! -d ${DISTILLERY_INSTALL_DIR}/include/libswscale ]; then
+	cd qt
 	if [ ! -d ffmpeg ]; then
 		if [ ! -f ffmpeg-prebuilt.tar.xz ]; then
 			wget -O ffmpeg.tar.xz https://sourceforge.net/projects/avbuild/files/android/ffmpeg-4.2-android-lite.tar.xz
@@ -36,8 +36,8 @@ if [ ! -d ${INSTALLATION_DIR}/include/libavcodec ] \
 		tar xf ffmpeg.tar.xz
 		mv ffmpeg-4.2-android-lite ffmpeg
 	fi
-	cp -r ffmpeg/include/* ${INSTALLATION_DIR}/include/
-    cp ffmpeg/lib/${ANDROID_ABI}/lib* ${INSTALLATION_DIR}/lib/
+	cp -r ffmpeg/include/* ${DISTILLERY_INSTALL_DIR}/include/
+    cp ffmpeg/lib/${ANDROID_ABI}/lib* ${DISTILLERY_INSTALL_DIR}/lib/
 	touch ${VERSIONS_FILE}
 	${SED} -i "/${ABI}_ffmpeg/d" ${VERSIONS_FILE}
 	echo ${ABI}_ffmpeg=4.2 >> ${VERSIONS_FILE}

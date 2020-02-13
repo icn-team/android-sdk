@@ -17,9 +17,9 @@
 
 
 #!/bin/bash
-set -e
-BASIC_HOME=${QT_HOME}
+set -ex
 BASE_DIR=`pwd`
+BASIC_HOME=${QT_HOME}
 export ANDROID_ARCH=arm64_v8a
 export ANDROID_HOME=${SDK}
 export ANDROID_NDK_HOST=${OS}-${ARCH}
@@ -31,6 +31,19 @@ export PATH=$PATH:${ANDROID_HOME}/tools:${JAVA_HOME}/bin
 export DISTILLARY_INSTALLATION_PATH=${DISTILLERY_ROOT_DIR}/usr_aarch64/
 export QT_VERSION=5.13.2
 export QT_HOME=${BASIC_HOME}
+VERSION_CODE="${2:-1}"
+
+do_restore() {
+	pwd
+	${SED} -i -e "s/android:versionCode=\"$VERSION_CODE\"/android:versionCode=\"9\"/g" ${DISTILLERY_ROOT_DIR}/src/viper/android/AndroidManifest.xml
+	${SED} -i -e "s/android:targetSdkVersion=\"28\"/android:targetSdkVersion=\"26\"/g" ${DISTILLERY_ROOT_DIR}/src/viper/android/AndroidManifest.xml
+}
+
+trap "do_restore" ERR
+
+${SED} -i -e "s/android:versionCode=\"9\"/android:versionCode=\"$VERSION_CODE\"/g" ${DISTILLERY_ROOT_DIR}/src/viper/android/AndroidManifest.xml
+${SED} -i -e "s/android:targetSdkVersion=\"26\"/android:targetSdkVersion=\"28\"/g" ${DISTILLERY_ROOT_DIR}/src/viper/android/AndroidManifest.xml
+
 if [ "$1" = "DEBUG" ]; then
 	mkdir -p build_aarch64/viper_debug
 	cd build_aarch64/viper_debug
@@ -47,10 +60,11 @@ else
 	${QT_HOME}/${QT_VERSION}/android_${ANDROID_ARCH}/bin/androiddeployqt --output hicn-viper-${ANDROID_ARCH} --verbose --input android-libviper.so-deployment-settings.json \
 	--gradle --android-platform ${ANDROID_NDK_PLATFORM} --stacktrace --release --target ${ANDROID_NDK_PLATFORM} --release --sign ${DISTILLERY_ROOT_DIR}/src/viper/android/viper.keystore viper --storepass icn_viper
 fi
-cd $BASE_DIR
-
+cd ..
+cd ${BASE_DIR}
 export ANDROID_ARCH=x86_64
 export DISTILLARY_INSTALLATION_PATH=${DISTILLERY_ROOT_DIR}/usr_x86_64/
+export QT_VERSION=5.13.2
 export QT_HOME=${BASIC_HOME}
 if [ "$1" = "DEBUG" ]; then
 	mkdir -p build_x86_64/viper_debug
@@ -68,4 +82,5 @@ else
 	${QT_HOME}/${QT_VERSION}/android_${ANDROID_ARCH}/bin/androiddeployqt --output hicn-viper-${ANDROID_ARCH} --verbose --input android-libviper.so-deployment-settings.json \
 	--gradle --android-platform ${ANDROID_NDK_PLATFORM} --stacktrace --release --target ${ANDROID_NDK_PLATFORM} --release --sign ${DISTILLERY_ROOT_DIR}/src/viper/android/viper.keystore viper --storepass icn_viper
 fi
+do_restore
 cd ..
