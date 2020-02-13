@@ -64,8 +64,3 @@ if [ ! -d QtAV ]; then
 	git submodule update --init
 	cd ..
 fi
-
-cd $BASE_DIR/qt
-if [ ! -d avbuild ]; then
-	git clone https://github.com/wang-bin/avbuild.git
-fi

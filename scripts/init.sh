@@ -17,8 +17,7 @@
 
 set -ex
 
-INSTALLATION_DIR=$1
-mkdir -p ${INSTALLATION_DIR}
-mkdir -p ${INSTALLATION_DIR}/include
-mkdir -p ${INSTALLATION_DIR}/lib
+mkdir -p ${DISTILLERY_INSTALL_DIR}
+mkdir -p ${DISTILLERY_INSTALL_DIR}/include
+mkdir -p ${DISTILLERY_INSTALL_DIR}/lib
 

@@ -124,10 +124,10 @@ download-dep:
 	@bash scripts/download_dep.sh;
 
 compile-openssl: init
-	@bash  scripts/compile_openssl.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
+	@bash  scripts/compile_openssl.sh ${ABI};
 
 install-asio: init
-	@bash scripts/install_asio.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
+	@bash scripts/install_asio.sh ${ABI};
 
 compile-dep: init compile-openssl install-asio libconfig libevent
 
@@ -142,28 +142,28 @@ download-qtdep:
 compile-qtdep: init libxml2 curl viper/libdash compile-ffmpeg install-qtav
 
 compile-ffmpeg:
-	@bash scripts/compile_ffmpeg.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
+	@bash scripts/compile_ffmpeg.sh ${ABI};
 
 install-qtav:
-	@bash scripts/install_qtav.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
+	@bash scripts/install_qtav.sh ${ABI};
 
 android_hicnforwarder:
-	@bash scripts/compile_hicnforwarder.sh $(VERSION)
+	@bash scripts/compile_hicnforwarder.sh NODEBUG $(VERSION)
 
 android_hicnforwarder_debug:
-	@bash scripts/compile_hicnforwarder.sh $(VERSION) DEBUG
+	@bash scripts/compile_hicnforwarder.sh DEBUG $(VERSION)
 
 android_hicntools:
-	@bash scripts/compile_hicntools.sh $(VERSION)
+	@bash scripts/compile_hicntools.sh NODEBUG $(VERSION)
 
 android_hicntools_debug:
-	@bash scripts/compile_hicntools.sh $(VERSION) DEBUG
+	@bash scripts/compile_hicntools.sh DEBUG $(VERSION)
 
 android_viper:
-	@bash scripts/compile_androidviper.sh
+	@bash scripts/compile_androidviper.sh NODEBUG $(VERSION)
 
 android_viper_debug:
-	@bash scripts/compile_androidviper.sh DEBUG
+	@bash scripts/compile_androidviper.sh ODEBUG $(VERSION)
 
 curl-clean:
 	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/lib/libcurl.*
