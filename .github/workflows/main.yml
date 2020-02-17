@@ -80,12 +80,12 @@ jobs:
           asset_content_type: application/zip
       - name: Upload Release Asset (HicnForwarderAndroid)
         if: github.ref == 'refs/heads/master'
-        id: upload-release-asset-hicnforwarderandroid 
+        id: upload-release-asset-hicnforwarder 
         uses: actions/upload-release-asset@v1.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: https://uploads.github.com/repos/icn-team/android-sdk/releases/21250805/assets{?name,label}
           asset_path: ./apks/HicnForwarderAndroid.apk
-          asset_name: HicnForwarderAndroid.apk
+          asset_name: HicnForwarder.apk
           asset_content_type: application/zip
