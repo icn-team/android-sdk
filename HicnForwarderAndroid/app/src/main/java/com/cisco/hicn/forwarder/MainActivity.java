@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity
         checkEnabledPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
         checkEnabledPermission(Manifest.permission.FOREGROUND_SERVICE);
         checkEnabledPermission(Manifest.permission.BIND_VPN_SERVICE);
+        checkEnabledPermission(Manifest.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
 
         MainActivity.context = getApplicationContext();
 
