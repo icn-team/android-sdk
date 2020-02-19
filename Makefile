@@ -17,7 +17,7 @@ DISTILLERY_VERSION=2.0
 
 default.target: help
 
-all: init_depend init_depend install-all
+all: init_sdk init_depend init_depend install-all
 
 all-withqt: all init_qt init_depqt
 
