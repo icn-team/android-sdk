@@ -178,22 +178,22 @@ Java_io_fd_hicn_hicntools_ui_fragments_HiGetFragment_downloadFile(JNIEnv *env, j
     std::string name(path);
     env->ReleaseStringUTFChars(path_, path);
     connection.get(name);
-    transport::http::HTTPResponse response = connection.response();
+    transport::http::HTTPPayload payload = connection.response()->getPayload();
 #ifdef BUILD_64
     __android_log_print(ANDROID_LOG_INFO, "HI_GET_ANDROID", "Response packet size: %lu",
-                        response.getPayload().size());
+                        payload->length());
 #else
-    __android_log_print(ANDROID_LOG_INFO, "HI_GET_ANDROID","Response packet size: %u", response.getPayload().size());
+    __android_log_print(ANDROID_LOG_INFO, "HI_GET_ANDROID","Response packet size: %u", response->length());
 #endif
-    if (response.getPayload().size() == 0) {
+    if (payload->length() == 0) {
         jbyte temp[] = {};
         jbyteArray ret = env->NewByteArray(0);
         env->SetByteArrayRegion(ret, 0, 0, temp);
         return ret;
     }
-    jbyteArray ret = env->NewByteArray(response.getPayload().size());
-    env->SetByteArrayRegion(ret, 0, response.getPayload().size(),
-                            (jbyte *) (response.getPayload().data()));
+    jbyteArray ret = env->NewByteArray(payload->length());
+    env->SetByteArrayRegion(ret, 0, payload->length(),
+                            (jbyte *) (payload->data()));
     return ret;
 }
 
