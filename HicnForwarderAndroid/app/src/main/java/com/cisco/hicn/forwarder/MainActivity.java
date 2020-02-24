@@ -16,15 +16,21 @@
 package com.cisco.hicn.forwarder;
 
 import android.Manifest;
+import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -65,13 +71,16 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        checkEnabledPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        checkEnabledPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
         checkEnabledPermission(Manifest.permission.FOREGROUND_SERVICE);
         checkEnabledPermission(Manifest.permission.BIND_VPN_SERVICE);
+        checkEnabledPermission(Manifest.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
 
         MainActivity.context = getApplicationContext();
+
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        boolean aa = pm.isIgnoringBatteryOptimizations(this.getPackageName());
+
+
 
 
         setContentView(R.layout.activity_main);
@@ -147,6 +156,19 @@ public class MainActivity extends AppCompatActivity
             facemgr.updateInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_WIRED.getValue(), wiredSourcePortIPv6, wiredNextHopIPv6, wiredNextHopPortIPv6);
         }
         fragmentManager.beginTransaction().replace(R.id.viewLayout, home).commit();
+
+        PowerManager powerManager = (PowerManager) context.getSystemService(POWER_SERVICE);
+        String packageName = context.getApplicationContext().getPackageName();
+        boolean ignoringOptimizations = powerManager.isIgnoringBatteryOptimizations(packageName);
+
+        if (ignoringOptimizations) {
+            return;
+        }
+
+        Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+        intent.setData(Uri.parse("package:" + packageName));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
 
     }
 
