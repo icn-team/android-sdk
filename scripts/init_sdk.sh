@@ -16,7 +16,7 @@
 #!/bin/bash
 
 set -ex
-
+echo  ---> $ANDROID_SDK_TOOLS_REV
 OS=`echo $OS | tr '[:upper:]' '[:lower:]'`
 
 if [ -z ${SDK_PATH} ]  ; then
