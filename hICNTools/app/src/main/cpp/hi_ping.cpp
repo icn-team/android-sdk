@@ -171,6 +171,9 @@ namespace transport {
                 }
             }
 
+            void Client::onError(std::error_code ec) {
+
+            }
 
             void Client::doPing() {
                 Name interest_name(config_->name_, (uint32_t) sequence_number_);

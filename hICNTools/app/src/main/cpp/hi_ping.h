@@ -21,8 +21,12 @@
 #include <string>
 #include <unistd.h>
 #include <android/log.h>
-#include <hicn/transport/interfaces/socket.h>
-#include <hicn/transport/utils/verifier.h>
+#include <hicn/transport/security/verifier.h>
+#include <hicn/transport/core/interest.h>
+#include <hicn/transport/core/content_object.h>
+#include <hicn/transport/interfaces/portal.h>
+#define ASIO_STANDALONE
+#include <asio/signal_set.hpp>
 #include <asio/steady_timer.hpp>
 #include <chrono>
 #include <map>
@@ -67,7 +71,7 @@ namespace transport {
                 Configuration();
             };
 
-            class Client : interface::BasePortal::ConsumerCallback {
+            class Client : interface::Portal::ConsumerCallback {
             public:
                 Client(Configuration *c);
 
@@ -76,6 +80,8 @@ namespace transport {
                 void setConfiguration(Configuration *c);
 
                 void ping();
+
+                void onError(std::error_code ec) override;
 
                 void doPing();
 
@@ -96,7 +102,7 @@ namespace transport {
 
             private:
                 SendTimeMap send_timestamps_;
-                interface::BasePortal portal_;
+                interface::Portal portal_;
                 asio::signal_set signals_;
                 uint64_t sequence_number_;
                 uint64_t last_jump_;

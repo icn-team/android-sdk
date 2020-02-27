@@ -31,7 +31,7 @@
 
 static JavaVM *g_VM;
 JNIEnv *j_env;
-transport::core::ping::Client *ping = nullptr;
+std::unique_ptr<transport::core::ping::Client> ping;
 
 transport::interface::HIperfClient *hiperfClient = nullptr;
 
@@ -64,8 +64,7 @@ Java_io_fd_hicn_hicntools_ui_fragments_HiPingFragment_startPing(JNIEnv *env, job
     jmethodID hipingUpdateGraphCallback = env->GetMethodID(cls, "hipingUpdateGraphCallback",
                                                            "(I)V");
     if (ping) {
-        delete (ping);
-        ping = nullptr;
+        ping.reset();
     }
     transport::core::ping::Configuration *c = new transport::core::ping::Configuration();
     c->ttl_ = (uint8_t) ttl;
@@ -85,8 +84,11 @@ Java_io_fd_hicn_hicntools_ui_fragments_HiPingFragment_startPing(JNIEnv *env, job
     c->hipingUpdateGraphCallback = hipingUpdateGraphCallback;
     c->instance = instance;
     c->env = env;
-
-    ping = new transport::core::ping::Client(c);
+    if (ping) {
+        ping.reset();
+    } else {
+        ping = std::make_unique<transport::core::ping::Client>(c);
+    }
     auto t0 = std::chrono::steady_clock::now();
 
     ping->ping();
