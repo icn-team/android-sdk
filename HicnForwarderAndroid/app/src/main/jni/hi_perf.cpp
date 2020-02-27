@@ -171,7 +171,7 @@ namespace transport {
         void HIperfClient::processLeavingInterest(ConsumerSocket &c, const Interest &interest) {}
 
         void HIperfClient::handleTimerExpiration(ConsumerSocket &c,
-                                                 const protocol::TransportStatistics &stats) {
+                                                 const TransportStatistics &stats) {
             const char separator = ' ';
             const int width = 20;
 

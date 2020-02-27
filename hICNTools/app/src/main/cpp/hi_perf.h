@@ -16,15 +16,25 @@
 #ifndef HICNTOOLS_HI_PERF_H
 #define HICNTOOLS_HI_PERF_H
 
+#include <hicn/transport/config.h>
+#include <hicn/transport/core/content_object.h>
+#include <hicn/transport/core/interest.h>
 #include <hicn/transport/interfaces/rtc_socket_producer.h>
 #include <hicn/transport/interfaces/socket_consumer.h>
 #include <hicn/transport/interfaces/socket_producer.h>
-#include <hicn/transport/utils/identity.h>
+#include <hicn/transport/security/identity.h>
+#include <hicn/transport/security/signer.h>
+#include <hicn/transport/utils/chrono_typedefs.h>
 #include <hicn/transport/utils/literals.h>
+#define ASIO_STANDALONE
+#include <asio.hpp>
+#include <cmath>
 #include <fstream>
 #include <iomanip>
 #include <unordered_set>
 #include <android/log.h>
+
+#include <asio/signal_set.hpp>
 #include <jni.h>
 
 #define TAG_HIPERF "HiPerf"
@@ -105,7 +115,7 @@ namespace transport {
             void processLeavingInterest(ConsumerSocket &c, const Interest &interest);
 
             void handleTimerExpiration(ConsumerSocket &c,
-                                       const protocol::TransportStatistics &stats);
+                                       const TransportStatistics &stats);
 
             int setup();
 
