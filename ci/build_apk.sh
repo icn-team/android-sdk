@@ -22,7 +22,7 @@ set -ex
 #VERSION_CODE=$($AAPT dump badging hICN_Tools.apk | grep versionCode | awk '{print $3}' | sed s/versionCode=//g | sed s/\'//g) 
 
 #VERSION_CODE=$((VERSION_CODE+1))
-VERSION_CODE=120
+VERSION_CODE=122
 ln -sf /usr_aarch64 /hicn/
 ln -sf /usr_x86_64 /hicn/
 ln -s /.versions /hicn/
