@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.cisco.hicn.forwarder">
+    package="com.cisco.hicn.forwarder" >
+<!--    android:sharedUserId="android.uid.system"-->
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.NET_ADMIN" />
 
     <application
         android:allowBackup="true"
@@ -22,21 +24,19 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <service android:name="com.cisco.hicn.forwarder.service.BackendAndroidService" />
         <service
-            android:name="com.cisco.hicn.forwarder.service.BackendProxyService"
+            android:name="com.cisco.hicn.forwarder.service.BackendAndroidVpnService"
             android:permission="android.permission.BIND_VPN_SERVICE"
             android:stopWithTask="false">
             <intent-filter>
                 <action android:name="android.net.VpnService" />
             </intent-filter>
         </service>
-
+        <uses-library android:name="hicnservice" android:required="false"/>
     </application>
-
 </manifest>

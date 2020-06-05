@@ -2,11 +2,22 @@
 #include <string>
 #include <android/log.h>
 
+
 #ifdef ENABLE_HPROXY
 
 #include <hicn/hproxy/proxy/proxy.h>
 
+#include <arpa/inet.h>
+#include <net/if.h>
+#include <linux/if.h>
+#include <linux/if_tun.h>
+#include <netinet/ether.h>
+#include <linux/if_packet.h>
+#include <sys/ioctl.h>
+
 #define HPROXY_ATTRIBUTE "mProxyPtr"
+
+#define HPROXY_TAG "HproxyWrap"
 
 using HicnProxy = hproxy::HicnProxy;
 
@@ -69,7 +80,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_destroy(JNIEnv *env, jobject
 #ifdef ENABLE_HPROXY
     HicnProxy *proxy = (HicnProxy *) env->GetLongField(instance, getPtrFieldId(env, instance,
                                                                                HPROXY_ATTRIBUTE));
-    JniContext *jni_context = (JniContext *)proxy->getJniContext();
+    JniContext *jni_context = (JniContext *) proxy->getJniContext();
     delete jni_context;
     delete proxy;
 #endif
@@ -130,7 +141,7 @@ extern "C" int createTunDevice(const char *vpn_address, uint16_t prefix_length,
     JniContext *jni_context = (JniContext *) (context);
 
     if (!jni_context->env || !jni_context->instance) {
-        __android_log_print(ANDROID_LOG_ERROR, "HProxyWrap",
+        __android_log_print(ANDROID_LOG_ERROR, HPROXY_TAG,
                             "Call createTunDevice, but _env and _instance variables are not initialized.");
         return -1;
     }
@@ -143,11 +154,47 @@ extern "C" int createTunDevice(const char *vpn_address, uint16_t prefix_length,
 #endif
 }
 
+extern "C" JNIEXPORT int JNICALL
+Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_getTunFd(JNIEnv *env, jobject instance,
+                                                             jstring device_name) {
+#ifdef ENABLE_HPROXY
+    const int fd = open("/dev/tun", O_RDWR | O_NONBLOCK);
+    if (fd != -1) {
+        struct ifreq ifr;
+
+        memset(&ifr, 0, sizeof(ifr));
+        ifr.ifr_flags = IFF_TUN | IFF_NO_PI;
+
+        const char *_device_name = env->GetStringUTFChars(device_name, 0);
+        __android_log_print(ANDROID_LOG_INFO, HPROXY_TAG,
+                            "Opened device %s. PID: %d", _device_name, getpid());
+
+        strncpy(ifr.ifr_name, _device_name, IFNAMSIZ);
+
+        if (::ioctl(fd, TUNSETIFF, &ifr) < 0) {
+            __android_log_print(ANDROID_LOG_ERROR, HPROXY_TAG,
+                                "FD of tun device not retrieved.");
+            __android_log_print(ANDROID_LOG_ERROR, HPROXY_TAG, "ioctl failed and returned errno %s",
+                                strerror(errno));
+        }
+
+        __android_log_print(ANDROID_LOG_INFO, HPROXY_TAG, "TUN device allocated successfully. FD: %d", fd);
+    } else {
+        __android_log_print(ANDROID_LOG_INFO, HPROXY_TAG,
+                            "Device not opened.");
+    }
+
+        return fd;
+#else
+    return -1;
+#endif
+}
+
 extern "C" int closeTunDevice(void *context) {
 #ifdef ENABLE_HPROXY
     JniContext *jni_context = (JniContext *) (context);
     if (!jni_context->env || !jni_context->instance) {
-        __android_log_print(ANDROID_LOG_ERROR, "HProxyWrap",
+        __android_log_print(ANDROID_LOG_ERROR, HPROXY_TAG,
                             "Call createTunDevice, but _env and _instance variables are not initialized.");
         return -1;
     }

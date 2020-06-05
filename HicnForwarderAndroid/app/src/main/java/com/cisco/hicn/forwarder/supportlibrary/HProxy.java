@@ -15,14 +15,12 @@
 
 package com.cisco.hicn.forwarder.supportlibrary;
 
-import com.cisco.hicn.forwarder.service.ProxyThread;
-
+import com.cisco.hicn.forwarder.service.ProxyBackend;
 import java.util.Properties;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class HProxy {
 //    private static HProxy sInstance = null;
-    private ProxyThread mProxyThread;
+    private ProxyBackend mProxyBackend;
 
     // This will sotre the actual pointer to the proxy
     private long mProxyPtr = 0;
@@ -33,8 +31,8 @@ public class HProxy {
 
     public HProxy() { initConfig(); }
 
-    public void setProxyInstance(ProxyThread proxyThread) {
-        mProxyThread = proxyThread;
+    public void setProxyInstance(ProxyBackend proxyThread) {
+        mProxyBackend = proxyThread;
     }
 
     public native void initConfig();
@@ -48,15 +46,17 @@ public class HProxy {
         params.put("ROUTE_ADDRESS",route_address);
         params.put("ROUTE_PREFIX_LENGTH", Integer.toString(route_prefix_length));
         params.put("DNS", dns);
-        int ret = mProxyThread.configureTun(params);
+        int ret = mProxyBackend.configureTun(params);
         return ret;
     }
 
     public int closeTunDevice() {
-        return mProxyThread.closeTun();
+        return mProxyBackend.closeTun();
     }
 
     public native boolean isRunning();
+
+    public native int getTunFd(String device_name);
 
     public native void start(String remote_address, int remote_port);
 
