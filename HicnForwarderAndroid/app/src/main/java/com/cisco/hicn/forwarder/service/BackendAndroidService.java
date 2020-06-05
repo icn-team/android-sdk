@@ -24,26 +24,33 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.VpnService;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.cisco.hicn.forwarder.MainActivity;
 import com.cisco.hicn.forwarder.R;
 import com.cisco.hicn.forwarder.supportlibrary.Facemgr;
 import com.cisco.hicn.forwarder.supportlibrary.Forwarder;
+import com.cisco.hicn.forwarder.supportlibrary.HProxy;
 import com.cisco.hicn.forwarder.supportlibrary.NetworkServiceHelper;
 import com.cisco.hicn.forwarder.supportlibrary.SocketBinder;
 import com.cisco.hicn.forwarder.utility.Constants;
+
+import java.lang.reflect.Method;
 
 public class BackendAndroidService extends Service {
     private final static String TAG = "BackendService";
 
     private static Thread sForwarderThread = null;
     private static Thread sFacemgrThread = null;
+    private ProxyBackend mProxyBackend = null;
 
     private NetworkServiceHelper mNetService = new NetworkServiceHelper();
     private SocketBinder mSocketBinder = new SocketBinder();
@@ -64,7 +71,7 @@ public class BackendAndroidService extends Service {
 
         Forwarder forwarder = Forwarder.getInstance();
         if (!forwarder.isRunningForwarder()) {
-            Log.d(TAG, "Starting Backand Service");
+            Log.d(TAG, "Starting Backend Service");
             mNetService.init(this, mSocketBinder);
             mHandler.sendMessageDelayed(mHandler.obtainMessage(EVENT_START_FORWARDER), 1000); // wait for mobile network is up
 
@@ -82,6 +89,10 @@ public class BackendAndroidService extends Service {
         Log.d(TAG, "Destroying Forwarder");
         if (facemgr.isRunningFacemgr()) {
             facemgr.stopFacemgr();
+        }
+
+        if (HProxy.isHProxyEnabled() && ProxyBackend.getHicnService()) {
+            mProxyBackend.disconnect();
         }
 
         Forwarder forwarder = Forwarder.getInstance();
@@ -183,9 +194,12 @@ public class BackendAndroidService extends Service {
             sFacemgrThread.start();
         }
 
+        if (HProxy.isHProxyEnabled() && ProxyBackend.getHicnService()) {
+            mProxyBackend = ProxyBackend.getProxyBackend(this);
+            mProxyBackend.connect();
+        }
 
-        Log.i(TAG, "BackendAndroid starterd");
-
+        Log.i(TAG, "BackendAndroid starter");
     }
 
 }
