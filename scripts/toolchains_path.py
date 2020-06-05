@@ -42,7 +42,7 @@ def main():
 
     host_tag = get_host_tag_or_die()
     toolchain_path = get_toolchain_path_or_die(args.ndk, host_tag)
-    print toolchain_path
+    print(toolchain_path)
 
 if __name__ == '__main__':
     main()
