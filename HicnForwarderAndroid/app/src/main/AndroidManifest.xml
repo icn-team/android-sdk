@@ -22,21 +22,15 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <service android:name="com.cisco.hicn.forwarder.service.BackendAndroidService" />
         <service
-            android:name="com.cisco.hicn.forwarder.service.BackendProxyService"
+            android:name="com.cisco.hicn.forwarder.service.BackendAndroidVpnService"
             android:permission="android.permission.BIND_VPN_SERVICE"
             android:stopWithTask="false">
-            <intent-filter>
-                <action android:name="android.net.VpnService" />
-            </intent-filter>
         </service>
-
     </application>
-
 </manifest>
