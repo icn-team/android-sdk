@@ -10,6 +10,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 cmake_minimum_required(VERSION 3.4.1)
 set(CMAKE_CXX_STANDARD 14)
 
@@ -23,6 +24,7 @@ find_package(LibEvent REQUIRED)
 find_package(Libparc REQUIRED)
 find_package(Libhicn REQUIRED)
 find_package(Hicnlight REQUIRED)
+find_package(HicnHttpproxy REQUIRED)
 find_package(Config REQUIRED)
 find_package(Libhicnctrl REQUIRED)
 find_package(Libfacemgr REQUIRED)
@@ -44,6 +46,8 @@ add_library(facemgr-wrapper SHARED facemgr-wrapper.c)
 add_library(hiperf-wrapper SHARED hiperf-wrapper.cpp hi_perf.cpp)
 
 add_library(hproxy-wrapper SHARED hproxy-wrapper.cpp)
+
+add_library(httpproxy-wrapper SHARED httpproxy-wrapper.cpp)
 
 target_include_directories(forwarder-wrapper PUBLIC ${LIBHICNLIGHT_INCLUDE_DIRS})
 
@@ -87,6 +91,17 @@ target_link_libraries(facemgr-wrapper
 target_link_libraries(hiperf-wrapper
         ${log-lib}
         ${LIBTRANSPORT_LIBRARIES}
+        ${HICN_LIBRARIES}
+        ${LIBPARC_LIBRARIES}
+        ${LIBEVENT_LIBRARIES}
+        ${CONFIG_LIBRARY}
+        ${OPENSSL_LIBRARIES})
+
+target_link_libraries(httpproxy-wrapper
+        ${log-lib}
+        ${LIBHICNHTTPPROXY_LIBRARY}
+        ${LIBTRANSPORT_LIBRARIES}
+        ${LIBHICNCTRL_LIBRARIES}
         ${HICN_LIBRARIES}
         ${LIBPARC_LIBRARIES}
         ${LIBEVENT_LIBRARIES}

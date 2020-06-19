@@ -398,6 +398,18 @@
     <string name="not_found">not found</string>
     <string name="facemgr_log_level_title">Log Level</string>
     <string name="facemgr_log_level_key">facemgr_log_level_key</string>
+    <string name="httpproxy_category">Http Proxy</string>
+    <string name="httpproxy_preferences_title">Http Proxy Configuration</string>
+    <string name="httpproxy_preferences_summary">Configure Http Proxy Parameters</string>
+    <string name="default_httpproxy_listeningport">9091</string>
+    <string name="httpproxy_listeningport_key">httpproxy_listeningport_key</string>
+    <string name="httpproxy_listeningport_summary">Listening Port</string>
+    <string name="httpproxy_listeningport_title">Listening Port</string>
+    <string name="default_httpproxy_prefix">http://webserver</string>
+    <string name="httpproxy_prefix_key">httpproxy_prefix_key</string>
+    <string name="httpproxy_prefix_summary">Prefix</string>
+    <string name="httpproxy_prefix_title">Prefix</string>
+
 
 
 </resources>
