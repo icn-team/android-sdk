@@ -39,6 +39,7 @@ import com.cisco.hicn.forwarder.R;
 import com.cisco.hicn.forwarder.supportlibrary.Facemgr;
 import com.cisco.hicn.forwarder.supportlibrary.Forwarder;
 import com.cisco.hicn.forwarder.supportlibrary.HProxy;
+import com.cisco.hicn.forwarder.supportlibrary.HttpProxy;
 import com.cisco.hicn.forwarder.supportlibrary.NetworkServiceHelper;
 import com.cisco.hicn.forwarder.supportlibrary.SocketBinder;
 import com.cisco.hicn.forwarder.utility.Constants;
@@ -50,6 +51,7 @@ public class BackendAndroidService extends Service {
 
     private static Thread sForwarderThread = null;
     private static Thread sFacemgrThread = null;
+    private static Thread sHttpProxyThread = null;
     private ProxyBackend mProxyBackend = null;
 
     private NetworkServiceHelper mNetService = new NetworkServiceHelper();
@@ -65,6 +67,8 @@ public class BackendAndroidService extends Service {
 
     private int capacity;
     private int logLevel;
+    private String prefix;
+    private int listeningPort;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -95,6 +99,8 @@ public class BackendAndroidService extends Service {
             mProxyBackend.disconnect();
         }
 
+        HttpProxy httpProxy = HttpProxy.getInstance();
+        httpProxy.stopHttpProxy();
         Forwarder forwarder = Forwarder.getInstance();
         if (forwarder.isRunningForwarder()) {
             forwarder.stopForwarder();
@@ -117,6 +123,8 @@ public class BackendAndroidService extends Service {
 
                     getCapacity();
                     getLogLevel();
+                    getPrefix();
+                    getListeningPort();
                     startBackend();
                     break;
             }
@@ -134,6 +142,16 @@ public class BackendAndroidService extends Service {
         this.logLevel = Integer.parseInt(sharedPreferences.getString(getString(R.string.forwarder_log_level_key), getString(R.string.forwarder_default_log_level)));
     }
 
+    private void getPrefix() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        this.prefix = sharedPreferences.getString(getString(R.string.httpproxy_prefix_key), getString(R.string.default_httpproxy_prefix));
+    }
+
+    private void getListeningPort() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        this.listeningPort = Integer.parseInt(sharedPreferences.getString(getString(R.string.httpproxy_listeningport_key), getString(R.string.default_httpproxy_listeningport)));
+    }
+
     protected Runnable mForwarderRunner = () -> {
         Forwarder forwarder = Forwarder.getInstance();
         forwarder.setSocketBinder(mSocketBinder);
@@ -145,6 +163,12 @@ public class BackendAndroidService extends Service {
         Facemgr facemgr = Facemgr.getInstance();
 
         facemgr.startFacemgr();
+    };
+
+    protected Runnable mHttpProxyRunner = () -> {
+        HttpProxy httpProxy = HttpProxy.getInstance();
+
+        httpProxy.startHttpProxy(prefix, listeningPort);
     };
 
     private void startBackend() {
@@ -192,6 +216,12 @@ public class BackendAndroidService extends Service {
         if (!facemgr.isRunningFacemgr()) {
             sFacemgrThread = new Thread(mFacemgrRunner, "BackendAndroid");
             sFacemgrThread.start();
+        }
+
+        HttpProxy httpProxy = HttpProxy.getInstance();
+        if (!httpProxy.isRunningHttpProxy()) {
+            sHttpProxyThread = new Thread(mHttpProxyRunner, "BackendAndroid");
+            sHttpProxyThread.start();
         }
 
         if (HProxy.isHProxyEnabled() && ProxyBackend.getHicnService()) {
