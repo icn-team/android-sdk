@@ -271,12 +271,6 @@ namespace transport {
                 }
             }
 
-            if (consumer_socket_->setSocketOption(OtherOptions::VIRTUAL_DOWNLOAD,
-                                                  configuration_.virtual_download) ==
-                SOCKET_OPTION_NOT_SET) {
-                return ERROR_SETUP;
-            }
-
             if (consumer_socket_->setSocketOption(
                     GeneralTransportOptions::VERIFY_SIGNATURE, configuration_.verify) ==
                 SOCKET_OPTION_NOT_SET) {
