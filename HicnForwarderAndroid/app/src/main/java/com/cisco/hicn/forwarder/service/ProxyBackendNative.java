@@ -59,6 +59,7 @@ public class ProxyBackendNative extends ProxyBackend {
         int fd = -1;
         if (getHicnService()) {
             try {
+                stopHicn();
                 Log.d(getTag(), "Opening tun device  " + interfaceName + " with IP address " + ipAddress);
                 fd = mProxyInstance.getTunFd(interfaceName);
                 Method startHicn = sIHicnManagerClass.getMethod("startHicn", String.class, String[].class, String.class);
