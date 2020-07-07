@@ -4,7 +4,7 @@
 
 
 #ifdef ENABLE_HPROXY
-
+#define WITH_START_STOP
 #include <hicn/hproxy/proxy/proxy.h>
 
 #include <arpa/inet.h>
@@ -222,6 +222,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_stop(JNIEnv *env, jobject in
                                                                                HPROXY_ATTRIBUTE));
     if (proxy) {
         proxy->stop();
+        env->SetLongField(instance, getPtrFieldId(env, instance, HPROXY_ATTRIBUTE), NULL);
     }
 #endif
 }
@@ -258,4 +259,45 @@ Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_getProxifiedPackageName(JNIE
     return env->NewStringUTF(packageName.c_str());
 #endif
 
+}
+
+static int attachHicnServiceWrap(JNIEnv *env, jobject instance, bool flag)
+{
+    jclass clazz = env->GetObjectClass(instance);   
+    jmethodID methodID = env->GetMethodID(clazz, flag ? "attachHicnService" : "detachHicnService", "()I");
+    if (!methodID)
+        return -1;
+    return env->CallIntMethod(instance, methodID);
+}
+
+extern "C"
+int attachHicnService(void * context, bool flag)
+{
+#ifdef ENABLE_HPROXY
+    JniContext *jni_context = (JniContext *) (context);
+
+    if (!jni_context->env || !jni_context->instance) {
+        __android_log_print(ANDROID_LOG_ERROR, "HProxyWrap",
+                            "Call createTunDevice, but _env and _instance variables are not initialized.");
+        return -1;
+    }
+
+    return attachHicnServiceWrap(jni_context->env, *jni_context->instance, flag);
+#else
+    return 0;
+#endif
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_com_cisco_hicn_forwarder_supportlibrary_HProxy_onHicnServiceAvailable(JNIEnv *env, jobject instance, jboolean flag) {
+#ifdef ENABLE_HPROXY
+    HicnProxy *proxy = (HicnProxy *) env->GetLongField(instance,
+            getPtrFieldId(env, instance, HPROXY_ATTRIBUTE));
+    if (proxy) {
+        proxy->onHicnServiceAvailable(flag);
+        return; // JNI_TRUE;
+    }
+#endif
+
+    return; // JNI_FALSE;
 }

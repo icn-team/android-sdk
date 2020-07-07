@@ -18,7 +18,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "hicn.cisco.com.hicnforwarderandroid"
+        applicationId "com.cisco.hicn.forwarder"
         minSdkVersion 26
         targetSdkVersion 28
         versionCode getVersionCode_()
@@ -57,6 +57,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
+        /*
+        debug {
+            debuggable true
+                initWith debug
+                jniDebuggable true
+                externalNativeBuild {
+                    ndkBuild {
+                        cFlags "-DDEBUG=1"
+                    }
+                }
+        }
+        */
     }
 
     android.applicationVariants.all { variant ->
@@ -70,6 +82,7 @@ android {
     externalNativeBuild {
         cmake {
             path "src/main/jni/CMakeLists.txt"
+
         }
     }
 

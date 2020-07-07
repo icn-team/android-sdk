@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2019-2020 Cisco and/or its affiliates.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.cisco.hicn.forwarder.service;
 
 import android.app.Notification;
@@ -29,11 +44,35 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
+/*
+ * Ideally we would love the following class hierarchy:
+ *                      BackendProxyService     VpnService
+ *                         /              \         /
+ *       BackendProxyNativeService    BackendProxyVpnService
+ *
+ * As Java does not support multiple inheritance, we use the ProxyBackend class
+ * as a composition element instanciated from either VpnService or
+ * BackendProxyService, depending on the availability of punting APIs.
+ *
+ * This class takes a reference to the parent service and takes care of the
+ * foreground notification on behalf of the service.
+ */
 public class ProxyBackend implements Runnable, Handler.Callback {
     /**
      * Maximum packet size is constrained by the MTU, which is given as a signed short.
      */
     private static final int MAX_PACKET_SIZE = 1400;
+
+    /**
+     * Time to wait in between losing the connection and retrying.
+     */
+    private static final long RECONNECT_WAIT_MS = TimeUnit.SECONDS.toMillis(3);
+
+    /**
+     * Number of periods of length {@IDLE_INTERVAL_MS} to wait before declaring the handshake a
+     * complete and abject failure.
+     */
+    private static final int MAX_HANDSHAKE_ATTEMPTS = 10; // 50
 
     protected static Object sHicnManager = null;
     protected static Class<?> sIHicnManagerClass = null;
@@ -51,7 +90,6 @@ public class ProxyBackend implements Runnable, Handler.Callback {
     protected int mTunFd = -1;
     protected Handler mHandler;
     protected Properties mParameters;
-    protected HProxy mProxyInstance = null;
     protected String[] mProxiedPackages;
 
     public static ProxyBackend getProxyBackend(final Service parentService) {
@@ -93,12 +131,13 @@ public class ProxyBackend implements Runnable, Handler.Callback {
     }
 
     protected ProxyBackend(final Service parentService) {
+        HProxy.getInstance().setService(parentService);
+
         mParentService = parentService;
         mHandler = new Handler(this);
 
         updateForegroundNotification(R.string.hproxy_connecting);
         mHandler.sendEmptyMessage(R.string.hproxy_connecting);
-        mProxyInstance = new HProxy();
     }
 
     @Override
@@ -146,13 +185,13 @@ public class ProxyBackend implements Runnable, Handler.Callback {
         try {
             Log.i(getTag(), "Starting");
             final SocketAddress serverAddress = new InetSocketAddress(mServerName, mServerPort);
-            for (int attempt = 0; attempt < 10; ++attempt) {
+            for (int attempt = 0; attempt < MAX_HANDSHAKE_ATTEMPTS; ++attempt) {
                 // Reset the counter if we were connected.
                 if (run(serverAddress)) {
                     attempt = 0;
                 }
                 // Sleep for a while. This also checks if we got interrupted.
-                Thread.sleep(3000);
+                Thread.sleep(RECONNECT_WAIT_MS);
             }
             Log.i(getTag(), "Giving up");
         } catch (IOException | InterruptedException | IllegalArgumentException e) {
@@ -212,6 +251,7 @@ public class ProxyBackend implements Runnable, Handler.Callback {
     private boolean run(SocketAddress server)
             throws IOException, InterruptedException, IllegalArgumentException {
 
+        /*
         Forwarder forwarder = Forwarder.getInstance();
 
         while (!forwarder.isRunningForwarder()) {
@@ -219,19 +259,20 @@ public class ProxyBackend implements Runnable, Handler.Callback {
             Log.d(getTag(), "Hicn forwarder is not started yet. Waiting before activating the proxy.");
             TimeUnit.MILLISECONDS.sleep(500);
         }
+        */
 
-        mProxyInstance.setProxyInstance(this);
-        mProxyInstance.start(mServerName, mServerPort);
+        HProxy.getInstance().setProxyInstance(this);
+        HProxy.getInstance().start(mServerName, mServerPort);
 
         Log.i(getTag(), "HProxy stopped.");
 
-        mProxyInstance.destroy();
+        //HProxy.getInstance().destroy();
 
         return true;
     }
 
     public void stop() {
-        mProxyInstance.stop();
+        HProxy.stopInstance();
     }
 
     public int configureTun(Properties parameters) {

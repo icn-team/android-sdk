@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Cisco and/or its affiliates.
+ * Copyright (c) 2019-2020 Cisco and/or its affiliates.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
@@ -24,113 +24,127 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.net.VpnService;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.Messenger;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.cisco.hicn.forwarder.MainActivity;
 import com.cisco.hicn.forwarder.R;
 import com.cisco.hicn.forwarder.supportlibrary.Facemgr;
 import com.cisco.hicn.forwarder.supportlibrary.Forwarder;
-import com.cisco.hicn.forwarder.supportlibrary.HProxy;
-import com.cisco.hicn.forwarder.supportlibrary.HttpProxy;
 import com.cisco.hicn.forwarder.supportlibrary.NetworkServiceHelper;
 import com.cisco.hicn.forwarder.supportlibrary.SocketBinder;
 import com.cisco.hicn.forwarder.utility.Constants;
 
-import java.lang.reflect.Method;
-
 public class BackendAndroidService extends Service {
+    /* The key and related Intent used to communicate with the service's users */
+    public static final String SERVICE_INTENT = "com.cisco.hicn.forwarder.BackendProxyServiceIntentKey";
     private final static String TAG = "BackendService";
 
     private static Thread sForwarderThread = null;
     private static Thread sFacemgrThread = null;
-    private static Thread sHttpProxyThread = null;
-    private ProxyBackend mProxyBackend = null;
 
     private NetworkServiceHelper mNetService = new NetworkServiceHelper();
     private SocketBinder mSocketBinder = new SocketBinder();
 
-    public BackendAndroidService() {
-    }
+    /**
+     * Handler of incoming messages from clients.
+     */
+    static class IncomingHandler extends Handler {
+        private Context applicationContext;
 
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
-    private int capacity;
-    private int logLevel;
-    private String prefix;
-    private int listeningPort;
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-
-        Forwarder forwarder = Forwarder.getInstance();
-        if (!forwarder.isRunningForwarder()) {
-            Log.d(TAG, "Starting Backend Service");
-            mNetService.init(this, mSocketBinder);
-            mHandler.sendMessageDelayed(mHandler.obtainMessage(EVENT_START_FORWARDER), 1000); // wait for mobile network is up
-
-
-        } else {
-            Log.d(TAG, "Forwarder already running.");
+        IncomingHandler(Context context) {
+            applicationContext = context.getApplicationContext();
         }
-        return Service.START_STICKY;
-    }
-
-
-    @Override
-    public void onDestroy() {
-        Facemgr facemgr = Facemgr.getInstance();
-        Log.d(TAG, "Destroying Forwarder");
-        if (facemgr.isRunningFacemgr()) {
-            facemgr.stopFacemgr();
-        }
-
-        if (HProxy.isHProxyEnabled() && ProxyBackend.getHicnService()) {
-            mProxyBackend.disconnect();
-        }
-
-        HttpProxy httpProxy = HttpProxy.getInstance();
-        httpProxy.stopHttpProxy();
-        Forwarder forwarder = Forwarder.getInstance();
-        if (forwarder.isRunningForwarder()) {
-            forwarder.stopForwarder();
-
-            stopForeground(true);
-        }
-        mNetService.clear();
-        super.onDestroy();
-    }
-
-    private static final int EVENT_START_FORWARDER = 1;
-
-    @SuppressLint("HandlerLeak")
-    private Handler mHandler = new Handler() {
 
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case EVENT_START_FORWARDER:
-
-                    getCapacity();
-                    getLogLevel();
-                    getPrefix();
-                    getListeningPort();
-                    startBackend();
-                    break;
+                /* ... */
+                default:
+                    super.handleMessage(msg);
             }
-            super.handleMessage(msg);
         }
-    };
+    }
+
+    /**
+     * When binding to the service, we return an interface to our messenger
+     * for sending messages to the service (or null).
+     */
+    @Override
+    public IBinder onBind(Intent intent) {
+        startForwarderFaceManager();
+        mMessenger = new Messenger(new IncomingHandler(this));
+        return mMessenger.getBinder();
+    }
+
+    /**
+     * Target we publish for clients to send messages to IncomingHandler.
+     */
+    Messenger mMessenger;
+
+    private int capacity;
+    private int logLevel;
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
+        startForwarderFaceManager();
+        return Service.START_STICKY;
+    }
+
+    private void broadcast(String service, String color)
+    {
+        Intent broadcast = new Intent(SERVICE_INTENT);
+        broadcast.putExtra("service", service);
+        broadcast.putExtra("color", color);
+        sendBroadcast(broadcast);
+    }
+
+    private void startForwarderFaceManager()
+    {
+        Forwarder forwarder = Forwarder.getInstance();
+
+        if (!forwarder.isRunningForwarder()) {
+            Log.d(TAG, "Starting Backend Service");
+            mNetService.init(this, mSocketBinder);
+            getCapacity();
+            getLogLevel();
+            startBackend();
+
+            Log.i(TAG, "BackendAndroid started");
+
+        } else {
+            Log.d(TAG, "Forwarder already running.");
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+
+        Facemgr facemgr = Facemgr.getInstance();
+        Log.d(TAG, "Destroying Forwarder");
+        if (facemgr.isRunningFacemgr()) {
+            facemgr.stopFacemgr();
+            broadcast("facemgr", "red");
+        }
+
+        Forwarder forwarder = Forwarder.getInstance();
+        if (forwarder.isRunningForwarder()) {
+            forwarder.stopForwarder();
+            broadcast("forwarder", "red");
+        }
+        mNetService.clear();
+
+        stopForeground(true);
+
+
+        super.onDestroy();
+    }
 
     private void getCapacity() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -142,33 +156,19 @@ public class BackendAndroidService extends Service {
         this.logLevel = Integer.parseInt(sharedPreferences.getString(getString(R.string.forwarder_log_level_key), getString(R.string.forwarder_default_log_level)));
     }
 
-    private void getPrefix() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        this.prefix = sharedPreferences.getString(getString(R.string.httpproxy_prefix_key), getString(R.string.default_httpproxy_prefix));
-    }
-
-    private void getListeningPort() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        this.listeningPort = Integer.parseInt(sharedPreferences.getString(getString(R.string.httpproxy_listeningport_key), getString(R.string.default_httpproxy_listeningport)));
-    }
-
     protected Runnable mForwarderRunner = () -> {
         Forwarder forwarder = Forwarder.getInstance();
         forwarder.setSocketBinder(mSocketBinder);
+        broadcast("forwarder", "green");
         forwarder.startForwarder(capacity, logLevel);
+        broadcast("facemgr", "red");
     };
-
 
     protected Runnable mFacemgrRunner = () -> {
         Facemgr facemgr = Facemgr.getInstance();
-
+        broadcast("facemgr", "green");
         facemgr.startFacemgr();
-    };
-
-    protected Runnable mHttpProxyRunner = () -> {
-        HttpProxy httpProxy = HttpProxy.getInstance();
-
-        httpProxy.startHttpProxy(prefix, listeningPort);
+        broadcast("facemgr", "red");
     };
 
     private void startBackend() {
@@ -206,30 +206,11 @@ public class BackendAndroidService extends Service {
             sForwarderThread.start();
         }
 
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         Facemgr facemgr = Facemgr.getInstance();
         if (!facemgr.isRunningFacemgr()) {
             sFacemgrThread = new Thread(mFacemgrRunner, "BackendAndroid");
             sFacemgrThread.start();
         }
-
-        HttpProxy httpProxy = HttpProxy.getInstance();
-        if (!httpProxy.isRunningHttpProxy()) {
-            sHttpProxyThread = new Thread(mHttpProxyRunner, "BackendAndroid");
-            sHttpProxyThread.start();
-        }
-
-        if (HProxy.isHProxyEnabled() && ProxyBackend.getHicnService()) {
-            mProxyBackend = ProxyBackend.getProxyBackend(this);
-            mProxyBackend.connect();
-        }
-
-        Log.i(TAG, "BackendAndroid starter");
     }
 
 }
