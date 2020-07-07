@@ -18,7 +18,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.cisco.hicn.forwarder"
+        applicationId "hicn.cisco.com.hicnforwarderandroid"
         minSdkVersion 26
         targetSdkVersion 28
         versionCode getVersionCode_()
