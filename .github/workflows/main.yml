@@ -27,6 +27,7 @@ jobs:
         if: github.ref == 'refs/heads/master'
         shell: bash
         run: |
+          echo 'run number: ${{ github.run_number }}'
           echo -e '${{ secrets.PLAYSTORE_KEY }}' > playstore_key.json
           docker run -v $PWD:/hicn icnteam/android-build:hicn bash -c "bash /hicn/ci/build_apk.sh 1"; mkdir -p apks; cp *.apk apks/
       - name: 'Build apks without publishing'
