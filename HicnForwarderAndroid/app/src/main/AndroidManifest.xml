@@ -26,10 +26,14 @@
             </intent-filter>
         </activity>
 
-        <service android:name="com.cisco.hicn.forwarder.service.BackendAndroidService" />
+        <service android:name="com.cisco.hicn.forwarder.service.BackendAndroidService"
+            android:exported="true" />
+        <service android:name="com.cisco.hicn.forwarder.service.BackendProxyService"
+            android:exported="true" />
         <service
             android:name="com.cisco.hicn.forwarder.service.BackendAndroidVpnService"
             android:permission="android.permission.BIND_VPN_SERVICE"
+            android:exported="false"
             android:stopWithTask="false">
         </service>
     </application>

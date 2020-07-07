@@ -63,8 +63,9 @@ Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_isRunningFacemgr(JNIEnv *en
 JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_stopFacemgr(JNIEnv *env, jobject thiz) {
     if (_isRunningFacemgr) {
-        loop_break(loop);
         _isRunningFacemgr = false;
+
+        loop_break(loop);
     }
 }
 
@@ -73,6 +74,8 @@ Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_startFacemgr(JNIEnv *env, j
 
 
     if (!_isRunningFacemgr) {
+        _isRunningFacemgr = true;
+
         facemgr_face_type_t face_type = FACEMGR_FACE_TYPE_OVERLAY_UDP;
         facemgr_cfg_set_face_type(facemgr_cfg, &face_type);
         facemgr = facemgr_create_with_config(facemgr_cfg);
@@ -82,7 +85,6 @@ Java_com_cisco_hicn_forwarder_supportlibrary_Facemgr_startFacemgr(JNIEnv *env, j
         loop = loop_create();
         facemgr_set_callback(facemgr, loop, (void *) loop_callback);
         facemgr_bootstrap(facemgr);
-        _isRunningFacemgr = true;
         loop_dispatch(loop);
         facemgr_stop(facemgr);
         loop_undispatch(loop);

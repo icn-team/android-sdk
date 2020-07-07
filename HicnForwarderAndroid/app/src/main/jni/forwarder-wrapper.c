@@ -117,6 +117,7 @@ Java_com_cisco_hicn_forwarder_supportlibrary_Forwarder_startForwarder(JNIEnv *en
 
 
     if (!_isRunning) {
+        _isRunning = true;
         __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap", "starting HicnFwd...");
         _env = env;
         _instance = &instance;
@@ -177,7 +178,6 @@ Java_com_cisco_hicn_forwarder_supportlibrary_Forwarder_startForwarder(JNIEnv *en
         }
         forwarder_SetupLocalListeners(hicnFwd, PORT_NUMBER);
         Dispatcher *dispatcher = forwarder_GetDispatcher(hicnFwd);
-        _isRunning = true;
         dispatcher_Run(dispatcher);
         __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap", "HicnFwd stopped...");
     }
@@ -187,11 +187,11 @@ JNIEXPORT void JNICALL
 Java_com_cisco_hicn_forwarder_supportlibrary_Forwarder_stopForwarder(JNIEnv *env,
                                                                      jobject instance) {
     if (_isRunning) {
+        _isRunning = false;
         __android_log_print(ANDROID_LOG_DEBUG, "HicnFwdWrap", "stopping HicnFwd...");
         dispatcher_Stop(forwarder_GetDispatcher(hicnFwd));
         sleep(2);
         forwarder_Destroy(&hicnFwd);
-        _isRunning = false;
     }
 }
 
