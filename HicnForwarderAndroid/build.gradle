@@ -16,14 +16,14 @@
 buildscript {
     
     ext {
-        ENABLE_HPROXY = 1
+        ENABLE_HPROXY = 0
     }
     repositories {
         google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.3'
+        classpath 'com.android.tools.build:gradle:3.5.3'
     }
 }
 
