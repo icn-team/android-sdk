@@ -78,6 +78,7 @@ public class InterfacesFragment extends Fragment {
         listView = root.findViewById(R.id.list);
 
         faceletAdapter = new FaceletAdapter(faceletsArrayList, getContext());
+        faceletAdapter.setNotifyOnChange(false); // we manually call notifyDataSetChanged after clear or batch additions
         listView.setAdapter(faceletAdapter);
         frameLayout = root.findViewById(R.id.interfaces_framelayout);
         CheckBox interfaceShowallCheckbox = root.findViewById(R.id.interface_showall_checkbox);
@@ -131,7 +132,12 @@ public class InterfacesFragment extends Fragment {
 
         @Override
         public void run() {
-
+            /*
+             * Note: this code never clears the list of facelets unless the
+             * face manager is found in a stopped state: this is okay as soon as
+             * facelets are never removed in the face manager, which is
+             * indeed the case.
+             */
 
             HashMap<String, Facelet> faceletHashMapLocal = new HashMap<>();
             if (Facemgr.getInstance().isRunningFacemgr()) {
@@ -168,7 +174,11 @@ public class InterfacesFragment extends Fragment {
                     Log.e(FACEMGR_TAG, "Impossible to parse the facemgr output");
                 }
             } else {
-                faceletsArrayList.clear();
+                getActivity().runOnUiThread(() ->
+                {
+                    faceletAdapter.clear();
+                    faceletAdapter.notifyDataSetChanged();
+                });
             }
 
             if (isAdded() && isVisible()) {
