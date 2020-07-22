@@ -93,10 +93,13 @@ public class ForwarderFragment extends Fragment {
             // representation of that from the raw IBinder object.
             mMessenger = new Messenger(service);
 
-            if (mWebexStarted)
-                startWebexCommand();
-            if (mHttpStarted)
-                startHttpCommand();
+            View root = getView();
+            if (HProxy.isHProxyEnabled()) {
+                Switch webexSwitch = root.findViewById(R.id.webex_switch);
+                webexSwitch.setEnabled(true);
+            }
+            Switch httpSwitch = root.findViewById(R.id.http_switch);
+            httpSwitch.setEnabled(true);
         }
 
         public void onServiceDisconnected(ComponentName className) {
@@ -128,16 +131,22 @@ public class ForwarderFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        this.getActivity().unregisterReceiver(receiver);
+
+        /* We will also unbind from the service if needed */
+        getActivity().unbindService(mConnection);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         this.getActivity().registerReceiver(receiver, new IntentFilter(BackendAndroidService.SERVICE_INTENT));
         this.getActivity().registerReceiver(receiver, new IntentFilter(BackendProxyService.SERVICE_INTENT));
-    }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        this.getActivity().unregisterReceiver(receiver);
+        Intent intent = new Intent(getActivity(), BackendProxyService.class);
+        getActivity().bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
@@ -192,8 +201,6 @@ public class ForwarderFragment extends Fragment {
             return;
         updateForwarderStatus(root, Forwarder.getInstance().isRunningForwarder());
         updateFacemgrStatus(root, Facemgr.getInstance().isRunningFacemgr());
-
-
     }
 
     CompoundButton.OnCheckedChangeListener mWebexCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
@@ -237,14 +244,25 @@ public class ForwarderFragment extends Fragment {
         if (HProxy.isHProxyEnabled()) {
             Switch webexSwitch = root.findViewById(R.id.webex_switch);
             webexSwitch.setOnCheckedChangeListener(mWebexCheckedChangeListener);
+
+            /*
+             * if the view is initialized before we are bound to an already
+             * running service, we gray out the button to avoid any race
+             * condition where we would try to send a message with no messenger
+             */
+            if ((mWebexStarted || mHttpStarted) && mMessenger == null)
+                webexSwitch.setEnabled(false);
         } else {
             /* Hide all controls */
             View b = root.findViewById(R.id.ly_webex);
             b.setVisibility(View.GONE);
-
         }
         Switch httpSwitch = root.findViewById(R.id.http_switch);
         httpSwitch.setOnCheckedChangeListener(mHttpCheckedChangeListener);
+
+        /* See previous comment */
+        if ((mWebexStarted || mHttpStarted) && mMessenger == null)
+            httpSwitch.setEnabled(false);
 
     }
 
@@ -257,12 +275,17 @@ public class ForwarderFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+
+        Intent intent = new Intent(getActivity(), BackendProxyService.class);
+        getActivity().bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+
+        //getActivity().unbindService(mConnection);
     }
 
     public interface OnFragmentInteractionListener {
@@ -280,110 +303,71 @@ public class ForwarderFragment extends Fragment {
         getActivity().stopService(intent);
     }
 
-    private void startWebexCommand() {
-        Message msg = Message.obtain(null, BackendProxyService.MSG_START_WEBEX_PROXY, 0, 0);
-        try {
-            mMessenger.send(msg);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void startWebexProxy() {
         if (!HProxy.isHProxyEnabled())
             return;
-
-        mWebexStarted = true;
-
-        /*
-         * This is a hack to allow the service to use the activity reference to
-         * prepare the VPN if needed
-         */
-        HProxy.setActivity(getActivity());
-
+        if (mMessenger != null) {
+            HProxy.setActivity(getActivity());
+            Message msg = Message.obtain(null, BackendProxyService.MSG_START_WEBEX_PROXY, 0, 0);
+            try {
+                mMessenger.send(msg);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
         if (!mHttpStarted) {
-            /*
-             * We need to start & bind the service, the command is further
-             * executed in mConnection
-             */
+            /* We start the service as soon as one component is running */
             Intent intent = new Intent(getActivity(), BackendProxyService.class);
             getActivity().startService(intent);
-            getActivity().bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-        } else {
-            /* If HttpProxy is started, the service is already started and bound */
-            startWebexCommand();
-        }
-    }
-
-    private void stopWebexCommand() {
-        Message msg = Message.obtain(null, BackendProxyService.MSG_STOP_WEBEX_PROXY, 0, 0);
-        try {
-            mMessenger.send(msg);
-        } catch (RemoteException e) {
-            e.printStackTrace();
         }
     }
 
     private void stopWebexProxy() {
         if (!HProxy.isHProxyEnabled())
             return;
-
-        mWebexStarted = false;
-
-        stopWebexCommand();
-
-        /* If only WebexProxy was started, unbind and stop the service */
+        if (mMessenger != null) {
+            Message msg = Message.obtain(null, BackendProxyService.MSG_STOP_WEBEX_PROXY, 0, 0);
+            try {
+                mMessenger.send(msg);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
         if (!mHttpStarted) {
+            /* We stop the service when no more component is running */
             Intent intent = new Intent(getActivity(), BackendProxyService.class);
-            getActivity().unbindService(mConnection);
             getActivity().stopService(intent);
         }
     }
 
-    private void startHttpCommand() {
-        Message msg = Message.obtain(null, BackendProxyService.MSG_START_HTTP_PROXY, 0, 0);
-        try {
-            mMessenger.send(msg);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void startHttpProxy() {
-        mHttpStarted = true;
-
+        if (mMessenger != null) {
+            Message msg = Message.obtain(null, BackendProxyService.MSG_START_HTTP_PROXY, 0, 0);
+            try {
+                mMessenger.send(msg);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
         if (!mWebexStarted) {
-            /*
-             * We need to start & bind the service, the command is further
-             * executed in mConnection
-             */
+            /* We start the service as soon as one component is running */
             Intent intent = new Intent(getActivity(), BackendProxyService.class);
             getActivity().startService(intent);
-            getActivity().bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-        } else {
-            /* If WebexProxy is started, the service is already started and bound */
-            startHttpCommand();
-        }
-    }
-
-    private void stopHttpCommand() {
-        Message msg = Message.obtain(null, BackendProxyService.MSG_STOP_HTTP_PROXY, 0, 0);
-        try {
-            mMessenger.send(msg);
-        } catch (RemoteException e) {
-            e.printStackTrace();
         }
     }
 
     private void stopHttpProxy() {
-        mHttpStarted = false;
-
-        stopHttpCommand();
-
-        /* If only HttpProxy was started, unbind and stop the service */
+        if (mMessenger != null) {
+            Message msg = Message.obtain(null, BackendProxyService.MSG_STOP_HTTP_PROXY, 0, 0);
+            try {
+                mMessenger.send(msg);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
         if (!mWebexStarted) {
+            /* We stop the service when no more component is running */
             Intent intent = new Intent(getActivity(), BackendProxyService.class);
-            getActivity().unbindService(mConnection);
             getActivity().stopService(intent);
         }
     }
