@@ -20,7 +20,7 @@ android {
     defaultConfig {
         applicationId "hicn.cisco.com.hicnforwarderandroid"
         minSdkVersion 26
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode getVersionCode_()
         versionName getVersion()
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
