@@ -54,6 +54,6 @@ if [ "$1" = "1" ]; then
   bash /hicn/ci/push_playstore.sh /hicn/playstore_key.json $APK_PATH $VERSION_CODE /sdk
   APK_PATH=/hicn/hICN_Tools.apk
   bash /hicn/ci/push_playstore.sh /hicn/playstore_key.json $APK_PATH $VERSION_CODE /sdk
-  #APK_PATH=/hicn/viper-arm64.apk
-  #bash /hicn/ci/push_playstore.sh /hicn/playstore_key.json $APK_PATH $VERSION_CODE /sdk
+  APK_PATH=/hicn/viper-arm64.apk
+  bash /hicn/ci/push_playstore.sh /hicn/playstore_key.json $APK_PATH $VERSION_CODE /sdk
 fi
