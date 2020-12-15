@@ -3,7 +3,7 @@ set -e
 set -x
 
 SCRIPT_DIR=`realpath .`/scripts
-OPENSSL_VERSION=1.1.1d
+OPENSSL_VERSION=1.1.1h
 
 echo $SCRIPT_DIR/scripts
 ARCH=$1
@@ -43,6 +43,26 @@ architecture=$ARCH
 
 # Create the make file
 cd ${OPENSSL_DIR}
+export ANDROID_NDK_HOME=$toolchains_path
+
+if [ "${ANDROID_ARCH}" = "arm" ]; then
+  if [ ! -f "$toolchains_path/bin/arm-linux-android-clang" ]; then
+    ln -s $toolchains_path/bin/armv7a-linux-androideabi${ANDROID_COMPILE_SDK}-clang $toolchains_path/bin/arm-linux-androideabi-clang
+  fi
+elif [ "${ANDROID_ARCH}" = "x86" ]; then
+  if [ ! -f "$toolchains_path/bin/i686-linux-android-clang" ]; then
+    ln -s $toolchains_path/bin/i686-linux-android${ANDROID_COMPILE_SDK}-clang $toolchains_path/bin/i686-linux-android-clang
+  fi
+elif [ "${ANDROID_ARCH}" = "x86_64" ]; then
+  if [ ! -f "$toolchains_path/bin/x86_64-linux-android-clang" ]; then
+    ln -s $toolchains_path/bin/x86_64-linux-android${ANDROID_COMPILE_SDK}-clang $toolchains_path/bin/x86_64-linux-android-clang
+  fi
+else
+  if [ ! -f "$toolchains_path/bin/aarch64-linux-android-clang" ]; then
+      ln -s $toolchains_path/bin/aarch64-linux-android${ANDROID_COMPILE_SDK}-clang $toolchains_path/bin/aarch64-linux-android-clang
+  fi
+fi
+
 ./Configure ${architecture} -D__ANDROID_API__=$ANDROID_API no-shared no-unit-test no-tests
 
 # Build
