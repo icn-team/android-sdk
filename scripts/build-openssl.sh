@@ -3,7 +3,7 @@ set -e
 set -x
 
 SCRIPT_DIR=`realpath .`/scripts
-OPENSSL_VERSION=1.1.1h
+OPENSSL_VERSION=1.1.1i
 
 echo $SCRIPT_DIR/scripts
 ARCH=$1
@@ -63,7 +63,9 @@ else
   fi
 fi
 
-./Configure ${architecture} -D__ANDROID_API__=$ANDROID_API no-shared no-unit-test no-tests
+export CFLAGS=-fPIC
+
+./Configure -fPIC ${architecture} -D__ANDROID_API__=$ANDROID_API no-shared no-unit-test no-tests
 
 # Build
 make
