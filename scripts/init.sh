@@ -134,5 +134,5 @@ if [ ! -d ${INSTALLATION_DIR}/include/openssl ]; then
 	rm -rf $BASE_DIR/external/openssl-android-$ABI
     touch ${VERSIONS_FILE}
 	${SED} -i "/${ABI}_openssl/d" ${VERSIONS_FILE}
-	echo ${ABI}_openssl=1.1.1d >> ${VERSIONS_FILE}
+	echo ${ABI}_openssl=1.1.1h >> ${VERSIONS_FILE}
 fi
