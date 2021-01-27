@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/.cxx/cmake/release/x86_64",
-  "command": "/Users/manangel/maqy/android-sdk/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=x86_64-none-linux-android28 --gcc-toolchain=/Users/manangel/maqy/android-sdk/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/manangel/maqy/android-sdk/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dforwarder_wrapper_EXPORTS -I/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/src/main/cpp/../../../../../usr_x86_64/include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC   -o CMakeFiles/forwarder-wrapper.dir/forwarder-wrapper.c.o   -c /Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/src/main/cpp/forwarder-wrapper.c",
-  "file": "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/src/main/cpp/forwarder-wrapper.c"
-}
-]

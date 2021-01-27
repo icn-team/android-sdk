@@ -1,3 +1,0 @@
-/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/.cxx/cmake/release/x86_64/CMakeFiles/rebuild_cache.dir
-/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/.cxx/cmake/release/x86_64/CMakeFiles/edit_cache.dir
-/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/.cxx/cmake/release/x86_64/CMakeFiles/facemgr-wrapper.dir

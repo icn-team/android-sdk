@@ -12,3 +12,6 @@
 .idea/modules.xml
 .idea/vcs.xml
 .idea/workspace.xml
+.cxx
+build
+hproxy-aar
