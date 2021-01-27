@@ -25,7 +25,7 @@ if [ ! -d $OPENSSL_DIR ]; then
 fi
 
 # Find the toolchain for your build machine
-toolchains_path=$(python $SCRIPT_DIR/toolchains_path.py --ndk ${ANDROID_NDK_HOME})
+toolchains_path=$(python $SCRIPT_DIR/toolchains_path.py --ndk ${NDK})
 
 # Configure the OpenSSL environment, refer to NOTES.ANDROID in OPENSSL_DIR
 # Set compiler clang, instead of gcc by default
