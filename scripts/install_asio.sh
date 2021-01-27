@@ -16,7 +16,26 @@
 #!/bin/bash
 
 set -ex
-
+ABI=$1
+OS=`echo $OS | tr '[:upper:]' '[:lower:]'`
+export BASE_DIR=`pwd`
 mkdir -p ${DISTILLERY_INSTALL_DIR}
 mkdir -p ${DISTILLERY_INSTALL_DIR}/include
-mkdir -p ${DISTILLERY_INSTALL_DIR}/lib
+
+
+if [ ! -d ${DISTILLERY_INSTALL_DIR}/include/asio ]; then
+    cd src
+    echo "Asio not found"
+    if [ ! -d asio ]; then
+        echo "Asio directory not found"
+        git clone https://github.com/chriskohlhoff/asio.git
+        cd asio
+        git checkout tags/asio-1-12-2
+    fi
+    cp -r asio/asio/include/asio.hpp ${DISTILLERY_INSTALL_DIR}/include/
+    cp -r asio/asio/include/asio ${DISTILLERY_INSTALL_DIR}/include/
+    ASIO_VERSION=$(git log -1 --format="%H")
+    ${SED} -i "/${ABI}_asio/d" ${VERSIONS_FILE}
+	echo ${ABI}_asio=$ASIO_VERSION >> ${VERSIONS_FILE}
+    cd ..
+fi

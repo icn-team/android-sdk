@@ -4,6 +4,7 @@ ENABLE_DEBUG="NODEBUG"
 VERSION_CODE=1
 GITHUB_USER=""
 GITHUB_TOKEN=""
+ENABLE_HPROXY="0"
 MVN_REPO=""
 while getopts ":d:v:p:u:t:r:" opt; do
   case $opt in
@@ -11,7 +12,9 @@ while getopts ":d:v:p:u:t:r:" opt; do
     ;;
     v) VERSION_CODE="$OPTARG"
     ;;
-    p) ENABLE_HPROXY="$OPTARG"
+    p) if [ "$OPTARG" != "" ]; then
+        ENABLE_HPROXY="$OPTARG"
+       fi
     ;;
     u) GITHUB_USER="$OPTARG"
     ;;
