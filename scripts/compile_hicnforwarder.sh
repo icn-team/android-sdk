@@ -4,6 +4,7 @@ ENABLE_DEBUG="NODEBUG"
 VERSION_CODE=1
 GITHUB_USER=""
 GITHUB_TOKEN=""
+ENABLE_HPROXY="0"
 MVN_REPO=""
 while getopts ":d:v:p:u:t:r:" opt; do
   case $opt in
