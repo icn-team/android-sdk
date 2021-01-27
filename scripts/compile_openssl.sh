@@ -22,7 +22,7 @@ export BASE_DIR=`pwd`
 mkdir -p ${DISTILLERY_INSTALL_DIR}
 mkdir -p ${DISTILLERY_INSTALL_DIR}/include
 
-if [ ! -d ${INSTALLATION_DIR}/include/openssl ]; then
+if [ ! -d ${DISTILLERY_INSTALL_DIR}/include/openssl ]; then
 	echo "OpenSSL Libs not found!"
 	echo "Compile OpenSSL"
 	export ANDROID_NDK_ROOT=${BASE_DIR}/sdk/ndk-bundle
