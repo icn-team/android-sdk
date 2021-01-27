@@ -95,11 +95,12 @@
             app:title="@string/hiperf_preferences_title" />
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/httpproxy_category">
+ <!--   <PreferenceCategory app:title="@string/httpproxy_category">
         <Preference
             app:fragment="com.cisco.hicn.forwarder.preferences.HttpProxyPreferencesFragment"
             app:summary="@string/httpproxy_preferences_summary"
             app:title="@string/httpproxy_preferences_title" />
     </PreferenceCategory>
+-->
 
 </PreferenceScreen>

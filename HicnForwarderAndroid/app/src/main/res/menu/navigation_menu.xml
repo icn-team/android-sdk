@@ -33,5 +33,13 @@
 
         </menu>
     </item>
-
+        <item android:title="Benchmark">
+            <menu>
+                <item
+                    android:id="@+id/hiperf"
+                    android:icon="@drawable/ic_hiperf"
+                    android:title="Throughput" />
+            </menu>
+        </item>
+        <item android:title="About" />
 </menu>

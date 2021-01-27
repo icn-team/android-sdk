@@ -14,18 +14,22 @@
  */
 
 buildscript {
-    
     ext {
-        ENABLE_HPROXY = 0
+        ENABLE_HPROXY = '0'
+        GITHUB_USER = ''
+        GITHUB_TOKEN = ''
+        MVN_REPO = 'https://maven.pkg.github.com/Cisco-Hybrid-ICN/hproxy'
     }
     repositories {
         google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'com.android.tools.build:gradle:4.1.1'
     }
 }
+
+
 
 allprojects {
     repositories {

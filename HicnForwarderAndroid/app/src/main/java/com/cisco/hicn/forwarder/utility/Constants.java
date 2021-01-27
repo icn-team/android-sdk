@@ -22,13 +22,6 @@ public class Constants {
 
     public static final int FOREGROUND_SERVICE = 101;
 
-
-    public static final int AU_INTERFACE_TYPE_UNDEFINED = 0;
-    public static final int AU_INTERFACE_TYPE_WIRED = 1;
-    public static final int AU_INTERFACE_TYPE_WIFI = 2;
-    public static final int AU_INTERFACE_TYPE_CELLULAR = 3;
-    public static final int AU_INTERFACE_TYPE_LOOPBACK = 4;
-    public static final int AU_INTERFACE_TYPE_UNAVAILABLE = 5;
     public static final String HIPERF = "HIPERF";
     public static final String ID = "id";
     public static final String NETDEVICE = "netdevice";

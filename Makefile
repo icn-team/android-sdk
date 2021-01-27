@@ -17,7 +17,7 @@ DISTILLERY_VERSION=2.0
 
 default.target: help
 
-all: init_sdk init_depend init_depend install-all
+all: init_sdk init_depend install-all
 
 all-withqt: all init_qt init_depqt
 
@@ -116,15 +116,16 @@ init_qt:
 	@bash scripts/init_qt.sh
 
 init_depend:
+	echo "scripts/init.sh ${ABI} ${DISTILLERY_INSTALL_DIR};"
 	@bash scripts/init.sh ${ABI} ${DISTILLERY_INSTALL_DIR};
 
 init_depqt: init_sdk init_qt
 	@bash scripts/init_depqt.sh
 
 android_hicnforwarder:
-	@bash scripts/compile_hicnforwarder.sh NODEBUG $(VERSION)
+	@bash scripts/compile_hicnforwarder.sh -d NODEBUG -v "$(VERSION)" -p "$(ENABLE_HPROXY)" -u "$(GITHUB_USER)" -t "$(GITUB_TOKEN)" -r "$(MVN_REPO)"
 android_hicnforwarder_debug:
-	@bash scripts/compile_hicnforwarder.sh DEBUG $(VERSION)
+	@bash scripts/compile_hicnforwarder.sh -d DEBUG -v "$(VERSION)" -p "$(ENABLE_HPROXY)" -u "$(GITHUB_USER)" -t "$(GITUB_TOKEN)" -r "$(MVN_REPO)"
 android_hicntools:
 	@bash scripts/compile_hicntools.sh NODEBUG $(VERSION)
 android_hicntools_debug:
@@ -138,7 +139,7 @@ curl-clean:
 	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/lib/libcurl.*
 	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/include/curl
 	@rm -rf ${DISTILLERY_BUILD_DIR_PREFIX}_*/curl
-	
+
 openssl-clean:
 	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/lib/libssl.*
 	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/lib/libcrypto.*
@@ -150,7 +151,7 @@ event-clean:
 	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/lib/libevent*
 	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/include/event2
 	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/include/ev*.h
-		
+
 xml2-clean:
 	@rm -rf ${DISTILLERY_BUILD_DIR_PREFIX}_*/libxml2
 	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/lib/libxml2*
@@ -160,7 +161,7 @@ libconfig-clean:
 	@rm -rf ${DISTILLERY_BUILD_DIR_PREFIX}_*/libconfig
 	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/lib/libconfig*
 	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/include/libconfig*
-	
+
 asio-clean:
 	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/include/asio*
 
@@ -180,7 +181,7 @@ libdash-clean:
 	@rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_*/include/libdash
 
 dependencies-clean: event-clean openssl-clean curl-clean xml2-clean libconfig-clean libparc-clean asio-clean ffmpeg-clean libdash-clean
-	
+
 sdk-clean:
 	@rm -rf sdk/build-tools
 	@rm -rf sdk/extras
@@ -189,12 +190,12 @@ sdk-clean:
 	@rm -rf sdk/platform-tools
 	@rm -rf sdk/platforms
 	@rm sdk/sdk-tools-lin
-	
+
 ndk-clean:
 	@rm -rf sdk/ndk-bundle
 	@rm -rf sdk/cmake
 
-	
+
 androidsdk-clean: ndk-clean sdk-clean
 
 hicn-clean:
@@ -205,7 +206,7 @@ hicn-clean:
 
 viper-clean:
 	@rm -rf ${DISTILLERY_BUILD_DIR_PREFIX}_*/viper
-	
+
 qt-clean:
 	@rm -rf qt/Qt*
 
@@ -253,7 +254,7 @@ help:
 	@echo "make android_hicnforwarder_debug	- Build HicnForwader apk for android in debug mode"
 	@echo "make android_hicntools		- Build HicnTools apk for android"
 	@echo "make android_hicntools_debug	- Build HicnTools apk for android in debug mode"
-	@echo "make android_viper		- Build Viper apk for android apk in debug mode" 
+	@echo "make android_viper		- Build Viper apk for android apk in debug mode"
 	@echo "make android_viper_debug		- Build Viper apk for android apk"
 	@echo "make version			- Print the version of installed modules"
 

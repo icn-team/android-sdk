@@ -30,6 +30,7 @@ import android.os.Message;
 import android.os.RemoteException;
 
 import android.os.Messenger;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,19 +42,27 @@ import androidx.fragment.app.Fragment;
 
 import com.cisco.hicn.forwarder.R;
 import com.cisco.hicn.forwarder.service.BackendAndroidService;
-import com.cisco.hicn.forwarder.service.BackendAndroidVpnService;
 import com.cisco.hicn.forwarder.service.BackendProxyService;
-import com.cisco.hicn.forwarder.supportlibrary.Forwarder;
-import com.cisco.hicn.forwarder.supportlibrary.Facemgr;
-import com.cisco.hicn.forwarder.supportlibrary.HProxy;
-import com.cisco.hicn.forwarder.supportlibrary.HttpProxy;
-import com.cisco.hicn.forwarder.utility.Constants;
+
+import com.cisco.hicn.facemgrlibrary.supportlibrary.FacemgrLibrary;
+import com.cisco.hicn.hicnforwarderlibrary.supportlibrary.ForwarderLibrary;
+import com.cisco.hicn.hproxylibrary.service.ForwarderWrapper;
+import com.cisco.hicn.hproxylibrary.service.BackendAndroidVpnService;
+
+import com.cisco.hicn.hproxylibrary.supportlibrary.HProxyLibrary;
 
 public class ForwarderFragment extends Fragment {
     private static int VPN_REQUEST_CODE = 100;
 
     Messenger mMessenger = null;
 
+    private ForwarderWrapper forwarderWrapper = new ForwarderWrapper() {
+        @Override
+        public boolean isRunningForwarder() {
+            ForwarderLibrary forwarder = ForwarderLibrary.getInstance();
+            return forwarder.isRunningForwarder();
+        }
+    };
     /*
      * This serves to run the BackendProxyService as soon as at least one proxy
      * has been requested
@@ -94,12 +103,12 @@ public class ForwarderFragment extends Fragment {
             mMessenger = new Messenger(service);
 
             View root = getView();
-            if (HProxy.isHProxyEnabled()) {
+            if (HProxyLibrary.isHProxyEnabled()) {
                 Switch webexSwitch = root.findViewById(R.id.webex_switch);
                 webexSwitch.setEnabled(true);
             }
-            Switch httpSwitch = root.findViewById(R.id.http_switch);
-            httpSwitch.setEnabled(true);
+//            Switch httpSwitch = root.findViewById(R.id.http_switch);
+//            httpSwitch.setEnabled(true);
         }
 
         public void onServiceDisconnected(ComponentName className) {
@@ -128,6 +137,10 @@ public class ForwarderFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        HProxyLibrary.setForwarderService(BackendAndroidService.class);
+        HProxyLibrary.setForwarderWrapper(forwarderWrapper);
+        FacemgrLibrary.setContext(getContext());
+
     }
 
     @Override
@@ -147,6 +160,7 @@ public class ForwarderFragment extends Fragment {
 
         Intent intent = new Intent(getActivity(), BackendProxyService.class);
         getActivity().bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+
     }
 
     @Override
@@ -165,6 +179,7 @@ public class ForwarderFragment extends Fragment {
         } else {
             img.setImageResource(android.R.drawable.presence_invisible);
         }
+
     }
 
     private void updateFacemgrStatus(View root, boolean flag)
@@ -175,6 +190,7 @@ public class ForwarderFragment extends Fragment {
         } else {
             img.setImageResource(android.R.drawable.presence_invisible);
         }
+
     }
 
     private void updateWebexProxyStatus(View root, boolean flag)
@@ -187,10 +203,10 @@ public class ForwarderFragment extends Fragment {
 
     private void updateHttpProxyStatus(View root, boolean flag)
     {
-        Switch httpSwitch = root.findViewById(R.id.http_switch);
-        httpSwitch.setOnCheckedChangeListener(null);
-        httpSwitch.setChecked(flag);
-        httpSwitch.setOnCheckedChangeListener(mHttpCheckedChangeListener);
+//        Switch httpSwitch = root.findViewById(R.id.http_switch);
+//        httpSwitch.setOnCheckedChangeListener(null);
+//        httpSwitch.setChecked(flag);
+        //httpSwitch.setOnCheckedChangeListener(mHttpCheckedChangeListener);
     }
 
     private void updateServiceStatus(View root)
@@ -199,8 +215,8 @@ public class ForwarderFragment extends Fragment {
             root = getView();
         if (root == null)
             return;
-        updateForwarderStatus(root, Forwarder.getInstance().isRunningForwarder());
-        updateFacemgrStatus(root, Facemgr.getInstance().isRunningFacemgr());
+        updateForwarderStatus(root, ForwarderLibrary.getInstance().isRunningForwarder());
+        updateFacemgrStatus(root, FacemgrLibrary.getInstance().isRunningFacemgr());
     }
 
     CompoundButton.OnCheckedChangeListener mWebexCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
@@ -213,24 +229,24 @@ public class ForwarderFragment extends Fragment {
             }
         }
     };
-    CompoundButton.OnCheckedChangeListener mHttpCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if (isChecked) {
-                startHttpProxy();
-            } else {
-                stopHttpProxy();
-            }
-        }
-    };
+    //CompoundButton.OnCheckedChangeListener mHttpCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+    //   @Override
+    //   public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+    //       if (isChecked) {
+    //          startHttpProxy();
+    //      } else {
+    //          stopHttpProxy();
+    //      }
+    //  }
+    // };
 
 
     private void initView(View root) {
         updateServiceStatus(root);
 
         /* Those are only updated the first time the view is shown */
-        updateWebexProxyStatus(root, HProxy.getInstance().isRunning());
-        updateHttpProxyStatus(root, HttpProxy.getInstance().isRunningHttpProxy());
+        updateWebexProxyStatus(root, HProxyLibrary.getInstance().isRunning());
+        //updateHttpProxyStatus(root, HttpProxy.getInstance().isRunningHttpProxy());
 
         Switch forwarderSwitch = root.findViewById(R.id.forwarder_switch);
         forwarderSwitch.setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
@@ -240,8 +256,9 @@ public class ForwarderFragment extends Fragment {
                 stopHicnServices();
             }
         });
+        forwarderSwitch.setChecked(ForwarderLibrary.getInstance().isRunningForwarder());
 
-        if (HProxy.isHProxyEnabled()) {
+        if (HProxyLibrary.isHProxyEnabled()) {
             Switch webexSwitch = root.findViewById(R.id.webex_switch);
             webexSwitch.setOnCheckedChangeListener(mWebexCheckedChangeListener);
 
@@ -257,12 +274,12 @@ public class ForwarderFragment extends Fragment {
             View b = root.findViewById(R.id.ly_webex);
             b.setVisibility(View.GONE);
         }
-        Switch httpSwitch = root.findViewById(R.id.http_switch);
-        httpSwitch.setOnCheckedChangeListener(mHttpCheckedChangeListener);
+        //Switch httpSwitch = root.findViewById(R.id.http_switch);
+        // httpSwitch.setOnCheckedChangeListener(mHttpCheckedChangeListener);
 
         /* See previous comment */
-        if ((mWebexStarted || mHttpStarted) && mMessenger == null)
-            httpSwitch.setEnabled(false);
+        //if ((mWebexStarted || mHttpStarted) && mMessenger == null)
+        //    httpSwitch.setEnabled(false);
 
     }
 
@@ -304,10 +321,10 @@ public class ForwarderFragment extends Fragment {
     }
 
     private void startWebexProxy() {
-        if (!HProxy.isHProxyEnabled())
+        if (!HProxyLibrary.isHProxyEnabled())
             return;
         if (mMessenger != null) {
-            HProxy.setActivity(getActivity());
+            HProxyLibrary.setActivity(getActivity());
             Message msg = Message.obtain(null, BackendProxyService.MSG_START_WEBEX_PROXY, 0, 0);
             try {
                 mMessenger.send(msg);
@@ -323,7 +340,7 @@ public class ForwarderFragment extends Fragment {
     }
 
     private void stopWebexProxy() {
-        if (!HProxy.isHProxyEnabled())
+        if (!HProxyLibrary.isHProxyEnabled())
             return;
         if (mMessenger != null) {
             Message msg = Message.obtain(null, BackendProxyService.MSG_STOP_WEBEX_PROXY, 0, 0);
@@ -377,7 +394,7 @@ public class ForwarderFragment extends Fragment {
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == VPN_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            Intent intent = new Intent(HProxy.getActivity(), BackendAndroidVpnService.class);
+            Intent intent = new Intent(HProxyLibrary.getActivity(), BackendAndroidVpnService.class);
             this.getActivity().startService(intent.setAction(BackendAndroidVpnService.ACTION_CONNECT));
         }
     }

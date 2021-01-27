@@ -17,6 +17,8 @@ package com.cisco.hicn.forwarder.supportlibrary;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.wifi.WifiManager;
+import android.net.wifi.WifiInfo;
 import android.net.LinkProperties;
 import android.net.Network;
 import android.net.NetworkCapabilities;
@@ -42,54 +44,7 @@ public class AndroidUtility {
         return sInstance;
     }
 
-    public static int getNetworkType(String networkName) {
-        return getNetworkType(MainActivity.context, networkName);
-    }
 
-    public static int getNetworkType(Context context, String networkName) {
-        if (context != null) {
-            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            if (connectivityManager == null) {
-                return -1; //error
-            }
-
-            for (Network network : connectivityManager.getAllNetworks()) {
-                LinkProperties prop = connectivityManager.getLinkProperties(network);
-                if (prop.getInterfaceName() != null && prop.getInterfaceName().equals(networkName.trim())) {
-                    NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(network);
-                    if (capabilities == null) {
-                        return Constants.AU_INTERFACE_TYPE_UNDEFINED; //error
-                    }
-
-                    if (capabilities.hasCapability(
-                            NetworkCapabilities.NET_CAPABILITY_VALIDATED)) {
-                        if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
-                            return Constants.AU_INTERFACE_TYPE_WIRED;
-                        }
-                        if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-                            return Constants.AU_INTERFACE_TYPE_WIFI;
-                        }
-                        if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
-                            return Constants.AU_INTERFACE_TYPE_CELLULAR;
-                        }
-                        return Constants.AU_INTERFACE_TYPE_UNDEFINED;
-                    } else {
-                        return Constants.AU_INTERFACE_TYPE_UNAVAILABLE; //not ready
-                    }
-                }
-
-            }
-
-            try {
-                NetworkInterface networkInterface = NetworkInterface.getByName(networkName);
-                if (networkInterface.isLoopback())
-                    return Constants.AU_INTERFACE_TYPE_LOOPBACK;
-            } catch (SocketException e) {
-                Log.d(AndroidUtility.class.getCanonicalName(), "error");
-            }
-        }
-        return Constants.AU_INTERFACE_TYPE_UNDEFINED; //don't care
-    }
 
     public void setHiperfGraphQueue(Queue<Integer> hiperfGraphQueue) {
         this.hiperfGraphQueue = hiperfGraphQueue;
@@ -103,7 +58,6 @@ public class AndroidUtility {
         Log.d("hiperf", "goodput: " + goodput);
         AndroidUtility.getInstance().getHiperfGraphQueue().add(goodput);
     }
-
 
     public static int getTextureCount() {
         return 0;

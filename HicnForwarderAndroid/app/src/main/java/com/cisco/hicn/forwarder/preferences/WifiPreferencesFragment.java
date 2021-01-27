@@ -22,8 +22,9 @@ import android.preference.PreferenceManager;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.cisco.hicn.forwarder.R;
-import com.cisco.hicn.forwarder.supportlibrary.Facemgr;
-import com.cisco.hicn.forwarder.utility.NetdeviceTypeEnum;
+
+import com.cisco.hicn.facemgrlibrary.supportlibrary.FacemgrLibrary;
+import com.cisco.hicn.facemgrlibrary.utility.NetdeviceTypeEnum;
 
 public class WifiPreferencesFragment extends PreferenceFragmentCompat {
     private SharedPreferences sharedPreferences;
@@ -49,7 +50,7 @@ public class WifiPreferencesFragment extends PreferenceFragmentCompat {
                 getPreferenceManager().findPreference((getString(R.string.wifi_ipv4_preferences_key))).setEnabled(true);
                 getPreferenceManager().findPreference((getString(R.string.wifi_ipv6_preferences_key))).setEnabled(true);
 
-                Facemgr facemgr = Facemgr.getInstance();
+                FacemgrLibrary facemgr = FacemgrLibrary.getInstance();
                 int wifiSourcePortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wifi_source_port_ipv4_key), getString(R.string.default_wifi_source_port_ipv4)));
                 String wifiNextHopIPv4 = sharedPreferences.getString(getString(R.string.wifi_nexthop_ipv4_key), getString(R.string.default_wifi_nexthop_ipv4));
                 int wifiNextHopPortIPv4 = Integer.parseInt(sharedPreferences.getString(getString(R.string.wifi_nexthop_port_ipv4_key), getString(R.string.default_wifi_nexthop_port_ipv4)));
@@ -66,7 +67,7 @@ public class WifiPreferencesFragment extends PreferenceFragmentCompat {
                 getPreferenceManager().findPreference((getString(R.string.wifi_ipv4_preferences_key))).setEnabled(false);
                 getPreferenceManager().findPreference((getString(R.string.wifi_ipv6_preferences_key))).setEnabled(false);
 
-                Facemgr facemgr = Facemgr.getInstance();
+                FacemgrLibrary facemgr = FacemgrLibrary.getInstance();
                 facemgr.unsetInterfaceIPv4(NetdeviceTypeEnum.NETDEVICE_TYPE_WIFI.getValue());
                 facemgr.unsetInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_WIFI.getValue());
             }

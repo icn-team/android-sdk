@@ -21,8 +21,9 @@ import android.os.Bundle;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.cisco.hicn.forwarder.R;
-import com.cisco.hicn.forwarder.supportlibrary.Facemgr;
-import com.cisco.hicn.forwarder.supportlibrary.HProxy;
+
+import com.cisco.hicn.facemgrlibrary.supportlibrary.FacemgrLibrary;
+import com.cisco.hicn.hproxylibrary.supportlibrary.HProxyLibrary;
 
 public class PreferencesFragment extends PreferenceFragmentCompat {
 
@@ -40,7 +41,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
 
-        if (HProxy.isHProxyEnabled()) {
+        if (HProxyLibrary.isHProxyEnabled()) {
             setPreferencesFromResource(R.xml.root_proxy, s);
         } else {
             setPreferencesFromResource(R.xml.root_no_proxy, s);
@@ -49,7 +50,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
         getPreferenceScreen().findPreference(getString(R.string.facemgr_log_level_key)).setOnPreferenceChangeListener((preference, newValue) -> {
             int facemgrLogLevel = Integer.parseInt((String) newValue);
 
-            Facemgr facemgr = Facemgr.getInstance();
+            FacemgrLibrary facemgr = FacemgrLibrary.getInstance();
 
             facemgr.setLogLevel(facemgrLogLevel);
             return true;
@@ -58,7 +59,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
         getPreferenceScreen().findPreference(getString(R.string.enable_bonjour_key)).setOnPreferenceChangeListener((preference, newValue) -> {
             boolean enableBonjour = (boolean) newValue;
 
-            Facemgr facemgr = Facemgr.getInstance();
+            FacemgrLibrary facemgr = FacemgrLibrary.getInstance();
 
             facemgr.enableDiscovery(enableBonjour);
             return true;
@@ -68,7 +69,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
         getPreferenceScreen().findPreference(getString(R.string.enable_nexthop_ipv4_key)).setOnPreferenceChangeListener((preference, newValue) -> {
             boolean enableNextHopIPv4 = (boolean) newValue;
 
-            Facemgr facemgr = Facemgr.getInstance();
+            FacemgrLibrary facemgr = FacemgrLibrary.getInstance();
 
             facemgr.enableIPv4(enableNextHopIPv4 ? 1 : 0);
             return true;
@@ -77,7 +78,7 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
         getPreferenceScreen().findPreference(getString(R.string.enable_nexthop_ipv6_key)).setOnPreferenceChangeListener((preference, newValue) -> {
             boolean enableNextHopIPv6 = (boolean) newValue;
 
-            Facemgr facemgr = Facemgr.getInstance();
+            FacemgrLibrary facemgr = FacemgrLibrary.getInstance();
 
             facemgr.enableIPv6(enableNextHopIPv6 ? 1 : 0);
             return true;

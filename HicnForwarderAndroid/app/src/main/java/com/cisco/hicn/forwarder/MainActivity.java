@@ -16,8 +16,6 @@
 package com.cisco.hicn.forwarder;
 
 import android.Manifest;
-import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,10 +25,7 @@ import android.os.Bundle;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -41,12 +36,15 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.cisco.hicn.forwarder.applications.ApplicationsFragment;
 import com.cisco.hicn.forwarder.forwarder.ForwarderFragment;
+import com.cisco.hicn.forwarder.hiperf.HiPerfFragment;
 import com.cisco.hicn.forwarder.interfaces.InterfacesFragment;
 import com.cisco.hicn.forwarder.preferences.PreferencesFragment;
-import com.cisco.hicn.forwarder.supportlibrary.Facemgr;
-import com.cisco.hicn.forwarder.utility.NetdeviceTypeEnum;
+import com.cisco.hicn.facemgrlibrary.utility.NetdeviceTypeEnum;
 import com.google.android.material.navigation.NavigationView;
+
+import com.cisco.hicn.facemgrlibrary.supportlibrary.FacemgrLibrary;
 
 public class MainActivity extends AppCompatActivity
         implements
@@ -60,9 +58,10 @@ public class MainActivity extends AppCompatActivity
     private ActionBarDrawerToggle mToggle;
     private NavigationView nav_View;
     private FragmentManager fragmentManager;
+    private HiPerfFragment hiperf;
 
 
-    private Home home;
+    private HomeActivity home;
     private PreferencesFragment settings;
 
     public static Context context;
@@ -94,10 +93,12 @@ public class MainActivity extends AppCompatActivity
         fragmentManager = getSupportFragmentManager();
 
         // Declare fragments here
-        home = new Home();
+        home = new HomeActivity();
         settings = new PreferencesFragment();
+        hiperf = new HiPerfFragment();
+        hiperf.setHome(home);
 
-        Facemgr facemgr = Facemgr.getInstance();
+        FacemgrLibrary facemgr = FacemgrLibrary.getInstance();
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -186,13 +187,14 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
         return true;
     }
-
+    */
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -208,14 +210,19 @@ public class MainActivity extends AppCompatActivity
         switch (menuItem.getItemId()) {
             case R.id.settings:
                 fragment = settings;
-                setTitle(menuItem.getTitle());
+                break;
+            case R.id.forwarder:
+                fragment = home;
+                break;
+            case R.id.hiperf:
+                fragment = hiperf;
                 break;
             default:
                 fragment = home;
-                setTitle(menuItem.getTitle());
                 break;
-
         }
+        setTitle(menuItem.getTitle());
+
         fragmentManager.beginTransaction().replace(R.id.viewLayout, fragment).commit();
         mDrawer.closeDrawers();
         return true;

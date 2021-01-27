@@ -1,0 +1,2 @@
+ninja: Entering directory `/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/.cxx/cmake/debug/arm64-v8a'
+ninja: no work to do.
