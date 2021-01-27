@@ -104,6 +104,7 @@ ifdef ${DISTILLERY_LOCAL_MODULES_DIR}
 else
     DISTILLERY_LOCAL_MODULES_DIR="[Undefined]"
 endif
+
 build-qtdep: init_qt download-qtdep compile-qtdep
 
 install-all: install-directories ${modules}
@@ -133,7 +134,7 @@ compile-dep: init compile-openssl install-asio libconfig libevent
 download-hicn:
 	@bash scripts/download_hicn.sh;
 
-compile-hicn: init cframework/libparc hicn
+compile-hicn: init download-hicn cframework/libparc hicn
 
 download-qtdep:
 	@bash  scripts/download_qtdep.sh;
