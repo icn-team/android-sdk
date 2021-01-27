@@ -15,31 +15,23 @@
 
 package com.cisco.hicn.forwarder.service;
 
-import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-
-
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.preference.PreferenceManager;
-
+import android.util.Log;
 import android.widget.Toast;
 
-import com.cisco.hicn.forwarder.R;
-import com.cisco.hicn.forwarder.supportlibrary.HProxy;
-import com.cisco.hicn.forwarder.supportlibrary.HttpProxy;
-import com.cisco.hicn.forwarder.service.BackendAndroidVpnService;
-import com.cisco.hicn.forwarder.service.ProxyBackend;
-
-import java.io.IOException;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
-
+import com.cisco.hicn.hproxylibrary.R;
+import com.cisco.hicn.hproxylibrary.service.BackendAndroidVpnService;
+import com.cisco.hicn.hproxylibrary.service.ProxyBackend;
+import com.cisco.hicn.hproxylibrary.service.ProxyBackendNative;
+import com.cisco.hicn.hproxylibrary.supportlibrary.HProxyLibrary;
 
 public class BackendProxyService extends Service implements Handler.Callback {
     /* The key and related Intent used to communicate with the service's users */
@@ -83,12 +75,12 @@ public class BackendProxyService extends Service implements Handler.Callback {
                 case MSG_STOP_WEBEX_PROXY:
                     stopWebexProxy();
                     break;
-                case MSG_START_HTTP_PROXY:
-                    startHttpProxy();
-                    break;
-                case MSG_STOP_HTTP_PROXY:
-                    stopHttpProxy();
-                    break;
+                //case MSG_START_HTTP_PROXY:
+                //    startHttpProxy();
+                //    break;
+                //case MSG_STOP_HTTP_PROXY:
+                //    stopHttpProxy();
+                //    break;
                 default:
                     //Toast.makeText(applicationContext, "Unhandled message", Toast.LENGTH_SHORT).show();
                     super.handleMessage(msg);
@@ -123,31 +115,46 @@ public class BackendProxyService extends Service implements Handler.Callback {
 
     private void startWebexProxy()
     {
-        if (!HProxy.isHProxyEnabled())
+        Log.i("HProxyBackend", "Starting");
+        if (!HProxyLibrary.isHProxyEnabled())
             return;
 
-        if (HProxy.getInstance().isRunning())
+        if (HProxyLibrary.getInstance().isRunning())
             return;
 
-        /* Start native */
-        if (ProxyBackend.getHicnService()) {
-            mProxyBackend = ProxyBackend.getProxyBackend(this);
-            mProxyBackend.connect();
-        }
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean force_vpn = sharedPreferences.getBoolean(getString(R.string.pref_hproxy_force_vpn_key),
+                Boolean.parseBoolean(getString(R.string.pref_hproxy_force_vpn_default)));
+
+        //if (ProxyBackend.getHicnService()) { // A11v1
 
         /*
-         * Start the VPN fallback if needed, in that case, the ProxyBackend will
-         * be started from the BackendAndroidVpnService
+         * public static boolean isServiceAvailable()
+         *
+         * This API gives information, if the SemTunService is available on
+         * device (true – for available and vice versa). This API should be
+         * called first, to know if the service is available or not.
          */
-        if (!ProxyBackend.getHicnService()) {
+        if (!force_vpn && HProxyLibrary.isStunServiceAvailable()) { // A11v3
+            /* Start native */
+            Log.i("HProxyBackend", "Native");
+            //mProxyBackend = ProxyBackend.getProxyBackend(this); // A11v1
+            mProxyBackend = new ProxyBackendNative(this); // A11v3
+            mProxyBackend.connect();
+        } else {
+            /*
+             * Start the VPN fallback if needed, in that case, the ProxyBackend will
+             * be started from the BackendAndroidVpnService
+             */
+            Log.i("HProxyBackend", "Not native");
             Intent intentProxy = BackendAndroidVpnService.prepare(getApplicationContext());//dummyFragment.getActivity());
 
             if (intentProxy != null) {
-                HProxy.getActivity().startActivityForResult(intentProxy, VPN_REQUEST_CODE);
+                HProxyLibrary.getActivity().startActivityForResult(intentProxy, VPN_REQUEST_CODE);
             } else {
 
-                Intent intent = new Intent(HProxy.getActivity(), BackendAndroidVpnService.class);
-                HProxy.getActivity().startService(intent.setAction(BackendAndroidVpnService.ACTION_CONNECT));
+                Intent intent = new Intent(HProxyLibrary.getActivity(), BackendAndroidVpnService.class);
+                HProxyLibrary.getActivity().startService(intent.setAction(BackendAndroidVpnService.ACTION_CONNECT));
                 /*
                 Intent service = new Intent(getApplicationContext(), BackendAndroidVpnService.class).setAction(BackendAndroidVpnService.ACTION_CONNECT);
                 startService(service);
@@ -161,71 +168,33 @@ public class BackendProxyService extends Service implements Handler.Callback {
 
     private void stopWebexProxy()
     {
-        if (!HProxy.isHProxyEnabled())
+        if (!HProxyLibrary.isHProxyEnabled())
             return;
 
-        if (!HProxy.getInstance().isRunning())
+        if (!HProxyLibrary.getInstance().isRunning())
             return;
 
         /* Stop VPN */
-        if (!ProxyBackend.getHicnService()) {
+
+        // XXX we should in fact remember the status of the VPN when it was started, and not the current status.
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean force_vpn = sharedPreferences.getBoolean(getString(R.string.pref_hproxy_force_vpn_key), Boolean.parseBoolean(getString(R.string.pref_hproxy_force_vpn_default)));
+
+        if (!force_vpn && HProxyLibrary.isStunServiceAvailable()) { // A11v3
+        //if (ProxyBackend.getHicnService()) { // A11v1
+            /* Disconnect native */
+            mProxyBackend.disconnect();
+        } else {
+            /* Stops VPN */
             //activity.startService(getServiceIntent().setAction(BackendAndroidVpnService.ACTION_DISCONNECT));
             Intent service = new Intent(getApplicationContext(), BackendAndroidVpnService.class).setAction(BackendAndroidVpnService.ACTION_DISCONNECT);
             startService(service);
         }
 
-        /* Disconnect native */
-        if (ProxyBackend.getHicnService())
-            mProxyBackend.disconnect();
-
         /* Broadcast intent to inform about service status change */
         sendBroadcast(broadcast);
     }
 
-    private void getPrefix() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        this.prefix = sharedPreferences.getString(getString(R.string.httpproxy_prefix_key), getString(R.string.default_httpproxy_prefix));
-    }
-
-    private void getListeningPort() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        this.listeningPort = Integer.parseInt(sharedPreferences.getString(getString(R.string.httpproxy_listeningport_key), getString(R.string.default_httpproxy_listeningport)));
-    }
-
-    protected Runnable mHttpProxyRunner = () -> {
-        HttpProxy httpProxy = HttpProxy.getInstance();
-        getPrefix();
-        getListeningPort();
-
-        httpProxy.startHttpProxy(prefix, listeningPort);
-    };
-
-    private void startHttpProxy()
-    {
-        HttpProxy httpProxy = HttpProxy.getInstance();
-
-        if (httpProxy.isRunningHttpProxy())
-            return;
-
-        sHttpProxyThread = new Thread(mHttpProxyRunner, "BackendAndroid");
-        sHttpProxyThread.start();
-
-        /* Broadcast intent to inform about service status change */
-        sendBroadcast(broadcast);
-    }
-
-    private void stopHttpProxy()
-    {
-        HttpProxy httpProxy = HttpProxy.getInstance();
-
-        if (!httpProxy.isRunningHttpProxy())
-            return;
-
-        httpProxy.stopHttpProxy();
-
-        /* Broadcast intent to inform about service status change */
-        sendBroadcast(broadcast);
-    }
 
     @Override
     public void onDestroy() {
@@ -235,7 +204,7 @@ public class BackendProxyService extends Service implements Handler.Callback {
          * ProxyBackend, and thus trigger VPN for nothing
          */
         stopWebexProxy();
-        stopHttpProxy();
+        //stopHttpProxy();
 
         // stopForeground(true);
     }

@@ -64,3 +64,47 @@ if [ -d src/viper ]; then
 	git pull
 	cd ../..
 fi
+
+if [ -d src/hproxy ]; then
+	cd src/hproxy
+	git pull
+	DOWNLOADED_ARM64_HPROXY=$(cat version | grep hproxy_aarch64 | awk -F "=" '{print $2;}')
+	DOWNLOADED_X86_HPROXY=$(cat version | grep hproxy_i686 | awk -F "=" '{print $2;}')
+	if [ -f ./.versions ]; then
+		ARM64_HPROXY=$(cat ./.versions | grep arm64_hproxy | awk -F "=" '{print $2;}')
+		
+		if [ "ARM64_HPROXY" != "DOWNLOADED_ARM64_HPROXY" ]; then
+			mkdir -p ./usr_aarch64/include/hicn
+			mkdir -p ./usr_aarch64/lib
+			cp -rf usr_aarch64/include/hicn/hproxy ./usr_aarch64/include/hicn
+			cp -f usr_aarch64/lib/* ./usr_aarch64/lib/
+			${SED} -i '/arm64_hproxy/d' ${BASE_DIR}/.versions;
+			echo arm64_hproxy=$DOWNLOADED_ARM64_HPROXY >> ${BASE_DIR}/.versions;
+		fi
+		X86_HPROXY=$(cat ./.versions | grep x86_hproxy | awk -F "=" '{print $2;}')
+		if [ "X86_HPROXY" != "DOWNLOADED_X86_HPROXY" ]; then
+			mkdir -p ${BASE_DIR}/usr_i686/include/hicn
+			mkdir -p ${BASE_DIR}/usr_i686/lib
+			cp -rf usr_i686/include/hicn/hproxy ${BASE_DIR}/usr_i686/include/hicn
+			cp -f usr_i686/lib/* ${BASE_DIR}/usr_i686/lib/
+			${SED} -i '/x86_hproxy/d' ${BASE_DIR}/.versions;
+			echo x86_hproxy=$DOWNLOADED_X86_HPROXY >> ${BASE_DIR}/.versions;
+		fi
+	else
+		touch ${BASE_DIR}/.versions;
+		mkdir -p ./usr_aarch64/include/hicn
+		mkdir -p ./usr_aarch64/lib
+		cp -rf usr_aarch64/include/hicn/hproxy ./usr_aarch64/include/hicn
+		cp -f usr_aarch64/lib/* ./usr_aarch64/lib/
+		${SED} -i '/arm64_hproxy/d' ${BASE_DIR}/.versions;
+		echo arm64_hproxy=$DOWNLOADED_ARM64_HPROXY >> ${BASE_DIR}/.versions;
+
+		mkdir -p ${BASE_DIR}/usr_i686/include/hicn
+		mkdir -p ${BASE_DIR}/usr_i686/lib
+		cp -rf usr_i686/include/hicn/hproxy ${BASE_DIR}/usr_i686/include/hicn
+		cp -f usr_i686/lib/* ${BASE_DIR}/usr_i686/lib/
+		${SED} -i '/x86_hproxy/d' ${BASE_DIR}/.versions;
+		echo x86_hproxy=$DOWNLOADED_X86_HPROXY >> ${BASE_DIR}/.versions;
+	fi
+	cd ../..
+fi

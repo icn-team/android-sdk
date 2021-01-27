@@ -1,0 +1,53 @@
+{
+  "stringTable": {
+    "0": "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/.cxx/cmake/release/arm64-v8a",
+    "1": "--target=aarch64-none-linux-android28 --gcc-toolchain=/Users/manangel/maqy/android-sdk/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/manangel/maqy/android-sdk/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -DASIO_STANDALONE -DENABLE_HPROXY -DWITH_POLICY=1 -Dhproxy_wrapper_EXPORTS -I/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/src/main/cpp/../../../../../usr_aarch64/include -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -std=c++17 -frtti -fexceptions -O2 -DNDEBUG -fPIC -std=gnu++14"
+  },
+  "buildFiles": [
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/src/main/cpp/CMakeLists.txt",
+    "/Users/manangel/maqy/android-sdk/sdk/ndk/21.1.6352462/build/cmake/android.toolchain.cmake",
+    "/Users/manangel/maqy/android-sdk/sdk/ndk/21.1.6352462/build/cmake/platforms.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/src/main/cpp/cmake/Modules/FindLibEvent.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/src/main/cpp/cmake/Modules/FindLibparc.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/src/main/cpp/cmake/Modules/FindLibhicn.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/src/main/cpp/cmake/Modules/FindHicnlight.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/src/main/cpp/cmake/Modules/FindHicnHttpproxy.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/src/main/cpp/cmake/Modules/FindConfig.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/src/main/cpp/cmake/Modules/FindLibhicnctrl.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/src/main/cpp/cmake/Modules/FindLibfacemgr.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/src/main/cpp/cmake/Modules/FindLibtransport.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/src/main/cpp/cmake/Modules/FindHproxy.cmake"
+  ],
+  "cleanCommands": [
+    "/Users/manangel/maqy/android-sdk/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/.cxx/cmake/release/arm64-v8a\" clean"
+  ],
+  "buildTargetsCommand": "/Users/manangel/maqy/android-sdk/sdk/cmake/3.10.2.4988404/bin/ninja  -C \"/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/.cxx/cmake/release/arm64-v8a\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "hproxy-wrapper-Release-arm64-v8a": {
+      "buildCommand": "/Users/manangel/maqy/android-sdk/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/.cxx/cmake/release/arm64-v8a\" hproxy-wrapper",
+      "buildType": "release",
+      "toolchain": "2093851352",
+      "abi": "arm64-v8a",
+      "artifactName": "hproxy-wrapper",
+      "files": [
+        {
+          "src": "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/src/main/cpp/hproxy-wrapper.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        }
+      ],
+      "headers": [],
+      "output": "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/build/intermediates/cmake/release/obj/arm64-v8a/libhproxy-wrapper.so",
+      "runtimeFiles": []
+    }
+  },
+  "toolchains": {
+    "2093851352": {
+      "cppCompilerExecutable": "/Users/manangel/maqy/android-sdk/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++"
+    }
+  },
+  "cFileExtensions": [],
+  "cppFileExtensions": [
+    "cpp"
+  ]
+}

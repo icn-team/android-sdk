@@ -15,7 +15,6 @@
 
 package com.cisco.hicn.forwarder.service;
 
-import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -34,11 +33,14 @@ import android.util.Log;
 
 import com.cisco.hicn.forwarder.MainActivity;
 import com.cisco.hicn.forwarder.R;
-import com.cisco.hicn.forwarder.supportlibrary.Facemgr;
-import com.cisco.hicn.forwarder.supportlibrary.Forwarder;
-import com.cisco.hicn.forwarder.supportlibrary.NetworkServiceHelper;
-import com.cisco.hicn.forwarder.supportlibrary.SocketBinder;
+
 import com.cisco.hicn.forwarder.utility.Constants;
+
+import com.cisco.hicn.common.NetworkServiceHelper;
+import com.cisco.hicn.common.SocketBinder;
+import com.cisco.hicn.facemgrlibrary.supportlibrary.FacemgrLibrary;
+import com.cisco.hicn.hicnforwarderlibrary.supportlibrary.ForwarderLibrary;
+
 
 public class BackendAndroidService extends Service {
     /* The key and related Intent used to communicate with the service's users */
@@ -107,7 +109,7 @@ public class BackendAndroidService extends Service {
 
     private void startForwarderFaceManager()
     {
-        Forwarder forwarder = Forwarder.getInstance();
+        ForwarderLibrary forwarder = ForwarderLibrary.getInstance();
 
         if (!forwarder.isRunningForwarder()) {
             Log.d(TAG, "Starting Backend Service");
@@ -126,14 +128,14 @@ public class BackendAndroidService extends Service {
     @Override
     public void onDestroy() {
 
-        Facemgr facemgr = Facemgr.getInstance();
+        FacemgrLibrary facemgr = FacemgrLibrary.getInstance();
         Log.d(TAG, "Destroying Forwarder");
         if (facemgr.isRunningFacemgr()) {
             facemgr.stopFacemgr();
             broadcast("facemgr", "red");
         }
 
-        Forwarder forwarder = Forwarder.getInstance();
+        ForwarderLibrary forwarder = ForwarderLibrary.getInstance();
         if (forwarder.isRunningForwarder()) {
             forwarder.stopForwarder();
             broadcast("forwarder", "red");
@@ -157,7 +159,7 @@ public class BackendAndroidService extends Service {
     }
 
     protected Runnable mForwarderRunner = () -> {
-        Forwarder forwarder = Forwarder.getInstance();
+        ForwarderLibrary forwarder = ForwarderLibrary.getInstance();
         forwarder.setSocketBinder(mSocketBinder);
         broadcast("forwarder", "green");
         forwarder.startForwarder(capacity, logLevel);
@@ -165,7 +167,7 @@ public class BackendAndroidService extends Service {
     };
 
     protected Runnable mFacemgrRunner = () -> {
-        Facemgr facemgr = Facemgr.getInstance();
+        FacemgrLibrary facemgr = FacemgrLibrary.getInstance();
         broadcast("facemgr", "green");
         facemgr.startFacemgr();
         broadcast("facemgr", "red");
@@ -200,13 +202,13 @@ public class BackendAndroidService extends Service {
         startForeground(Constants.FOREGROUND_SERVICE, notification);
 
 
-        Forwarder forwarder = Forwarder.getInstance();
+        ForwarderLibrary forwarder = ForwarderLibrary.getInstance();
         if (!forwarder.isRunningForwarder()) {
             sForwarderThread = new Thread(mForwarderRunner, "BackendAndroid");
             sForwarderThread.start();
         }
 
-        Facemgr facemgr = Facemgr.getInstance();
+        FacemgrLibrary facemgr = FacemgrLibrary.getInstance();
         if (!facemgr.isRunningFacemgr()) {
             sFacemgrThread = new Thread(mFacemgrRunner, "BackendAndroid");
             sFacemgrThread.start();

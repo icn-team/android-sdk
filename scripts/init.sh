@@ -69,6 +69,7 @@ if [ ! -d hicn ]; then
 	done
 	cd ..
 fi
+
 if [ ! -d curl ]; then
 	echo "curl  not found"
 	git clone https://github.com/curl/curl.git
@@ -118,7 +119,7 @@ if [ ! -d libconfig ]; then
 	cd libconfig
 	git checkout a6b370e78578f5bf594f8efe0802cdc9b9d18f1a
 	cd ..
-	${SED} -i -- '2s/$/include(CheckSymbolExists)/' libconfig/CMakeLists.txt 
+	${SED} -i -- '2s/$/include(CheckSymbolExists)/' libconfig/CMakeLists.txt
 fi
 
 cd ../
@@ -133,5 +134,5 @@ if [ ! -d ${INSTALLATION_DIR}/include/openssl ]; then
 	rm -rf $BASE_DIR/external/openssl-android-$ABI
     touch ${VERSIONS_FILE}
 	${SED} -i "/${ABI}_openssl/d" ${VERSIONS_FILE}
-	echo ${ABI}_openssl=1.1.1d >> ${VERSIONS_FILE}
+	echo ${ABI}_openssl=1.1.1h >> ${VERSIONS_FILE}
 fi

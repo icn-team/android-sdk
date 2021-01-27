@@ -18,18 +18,23 @@
         android:id="@+id/action_forwarder"
         android:enabled="true"
         android:icon="@drawable/ic_application_settings"
-        android:title="@string/forwarder"
-        app:showAsAction="ifRoom" />
+        android:title="@string/forwarder" />
     <item
         android:id="@+id/action_interfaces"
         android:enabled="true"
         android:icon="@drawable/ic_network_connection"
         android:title="@string/interfaces"
-        app:showAsAction="ifRoom" />
+        />
     <item
+        android:id="@+id/action_applications"
+        android:enabled="true"
+        android:icon="@drawable/ic_application_settings"
+        android:title="@string/applications"
+        />
+    <!--item
         android:id="@+id/action_hiperf"
         android:enabled="true"
         android:icon="@drawable/ic_hiperf"
         android:title="@string/hiperf"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom" /-->
 </menu>
