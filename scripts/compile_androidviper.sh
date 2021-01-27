@@ -37,12 +37,14 @@ do_restore() {
 	pwd
 	${SED} -i -e "s/android:versionCode=\"$VERSION_CODE\"/android:versionCode=\"9\"/g" ${DISTILLERY_ROOT_DIR}/src/viper/android/AndroidManifest.xml
 	${SED} -i -e "s/android:targetSdkVersion=\"29\"/android:targetSdkVersion=\"27\"/g" ${DISTILLERY_ROOT_DIR}/src/viper/android/AndroidManifest.xml
+	${SED} -i -e "s/29/28/g" ${DISTILLERY_ROOT_DIR}/src/viper/android/gradle.properties
 }
 
 trap "do_restore" ERR
 
 ${SED} -i -e "s/android:versionCode=\"9\"/android:versionCode=\"$VERSION_CODE\"/g" ${DISTILLERY_ROOT_DIR}/src/viper/android/AndroidManifest.xml
 ${SED} -i -e "s/android:targetSdkVersion=\"27\"/android:targetSdkVersion=\"29\"/g" ${DISTILLERY_ROOT_DIR}/src/viper/android/AndroidManifest.xml
+${SED} -i -e "s/28/29/g" ${DISTILLERY_ROOT_DIR}/src/viper/android/gradle.properties
 
 if [ "$1" = "DEBUG" ]; then
 	mkdir -p build_aarch64/viper_debug
