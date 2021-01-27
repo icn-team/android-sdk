@@ -32,7 +32,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import com.cisco.hicn.forwarder.Home;
+import com.cisco.hicn.forwarder.HomeActivity;
 import com.cisco.hicn.forwarder.R;
 import com.cisco.hicn.forwarder.supportlibrary.AndroidUtility;
 import com.cisco.hicn.forwarder.supportlibrary.Hiperf;
@@ -89,7 +89,7 @@ public class HiPerfFragment extends Fragment {
     private ArrayList<Integer> hiperfTimeIntArrayList = new ArrayList<>();
     private ArrayList<Long> hiperfTimestampArrayList = new ArrayList<>();
     private long hiperfStartGraph = 0;
-    private Home home;
+    private HomeActivity home;
 
     public static HiPerfFragment newInstance(int index) {
         HiPerfFragment fragment = new HiPerfFragment();
@@ -443,7 +443,7 @@ public class HiPerfFragment extends Fragment {
 
     }
 
-    public void setHome(Home home) {
+    public void setHome(HomeActivity home) {
         this.home = home;
     }
 }

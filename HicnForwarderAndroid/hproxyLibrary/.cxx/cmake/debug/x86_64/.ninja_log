@@ -1,0 +1,7 @@
+# ninja log v5
+0	4824	1610752608	CMakeFiles/hproxy-wrapper.dir/hproxy-wrapper.cpp.o	9d55d9fa1dd0d43
+4832	6645	1610752609	/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/build/intermediates/cmake/debug/obj/x86_64/libhproxy-wrapper.so	534dfa60cd5d1d8b
+5	3422	1610800574	CMakeFiles/hproxy-wrapper.dir/hproxy-wrapper.cpp.o	9d55d9fa1dd0d43
+3422	4942	1610800575	/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/build/intermediates/cmake/debug/obj/x86_64/libhproxy-wrapper.so	534dfa60cd5d1d8b
+6	3422	1610800873	CMakeFiles/hproxy-wrapper.dir/hproxy-wrapper.cpp.o	9d55d9fa1dd0d43
+3422	4926	1610800874	/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/build/intermediates/cmake/debug/obj/x86_64/libhproxy-wrapper.so	534dfa60cd5d1d8b

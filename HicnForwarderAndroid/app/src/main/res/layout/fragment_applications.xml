@@ -12,17 +12,25 @@
     See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ApplicationsFragment">
+    android:orientation="vertical"
+    tools:context=".applications.ApplicationsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <CheckBox
+        android:id="@+id/cb_supported_apps"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/applications"
-        android:textSize="36sp" />
+        android:layout_height="wrap_content"
+        android:text="Restrict to supported applications" />
 
-</FrameLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_applications"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+</LinearLayout>

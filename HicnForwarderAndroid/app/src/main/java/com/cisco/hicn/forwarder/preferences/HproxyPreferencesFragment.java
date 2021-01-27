@@ -42,7 +42,8 @@ public class HproxyPreferencesFragment extends PreferenceFragmentCompat {
 
         setPreferencesFromResource(R.xml.hproxy, s);
 
-        getPreferenceScreen().findPreference(getString(R.string.hproxy_server_key)).setOnPreferenceChangeListener((preference, newValue) -> {
+        getPreferenceScreen().findPreference(getString(R.string.pref_hproxy_server_key)).setOnPreferenceChangeListener((preference, newValue) -> {
+
 
             String serverAddress = (String) newValue;
             if (!InetAddressUtilsHC4.isIPv4Address(serverAddress)) {
@@ -51,7 +52,7 @@ public class HproxyPreferencesFragment extends PreferenceFragmentCompat {
             return true;
         });
 
-        getPreferenceScreen().findPreference(getString(R.string.hproxy_server_port_key)).setOnPreferenceChangeListener((preference, newValue) -> {
+        getPreferenceScreen().findPreference(getString(R.string.pref_hproxy_port_key)).setOnPreferenceChangeListener((preference, newValue) -> {
 
             int serverPort = Integer.parseInt((String) newValue);
 

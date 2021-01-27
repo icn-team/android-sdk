@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/.cxx/cmake/release/arm64-v8a",
+  "command": "/Users/manangel/maqy/android-sdk/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=aarch64-none-linux-android28 --gcc-toolchain=/Users/manangel/maqy/android-sdk/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/manangel/maqy/android-sdk/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dfacemgr_wrapper_EXPORTS -I/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/src/main/cpp/../../../../../usr_aarch64/include -I/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/src/main/cpp/../../../../../usr_aarch64/lib/libhicnctrl.a  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O2 -DNDEBUG  -fPIC   -o CMakeFiles/facemgr-wrapper.dir/facemgr-wrapper.c.o   -c /Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/src/main/cpp/facemgr-wrapper.c",
+  "file": "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/src/main/cpp/facemgr-wrapper.c"
+}
+]
