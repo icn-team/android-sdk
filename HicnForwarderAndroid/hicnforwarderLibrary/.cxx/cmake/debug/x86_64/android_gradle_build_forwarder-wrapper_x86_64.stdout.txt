@@ -1,3 +1,0 @@
-ninja: Entering directory `/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/.cxx/cmake/debug/x86_64'
-[1/2] Building C object CMakeFiles/forwarder-wrapper.dir/forwarder-wrapper.c.o
-[2/2] Linking C shared library /Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/build/intermediates/cmake/debug/obj/x86_64/libforwarder-wrapper.so

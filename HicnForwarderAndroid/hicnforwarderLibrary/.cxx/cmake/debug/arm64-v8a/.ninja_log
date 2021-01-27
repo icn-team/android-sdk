@@ -1,5 +1,0 @@
-# ninja log v5
-0	114	1610756024	CMakeFiles/forwarder-wrapper.dir/forwarder-wrapper.c.o	7ac3a7e4a816c5af
-116	453	1610756024	/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/build/intermediates/cmake/debug/obj/arm64-v8a/libforwarder-wrapper.so	5e49c6094fecb3b4
-3	266	1610800862	CMakeFiles/forwarder-wrapper.dir/forwarder-wrapper.c.o	7ac3a7e4a816c5af
-266	542	1610800862	/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/build/intermediates/cmake/debug/obj/arm64-v8a/libforwarder-wrapper.so	5e49c6094fecb3b4
