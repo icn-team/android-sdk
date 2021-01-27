@@ -15,3 +15,6 @@
 .externalNativeBuild
 /app/.cxx
 .idea
+local.properties
+hproxyLibrarySrc
+semtun-mananger

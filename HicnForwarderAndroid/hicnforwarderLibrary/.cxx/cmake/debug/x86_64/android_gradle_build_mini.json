@@ -1,0 +1,29 @@
+{
+  "buildFiles": [
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/src/main/cpp/CMakeLists.txt",
+    "/Users/manangel/maqy/android-sdk/sdk/ndk/21.1.6352462/build/cmake/android.toolchain.cmake",
+    "/Users/manangel/maqy/android-sdk/sdk/ndk/21.1.6352462/build/cmake/platforms.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/src/main/cpp/cmake/Modules/FindLibEvent.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/src/main/cpp/cmake/Modules/FindLibparc.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/src/main/cpp/cmake/Modules/FindLibhicn.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/src/main/cpp/cmake/Modules/FindHicnlight.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/src/main/cpp/cmake/Modules/FindHicnHttpproxy.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/src/main/cpp/cmake/Modules/FindConfig.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/src/main/cpp/cmake/Modules/FindLibhicnctrl.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/src/main/cpp/cmake/Modules/FindLibfacemgr.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/src/main/cpp/cmake/Modules/FindLibtransport.cmake"
+  ],
+  "cleanCommands": [
+    "/Users/manangel/maqy/android-sdk/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/.cxx/cmake/debug/x86_64\" clean"
+  ],
+  "buildTargetsCommand": "/Users/manangel/maqy/android-sdk/sdk/cmake/3.10.2.4988404/bin/ninja  -C \"/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/.cxx/cmake/debug/x86_64\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "forwarder-wrapper-Debug-x86_64": {
+      "artifactName": "forwarder-wrapper",
+      "buildCommand": "/Users/manangel/maqy/android-sdk/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/.cxx/cmake/debug/x86_64\" forwarder-wrapper",
+      "abi": "x86_64",
+      "output": "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/build/intermediates/cmake/debug/obj/x86_64/libforwarder-wrapper.so",
+      "runtimeFiles": []
+    }
+  }
+}

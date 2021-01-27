@@ -1,0 +1,52 @@
+{
+  "stringTable": {
+    "0": "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/.cxx/cmake/debug/arm64-v8a",
+    "1": "--target=aarch64-none-linux-android28 --gcc-toolchain=/Users/manangel/maqy/android-sdk/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/manangel/maqy/android-sdk/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dfacemgr_wrapper_EXPORTS -I/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/src/main/cpp/../../../../../usr_aarch64/include -I/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/src/main/cpp/../../../../../usr_aarch64/lib/libhicnctrl.a -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -O0 -fno-limit-debug-info -fPIC"
+  },
+  "buildFiles": [
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/src/main/cpp/CMakeLists.txt",
+    "/Users/manangel/maqy/android-sdk/sdk/ndk/21.1.6352462/build/cmake/android.toolchain.cmake",
+    "/Users/manangel/maqy/android-sdk/sdk/ndk/21.1.6352462/build/cmake/platforms.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/src/main/cpp/cmake/Modules/FindLibEvent.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/src/main/cpp/cmake/Modules/FindLibparc.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/src/main/cpp/cmake/Modules/FindLibhicn.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/src/main/cpp/cmake/Modules/FindHicnlight.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/src/main/cpp/cmake/Modules/FindHicnHttpproxy.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/src/main/cpp/cmake/Modules/FindConfig.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/src/main/cpp/cmake/Modules/FindLibhicnctrl.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/src/main/cpp/cmake/Modules/FindLibfacemgr.cmake",
+    "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/src/main/cpp/cmake/Modules/FindLibtransport.cmake"
+  ],
+  "cleanCommands": [
+    "/Users/manangel/maqy/android-sdk/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/.cxx/cmake/debug/arm64-v8a\" clean"
+  ],
+  "buildTargetsCommand": "/Users/manangel/maqy/android-sdk/sdk/cmake/3.10.2.4988404/bin/ninja  -C \"/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/.cxx/cmake/debug/arm64-v8a\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "facemgr-wrapper-Debug-arm64-v8a": {
+      "buildCommand": "/Users/manangel/maqy/android-sdk/sdk/cmake/3.10.2.4988404/bin/ninja -C \"/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/.cxx/cmake/debug/arm64-v8a\" facemgr-wrapper",
+      "buildType": "debug",
+      "toolchain": "1270495976",
+      "abi": "arm64-v8a",
+      "artifactName": "facemgr-wrapper",
+      "files": [
+        {
+          "src": "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/src/main/cpp/facemgr-wrapper.c",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        }
+      ],
+      "headers": [],
+      "output": "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/build/intermediates/cmake/debug/obj/arm64-v8a/libfacemgr-wrapper.so",
+      "runtimeFiles": []
+    }
+  },
+  "toolchains": {
+    "1270495976": {
+      "cCompilerExecutable": "/Users/manangel/maqy/android-sdk/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang"
+    }
+  },
+  "cFileExtensions": [
+    "c"
+  ],
+  "cppFileExtensions": []
+}

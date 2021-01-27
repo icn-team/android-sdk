@@ -1,0 +1,7 @@
+Executable : /Users/manangel/maqy/android-sdk/sdk/cmake/3.10.2.4988404/bin/ninja
+arguments : 
+-C
+/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/.cxx/cmake/debug/x86_64
+facemgr-wrapper
+jvmArgs : 
+
