@@ -1,4 +1,4 @@
- #############################################################################
+#############################################################################
  # Copyright (c) 2017 Cisco and/or its affiliates.
  # Licensed under the Apache License, Version 2.0 (the "License");
  # you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ if [ -z ${SDK_PATH} ]  ; then
 	if [ ! -d build-tools ] || [ ! -d extras ] || [ ! -d licenses ] || [ ! -d patcher ] || [ ! -d platform-tools ] || [ ! -d platforms ]; then
 		echo yes | cmdline-tools/bin/sdkmanager --licenses --sdk_root=`pwd` > /dev/null
 		echo yes | cmdline-tools/bin/sdkmanager --update --sdk_root=`pwd`
+
 		echo yes | cmdline-tools/bin/sdkmanager --sdk_root=`pwd` 'tools'
 		echo yes | cmdline-tools/bin/sdkmanager --sdk_root=`pwd` 'platform-tools'
 		echo yes | cmdline-tools/bin/sdkmanager --sdk_root=`pwd` 'build-tools;'$ANDROID_BUILD_TOOLS
@@ -55,13 +56,14 @@ if [ -z ${NDK_PATH} ]; then
 		fi
 		unzip -qq sdk-tools-${OS}-${ANDROID_SDK_TOOLS_REV}.zip
 	fi
-	if [ ! -d build-tools ] || [ ! -d cmake ] || [ ! -d ndk-bundle ] || [ ! -d platform-tools ] || [ ! -d platforms ]; then
+	if [ ! -d build-tools ] || [ ! -d cmake ] || [ ! -d ndk ] || [ ! -d platform-tools ] || [ ! -d platforms ]; then
 		echo yes | cmdline-tools/bin/sdkmanager --sdk_root=`pwd` 'tools'
 		echo yes | cmdline-tools/bin/sdkmanager --sdk_root=`pwd` 'platform-tools'
 		echo yes | cmdline-tools/bin/sdkmanager --sdk_root=`pwd` 'build-tools;'$ANDROID_BUILD_TOOLS
 		echo yes | cmdline-tools/bin/sdkmanager --sdk_root=`pwd` 'cmake;'$ANDROID_CMAKE_REV
 		echo yes | cmdline-tools/bin/sdkmanager --sdk_root=`pwd` --channel=3 --channel=1 'cmake;'$ANDROID_CMAKE_REV_3_10
-		echo yes | cmdline-tools/bin/sdkmanager --sdk_root=`pwd` 'ndk-bundle'
+		#echo yes | cmdline-tools/bin/sdkmanager --sdk_root=`pwd` 'ndk-bundle'
+		echo yes | cmdline-tools/bin/sdkmanager --sdk_root=`pwd` "ndk;$ANDROID_NDK_VERSION" --channel=3
 	fi
 	cd ..
 fi
