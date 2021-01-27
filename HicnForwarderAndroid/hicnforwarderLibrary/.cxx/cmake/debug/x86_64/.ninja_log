@@ -1,0 +1,7 @@
+# ninja log v5
+0	144	1610753184	CMakeFiles/forwarder-wrapper.dir/forwarder-wrapper.c.o	bfa7f9f282faf9af
+146	289	1610753184	/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/build/intermediates/cmake/debug/obj/x86_64/libforwarder-wrapper.so	8b73dbd25bbe0789
+2	148	1610753533	CMakeFiles/forwarder-wrapper.dir/forwarder-wrapper.c.o	bfa7f9f282faf9af
+149	301	1610753534	/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/build/intermediates/cmake/debug/obj/x86_64/libforwarder-wrapper.so	8b73dbd25bbe0789
+2	161	1610800862	CMakeFiles/forwarder-wrapper.dir/forwarder-wrapper.c.o	bfa7f9f282faf9af
+162	324	1610800862	/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/build/intermediates/cmake/debug/obj/x86_64/libforwarder-wrapper.so	8b73dbd25bbe0789

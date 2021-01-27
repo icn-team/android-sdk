@@ -341,14 +341,6 @@
     <string name="hproxy_connected">HProxy is connected!</string>
     <string name="hproxy_disconnected">HProxy is disconnected!</string>
     <string name="hproxy_disconnect">Disconnect!</string>
-    <string name="hproxy_server_port_key">hproxy_server_port_key</string>
-    <string name="hproxy_server_port_summary">Server Port</string>
-    <string name="hproxy_server_port_title">Server Port</string>
-    <string name="default_hproxy_server_port">5003</string>
-    <string name="default_hproxy_server">10.20.30.40</string>
-    <string name="hproxy_server_key">hproxy_server_key</string>
-    <string name="hproxy_server_summary">Server Address</string>
-    <string name="hproxy_server_title">Server Address</string>
     <string name="default_hproxy_dns_server">8.8.8.8</string>
     <string name="hproxy_dns_server_key">hproxy_dns_server_key</string>
     <string name="hproxy_dns_server_summary">DNS Server</string>
@@ -402,6 +394,26 @@
     <string name="httpproxy_prefix_summary">Prefix</string>
     <string name="httpproxy_prefix_title">Prefix</string>
 
+    <string name="pref_hproxy_force_vpn_key">pref_hproxy_force_vpn_key</string>
+    <string name="pref_hproxy_force_vpn_default">false</string>
+    <string name="pref_hproxy_force_vpn_title">Force VPN framework usage</string>
+    <string name="pref_hproxy_force_vpn_summary">Ignore native support APIs</string>
+
+    <string name="pref_hproxy_disable_sd_key">pref_hproxy_disable_sd_key</string>
+    <string name="pref_hproxy_disable_sd_default">false</string>
+    <string name="pref_hproxy_disable_sd_title">Disable service discovery</string>
+    <string name="pref_hproxy_disable_sd_summary">Use specified proxy address/port</string>
+
+    <string name="pref_hproxy_server_key">pref_hproxy_server_key</string>
+    <string name="pref_hproxy_server_default">127.0.0.1</string>
+    <string name="pref_hproxy_server_title">Proxy server hostname</string>
+    <string name="pref_hproxy_server_summary">This will bypass Service discovery</string>
+
+    <string name="pref_hproxy_port_key">pref_hproxy_port_key</string>
+    <string name="pref_hproxy_port_default">33437</string>
+    <string name="pref_hproxy_port_title">Proxy server port</string>
+    <string name="pref_hproxy_port_summary">This will bypass Service discovery</string>
+
     <string name="hicn_services">hICN services</string>
     <string name="face_manager">Face Manager</string>
     <string name="auto">AUTO</string>
@@ -410,5 +422,10 @@
     <string name="empty"></string>
     <string name="webex_proxy">Webex proxy</string>
     <string name="http_proxy">HTTP proxy</string>
+    <string name="todo">TODO</string>
+    <string name="application_switch">Switch</string>
+    <string name="application_name">Application Name</string>
+    <string name="package_name">package.name</string>
+    <string name="action_search">Search</string>
 
 </resources>

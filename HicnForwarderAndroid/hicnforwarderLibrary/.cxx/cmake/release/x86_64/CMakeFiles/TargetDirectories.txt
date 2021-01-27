@@ -1,0 +1,3 @@
+/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/.cxx/cmake/release/x86_64/CMakeFiles/rebuild_cache.dir
+/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/.cxx/cmake/release/x86_64/CMakeFiles/edit_cache.dir
+/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hicnforwarderLibrary/.cxx/cmake/release/x86_64/CMakeFiles/forwarder-wrapper.dir

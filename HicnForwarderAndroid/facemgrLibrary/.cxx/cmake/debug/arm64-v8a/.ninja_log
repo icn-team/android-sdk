@@ -1,0 +1,7 @@
+# ninja log v5
+0	352	1610756023	CMakeFiles/facemgr-wrapper.dir/facemgr-wrapper.c.o	2883a23e3d1cafa1
+354	491	1610756023	/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/build/intermediates/cmake/debug/obj/arm64-v8a/libfacemgr-wrapper.so	921d10d8090c29b5
+6	605	1610799643	/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/build/intermediates/cmake/debug/obj/arm64-v8a/libfacemgr-wrapper.so	921d10d8090c29b5
+2	263	1610799999	/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/build/intermediates/cmake/debug/obj/arm64-v8a/libfacemgr-wrapper.so	921d10d8090c29b5
+2	261	1610800563	CMakeFiles/facemgr-wrapper.dir/facemgr-wrapper.c.o	2883a23e3d1cafa1
+261	398	1610800563	/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/facemgrLibrary/build/intermediates/cmake/debug/obj/arm64-v8a/libfacemgr-wrapper.so	921d10d8090c29b5

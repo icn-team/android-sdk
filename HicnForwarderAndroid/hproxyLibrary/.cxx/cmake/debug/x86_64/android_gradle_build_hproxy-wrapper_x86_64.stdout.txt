@@ -1,0 +1,10 @@
+ninja: Entering directory `/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/.cxx/cmake/debug/x86_64'
+[1/2] Building CXX object CMakeFiles/hproxy-wrapper.dir/hproxy-wrapper.cpp.o
+In file included from /Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/src/main/cpp/hproxy-wrapper.cpp:7:
+In file included from /Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/src/main/cpp/../../../../../usr_x86_64/include/hicn/hproxy/proxy/proxy.h:7:
+In file included from /Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/src/main/cpp/../../../../../usr_x86_64/include/hicn/hproxy/config/proxy_controller.h:19:
+/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/src/main/cpp/../../../../../usr_x86_64/include/hicn/hproxy/proxy/flow_table.h:88:17: warning: decomposition declarations are a C++17 extension [-Wc++17-extensions]
+    for (auto & [ flow, flow_entry ] : map_) {
+                ^~~~~~~~~~~~~~~~~~~~
+1 warning generated.
+[2/2] Linking CXX shared library /Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/build/intermediates/cmake/debug/obj/x86_64/libhproxy-wrapper.so

@@ -31,88 +31,17 @@ find_package(Libfacemgr REQUIRED)
 find_package(Threads REQUIRED)
 find_package(Libtransport REQUIRED)
 
-if (ENABLE_HPROXY)
-    find_package(Hproxy REQUIRED)
-endif ()
-
 include_directories(${LIBHICNLIGHT_INCLUDE_DIRS})
 
 include_directories(${LIBTRANSPORT_INCLUDE_DIRS})
 
-add_library(forwarder-wrapper SHARED forwarder-wrapper.c)
-
-add_library(facemgr-wrapper SHARED facemgr-wrapper.c)
-
 add_library(hiperf-wrapper SHARED hiperf-wrapper.cpp hi_perf.cpp)
 
-add_library(hproxy-wrapper SHARED hproxy-wrapper.cpp)
-
-add_library(httpproxy-wrapper SHARED httpproxy-wrapper.cpp)
-
-target_include_directories(forwarder-wrapper PUBLIC ${LIBHICNLIGHT_INCLUDE_DIRS})
-
-target_include_directories(facemgr-wrapper PUBLIC ${LIBHICNCTRL_INCLUDE_DIRS})
-
-target_include_directories(hproxy-wrapper PUBLIC
-        ${LIBTRANSPORT_INCLUDE_DIRS}
-        ${ASIO_INCLUDE_DIRS}
-        ${HICN_HPROXY_INCLUDE_DIRS})
-
-if (ENABLE_HPROXY)
-    target_compile_definitions(hproxy-wrapper PRIVATE
-            "-DASIO_STANDALONE" "-DENABLE_HPROXY" "-DWITH_POLICY=1")
-else ()
-    target_compile_definitions(hproxy-wrapper PRIVATE
-            "-DASIO_STANDALONE")
-endif ()
-
 find_library(log-lib log)
-
-target_link_libraries(forwarder-wrapper
-        ${log-lib}
-        ${LIBHICNLIGHT_LIBRARIES}
-        ${LIBHICNCTRL_LIBRARIES}
-        ${HICN_LIBRARIES}
-        ${LIBPARC_LIBRARIES}
-        ${LIBEVENT_LIBRARIES}
-        ${CONFIG_LIBRARY}
-        ${OPENSSL_LIBRARIES})
-
-target_link_libraries(facemgr-wrapper
-        ${log-lib}
-        ${LIBFACEMGR_LIBRARIES}
-        ${LIBHICNCTRL_LIBRARIES}
-        ${HICN_LIBRARIES}
-        ${LIBPARC_LIBRARIES}
-        ${LIBEVENT_LIBRARIES}
-        ${CONFIG_LIBRARY}
-        ${OPENSSL_LIBRARIES})
 
 target_link_libraries(hiperf-wrapper
         ${log-lib}
         ${LIBTRANSPORT_LIBRARIES}
-        ${HICN_LIBRARIES}
-        ${LIBPARC_LIBRARIES}
-        ${LIBEVENT_LIBRARIES}
-        ${CONFIG_LIBRARY}
-        ${OPENSSL_LIBRARIES})
-
-target_link_libraries(httpproxy-wrapper
-        ${log-lib}
-        ${LIBHICNHTTPPROXY_LIBRARY}
-        ${LIBTRANSPORT_LIBRARIES}
-        ${LIBHICNCTRL_LIBRARIES}
-        ${HICN_LIBRARIES}
-        ${LIBPARC_LIBRARIES}
-        ${LIBEVENT_LIBRARIES}
-        ${CONFIG_LIBRARY}
-        ${OPENSSL_LIBRARIES})
-
-target_link_libraries(hproxy-wrapper
-        ${HICN_HPROXY_LIBRARIES}
-        ${log-lib}
-        ${LIBTRANSPORT_LIBRARIES}
-        ${LIBHICNCTRL_LIBRARIES}
         ${HICN_LIBRARIES}
         ${LIBPARC_LIBRARIES}
         ${LIBEVENT_LIBRARIES}

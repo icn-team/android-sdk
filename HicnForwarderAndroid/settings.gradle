@@ -1,1 +1,6 @@
+
+include ':facemgrLibrary'
+include ':common'
+include ':hicnforwarderLibrary'
+include ':hproxyLibrary'
 include ':app'

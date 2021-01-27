@@ -21,8 +21,9 @@ import android.preference.PreferenceManager;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.cisco.hicn.forwarder.R;
-import com.cisco.hicn.forwarder.supportlibrary.Facemgr;
-import com.cisco.hicn.forwarder.utility.NetdeviceTypeEnum;
+
+import com.cisco.hicn.facemgrlibrary.supportlibrary.FacemgrLibrary;
+import com.cisco.hicn.facemgrlibrary.utility.NetdeviceTypeEnum;
 
 import org.apache.http.conn.util.InetAddressUtilsHC4;
 
@@ -49,7 +50,7 @@ public class WifiIPv6PreferencesFragment extends PreferenceFragmentCompat {
             String nextHopIp = sharedPreferences.getString(getString(R.string.wifi_nexthop_ipv6_key), getString(R.string.default_wifi_nexthop_ipv6));
             int nextHopPort = Integer.parseInt(sharedPreferences.getString(getString(R.string.wifi_nexthop_port_ipv6_key), getString(R.string.default_wifi_nexthop_port_ipv6)));
 
-            Facemgr facemgr = Facemgr.getInstance();
+            FacemgrLibrary facemgr = FacemgrLibrary.getInstance();
 
             facemgr.updateInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_WIFI.getValue(), sourcePort, nextHopIp, nextHopPort);
             return true;
@@ -66,7 +67,7 @@ public class WifiIPv6PreferencesFragment extends PreferenceFragmentCompat {
             int sourcePort = Integer.parseInt(sharedPreferences.getString(getString(R.string.wifi_source_port_ipv6_key), getString(R.string.default_wifi_source_port_ipv6)));
             int nextHopPort = Integer.parseInt(sharedPreferences.getString(getString(R.string.wifi_nexthop_port_ipv6_key), getString(R.string.default_wifi_nexthop_port_ipv6)));
 
-            Facemgr facemgr = Facemgr.getInstance();
+            FacemgrLibrary facemgr = FacemgrLibrary.getInstance();
 
             facemgr.updateInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_WIFI.getValue(), sourcePort, nextHopIp, nextHopPort);
             return true;
@@ -82,7 +83,7 @@ public class WifiIPv6PreferencesFragment extends PreferenceFragmentCompat {
 
             String nextHopIp = sharedPreferences.getString(getString(R.string.wifi_nexthop_ipv6_key), getString(R.string.default_wifi_nexthop_ipv6));
 
-            Facemgr facemgr = Facemgr.getInstance();
+            FacemgrLibrary facemgr = FacemgrLibrary.getInstance();
 
             facemgr.updateInterfaceIPv6(NetdeviceTypeEnum.NETDEVICE_TYPE_WIFI.getValue(), sourcePort, nextHopIp, nextHopPort);
             return true;
