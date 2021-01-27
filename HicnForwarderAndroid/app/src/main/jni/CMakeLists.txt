@@ -19,7 +19,6 @@ option(EVHTP_DISABLE_EVTHR "Disable find libevent_pthread" OFF)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(CMAKE_FIND_ROOT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../../../../usr_${CMAKE_SYSTEM_PROCESSOR};${CMAKE_FIND_ROOT_PATH}")
-message("--->${CMAKE_FIND_ROOT_PATH}")
 find_package(OpenSSL REQUIRED)
 find_package(LibEvent REQUIRED)
 find_package(Libparc REQUIRED)
