@@ -16,12 +16,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     buildToolsVersion "29.0.0"
     defaultConfig {
         applicationId "io.fd.hicn.hicntools"
         minSdkVersion 24
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode getVersionCode_()
         versionName getVersion()
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
