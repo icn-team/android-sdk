@@ -43,7 +43,6 @@ architecture=$ARCH
 
 # Create the make file
 cd ${OPENSSL_DIR}
-
 export ANDROID_NDK_HOME=$toolchains_path
 
 if [ "${ANDROID_ARCH}" = "arm" ]; then
