@@ -31,7 +31,6 @@ import android.widget.ListView;
 import androidx.fragment.app.Fragment;
 
 import com.cisco.hicn.forwarder.R;
-import com.cisco.hicn.forwarder.supportlibrary.Facemgr;
 import com.cisco.hicn.forwarder.utility.Constants;
 import com.google.common.collect.Sets;
 
@@ -45,6 +44,8 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.stream.Collectors;
+
+import com.cisco.hicn.facemgrlibrary.supportlibrary.FacemgrLibrary;
 
 public class InterfacesFragment extends Fragment {
     private FrameLayout frameLayout;
@@ -140,10 +141,10 @@ public class InterfacesFragment extends Fragment {
              */
 
             HashMap<String, Facelet> faceletHashMapLocal = new HashMap<>();
-            if (Facemgr.getInstance().isRunningFacemgr()) {
+            if (FacemgrLibrary.getInstance().isRunningFacemgr()) {
                 boolean showAll = sharedPreferences.getBoolean(getString(R.string.interface_showall_key), Boolean.parseBoolean(getString(R.string.default_interface_showall)));
                 try {
-                    String listFaceletsString = Facemgr.getInstance().getListFacelets();
+                    String listFaceletsString = FacemgrLibrary.getInstance().getListFacelets();
                     Log.d(FACEMGR_TAG, listFaceletsString);
                     JSONObject listFaceletsJsonObject = new JSONObject(listFaceletsString);
                     JSONArray listFaceletsJsonArray = listFaceletsJsonObject.getJSONArray("facelets");

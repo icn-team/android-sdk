@@ -21,7 +21,7 @@ android {
     defaultConfig {
         applicationId "io.fd.hicn.hicntools"
         minSdkVersion 24
-        targetSdkVersion 29
+        targetSdkVersion 28
         versionCode getVersionCode_()
         versionName getVersion()
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

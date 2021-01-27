@@ -27,6 +27,7 @@ set(HICN_HPROXY_SEARCH_PATH_LIST
     /usr/local
     /opt
     /usr
+    /include
 )
 
 find_path(HICN_HPROXY_INCLUDE_DIR hicn/hproxy/hproxy_about.h

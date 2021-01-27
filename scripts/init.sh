@@ -69,6 +69,7 @@ if [ ! -d hicn ]; then
 	done
 	cd ..
 fi
+
 if [ ! -d curl ]; then
 	echo "curl  not found"
 	git clone https://github.com/curl/curl.git
@@ -118,7 +119,7 @@ if [ ! -d libconfig ]; then
 	cd libconfig
 	git checkout a6b370e78578f5bf594f8efe0802cdc9b9d18f1a
 	cd ..
-	${SED} -i -- '2s/$/include(CheckSymbolExists)/' libconfig/CMakeLists.txt 
+	${SED} -i -- '2s/$/include(CheckSymbolExists)/' libconfig/CMakeLists.txt
 fi
 
 cd ../
