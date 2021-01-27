@@ -27,8 +27,8 @@ if [ ! -d ${INSTALLATION_DIR}/include/openssl ]; then
 	echo "Compile OpenSSL"
 	export ANDROID_NDK_ROOT=${BASE_DIR}/sdk/ndk-bundle
     bash ${BASE_DIR}/scripts/build-openssl.sh android-$ABI $ANDROID_NDK_ROOT $BASE_DIR/external
-	cp $BASE_DIR/external/openssl-android-$ABI/*.a ${INSTALLATION_DIR}/lib/
-	cp -r $BASE_DIR/external/openssl-android-$ABI/include/openssl ${INSTALLATION_DIR}/include/
+	cp $BASE_DIR/external/openssl-android-$ABI/*.a ${DISTILLERY_INSTALL_DIR}/lib/
+	cp -r $BASE_DIR/external/openssl-android-$ABI/include/openssl ${DISTILLERY_INSTALL_DIR}/include/
 	rm -rf $BASE_DIR/external/openssl-android-$ABI
     touch ${VERSIONS_FILE}
 	${SED} -i "/${ABI}_openssl/d" ${VERSIONS_FILE}
