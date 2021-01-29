@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@master
-       - name: Generate build number
+      - name: Generate build number
         uses: einaregilsson/build-number@v3
         with:
           token: ${{secrets.github_token}}        
