@@ -17,9 +17,10 @@
 
 set -ex
 
-wget https://github.com/icn-team/android-sdk/releases/download/release/hICN_Tools.apk
-AAPT=$(find /sdk -name "aapt" | sort -r | head -1)
-VERSION_CODE=$($AAPT dump badging hICN_Tools.apk | grep versionCode | awk '{print $3}' | sed s/versionCode=//g | sed s/\'//g) 
+#wget https://github.com/icn-team/android-sdk/releases/download/release/hICN_Tools.apk
+#AAPT=$(find /sdk -name "aapt" | sort -r | head -1)
+#VERSION_CODE=$($AAPT dump badging hICN_Tools.apk | grep versionCode | awk '{print $3}' | sed s/versionCode=//g | sed s/\'//g) 
+VERSION_CODE=525
 
 VERSION_CODE=$((VERSION_CODE+1))
 
