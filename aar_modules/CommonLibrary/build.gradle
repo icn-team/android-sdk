@@ -15,10 +15,10 @@
 
 buildscript {
     ext {
-        GITHUB_USER = 'manang'
-        GITHUB_TOKEN = '1488dfb289074159138d72aa6e3b92039d347b4e'
+        GITHUB_USER = ''
+        GITHUB_TOKEN = ''
         MVN_REPO = 'https://maven.pkg.github.com/icn-team/android-sdk'
-        VERSION = '3'
+        VERSION = '1'
     }
 
     repositories {
