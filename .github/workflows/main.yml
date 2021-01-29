@@ -15,7 +15,7 @@ jobs:
         with:
           token: ${{secrets.github_token}}        
       - name: Print new build number
-        run: echo "Build number is $BUILD_NUMBER"
+        run: echo "Build number is $BUILD_NUMBER $GITHUB_RUN_ID $GITHUB_RUN_NUMBER"
       - name: 'Docker Registry Login' 
         uses: azure/docker-login@v1
         with:
