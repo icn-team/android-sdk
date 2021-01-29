@@ -15,7 +15,7 @@ jobs:
         with:
           token: ${{secrets.github_token}}        
       - name: Print new build number
-        run: echo "Build number is $BUILD_NUMBER $GITHUB_RUN_ID $GITHUB_RUN_NUMBER"
+        run: echo "Build number is $GITHUB_RUN_NUMBER"
       - name: 'Docker Registry Login' 
         uses: azure/docker-login@v1
         with:
@@ -34,12 +34,12 @@ jobs:
         shell: bash
         run: |
           echo -e '${{ secrets.PLAYSTORE_KEY }}' > playstore_key.json
-          docker run -v $PWD:/hicn icnteam/android-build:hicn bash -c "echo 'run number: ${{ github.run_number }}'; bash /hicn/ci/build_apk.sh 1"; mkdir -p apks; cp *.apk apks/
+          docker run -v $PWD:/hicn icnteam/android-build:hicn bash -c "echo 'run number: ${{ github.run_number }}'; bash /hicn/ci/build_apk.sh 1 $GITHUB_RUN_NUMBER"; mkdir -p apks; cp *.apk apks/
       - name: 'Build apks without publishing'
         if: github.ref != 'refs/heads/master'
         shell: bash
         run: |
-          docker run -v $PWD:/hicn icnteam/android-build:hicn bash -c "bash /hicn/ci/build_apk.sh 0"; mkdir -p apks; cp *.apk apks/
+          docker run -v $PWD:/hicn icnteam/android-build:hicn bash -c "bash /hicn/ci/build_apk.sh 0 $GITHUB_RUN_NUMBER"; mkdir -p apks; cp *.apk apks/
       - name: 'Push Apks artifacts'
         if: github.ref == 'refs/heads/master'
         uses: actions/upload-artifact@v1

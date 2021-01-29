@@ -16,6 +16,7 @@
 #!/bin/bash
 
 set -ex
+echo "--->$2"
 
 wget https://github.com/icn-team/android-sdk/releases/download/release/hICN_Tools.apk
 AAPT=$(find /sdk -name "aapt" | sort -r | head -1)
