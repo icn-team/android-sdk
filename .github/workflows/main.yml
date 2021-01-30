@@ -47,7 +47,8 @@ jobs:
           name: apks
           path: apks
       - name: Create Release
-        id: create_release
+        if: github.ref == 'refs/heads/master'
+        id: create-release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -100,3 +101,11 @@ jobs:
           asset_path: ./apks/HicnForwarderAndroid.apk
           asset_name: HicnForwarder.apk
           asset_content_type: application/zip
+      - uses: dev-drprasad/delete-older-releases@v0.1.0
+        if: github.ref == 'refs/heads/master'
+        id: delete-older-releases
+        with:
+          repo: icn-team/android-sdk
+          keep_latest: 3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
