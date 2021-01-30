@@ -46,11 +46,6 @@ jobs:
         with:
           name: apks
           path: apks
-      - name: 'Remove old assets'
-        if: github.ref == 'refs/heads/master'
-        shell: bash
-        run: |
-          ASSETS_IDS=$(curl --silent -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/icn-team/android-sdk/releases/tags/release" | jq -r '.assets[]' | jq -r '.id');for ASSET_ID in $ASSETS_IDS ; do curl -X DELETE --silent -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/icn-team/android-sdk/releases/assets/$ASSET_ID"; done;
       - name: Upload Release Asset (hICN_Tools)
         if: github.ref == 'refs/heads/master'
         id: upload-release-asset 
