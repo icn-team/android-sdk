@@ -35,7 +35,7 @@ CC=clang
 PATH=$toolchains_path/bin:$PATH
 
 # Set the Android API levels
-ANDROID_API=26
+ANDROID_API=29
 
 # Set the target architecture
 # Can be android-arm, android-arm64, android-x86, android-x86 etc
