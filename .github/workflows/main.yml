@@ -10,6 +10,30 @@ jobs:
     steps:
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@master
+      - name: Create Release
+        if: github.ref == 'refs/heads/master'
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.run_number }}
+          release_name: Release ${{ github.run_number }}
+          draft: false
+          prerelease: false
+      - name: Build project # This would actually build your project, using zip for an example artifact
+        run: |
+          zip --junk-paths my-artifact README.md
+      - name: Upload Release Asset
+        id: upload-release-assetx
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          asset_path: ./my-artifact.zip
+          asset_name: my-artifact.zip
+          asset_content_type: application/zip
       - name: Generate build number
         uses: einaregilsson/build-number@v3
         with:
@@ -46,17 +70,7 @@ jobs:
         with:
           name: apks
           path: apks
-      - name: Create Release
-        if: github.ref == 'refs/heads/master'
-        id: create-release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.run_number }}
-          release_name: Release ${{ github.run_number }}
-          draft: false
-          prerelease: false
+
       - name: Upload Release Asset (hICN_Tools)
         if: github.ref == 'refs/heads/master'
         id: upload-release-asset 
@@ -64,7 +78,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./apks/hICN_Tools.apk
           asset_name: hICN_Tools.apk
           asset_content_type: application/zip
@@ -75,7 +89,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./apks/viper-arm64.apk
           asset_name: viper-arm64.apk
           asset_content_type: application/zip
@@ -86,7 +100,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./apks/viper-x86_64.apk
           asset_name: viper-x86_64.apk
           asset_content_type: application/zip
@@ -97,7 +111,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./apks/HicnForwarderAndroid.apk
           asset_name: HicnForwarder.apk
           asset_content_type: application/zip
