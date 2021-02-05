@@ -32,7 +32,10 @@ ln -sf /usr_aarch64 /hicn/
 ln -sf /usr_x86_64 /hicn/
 ln -s /.versions /hicn/
 ln -s /sdk /hicn/
-VERSION_CODE=`git rev-parse --short "$GITHUB_SHA"`_$1
+GITHUB_SHA=$4
+VERSION_CODE=${GITHUB_SHA}_$1
+
+cd hicn
 
 make android_commonaar VERSION=$VERSION_CODE GITHUB_TOKEN=$GITHUB_TOKEN GITHUB_USER=$GITHUB_USER
 cp aar_modules/CommonLibrary/common/build/outputs/aar/*.aar /hicn
@@ -45,3 +48,8 @@ make android_publish_forwarderlibraryaar VERSION=$VERSION_CODE GITHUB_TOKEN=$GIT
 make android_facemgrlibraryaar VERSION=$VERSION_CODE GITHUB_TOKEN=$GITHUB_TOKEN GITHUB_USER=$GITHUB_USER
 cp aar_modules/FaceMgrLibrary/facemgrLibrary/build/outputs/aar/*.aar /hicn
 make android_publish_facemgrlibraryaar VERSION=$VERSION_CODE GITHUB_TOKEN=$GITHUB_TOKEN GITHUB_USER=$GITHUB_USER
+
+rm usr_aarch64
+rm usr_x86_64
+rm .versions
+rm sdk
