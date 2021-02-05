@@ -24,6 +24,8 @@ set -ex
 
 #VERSION_CODE=$((VERSION_CODE+1))
 VERSION_CODE=$2
+GITHUB_USER=$3
+GITHUB_TOKEN=$4
 
 ln -sf /usr_aarch64 /hicn/
 ln -sf /usr_x86_64 /hicn/
@@ -34,7 +36,7 @@ ln -sf /qt /hicn/
 cd /hicn
 make version
 
-make android_hicnforwarder VERSION=$VERSION_CODE
+make android_hicnforwarder VERSION=$VERSION_CODE GITHUB_USER=$GITHUB_USER GITHUB_TOKEN=$GITHUB_TOKEN
 cp HicnForwarderAndroid/app/build/outputs/apk/release/*.apk /hicn
 
 make android_hicntools VERSION=$VERSION_CODE

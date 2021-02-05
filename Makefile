@@ -148,10 +148,37 @@ install-qtav:
 	@bash scripts/install_qtav.sh ${ABI};
 
 android_hicnforwarder:
-	@bash scripts/compile_hicnforwarder.sh -d NODEBUG -v "$(VERSION)" -p "$(ENABLE_HPROXY)" -u "$(GITHUB_USER)" -t "$(GITUB_TOKEN)" -r "$(MVN_REPO)"
+	@bash scripts/compile_hicnforwarder.sh -d NODEBUG -v "$(VERSION)" -p "$(ENABLE_HPROXY)" -u "$(GITHUB_USER)" -t "$(GITHUB_TOKEN)" -r "$(MVN_REPO)" -h "$(MVN_REPO_HPROXY)"
 
 android_hicnforwarder_debug:
-	@bash scripts/compile_hicnforwarder.sh -d DEBUG -v "$(VERSION)" -p "$(ENABLE_HPROXY)" -u "$(GITHUB_USER)" -t "$(GITUB_TOKEN)" -r "$(MVN_REPO)"
+	@bash scripts/compile_hicnforwarder.sh -d DEBUG -v "$(VERSION)" -p "$(ENABLE_HPROXY)" -u "$(GITHUB_USER)" -t "$(GITHUB_TOKEN)" -r "$(MVN_REPO)"  -h "$(MVN_REPO_HPROXY)"
+
+android_commonaar:
+	@bash scripts/compile_common_aar.sh -d NODEBUG -v "$(VERSION)" -r "$(MVN_REPO)"
+
+android_commonaar_debug:
+	@bash scripts/compile_common_aar.sh -d DEBUG -v "$(VERSION)" -r "$(MVN_REPO)"
+
+android_publish_commonaar:
+	@bash scripts/publish_common_aar.sh -v "$(VERSION)" -r "$(MVN_REPO)" -u "$(GITHUB_USER)" -t "$(GITHUB_TOKEN)"
+
+android_forwarderlibraryaar:
+	@bash scripts/compile_hicnforwarder_aar.sh -d NODEBUG -v "$(VERSION)" -r "$(MVN_REPO)" -u "$(GITHUB_USER)" -t "$(GITHUB_TOKEN)"
+
+android_forwarderlibraryaar_debug:
+	@bash scripts/compile_hicnforwarder_aar.sh -d DEBUG -v "$(VERSION)" -r "$(MVN_REPO)" -u "$(GITHUB_USER)" -t "$(GITHUB_TOKEN)"
+
+android_publish_forwarderlibraryaar:
+	@bash scripts/publish_hicnforwarder_aar.sh -v "$(VERSION)" -r "$(MVN_REPO)" -u "$(GITHUB_USER)" -t "$(GITHUB_TOKEN)"
+
+android_facemgrlibraryaar:
+	@bash scripts/compile_facemgr_aar.sh -d NODEBUG -v "$(VERSION)" -r "$(MVN_REPO)" -u "$(GITHUB_USER)" -t "$(GITHUB_TOKEN)"
+
+android_facemgrlibraryaar_debug:
+	@bash scripts/compile_facemgr_aar.sh -d DEBUG -v "$(VERSION)" -r "$(MVN_REPO)" -u "$(GITHUB_USER)" -t "$(GITHUB_TOKEN)"
+
+android_publish_facemgrlibraryaar:
+	@bash scripts/publish_facemgr_aar.sh -v "$(VERSION)" -r "$(MVN_REPO)" -u "$(GITHUB_USER)" -t "$(GITHUB_TOKEN)"
 
 android_hicntools:
 	@bash scripts/compile_hicntools.sh NODEBUG $(VERSION)
