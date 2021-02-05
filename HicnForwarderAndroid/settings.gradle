@@ -1,3 +1,6 @@
 
 include ':hproxyLibrary'
 include ':app'
+include ':aar:common'
+include ':aar:facemgrLibrary'
+include ':aar:hicnforwarderLibrary'

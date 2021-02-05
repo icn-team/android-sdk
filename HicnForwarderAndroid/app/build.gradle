@@ -149,9 +149,7 @@ repositories {
             }
         }
     }
-println this.properties["GITHUB_USER"]
-    println this.properties["GITHUB_TOKEN"]
-    println this.properties['MVN_REPO']
+
     maven {
         name = 'GitHubPackagesPublic'
         url = uri(this.properties['MVN_REPO'])
