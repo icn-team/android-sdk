@@ -18,7 +18,8 @@ buildscript {
         ENABLE_HPROXY = '0'
         GITHUB_USER = ''
         GITHUB_TOKEN = ''
-        MVN_REPO = 'https://maven.pkg.github.com/Cisco-Hybrid-ICN/hproxy'
+        MVN_REPO_HPROXY = 'https://maven.pkg.github.com/Cisco-Hybrid-ICN/hproxy'
+        MVN_REPO = 'https://maven.pkg.github.com/icn-team/android-sdk'
     }
     repositories {
         google()
