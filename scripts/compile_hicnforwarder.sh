@@ -5,8 +5,9 @@ VERSION_CODE=1
 GITHUB_USER=""
 GITHUB_TOKEN=""
 ENABLE_HPROXY="0"
-MVN_REPO=""
-while getopts ":d:v:p:u:t:r:" opt; do
+MVN_REPO_HPROXY="https://maven.pkg.github.com/Cisco-Hybrid-ICN/hproxy"
+MVN_REPO="https://maven.pkg.github.com/icn-team/android-sdk"
+while getopts ":d:v:p:u:t:r:h:" opt; do
   case $opt in
     d) ENABLE_DEBUG="$OPTARG"
     ;;
@@ -20,19 +21,25 @@ while getopts ":d:v:p:u:t:r:" opt; do
     ;;
     t) GITHUB_TOKEN="$OPTARG"
     ;;
-    r) MVN_REPO="$OPTARG"
+    r) if [ "$OPTARG" != "" ]; then
+        MVN_REPO="$OPTARG"
+       fi
+    ;;
+    h) if [ "$OPTARG" != "" ]; then
+        MVN_REPO_HPROXY="$OPTARG"
+       fi
     ;;
     \?) echo "Invalid option -$OPTARG" >&2
     ;;
   esac
 done
 
+echo $GITHUB_TOKEN $GITHUB_USER
 if [ "$ENABLE_HPROXY" = "1" ]; then
     if [ "$GITHUB_USER" = "" ] || [ "$GITUB_TOKEN" = "" ]; then
         echo "set github user and token"
         exit 1
     fi
-
 fi
 
 cd HicnForwarderAndroid
@@ -46,14 +53,7 @@ else
     ASSEMBLE="assembleRelease"
 fi
 
-if [ "$MVN_REPO" = "" ]; then
-    ./gradlew $ASSEMBLE -PENABLE_HPROXY=$ENABLE_HPROXY -PVERSION_CODE=$VERSION_CODE -PGITHUB_USER=$GITHUB_USER -PGITHUB_TOKEN=$GITHUB_TOKEN
-else
-    ./gradlew $ASSEMBLE -PENABLE_HPROXY=$ENABLE_HPROXY -PVERSION_CODE=$VERSION_CODE -PGITHUB_USER=$GITHUB_USER -PGITHUB_TOKEN=$GITHUB_TOKEN -PMVN_REPO=$MVN_REPO
-fi
-
-
-
+./gradlew $ASSEMBLE -PENABLE_HPROXY=$ENABLE_HPROXY -PVERSION_CODE=$VERSION_CODE -PGITHUB_USER=$GITHUB_USER -PGITHUB_TOKEN=$GITHUB_TOKEN -PMVN_REPO=$MVN_REPO -PMVN_REPO_HPROXY=$MVN_REPO_HPROXY
 
 echo "Apks are inside HicnForwarderAndroid/app/build/outputs/apk"
 cd ..
