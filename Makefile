@@ -148,10 +148,37 @@ install-qtav:
 	@bash scripts/install_qtav.sh ${ABI};
 
 android_hicnforwarder:
-	@bash scripts/compile_hicnforwarder.sh -d NODEBUG -v "$(VERSION)" -p "$(ENABLE_HPROXY)" -u "$(GITHUB_USER)" -t "$(GITUB_TOKEN)" -r "$(MVN_REPO)"
+	@bash scripts/compile_hicnforwarder.sh -d NODEBUG -v "$(VERSION)" -p "$(ENABLE_HPROXY)" -u "$(GITHUB_USER)" -t "$(GITHUB_TOKEN)" -r "$(MVN_REPO)" -h "$(MVN_REPO_HPROXY)"
 
 android_hicnforwarder_debug:
-	@bash scripts/compile_hicnforwarder.sh -d DEBUG -v "$(VERSION)" -p "$(ENABLE_HPROXY)" -u "$(GITHUB_USER)" -t "$(GITUB_TOKEN)" -r "$(MVN_REPO)"
+	@bash scripts/compile_hicnforwarder.sh -d DEBUG -v "$(VERSION)" -p "$(ENABLE_HPROXY)" -u "$(GITHUB_USER)" -t "$(GITHUB_TOKEN)" -r "$(MVN_REPO)"  -h "$(MVN_REPO_HPROXY)"
+
+android_commonaar:
+	@bash scripts/compile_common_aar.sh -d NODEBUG -v "$(VERSION)" -r "$(MVN_REPO)"
+
+android_commonaar_debug:
+	@bash scripts/compile_common_aar.sh -d DEBUG -v "$(VERSION)" -r "$(MVN_REPO)"
+
+android_publish_commonaar:
+	@bash scripts/publish_common_aar.sh -v "$(VERSION)" -r "$(MVN_REPO)" -u "$(GITHUB_USER)" -t "$(GITHUB_TOKEN)"
+
+android_forwarderlibraryaar:
+	@bash scripts/compile_hicnforwarder_aar.sh -d NODEBUG -v "$(VERSION)" -r "$(MVN_REPO)" -u "$(GITHUB_USER)" -t "$(GITHUB_TOKEN)"
+
+android_forwarderlibraryaar_debug:
+	@bash scripts/compile_hicnforwarder_aar.sh -d DEBUG -v "$(VERSION)" -r "$(MVN_REPO)" -u "$(GITHUB_USER)" -t "$(GITHUB_TOKEN)"
+
+android_publish_forwarderlibraryaar:
+	@bash scripts/publish_hicnforwarder_aar.sh -v "$(VERSION)" -r "$(MVN_REPO)" -u "$(GITHUB_USER)" -t "$(GITHUB_TOKEN)"
+
+android_facemgrlibraryaar:
+	@bash scripts/compile_facemgr_aar.sh -d NODEBUG -v "$(VERSION)" -r "$(MVN_REPO)" -u "$(GITHUB_USER)" -t "$(GITHUB_TOKEN)"
+
+android_facemgrlibraryaar_debug:
+	@bash scripts/compile_facemgr_aar.sh -d DEBUG -v "$(VERSION)" -r "$(MVN_REPO)" -u "$(GITHUB_USER)" -t "$(GITHUB_TOKEN)"
+
+android_publish_facemgrlibraryaar:
+	@bash scripts/publish_facemgr_aar.sh -v "$(VERSION)" -r "$(MVN_REPO)" -u "$(GITHUB_USER)" -t "$(GITHUB_TOKEN)"
 
 android_hicntools:
 	@bash scripts/compile_hicntools.sh NODEBUG $(VERSION)
@@ -280,12 +307,18 @@ help:
 	@echo "make libparc-clean			- Clean libparc files and libs"
 	@echo "make hicn-clean				- Clean hicn files and libs"
 	@echo "make all-clean				- Clean	all files and libs"
-	@echo "make android_hicnforwarder	- Build HicnForwader apk for android"
-	@echo "make android_hicnforwarder_debug	- Build HicnForwader apk for android in debug mode"
+	@echo "make android_hicnforwarder GITHUB_USER=<github user> GITHUB_TOKEN=<github token>	- Build HicnForwader apk for android"
+	@echo "make android_hicnforwarder_debug	GITHUB_USER=<github user> GITHUB_TOKEN=<github token> - Build HicnForwader apk for android in debug mode"
 	@echo "make android_hicntools		- Build HicnTools apk for android"
 	@echo "make android_hicntools_debug	- Build HicnTools apk for android in debug mode"
 	@echo "make android_viper			- Build Viper apk for android apk in debug mode (only arm64)" 
 	@echo "make android_viper_debug		- Build Viper apk for android apk (only arm64)"
+	@echo "make android_commonaar		- Build common aar module"
+	@echo "make android_commonaar_debug	- Build common aar module for android in debug mode"
+	@echo "make android_forwarderlibraryaar GITHUB_USER=<github user> GITHUB_TOKEN=<github token>	- Build hicn-light forwarder aar module"
+	@echo "make android_forwarderlibraryaar_debug	GITHUB_USER=<github user> GITHUB_TOKEN=<github token> - Build hicn-light forwarder aar module in debug mode"
+	@echo "make android_facemgrlibraryaar GITHUB_USER=<github user> GITHUB_TOKEN=<github token>	- Build face manager aar module"
+	@echo "make android_facemgrlibraryaar_debug	GITHUB_USER=<github user> GITHUB_TOKEN=<github token> - Build face manager aar module in debug mode"
 	@echo "make version				- Print the version of installed modules"
 	
 ${DISTILLERY_STAMP}: ${REBUILD_DEPENDS}
