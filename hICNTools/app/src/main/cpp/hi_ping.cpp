@@ -60,7 +60,7 @@ namespace transport {
                 received_ = 0;
                 timeout_ = 0;
                 if (!c->certificate_.empty()) {
-                    key_id_ = verifier_.addKeyFromCertificate(c->certificate_);
+                    verifier_.setCertificate(c->certificate_);
                 }
             }
 
@@ -82,14 +82,14 @@ namespace transport {
                 portal_.runEventsLoop();
             }
 
-            void Client::onContentObject(Interest::Ptr &&interest,
-                                         ContentObject::Ptr &&object) {
+            void Client::onContentObject(Interest &interest, ContentObject &object) {
+
                 uint64_t rtt = 0;
 
                 if (!config_->certificate_.empty()) {
                     auto t0 = std::chrono::steady_clock::now();
                     std::stringstream ss;
-                    if (verifier_.verify(*object)) {
+                    if (verifier_.verifyPacket(&object)) {
                         auto t1 = std::chrono::steady_clock::now();
                         auto dt =
                                 std::chrono::duration_cast<std::chrono::microseconds>(t1 - t0);
@@ -104,7 +104,7 @@ namespace transport {
                     __android_log_print(ANDROID_LOG_INFO, TAG_HIPING, "%s", ss.str().c_str());
                 }
 
-                auto it = send_timestamps_.find(interest->getName().getSuffix());
+                auto it = send_timestamps_.find(interest.getName().getSuffix());
                 if (it != send_timestamps_.end()) {
                     rtt = std::chrono::duration_cast<std::chrono::microseconds>(
                             std::chrono::steady_clock::now().time_since_epoch())
@@ -116,21 +116,21 @@ namespace transport {
 
                 std::stringstream ss;
                 ss << "<<< recevied object. " << std::endl;
-                ss << "<<< interest name: " << interest->getName()
-                   << " src port: " << interest->getSrcPort()
-                   << " dst port: " << interest->getDstPort()
-                   << " flags: " << interest->printFlags() << std::endl;
-                ss << "<<< object name: " << object->getName()
-                   << " src port: " << object->getSrcPort()
-                   << " dst port: " << object->getDstPort()
-                   << " flags: " << object->printFlags() << " path label "
-                   << object->getPathLabel() << " ("
-                   << (object->getPathLabel() >> 24) << ")"
-                   << " TTL: " << (int) object->getTTL() << std::endl;
+                ss << "<<< interest name: " << interest.getName()
+                   << " src port: " << interest.getSrcPort()
+                   << " dst port: " << interest.getDstPort()
+                   << " flags: " << interest.printFlags() << std::endl;
+                ss << "<<< object name: " << object.getName()
+                   << " src port: " << object.getSrcPort()
+                   << " dst port: " << object.getDstPort()
+                   << " flags: " << object.printFlags() << " path label "
+                   << object.getPathLabel() << " ("
+                   << (object.getPathLabel() >> 24) << ")"
+                   << " TTL: " << (int) object.getTTL() << std::endl;
                 ss << "<<< round trip: " << rtt << " [us]" << std::endl;
-                ss << "<<< interest name: " << interest->getName() << std::endl;
+                ss << "<<< interest name: " << interest.getName() << std::endl;
                 ss << "<<< content object size: "
-                   << object->payloadSize() + object->headerSize() << " [bytes]"
+                   << object.payloadSize() + object.headerSize() << " [bytes]"
                    << std::endl;
                 config_->env->CallVoidMethod(config_->instance, config_->hipingLogCallback,
                                              config_->env->NewStringUTF(ss.str().c_str()));
@@ -138,7 +138,7 @@ namespace transport {
                                              rtt);
 
                 if (!config_->always_syn_) {
-                    if (object->testSyn() && object->testAck() && state_ == SYN_STATE) {
+                    if (object.testSyn() && object.testAck() && state_ == SYN_STATE) {
                         state_ = ACK_STATE;
                     }
                 }
@@ -184,9 +184,8 @@ namespace transport {
                     format = HF_INET6_TCP;
                 }
 
-                Interest::Ptr interest(new Interest(std::move(interest_name), format),
-                                       nullptr);
 
+                auto interest = std::make_shared<Interest>(interest_name, format);
                 interest->setLifetime(uint32_t(config_->interestLifetime_));
 
                 interest->resetFlags();

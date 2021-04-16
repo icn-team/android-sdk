@@ -19,11 +19,13 @@
 #include <hicn/transport/config.h>
 #include <hicn/transport/core/content_object.h>
 #include <hicn/transport/core/interest.h>
-#include <hicn/transport/interfaces/rtc_socket_producer.h>
+#include <hicn/transport/interfaces/global_conf_interface.h>
+#include <hicn/transport/interfaces/p2psecure_socket_consumer.h>
+#include <hicn/transport/interfaces/p2psecure_socket_producer.h>
 #include <hicn/transport/interfaces/socket_consumer.h>
 #include <hicn/transport/interfaces/socket_producer.h>
-#include <hicn/transport/security/identity.h>
-#include <hicn/transport/security/signer.h>
+#include <hicn/transport/auth/identity.h>
+#include <hicn/transport/auth/signer.h>
 #include <hicn/transport/utils/chrono_typedefs.h>
 #include <hicn/transport/utils/literals.h>
 #define ASIO_STANDALONE
@@ -47,9 +49,6 @@ namespace transport {
 #define ERROR_SUCCESS 0
 #endif
 #define ERROR_SETUP -5
-
-        using CryptoSuite = utils::CryptoSuite;
-        using Identity = utils::Identity;
 
 /**
  * Container for command line configuration for hiperf client.
