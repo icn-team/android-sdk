@@ -30,6 +30,7 @@ find_package(Libhicnctrl REQUIRED)
 find_package(Libfacemgr REQUIRED)
 find_package(Threads REQUIRED)
 find_package(Libtransport REQUIRED)
+find_package(Libconfig++ REQUIRED)
 
 include_directories(${LIBHICNLIGHT_INCLUDE_DIRS})
 
@@ -46,5 +47,6 @@ target_link_libraries(hiperf-wrapper
         ${LIBPARC_LIBRARIES}
         ${LIBEVENT_LIBRARIES}
         ${CONFIG_LIBRARY}
+        ${LIBCONFIG_CPP_LIBRARY}
         ${OPENSSL_LIBRARIES})
 
