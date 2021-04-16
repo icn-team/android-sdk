@@ -15,7 +15,9 @@ find_package(Threads REQUIRED)
 find_package(Libparc REQUIRED)
 find_package(Libhicn REQUIRED)
 find_package(Libtransport REQUIRED)
+find_package(Libconfig++ REQUIRED)
 include_directories(${LIBTRANSPORT_INCLUDE_DIRS})
+
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
 # You can define multiple libraries, and CMake builds them for you.
@@ -54,4 +56,4 @@ target_link_libraries( # Specifies the target library.
 
         # Links the target library to the log library
         # included in the NDK.
-        ${log-lib} ${LIBTRANSPORT_LIBRARIES} ${HICN_LIBRARIES} ${LIBPARC_LIBRARIES} ${LIBEVENT_LIBRARIES} ${OPENSSL_LIBRARIES})
+        ${log-lib} ${LIBTRANSPORT_LIBRARIES} ${HICN_LIBRARIES} ${LIBPARC_LIBRARIES} ${LIBEVENT_LIBRARIES} ${LIBCONFIG_CPP_LIBRARY} ${OPENSSL_LIBRARIES})
