@@ -154,7 +154,7 @@ namespace transport {
 
         bool HIperfClient::verifyData(ConsumerSocket &c, const ContentObject &contentObject) {
 
-            if (contentObject.getPayloadType() == PayloadType::CONTENT_OBJECT) {
+            if (contentObject.getPayloadType() == PayloadType::DATA) {
                 std::stringstream ss;
                 ss << "VERIFY CONTENT" << std::endl;
                 __android_log_print(ANDROID_LOG_INFO, TAG_HIPERF, "%s", ss.str().c_str());
@@ -272,7 +272,7 @@ namespace transport {
             }
 
             if (consumer_socket_->setSocketOption(
-                    GeneralTransportOptions::VERIFY_SIGNATURE, configuration_.verify) ==
+                    GeneralTransportOptions::VERIFIER, configuration_.verify) ==
                 SOCKET_OPTION_NOT_SET) {
                 return ERROR_SETUP;
             }
