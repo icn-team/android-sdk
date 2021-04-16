@@ -21,10 +21,12 @@
 #include <string>
 #include <unistd.h>
 #include <android/log.h>
-#include <hicn/transport/security/verifier.h>
+#include <hicn/transport/core/global_object_pool.h>
 #include <hicn/transport/core/interest.h>
-#include <hicn/transport/core/content_object.h>
 #include <hicn/transport/interfaces/portal.h>
+#include <hicn/transport/auth/verifier.h>
+#include <hicn/transport/utils/log.h>
+
 #define ASIO_STANDALONE
 #include <asio/signal_set.hpp>
 #include <asio/steady_timer.hpp>
@@ -41,7 +43,7 @@ namespace transport {
 
         namespace ping {
             typedef std::map<uint64_t, uint64_t> SendTimeMap;
-            typedef utils::Verifier Verifier;
+            typedef auth::AsymmetricVerifier Verifier;
 
             class Configuration {
             public:
@@ -87,8 +89,7 @@ namespace transport {
 
                 void afterSignal();
 
-                void onContentObject(Interest::Ptr &&interest,
-                                     ContentObject::Ptr &&object) override;
+                void onContentObject(Interest &interest, ContentObject &object)  override;
 
                 void onTimeout(Interest::Ptr &&interest) override;
 
