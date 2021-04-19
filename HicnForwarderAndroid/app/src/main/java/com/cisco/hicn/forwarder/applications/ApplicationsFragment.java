@@ -101,7 +101,7 @@ public class ApplicationsFragment extends Fragment {
 
         //Set<String> punted_set = new HashSet<>();
         Map<String, PuntingSpec> punted_map = new HashMap<>();
-        for (PuntingSpec p : HProxyLibrary.getPuntingSpecs()) {
+        for (PuntingSpec p : HProxyLibrary.getInstance().getPuntingSpecs()) {
             punted_map.put(p.androidPackage, p);
             //punted_set.add(p.androidPackage);
         }
