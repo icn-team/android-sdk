@@ -105,7 +105,6 @@ def enableHProxy() {
 }
 
 def getVersionCode_() {
-
     if ("${getProjectProperty('VERSION_CODE')}".isEmpty())
         return 5
     else {
@@ -139,7 +138,7 @@ def String getProjectProperty(String propertyName)
 repositories {
     maven { url 'https://jitpack.io' }
 
-    if (Integer.parseInt(this.properties['ENABLE_HPROXY']) == 1) {
+    if (Integer.parseInt(this.properties['ENABLE_HPROXY']) == 1 && Integer.parseInt(this.properties['MODULE_SRC']) == 0) {
         maven {
             name = 'GitHubPackages'
             url = uri(this.properties['MVN_REPO_HPROXY'])
@@ -165,14 +164,25 @@ repositories {
 dependencies {
 
     if (Integer.parseInt(this.properties['ENABLE_HPROXY']) == 1) {
-        implementation 'com.cisco.hicn:hproxy:+'
+        if (Integer.parseInt(this.properties['MODULE_HPROXY_SRC']) == 0) {
+            implementation 'com.cisco.hicn:hproxy:+'
+        } else {
+            implementation project(":hproxyLibrarySrc")
+            implementation project(":semtun-manager")
+        }
     } else {
         implementation project(":hproxyLibrary")
     }
+    if (Integer.parseInt(this.properties['MODULE_SRC']) == 0) {
+        implementation 'com.cisco.hicn:common:+'
+        implementation 'com.cisco.hicn:hicnforwarder:+'
+        implementation 'com.cisco.hicn:facemgr:+'
+    } else {
 
-    implementation 'com.cisco.hicn:common:+'
-    implementation 'com.cisco.hicn:hicnforwarder:+'
-    implementation 'com.cisco.hicn:facemgr:+'
+        implementation project(":aar:facemgrLibrary")
+        implementation project(":aar:hicnforwarderLibrary")
+        implementation project(":aar:common")
+    }
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'androidx.preference:preference:1.1.0-alpha05'
