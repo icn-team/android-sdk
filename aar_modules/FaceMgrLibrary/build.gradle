@@ -15,6 +15,7 @@
 
 buildscript {
     ext {
+        MODULE_SRC = '0'
         GITHUB_USER = ''
         GITHUB_TOKEN = ''
         MVN_REPO = 'https://maven.pkg.github.com/icn-team/android-sdk'
