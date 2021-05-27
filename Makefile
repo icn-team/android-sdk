@@ -162,6 +162,14 @@ android_hicnforwarder:
 android_hicnforwarder_debug:
 	@bash scripts/compile_hicnforwarder.sh -d DEBUG -v "$(VERSION)" -p "$(ENABLE_HPROXY)" -u "$(GITHUB_USER)" -t "$(GITHUB_TOKEN)" -r "$(MVN_REPO)"  -h "$(MVN_REPO_HPROXY)"
 
+ifeq (${BUILD_HPROXY},1)
+android_hproxyaar:
+	@bash scripts/compile_hproxy_aar.sh NODEBUG $(VERSION)
+
+android_hproxyaar_debug:
+	@bash scripts/compile_hproxy_aar.sh DEBUG $(VERSION)
+endif
+
 android_commonaar:
 	@bash scripts/compile_common_aar.sh -d NODEBUG -v "$(VERSION)" -r "$(MVN_REPO)"
 
