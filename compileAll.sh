@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 set -e
 export BUILD_HPROXY=1
 export HPROXY_URL=ssh://git@bitbucket-eng-gpk1.cisco.com:7999/ngl/hproxy.git
