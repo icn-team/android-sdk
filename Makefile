@@ -91,6 +91,11 @@ modules_dir=
 	include config/modules/130-hicn.mk
 	include config/modules/610-libdash.mk
 
+ifeq (${BUILD_HPROXY},1) 
+modules_dir+=
+	include config/modules/140-hproxy.mk
+endif
+
 # Load user defined modules
 DISTILLERY_USER_MODULES_DIR=${DISTILLERY_USER_CONFIG_DIR}/modules
 ifneq (,$(wildcard ${DISTILLERY_USER_MODULES_DIR}))
@@ -134,7 +139,11 @@ compile-dep: init compile-openssl install-asio libconfig libevent
 download-hicn:
 	@bash scripts/download_hicn.sh;
 
+ifeq (${BUILD_HPROXY},1)
+compile-hicn: init download-hicn cframework/libparc hicn hproxy
+else
 compile-hicn: init download-hicn cframework/libparc hicn
+endif
 
 download-qtdep:
 	@bash  scripts/download_qtdep.sh;
