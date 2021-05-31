@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/.cxx/cmake/release/arm64-v8a",
-  "command": "/Users/manangel/maqy/android-sdk/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=aarch64-none-linux-android28 --gcc-toolchain=/Users/manangel/maqy/android-sdk/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/manangel/maqy/android-sdk/sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/darwin-x86_64/sysroot  -DASIO_STANDALONE -DENABLE_HPROXY -DWITH_POLICY=1 -Dhproxy_wrapper_EXPORTS -I/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/src/main/cpp/../../../../../usr_aarch64/include  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -std=c++17 -frtti -fexceptions -O2 -DNDEBUG  -fPIC   -std=gnu++14 -o CMakeFiles/hproxy-wrapper.dir/hproxy-wrapper.cpp.o -c /Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/src/main/cpp/hproxy-wrapper.cpp",
-  "file": "/Users/manangel/android-sdk-jordan/HicnForwarderAndroid/hproxyLibrary/src/main/cpp/hproxy-wrapper.cpp"
-}
-]
