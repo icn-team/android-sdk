@@ -42,5 +42,5 @@ set(LIBHICNCTRL_LIBRARIES ${LIBHICNCTRL_LIBRARY})
 set(LIBHICNCTRL_INCLUDE_DIRS ${LIBHICNCTRL_LIBRARY})
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(hicnctrl DEFAULT_MSG
+find_package_handle_standard_args(Libhicnctrl DEFAULT_MSG
         LIBHICNCTRL_LIBRARY LIBHICNCTRL_INCLUDE_DIR)

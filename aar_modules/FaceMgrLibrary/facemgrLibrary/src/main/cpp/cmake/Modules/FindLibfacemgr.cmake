@@ -38,8 +38,6 @@ find_library(LIBFACEMGR_LIBRARY NAMES facemgr
 )
 
 set(LIBFACEMGR_LIBRARIES ${LIBFACEMGR_LIBRARY})
-#set(LIBHICNCTRL_INCLUDE_DIRS ${HICNCTRL_INCLUDE_DIR})
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(hicnctrl DEFAULT_MSG
-        LIBFACEMGR_LIBRARY) # LIBHICNCTRL_INCLUDE_DIR)
+find_package_handle_standard_args(Libfacemgr DEFAULT_MSG LIBFACEMGR_LIBRARY)
