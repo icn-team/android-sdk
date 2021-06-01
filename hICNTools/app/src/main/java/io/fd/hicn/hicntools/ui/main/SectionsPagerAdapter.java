@@ -16,11 +16,13 @@
 package io.fd.hicn.hicntools.ui.main;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+
+
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 
 import io.fd.hicn.hicntools.R;
 import io.fd.hicn.hicntools.ui.fragments.HiGetFragment;
@@ -32,6 +34,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     @StringRes
     private static final int[] TAB_TITLES = new int[]{R.string.hiperf,R.string.hiping, R.string.higet};
     private final Context mContext;
+
 
     public SectionsPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
