@@ -46,4 +46,4 @@ set(HICN_LIBRARIES ${HICN_LIBRARY})
 set(HICN_INCLUDE_DIRS ${HICN_INCLUDE_DIR})
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(hicn  DEFAULT_MSG HICN_LIBRARY HICN_INCLUDE_DIR)
+find_package_handle_standard_args(Libhicn  DEFAULT_MSG HICN_LIBRARY HICN_INCLUDE_DIR)
