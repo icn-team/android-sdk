@@ -13,20 +13,23 @@
  * limitations under the License.
  */
 
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
+    id 'com.github.triplet.play' version '3.4.0-agp4.2'
+}
 
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "hicn.cisco.com.hicnforwarderandroid"
+        applicationId this.properties['APPLICATION_ID']
         minSdkVersion 28
         targetSdkVersion 29
-        versionCode getVersionCode_()
+        versionCode this.properties['VERSION_CODE'].toInteger()
         versionName getVersion()
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
-                cppFlags "-std=c++11 -frtti -fexceptions -Wno-dev"
+                cppFlags "-std=c++11 -frtti -fexceptions"
             }
         }
         ndk {
@@ -62,18 +65,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
-        /*
-        debug {
-            debuggable true
-                initWith debug
-                jniDebuggable true
-                externalNativeBuild {
-                    ndkBuild {
-                        cFlags "-DDEBUG=1"
-                    }
-                }
-        }
-        */
+
     }
 
     android.applicationVariants.all { variant ->
@@ -87,6 +79,7 @@ android {
     externalNativeBuild {
         cmake {
             path "src/main/jni/CMakeLists.txt"
+            version "3.18.1"
 
         }
     }
@@ -94,6 +87,12 @@ android {
     compileOptions {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
+    }
+}
+if (this.properties['PLAYSTORE_KEY'] != '') {
+    play {
+        track.set(this.properties['TRACK'])
+        serviceAccountCredentials.set(file(this.properties['PLAYSTORE_KEY']))
     }
 }
 
@@ -138,7 +137,7 @@ def String getProjectProperty(String propertyName)
 repositories {
     maven { url 'https://jitpack.io' }
 
-    if (Integer.parseInt(this.properties['ENABLE_HPROXY']) == 1 && Integer.parseInt(this.properties['MODULE_SRC']) == 0) {
+    if (Integer.parseInt(this.properties['ENABLE_HPROXY']) == 1 && Integer.parseInt(this.properties['MODULE_HPROXY_SRC']) == 0) {
         maven {
             name = 'GitHubPackages'
             url = uri(this.properties['MVN_REPO_HPROXY'])
@@ -157,7 +156,6 @@ repositories {
             password = this.properties["GITHUB_TOKEN"]
         }
     }
-    maven { url 'https://jitpack.io' }
 
 }
 
@@ -170,7 +168,7 @@ dependencies {
             implementation 'com.cisco.hicn:hproxy:+'
         } else {
             implementation project(":hproxyLibrarySrc")
-            implementation project(":semtun-manager")
+
         }
     } else {
         implementation project(":hproxyLibrary")
