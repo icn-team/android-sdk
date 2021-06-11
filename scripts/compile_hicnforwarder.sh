@@ -34,7 +34,6 @@ while getopts ":d:v:p:u:t:r:h:" opt; do
   esac
 done
 
-echo $GITHUB_TOKEN $GITHUB_USER
 if [ "$ENABLE_HPROXY" = "1" ]; then
     if [ "$GITHUB_USER" = "" ] || [ "$GITUB_TOKEN" = "" ]; then
         echo "set github user and token"
