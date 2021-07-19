@@ -58,9 +58,9 @@ namespace transport {
                 state_ = SYN_STATE;
                 sent_ = 0;
                 received_ = 0;
-                timeout_ = 0;
+                timedout_ = 0;
                 if (!c->certificate_.empty()) {
-                    verifier_.setCertificate(c->certificate_);
+                    verifier_.useCertificate(c->certificate_);
                 }
             }
 
@@ -151,23 +151,22 @@ namespace transport {
             }
 
 
-            void Client::onTimeout(Interest::Ptr &&interest) {
+            void Client::onTimeout(Interest::Ptr &interest, const Name &name) {
                 std::stringstream ss;
-                ss << "### timeout for " << interest->getName().toString()
-                   << " src port: " << interest->getSrcPort() << " dst port: "
-                   << interest->getDstPort()
-                   << " flags: " << interest->printFlags() << std::endl;
+                ss << "### timeout for " << name
+                          << " src port: " << interest->getSrcPort()
+                          << " dst port: " << interest->getDstPort()
+                          << " flags: " << interest->printFlags() << std::endl;
                 config_->env->CallVoidMethod(config_->instance, config_->hipingLogCallback,
                                              config_->env->NewStringUTF(ss.str().c_str()));
                 config_->env->CallVoidMethod(config_->instance, config_->hipingUpdateGraphCallback,
                                              0);
 
                 __android_log_print(ANDROID_LOG_INFO, TAG_HIPING, "%s", ss.str().c_str());
-                timeout_++;
+                timedout_++;
                 processed_++;
                 if (processed_ >= config_->maxPing_) {
                     afterSignal();
-
                 }
             }
 
@@ -244,7 +243,7 @@ namespace transport {
                 state_ = SYN_STATE;
                 sent_ = 0;
                 received_ = 0;
-                timeout_ = 0;
+                timedout_ = 0;
             }
 
             uint32_t Client::getSent() {
@@ -256,7 +255,7 @@ namespace transport {
             }
 
             uint32_t Client::getTimeout() {
-                return timeout_;
+                return timedout_;
             }
 
         }
