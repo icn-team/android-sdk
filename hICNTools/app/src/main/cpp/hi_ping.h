@@ -91,7 +91,7 @@ namespace transport {
 
                 void onContentObject(Interest &interest, ContentObject &object)  override;
 
-                void onTimeout(Interest::Ptr &&interest) override;
+                void onTimeout(core::Interest::Ptr &i, const core::Name &n) override;
 
                 void reset();
 
@@ -111,11 +111,10 @@ namespace transport {
                 uint32_t state_;
                 uint32_t sent_;
                 uint32_t received_;
-                uint32_t timeout_;
+                uint32_t timedout_;
                 std::unique_ptr<asio::steady_timer> timer_;
                 Configuration *config_;
                 Verifier verifier_;
-                PARCKeyId *key_id_;
 
             };
         }
