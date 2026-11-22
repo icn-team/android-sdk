@@ -20,3 +20,7 @@ HicnForwarderAndroid/semtun-manager
 /compileAll.sh
 hICNTools/.idea/
 compileAll.sh
+
+# signing material
+*.keystore
+*.jks
