@@ -45,17 +45,16 @@ android {
     }
 
     signingConfigs {
-        release {
-            storeFile file("hicnforwarder.keystore")
-            storePassword "REMOVED"
-            keyAlias "hicnforwarder"
-            keyPassword "REMOVED"
-        }
-        debug {
-            storeFile file("hicnforwarder.keystore")
-            storePassword 'REMOVED'
-            keyAlias 'hicnforwarder'
-            keyPassword 'REMOVED'
+        // Release signing material is supplied via environment variables
+        // (KEYSTORE_FILE, KEYSTORE_PASSWORD, KEY_ALIAS, KEY_PASSWORD).
+        // Debug builds use the default Android debug keystore.
+        if (System.getenv("KEYSTORE_FILE")) {
+            release {
+                storeFile file(System.getenv("KEYSTORE_FILE"))
+                storePassword System.getenv("KEYSTORE_PASSWORD")
+                keyAlias System.getenv("KEY_ALIAS")
+                keyPassword System.getenv("KEY_PASSWORD")
+            }
         }
     }
 
@@ -63,7 +62,9 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            if (System.getenv("KEYSTORE_FILE")) {
+                signingConfig signingConfigs.release
+            }
         }
 
     }
