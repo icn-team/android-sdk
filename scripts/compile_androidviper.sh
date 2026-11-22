@@ -18,6 +18,7 @@
 
 #!/bin/bash
 set -ex
+: "${VIPER_KEYSTORE_PASSWORD:?VIPER_KEYSTORE_PASSWORD must be set}"
 BASE_DIR=`pwd`
 BASIC_HOME=${QT_HOME}
 export ANDROID_ARCH=arm64_v8a
@@ -52,7 +53,7 @@ if [ "$1" = "DEBUG" ]; then
 	${QT_HOME}/${QT_VERSION}/android_${ANDROID_ARCH}/bin/qmake -r -spec android-clang ${DISTILLERY_ROOT_DIR}/src/viper/viper.pro  "TRANSPORT_LIBRARY = HICNET" CONFIG+=debug CONFIG+=qml_debug
 	make
 	make install INSTALL_ROOT=hicn-viper-${ANDROID_ARCH}
-	${QT_HOME}/${QT_VERSION}/android_${ANDROID_ARCH}/bin/androiddeployqt --output hicn-viper-${ANDROID_ARCH} --verbose --input android-libhicn-viper.so-deployment-settings.json --gradle --android-platform ${ANDROID_NDK_PLATFORM} --stacktrace --debug --target ${ANDROID_NDK_PLATFORM} --debug --sign ${DISTILLERY_ROOT_DIR}/src/viper/android/viper.keystore viper --storepass REMOVED
+	${QT_HOME}/${QT_VERSION}/android_${ANDROID_ARCH}/bin/androiddeployqt --output hicn-viper-${ANDROID_ARCH} --verbose --input android-libhicn-viper.so-deployment-settings.json --gradle --android-platform ${ANDROID_NDK_PLATFORM} --stacktrace --debug --target ${ANDROID_NDK_PLATFORM} --debug --sign ${DISTILLERY_ROOT_DIR}/src/viper/android/viper.keystore viper --storepass "${VIPER_KEYSTORE_PASSWORD}"
 else
 	mkdir -p build_aarch64/viper
 	cd build_aarch64/viper
@@ -60,7 +61,7 @@ else
 	make
 	make install INSTALL_ROOT=hicn-viper-${ANDROID_ARCH}
 	${QT_HOME}/${QT_VERSION}/android_${ANDROID_ARCH}/bin/androiddeployqt --output hicn-viper-${ANDROID_ARCH} --verbose --input android-libhicn-viper.so-deployment-settings.json \
-	--gradle --android-platform ${ANDROID_NDK_PLATFORM} --stacktrace --release --target ${ANDROID_NDK_PLATFORM} --release --sign ${DISTILLERY_ROOT_DIR}/src/viper/android/viper.keystore viper --storepass REMOVED
+	--gradle --android-platform ${ANDROID_NDK_PLATFORM} --stacktrace --release --target ${ANDROID_NDK_PLATFORM} --release --sign ${DISTILLERY_ROOT_DIR}/src/viper/android/viper.keystore viper --storepass "${VIPER_KEYSTORE_PASSWORD}"
 fi
 cd ..
 cd ${BASE_DIR}
@@ -74,7 +75,7 @@ if [ "$1" = "DEBUG" ]; then
 	${QT_HOME}/${QT_VERSION}/android_${ANDROID_ARCH}/bin/qmake -r -spec android-clang ${DISTILLERY_ROOT_DIR}/src/viper/viper.pro  "TRANSPORT_LIBRARY = HICNET" CONFIG+=debug CONFIG+=qml_debug
 	make
 	make install INSTALL_ROOT=hicn-viper-${ANDROID_ARCH}
-	${QT_HOME}/${QT_VERSION}/android_${ANDROID_ARCH}/bin/androiddeployqt --output hicn-viper-${ANDROID_ARCH} --verbose --input android-libhicn-viper.so-deployment-settings.json --gradle --android-platform ${ANDROID_NDK_PLATFORM} --stacktrace --debug --target ${ANDROID_NDK_PLATFORM} --debug --sign ${DISTILLERY_ROOT_DIR}/src/viper/android/viper.keystore viper --storepass REMOVED
+	${QT_HOME}/${QT_VERSION}/android_${ANDROID_ARCH}/bin/androiddeployqt --output hicn-viper-${ANDROID_ARCH} --verbose --input android-libhicn-viper.so-deployment-settings.json --gradle --android-platform ${ANDROID_NDK_PLATFORM} --stacktrace --debug --target ${ANDROID_NDK_PLATFORM} --debug --sign ${DISTILLERY_ROOT_DIR}/src/viper/android/viper.keystore viper --storepass "${VIPER_KEYSTORE_PASSWORD}"
 else
 	mkdir -p build_x86_64/viper
 	cd build_x86_64/viper
@@ -82,7 +83,7 @@ else
 	make
 	make install INSTALL_ROOT=hicn-viper-${ANDROID_ARCH}
 	${QT_HOME}/${QT_VERSION}/android_${ANDROID_ARCH}/bin/androiddeployqt --output hicn-viper-${ANDROID_ARCH} --verbose --input android-libhicn-viper.so-deployment-settings.json \
-	--gradle --android-platform ${ANDROID_NDK_PLATFORM} --stacktrace --release --target ${ANDROID_NDK_PLATFORM} --release --sign ${DISTILLERY_ROOT_DIR}/src/viper/android/viper.keystore viper --storepass REMOVED
+	--gradle --android-platform ${ANDROID_NDK_PLATFORM} --stacktrace --release --target ${ANDROID_NDK_PLATFORM} --release --sign ${DISTILLERY_ROOT_DIR}/src/viper/android/viper.keystore viper --storepass "${VIPER_KEYSTORE_PASSWORD}"
 fi
 do_restore
 cd ..
